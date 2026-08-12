@@ -1,0 +1,125 @@
+/* Christian-themed fonts for kids */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Short+Stack&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Schoolbell&display=swap');
+
+/* Font classes */
+.font-kids-handwriting {
+  font-family: 'Patrick Hand', cursive;
+  letter-spacing: 1px;
+}
+
+.font-kids-print {
+  font-family: 'Short Stack', cursive;
+  line-height: 1.6;
+}
+
+.font-kids-comic {
+  font-family: 'Comic Neue', cursive;
+  font-weight: 700;
+}
+
+.font-christian-title {
+  font-family: 'Love Ya Like A Sister', cursive;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.font-bible-verse {
+  font-family: 'Schoolbell', cursive;
+  font-size: 1.2em;
+  line-height: 1.8;
+}
+
+/* Special effects for text */
+.text-gold-glow {
+  color: #FFD700;
+  text-shadow:
+    0 0 10px #FFD700,
+    0 0 20px #FFD700,
+    0 0 30px #FF9800;
+}
+
+.text-heavenly {
+  background: linear-gradient(to bottom, #FFD700, #FFFFFF);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.text-bible-paper {
+  color: #5D4037;
+  background: linear-gradient(to right, #FFF8E1, #FFECB3);
+  padding: 10px 20px;
+  border-radius: 5px;
+  border-left: 5px solid #795548;
+  font-family: 'Schoolbell', cursive;
+}
+
+/* Animation for important words */
+@keyframes wordGlow {
+  0%, 100% {
+    color: #333;
+    text-shadow: none;
+  }
+  50% {
+    color: #FFD600;
+    text-shadow: 0 0 10px rgba(255, 214, 0, 0.5);
+  }
+}
+
+.glow-word {
+  animation: wordGlow 2s infinite;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Bible verse styling */
+.bible-verse-style {
+  font-family: 'Schoolbell', cursive;
+  font-style: italic;
+  color: #5D4037;
+  background: #FFF8E1;
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px solid #FFD54F;
+  box-shadow: 0 5px 15px rgba(93, 64, 55, 0.1);
+  position: relative;
+}
+
+.bible-verse-style::before {
+  content: '"';
+  font-family: 'Times New Roman', serif;
+  font-size: 4em;
+  color: #FFD54F;
+  position: absolute;
+  top: -20px;
+  left: 10px;
+  opacity: 0.5;
+}
+
+.bible-verse-style::after {
+  content: '"';
+  font-family: 'Times New Roman', serif;
+  font-size: 4em;
+  color: #FFD54F;
+  position: absolute;
+  bottom: -40px;
+  right: 10px;
+  opacity: 0.5;
+}
+
+/* Prayer text styling */
+.prayer-text {
+  font-family: 'Patrick Hand', cursive;
+  background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+  padding: 20px;
+  border-radius: 15px;
+  border-left: 10px solid #1976D2;
+  box-shadow: 0 10px 20px rgba(25, 118, 210, 0.1);
+  line-height: 2;
+}

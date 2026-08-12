@@ -1,0 +1,119 @@
+.btn {
+  font-family: var(--font-primary);
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.btn:hover::after {
+  opacity: 1;
+}
+
+/* Variants */
+.btn-primary {
+  background: linear-gradient(45deg, var(--primary), #FF8E8E);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background: linear-gradient(45deg, var(--secondary), #7DEAE2);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-success {
+  background: linear-gradient(45deg, var(--success), #4EF4C5);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-warning {
+  background: linear-gradient(45deg, var(--warning), #FFE08E);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-error {
+  background: linear-gradient(45deg, var(--error), #FF7B9C);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+/* Sizes */
+.btn-small {
+  padding: var(--spacing-xs) var(--spacing-md);
+  font-size: 0.9rem;
+}
+
+.btn-medium {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: 1.1rem;
+}
+
+.btn-large {
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-size: 1.3rem;
+}
+
+/* States */
+.btn:hover:not(.btn-disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn:active:not(.btn-disabled) {
+  transform: translateY(0);
+}
+
+.btn-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* Loading State */
+.btn-loading {
+  color: transparent !important;
+}
+
+.btn-spinner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

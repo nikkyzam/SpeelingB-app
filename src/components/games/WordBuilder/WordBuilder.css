@@ -1,0 +1,126 @@
+.word-builder {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+}
+
+.wb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  border-bottom: 2px dashed var(--border);
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+.wb-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.wb-stats { display: flex; gap: var(--spacing-lg); }
+.wb-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.8rem; color: var(--text-soft); }
+.wb-stat strong { font-size: 1.2rem; color: var(--text); }
+
+.wb-clue { text-align: center; margin-bottom: var(--spacing-lg); }
+.wb-hear {
+  font-family: var(--font-primary);
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(180deg, var(--secondary), var(--secondary-2));
+  padding: 0.6rem 1.3rem;
+  border-radius: var(--radius-round);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+}
+.wb-hear:active { transform: translateY(3px); box-shadow: none; }
+.wb-meaning { margin: var(--spacing-md) 0 0; color: var(--text-soft); font-weight: 600; }
+
+/* Slots the word gets built into */
+.wb-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: var(--spacing-xl);
+}
+.wb-slot {
+  width: 3rem;
+  height: 3.4rem;
+  border-radius: var(--radius-sm);
+  border: 3px dashed var(--border);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: var(--text);
+  background: var(--card-soft);
+}
+.wb-slot.filled { border-style: solid; border-color: var(--primary); animation: pop-in 200ms both; }
+.wb-slot.filled.ok { border-color: var(--success); background: rgba(47,191,113,0.15); }
+.wb-slot.filled.bad { border-color: var(--error); background: rgba(239,71,111,0.15); animation: shake 0.5s; }
+
+/* Scrambled letter tiles */
+.wb-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-bottom: var(--spacing-lg);
+}
+.wb-tile {
+  width: 3.1rem;
+  height: 3.4rem;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(180deg, var(--primary), var(--primary-2));
+  box-shadow: 0 5px 0 rgba(0,0,0,0.18);
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+.wb-tile:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.05); }
+.wb-tile:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,0.18); }
+.wb-tile.used { opacity: 0; pointer-events: none; }
+
+.wb-controls { display: flex; gap: var(--spacing-md); justify-content: center; }
+.wb-btn {
+  font-family: var(--font-primary);
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  padding: 0.55rem 1.3rem;
+  border-radius: var(--radius-round);
+  color: #fff;
+  background: linear-gradient(180deg, var(--secondary), var(--secondary-2));
+  box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+}
+.wb-btn.ghost { background: transparent; color: var(--text-soft); box-shadow: none; border: 2px solid var(--border); }
+.wb-btn:active { transform: translateY(3px); box-shadow: none; }
+.wb-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.wb-flash {
+  margin-top: var(--spacing-lg);
+  text-align: center;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.2rem;
+  padding: 0.7rem 1rem;
+  border-radius: var(--radius-md);
+  animation: pop-in var(--transition-normal) both;
+}
+.wb-flash.ok { background: linear-gradient(90deg, var(--success), #4EF4C5); color: #fff; }
+.wb-flash.bad { background: var(--card-soft); color: var(--text); border: 2px solid var(--error); }
+
+@media (max-width: 600px) {
+  .wb-header { flex-direction: column; align-items: stretch; text-align: center; }
+  .wb-stats { justify-content: center; }
+  .wb-slot, .wb-tile { width: 2.6rem; height: 3rem; font-size: 1.3rem; }
+}

@@ -1,0 +1,194 @@
+/* CSS-based placeholder backgrounds for books */
+
+.book-placeholder-1 {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.book-placeholder-1::before {
+  content: '📖';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 80px;
+  opacity: 0.3;
+}
+
+.book-placeholder-2 {
+  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.book-placeholder-2::before {
+  content: '⭐';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 80px;
+  opacity: 0.3;
+}
+
+.book-placeholder-3 {
+  background: linear-gradient(135deg, #FF9800 0%, #EF6C00 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.book-placeholder-3::before {
+  content: '✝';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 80px;
+  opacity: 0.3;
+}
+
+.book-placeholder-4 {
+  background: linear-gradient(135deg, #9C27B0 0%, #6A1B9A 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.book-placeholder-4::before {
+  content: '❤️';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 80px;
+  opacity: 0.3;
+}
+
+.book-placeholder-5 {
+  background: linear-gradient(135deg, #00BCD4 0%, #00838F 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.book-placeholder-5::before {
+  content: '👶';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 80px;
+  opacity: 0.3;
+}
+
+.book-placeholder-6 {
+  background: linear-gradient(135deg, #FF5722 0%, #D84315 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.book-placeholder-6::before {
+  content: '🍎';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 80px;
+  opacity: 0.3;
+}
+
+.book-placeholder-7 {
+  background: linear-gradient(135deg, #F44336 0%, #C62828 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.book-placeholder-7::before {
+  content: '🎄';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 80px;
+  opacity: 0.3;
+}
+
+.book-placeholder-8 {
+  background: linear-gradient(135deg, #795548 0%, #4E342E 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.book-placeholder-8::before {
+  content: '🙏';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 80px;
+  opacity: 0.3;
+}
+
+/* Scene backgrounds */
+.scene-creation {
+  background: linear-gradient(to bottom, #1a237e, #283593, #388E3C);
+}
+
+.scene-ark {
+  background: linear-gradient(to bottom, #37474F, #1976D2);
+}
+
+.scene-david {
+  background: linear-gradient(to bottom, #FFB74D, #FFB74D, #FFCC80);
+}
+
+.scene-christmas {
+  background: linear-gradient(to bottom, #0D47A1, #1A237E);
+}
+
+.scene-prayer {
+  background: linear-gradient(135deg, #1565C0, #0D47A1);
+}
+
+.scene-fruit {
+  background: linear-gradient(135deg, #2E7D32, #1B5E20);
+}
+
+/* Pattern overlays */
+.pattern-crosses::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 2px, transparent 2px),
+    radial-gradient(circle at 75% 75%, rgba(255,255,255,0.1) 2px, transparent 2px);
+  background-size: 30px 30px;
+}
+
+.pattern-dots::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    radial-gradient(circle at 10px 10px, rgba(255,255,255,0.1) 1px, transparent 1px),
+    radial-gradient(circle at 30px 30px, rgba(255,255,255,0.1) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.pattern-hearts::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    radial-gradient(circle at 50% 15%, transparent 15px, rgba(255,255,255,0.1) 15px, rgba(255,255,255,0.1) 17px, transparent 17px),
+    radial-gradient(circle at 15% 50%, transparent 15px, rgba(255,255,255,0.1) 15px, rgba(255,255,255,0.1) 17px, transparent 17px);
+  background-size: 60px 60px;
+}

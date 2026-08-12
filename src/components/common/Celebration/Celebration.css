@@ -1,0 +1,64 @@
+.celebration {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: var(--spacing-md);
+  background: rgba(20, 12, 40, 0.5);
+  backdrop-filter: blur(5px);
+  overflow: hidden;
+}
+
+.celebration__card {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  background: var(--card);
+  border: 3px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl) var(--spacing-lg);
+  width: min(420px, 100%);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+}
+.celebration__mascot { font-size: 4.5rem; line-height: 1; display: inline-block; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); }
+.celebration__title { margin: var(--spacing-sm) 0; font-size: 2rem; color: var(--primary-2); }
+.celebration__msg { color: var(--text-soft); margin-bottom: var(--spacing-md); }
+
+.celebration__stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--text);
+  background: var(--card-soft);
+  padding: 0.4rem 1.1rem;
+  border-radius: var(--radius-round);
+  margin-bottom: var(--spacing-md);
+}
+.celebration__star { animation: pulse 1s infinite; }
+
+.celebration__unlock {
+  background: linear-gradient(90deg, var(--success), #4EF4C5);
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+}
+
+.celebration__btn { width: 100%; margin-top: var(--spacing-sm); }
+
+/* Confetti */
+.celebration__confetti { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.celebration__bit {
+  position: absolute;
+  top: -12px;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  animation: confettiRain 2.8s linear infinite;
+}

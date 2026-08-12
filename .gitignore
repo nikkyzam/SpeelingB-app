@@ -1,0 +1,24 @@
+# Dependencies
+/node_modules/
+
+# Build output
+/dist/
+
+# Local env / secrets — never commit
+.env
+.cypress.env.json
+
+# Test / coverage artifacts
+/coverage/
+/.nyc_output/
+/test_reports/
+/test_data/
+test_execution.log
+*.log
+cypress/screenshots/
+cypress/videos/
+
+# Editor / OS junk
+.idea/
+.vscode/
+.DS_Store

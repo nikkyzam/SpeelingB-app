@@ -1,0 +1,226 @@
+.pattern-memory {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: var(--radius-lg);
+  color: white;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+}
+
+.game-title {
+  font-size: 2rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.game-stats {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.stat {
+  text-align: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-lg);
+  min-width: 80px;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.8rem;
+  opacity: 0.9;
+  margin-bottom: var(--spacing-xs);
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: bold;
+  font-family: monospace;
+}
+
+.stat-value.lives {
+  font-size: 1.2rem;
+}
+
+.stat-value.streak {
+  color: #FFD700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+}
+
+.game-instructions {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+}
+
+.message-display {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: var(--spacing-md);
+  color: #FFD700;
+  min-height: 40px;
+}
+
+.pattern-info {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-lg);
+}
+
+.pattern-item {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 4px solid transparent;
+  position: relative;
+  animation: float 3s infinite ease-in-out;
+}
+
+.pattern-item:hover {
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.pattern-item.active {
+  animation: pulse 0.5s;
+  transform: scale(1.1);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+}
+
+.pattern-emoji {
+  font-size: 3rem;
+}
+
+.pattern-number {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 4px 8px;
+  border-radius: var(--radius-md);
+  font-size: 0.8rem;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1.1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.game-footer {
+  padding: var(--spacing-lg);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+}
+
+.progress-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.progress-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.progress-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.progress-bar {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FFD166, #FF6B6B);
+  border-radius: var(--radius-xl);
+  transition: width 0.3s ease;
+}
+
+.streak-bonus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 107, 107, 0.3));
+  border-radius: var(--radius-lg);
+  animation: pulse 1s infinite;
+}
+
+.streak-icon {
+  font-size: 1.5rem;
+}
+
+.streak-text {
+  font-weight: bold;
+  color: #FFD700;
+}
+
+@media (max-width: 768px) {
+  .pattern-memory {
+    padding: var(--spacing-md);
+  }
+
+  .game-header {
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  .game-stats {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pattern-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  .pattern-emoji {
+    font-size: 2.5rem;
+  }
+}

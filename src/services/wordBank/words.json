@@ -1,0 +1,89 @@
+{
+  "words": [
+    {
+      "id": "word-001",
+      "word": "cat",
+      "meaning": "A small domesticated carnivorous mammal with soft fur",
+      "sentence": "The cat chased a butterfly in the garden.",
+      "difficulty": 1,
+      "category": "animals",
+      "phonetic": "/kæt/",
+      "synonyms": ["feline", "kitty", "pussycat"],
+      "hint": "It says 'meow'"
+    },
+    {
+      "id": "word-002",
+      "word": "dog",
+      "meaning": "A domesticated carnivorous mammal that typically has a long snout",
+      "sentence": "My dog loves to play fetch in the park.",
+      "difficulty": 1,
+      "category": "animals",
+      "phonetic": "/dɒɡ/",
+      "synonyms": ["canine", "puppy", "hound"],
+      "hint": "Man's best friend"
+    },
+    {
+      "id": "word-003",
+      "word": "happy",
+      "meaning": "Feeling or showing pleasure or contentment",
+      "sentence": "The children were happy to see their friends.",
+      "difficulty": 1,
+      "category": "emotions",
+      "phonetic": "/ˈhæpi/",
+      "synonyms": ["joyful", "cheerful", "glad"],
+      "hint": "Opposite of sad"
+    },
+    {
+      "id": "word-004",
+      "word": "sun",
+      "meaning": "The star around which the earth orbits",
+      "sentence": "The sun shines brightly in the sky.",
+      "difficulty": 1,
+      "category": "nature",
+      "phonetic": "/sʌn/",
+      "synonyms": ["star", "daystar", "sol"],
+      "hint": "It gives us light and warmth"
+    },
+    {
+      "id": "word-005",
+      "word": "book",
+      "meaning": "A written or printed work consisting of pages",
+      "sentence": "She read a book before going to bed.",
+      "difficulty": 1,
+      "category": "objects",
+      "phonetic": "/bʊk/",
+      "synonyms": ["volume", "tome", "publication"],
+      "hint": "You read it"
+    }
+  ],
+  "categories": [
+    {
+      "id": "animals",
+      "name": "Animals",
+      "description": "Words about animals and pets",
+      "icon": "🐾",
+      "color": "#4ECDC4"
+    },
+    {
+      "id": "emotions",
+      "name": "Feelings",
+      "description": "Words about emotions and feelings",
+      "icon": "❤️",
+      "color": "#FF6B6B"
+    },
+    {
+      "id": "nature",
+      "name": "Nature",
+      "description": "Words about the natural world",
+      "icon": "🌿",
+      "color": "#06D6A0"
+    },
+    {
+      "id": "objects",
+      "name": "Objects",
+      "description": "Words about everyday objects",
+      "icon": "📦",
+      "color": "#118AB2"
+    }
+  ]
+}

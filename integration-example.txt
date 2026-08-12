@@ -1,0 +1,27 @@
+// Example integration in your App.tsx or main component:
+
+import { useRewards } from './hooks/rewards/useRewards';
+import { ProgressIntegration } from './services/rewards/ProgressIntegration';
+
+// In your learning components, call these when events occur:
+
+// When a word is spelled correctly:
+ProgressIntegration.onWordSpelled('example', true, false);
+
+// When a quiz is completed:
+ProgressIntegration.onQuizComplete('spell', true, 95);
+
+// When a game is completed:
+ProgressIntegration.onGameComplete('word-race', 1500, 60);
+
+// When daily goal is reached:
+ProgressIntegration.onDailyGoalReached(50);
+
+// On daily login (call in useEffect when app loads):
+useEffect(() => {
+  ProgressIntegration.onDailyLogin();
+}, []);
+
+// For Bible activities:
+ProgressIntegration.onBibleActivityCompleted('verse');
+ProgressIntegration.onBibleActivityCompleted('trivia', 8);

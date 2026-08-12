@@ -1,0 +1,39 @@
+<svg width="400" height="500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="coverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#667eea"/>
+      <stop offset="100%" stop-color="#764ba2"/>
+    </linearGradient>
+    <linearGradient id="spineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4a5568"/>
+      <stop offset="100%" stop-color="#2d3748"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Book spine -->
+  <rect x="50" y="50" width="30" height="460" fill="url(#spineGrad)" rx="5"/>
+
+  <!-- Book cover -->
+  <rect x="80" y="50" width="290" height="460" fill="url(#coverGrad)" rx="10"/>
+
+  <!-- Cross symbol -->
+  <g transform="translate(225, 200)">
+    <rect x="-40" y="-5" width="80" height="10" fill="white" opacity="0.8" rx="5"/>
+    <rect x="-5" y="-40" width="10" height="80" fill="white" opacity="0.8" rx="5"/>
+  </g>
+
+  <!-- Title -->
+  <text x="225" y="320" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="24" font-weight="bold">
+    Christian Book
+  </text>
+
+  <!-- Subtitle -->
+  <text x="225" y="360" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" opacity="0.9">
+    For Kids
+  </text>
+
+  <!-- Decorative elements -->
+  <circle cx="100" cy="100" r="15" fill="white" opacity="0.3"/>
+  <circle cx="350" cy="400" r="20" fill="white" opacity="0.3"/>
+  <circle cx="150" cy="450" r="12" fill="white" opacity="0.3"/>
+</svg>

@@ -1,0 +1,156 @@
+.home-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+/* ---- Hero ---- */
+.hero-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  color: var(--on-primary);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+.hero-mascot {
+  font-size: 4.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
+}
+.hero-text { flex: 1; min-width: 0; }
+.hero-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+.hero-card h1 { color: var(--on-primary); margin: 0; font-size: 1.9rem; text-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+.hero-tagline { color: rgba(255, 255, 255, 0.92); margin: 0.35rem 0 var(--spacing-md); font-weight: 700; }
+
+.chips-row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(6px);
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-round);
+}
+.chip-icon { font-size: 1.1rem; }
+.chip-value { font-weight: 900; font-size: 1.05rem; }
+.chip-label { font-size: 0.82rem; opacity: 0.92; }
+
+/* ---- Today's Quest ---- */
+.quest-card {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+}
+.quest-head { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-sm); }
+.quest-head h2 { margin: 0; font-size: 1.35rem; }
+.quest-count { font-weight: 900; color: var(--primary-2); }
+.quest-track {
+  height: 34px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-round);
+  margin: var(--spacing-md) 0;
+  overflow: hidden;
+  position: relative;
+}
+.quest-fill {
+  height: 100%;
+  min-width: 34px;
+  background: linear-gradient(90deg, var(--secondary), var(--success));
+  border-radius: var(--radius-round);
+  transition: width 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.quest-runner { font-size: 1.4rem; padding-right: 4px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3)); }
+.quest-hint { margin: 0; color: var(--text-soft); font-weight: 600; }
+.quest-done { display: flex; flex-direction: column; gap: var(--spacing-md); }
+.quest-done-badge {
+  background: linear-gradient(45deg, var(--success), #4EF4C5);
+  color: #fff;
+  padding: 0.7rem 1rem;
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-weight: 800;
+  animation: pulse 2s infinite;
+  box-shadow: var(--shadow-sm);
+}
+.quest-actions { display: flex; gap: var(--spacing-md); flex-wrap: wrap; justify-content: center; }
+
+/* ---- Play grid ---- */
+.play-section h2 { margin-bottom: var(--spacing-md); }
+.play-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-md);
+}
+.play-card {
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg) var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  color: #fff;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.14), var(--shadow-sm);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+  text-align: center;
+}
+.play-card:hover { transform: translateY(-3px); filter: brightness(1.05); }
+.play-card:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,0.14); }
+.play-icon { font-size: 2.6rem; }
+.play-label { font-family: var(--font-primary); font-weight: 800; font-size: 1.15rem; }
+.play-sub { font-size: 0.82rem; opacity: 0.95; }
+
+.tone-primary { background: linear-gradient(180deg, var(--primary), var(--primary-2)); }
+.tone-secondary { background: linear-gradient(180deg, var(--secondary), var(--secondary-2)); }
+.tone-accent { background: linear-gradient(180deg, var(--accent), var(--primary-2)); }
+.tone-success { background: linear-gradient(180deg, #34E0A1, var(--success)); }
+
+/* ---- Verse ---- */
+.verse-card {
+  background: var(--card-soft);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+.verse-card h2 { margin-bottom: var(--spacing-sm); }
+.verse-text { font-size: 1.1rem; font-style: italic; color: var(--text); margin-bottom: var(--spacing-sm); }
+.verse-ref { font-weight: 900; color: var(--primary-2); margin-bottom: var(--spacing-md); }
+
+/* ---- Confetti ---- */
+.confetti-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 10000; }
+.confetti {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  top: -10px;
+  border-radius: 2px;
+  animation: confettiRain 3s linear forwards;
+}
+
+@media (max-width: 640px) {
+  .hero-card { flex-direction: column; text-align: center; padding: var(--spacing-lg); }
+  .hero-top { justify-content: center; }
+  .chips-row { justify-content: center; }
+  .hero-card h1 { font-size: 1.5rem; }
+}

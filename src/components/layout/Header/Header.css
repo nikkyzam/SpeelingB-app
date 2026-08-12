@@ -1,0 +1,78 @@
+.header {
+  background: linear-gradient(120deg, var(--primary), var(--primary-2));
+  color: var(--on-primary);
+  padding: 0.6rem var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: var(--spacing-md);
+}
+
+.header-left { display: flex; align-items: center; gap: var(--spacing-lg); min-width: 0; }
+
+.logo { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; min-width: 0; }
+.logo-icon { font-size: 2.1rem; animation: bounce 2.4s infinite; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25)); }
+.logo-block { display: flex; flex-direction: column; line-height: 1.05; min-width: 0; }
+.logo-text {
+  font-size: 1.35rem;
+  margin: 0;
+  color: var(--on-primary);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+}
+.logo-world { font-size: 0.78rem; font-weight: 700; opacity: 0.92; white-space: nowrap; }
+
+.header-right { display: flex; align-items: center; gap: 0.6rem; }
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.22);
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-round);
+  backdrop-filter: blur(6px);
+  max-width: 140px;
+}
+.user-avatar { font-size: 1.3rem; }
+.user-name { font-weight: 800; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.star-display {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-round);
+  box-shadow: var(--shadow-sm);
+}
+.star-icon { font-size: 1.1rem; animation: pulse 2s infinite; }
+.star-count { font-weight: 900; font-size: 1.05rem; color: #F5A623; }
+
+.world-button, .theme-toggle, .logout-button-mini {
+  background: rgba(255, 255, 255, 0.22);
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: transform var(--transition-fast), background var(--transition-fast);
+  backdrop-filter: blur(6px);
+}
+.world-button:hover { background: rgba(255, 255, 255, 0.35); transform: rotate(-12deg) scale(1.08); }
+
+@media (max-width: 768px) {
+  .header { padding: 0.5rem var(--spacing-md); }
+  .logo-text { font-size: 1.15rem; }
+  .user-chip { display: none; }
+}
+@media (max-width: 380px) {
+  .logo-world { display: none; }
+}

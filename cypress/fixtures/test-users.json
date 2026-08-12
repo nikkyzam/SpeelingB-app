@@ -1,0 +1,4 @@
+{
+  "regularUser": { "name": "Test User", "email": "test@example.com", "password": "TestPassword123!" },
+  "joyUser": { "name": "Joy Johnson", "email": "joy@example.com", "password": "JoyPassword123!" }
+}

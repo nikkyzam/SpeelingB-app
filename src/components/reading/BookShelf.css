@@ -1,0 +1,236 @@
+.book-shelf-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: var(--font-primary), 'Chalkboard SE', 'Arial Rounded MT Bold', sans-serif;
+}
+
+.book-shelf-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 30px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%);
+  border-radius: 25px;
+  color: white;
+  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+}
+
+.book-shelf-header h1 {
+  font-size: 3em;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.subtitle {
+  font-size: 1.3em;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.controls-panel {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 40px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.filters-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.category-filter h3,
+.search-section h3 {
+  color: var(--text);
+  margin-bottom: 15px;
+  font-size: 1.4em;
+}
+
+.category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.category-button {
+  background: #f0f0f0;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.category-button:hover {
+  background: #e0e0e0;
+  transform: translateY(-2px);
+}
+
+.category-button.selected {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%);
+  color: white;
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.search-section {
+  margin-top: 20px;
+}
+
+.search-form {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 300px;
+  padding: 15px 25px;
+  border: 2px solid #e0e0e0;
+  border-radius: 50px;
+  font-size: 1.1em;
+  transition: all 0.3s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.search-button {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1.1em;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 15px rgba(76, 175, 80, 0.4);
+}
+
+.clear-button {
+  background: #ff9800;
+  color: white;
+  border: none;
+  padding: 15px 25px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: all 0.3s;
+}
+
+.clear-button:hover {
+  background: #f57c00;
+  transform: translateY(-2px);
+}
+
+.results-summary {
+  background: #f8f9ff;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 1.2em;
+  color: var(--text-soft);
+  border: 2px solid #e0e7ff;
+}
+
+.results-summary strong {
+  color: var(--primary);
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.loading-books {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid var(--primary);
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 30px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.no-books-found {
+  text-align: center;
+  padding: 80px 20px;
+  background: var(--card);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.no-books-found h3 {
+  color: var(--text-soft);
+  margin-bottom: 20px;
+  font-size: 2em;
+}
+
+.clear-filters-button {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1.2em;
+  margin-top: 20px;
+  transition: all 0.3s;
+}
+
+.clear-filters-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+@media (max-width: 768px) {
+  .books-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .search-form {
+    flex-direction: column;
+  }
+
+  .search-input {
+    min-width: 100%;
+  }
+
+  .category-buttons {
+    justify-content: center;
+  }
+
+  .book-shelf-header h1 {
+    font-size: 2em;
+  }
+}

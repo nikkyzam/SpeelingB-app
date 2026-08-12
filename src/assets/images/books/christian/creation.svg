@@ -1,0 +1,100 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1a237e"/>
+      <stop offset="100%" stop-color="#283593"/>
+    </linearGradient>
+    <radialGradient id="sun">
+      <stop offset="0%" stop-color="#FFD600"/>
+      <stop offset="100%" stop-color="#FF9800"/>
+    </radialGradient>
+    <linearGradient id="land" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#388E3C"/>
+      <stop offset="100%" stop-color="#2E7D32"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="800" height="400" fill="url(#sky)"/>
+
+  <!-- Sun -->
+  <circle cx="700" cy="100" r="60" fill="url(#sun)" filter="url(#glow)"/>
+
+  <!-- Clouds -->
+  <g fill="white" opacity="0.8">
+    <ellipse cx="200" cy="80" rx="60" ry="30"/>
+    <ellipse cx="150" cy="100" rx="50" ry="25"/>
+    <ellipse cx="250" cy="100" rx="50" ry="25"/>
+
+    <ellipse cx="400" cy="150" rx="70" ry="35"/>
+    <ellipse cx="350" cy="170" rx="60" ry="30"/>
+    <ellipse cx="450" cy="170" rx="60" ry="30"/>
+  </g>
+
+  <!-- Land -->
+  <rect y="400" width="800" height="200" fill="url(#land)"/>
+
+  <!-- Trees -->
+  <g>
+    <!-- Tree 1 -->
+    <rect x="100" y="350" width="20" height="100" fill="#5D4037"/>
+    <circle cx="110" cy="320" r="50" fill="#4CAF50"/>
+    <circle cx="80" cy="340" r="40" fill="#4CAF50"/>
+    <circle cx="140" cy="340" r="40" fill="#4CAF50"/>
+    <circle cx="110" cy="300" r="35" fill="#4CAF50"/>
+
+    <!-- Tree 2 -->
+    <rect x="300" y="350" width="20" height="100" fill="#5D4037"/>
+    <circle cx="310" cy="320" r="50" fill="#4CAF50"/>
+    <circle cx="280" cy="340" r="40" fill="#4CAF50"/>
+    <circle cx="340" cy="340" r="40" fill="#4CAF50"/>
+    <circle cx="310" cy="300" r="35" fill="#4CAF50"/>
+
+    <!-- Tree 3 -->
+    <rect x="500" y="350" width="20" height="100" fill="#5D4037"/>
+    <circle cx="510" cy="320" r="50" fill="#4CAF50"/>
+    <circle cx="480" cy="340" r="40" fill="#4CAF50"/>
+    <circle cx="540" cy="340" r="40" fill="#4CAF50"/>
+    <circle cx="510" cy="300" r="35" fill="#4CAF50"/>
+  </g>
+
+  <!-- Animals -->
+  <g>
+    <!-- Bird -->
+    <path d="M 650,200 Q 670,180 690,200 Q 670,190 650,200" fill="#795548"/>
+    <circle cx="640" cy="195" r="8" fill="#795548"/>
+
+    <!-- Bunny -->
+    <ellipse cx="200" cy="450" rx="25" ry="15" fill="white"/>
+    <circle cx="190" cy="445" r="8" fill="white"/>
+    <circle cx="210" cy="445" r="8" fill="white"/>
+    <ellipse cx="185" cy="440" rx="5" ry="3" fill="pink"/>
+    <ellipse cx="205" cy="440" rx="5" ry="3" fill="pink"/>
+    <ellipse cx="185" cy="460" rx="3" ry="6" fill="white"/>
+    <ellipse cx="215" cy="460" rx="3" ry="6" fill="white"/>
+
+    <!-- Deer -->
+    <ellipse cx="600" cy="450" rx="30" ry="20" fill="#8D6E63"/>
+    <circle cx="580" cy="445" r="8" fill="#8D6E63"/>
+    <circle cx="620" cy="445" r="8" fill="#8D6E63"/>
+    <path d="M 590,430 Q 580,400 595,425" stroke="#5D4037" stroke-width="3" fill="none"/>
+    <path d="M 610,430 Q 620,400 605,425" stroke="#5D4037" stroke-width="3" fill="none"/>
+  </g>
+
+  <!-- Title -->
+  <text x="400" y="550" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="36" font-weight="bold">
+    God Created the World
+  </text>
+
+  <!-- Verse -->
+  <text x="400" y="580" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="20" opacity="0.9">
+    Genesis 1:1
+  </text>
+</svg>
