@@ -35,8 +35,22 @@
 
 .auth-modal-content h2 {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 8px;
   color: var(--text);
+}
+
+.auth-subtitle {
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 14px;
+  margin-bottom: 22px;
+}
+
+.field-hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-soft);
 }
 
 .form-group {
@@ -53,15 +67,17 @@
 .form-group input {
   width: 100%;
   padding: 12px;
-  border: 2px solid #eee;
+  border: 2px solid var(--border, #eee);
   border-radius: 10px;
   font-size: 16px;
-  transition: border-color 0.3s;
+  color: var(--text);
+  background: var(--card-soft, #fff);
+  transition: border-color 0.2s;
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #4ECDC4;
+  border-color: var(--primary, #4ECDC4);
 }
 
 .auth-error {

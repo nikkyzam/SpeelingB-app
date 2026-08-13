@@ -1,7 +1,8 @@
-import { 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
-  signOut, 
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signOut,
   onAuthStateChanged,
   User as FirebaseUser
 } from 'firebase/auth';
@@ -43,9 +44,20 @@ export class AuthService {
     }
   }
 
-  static async signUp(email: string, pass: string) {
+  static async signUp(email: string, pass: string, name?: string) {
     try {
       const result = await createUserWithEmailAndPassword(auth, email, pass);
+      // Save the chosen name so it shows up as the display name everywhere.
+      if (name && name.trim()) {
+        await updateProfile(result.user, { displayName: name.trim() });
+        useUserStore.getState().setUser({
+          ...(useUserStore.getState().user as any),
+          id: result.user.uid,
+          name: name.trim(),
+          email: result.user.email || undefined,
+          isGuest: false,
+        });
+      }
       return result.user;
     } catch (error) {
       console.error('Sign up error:', error);
