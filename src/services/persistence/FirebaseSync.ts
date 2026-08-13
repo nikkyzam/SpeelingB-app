@@ -7,29 +7,52 @@ export class FirebaseSync {
     // Don't sync for anonymous/guest users or if not logged in
     if (!user || user.isAnonymous) return;
 
+    // Guard against an infinite reload loop: syncing applies data by reloading
+    // the page, which re-fires the auth listener. Only run once per session per
+    // user so the reload can't chain forever.
+    const flag = `fb-synced:${user.uid}`;
+    if (sessionStorage.getItem(flag)) return;
+
     try {
       const docRef = doc(db, 'users', user.uid);
       const docSnap = await getDoc(docRef);
+      sessionStorage.setItem(flag, '1'); // mark before any reload
 
       if (docSnap.exists()) {
         const data = docSnap.data();
+        let changed = false;
+
         if (data.progress) {
-          localStorage.setItem('learningProgress', JSON.stringify(data.progress));
+          const next = JSON.stringify(data.progress);
+          if (localStorage.getItem('learningProgress') !== next) {
+            localStorage.setItem('learningProgress', next);
+            changed = true;
+          }
         }
         if (data.userData) {
           const userStore = JSON.parse(localStorage.getItem('user-storage') || '{"state":{}}');
-          userStore.state.user = data.userData;
-          localStorage.setItem('user-storage', JSON.stringify(userStore));
+          if (JSON.stringify(userStore.state?.user) !== JSON.stringify(data.userData)) {
+            userStore.state = userStore.state || {};
+            userStore.state.user = data.userData;
+            localStorage.setItem('user-storage', JSON.stringify(userStore));
+            changed = true;
+          }
         }
         if (data.rewards) {
-          const rewardStore = { state: data.rewards, version: 0 };
-          localStorage.setItem('reward-storage', JSON.stringify(rewardStore));
+          const next = JSON.stringify({ state: data.rewards, version: 0 });
+          if (localStorage.getItem('reward-storage') !== next) {
+            localStorage.setItem('reward-storage', next);
+            changed = true;
+          }
         }
-        console.log('Firebase data synced from server');
-        // Dispatch event before reload just in case, though reload is the main mechanism here
-        window.dispatchEvent(new Event('learningProgressUpdated'));
-        // Reload page to apply synced state to stores
-        window.location.reload();
+
+        console.log('Firebase data synced from server', changed ? '(applying)' : '(no change)');
+        // Only reload when the server actually had newer data — and thanks to
+        // the session flag above, at most once.
+        if (changed) {
+          window.dispatchEvent(new Event('learningProgressUpdated'));
+          window.location.reload();
+        }
       }
     } catch (error) {
       console.error('Error syncing from Firebase:', error);
