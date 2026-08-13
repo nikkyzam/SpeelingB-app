@@ -343,10 +343,9 @@ const TestAll: React.FC<TestAllProps> = ({
             autoFocus
           />
 
-          <div className="time-warning" style={{
-            color: timeLeft <= 10 ? 'var(--error)' : 'var(--warning)'
-          }}>
-            {timeLeft <= 10 ? `⏰ Hurry! ${timeLeft}s left!` : `${timeLeft}s remaining`}
+          {/* Encouraging, not alarming: red "Hurry!" panics young children. */}
+          <div className="time-warning" style={{ color: 'var(--text-soft)' }}>
+            {timeLeft <= 10 ? `${timeLeft}s left — you've got this! 💪` : `${timeLeft}s`}
           </div>
         </div>
 

@@ -75,7 +75,8 @@ export class DailyResetService {
       learningProgress.wordsSpelledToday = []
       learningProgress.spellQuizUnlocked = false
       learningProgress.vocabQuizUnlocked = false
-      learningProgress.gamesUnlocked = false
+      // gamesUnlocked intentionally left alone — games a child already earned
+      // should not be taken back overnight.
       localStorage.setItem('learningProgress', JSON.stringify(learningProgress))
       // Notify the rest of the app about the reset
       window.dispatchEvent(new Event('learningProgressUpdated'));

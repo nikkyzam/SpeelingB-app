@@ -303,7 +303,8 @@ describe('LearningFlowController', () => {
     expect(controller.getWordsLearnedTotal()).toEqual(['word1', 'vocab1']) // Should persist
     expect(controller.getCurrentStreak()).toBe(1) // Should persist
     expect(controller.getSelectedGroup()).toBe(1) // Should persist
-    expect(controller.areGamesUnlocked()).toBe(false) // Should reset
+    // Games a child already earned are deliberately NOT taken back overnight.
+    expect(controller.areGamesUnlocked()).toBe(true)
     expect(controller.isSpellQuizUnlocked()).toBe(false) // Should reset
     expect(controller.isVocabQuizUnlocked()).toBe(false) // Should reset
   })

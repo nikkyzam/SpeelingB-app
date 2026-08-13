@@ -446,3 +446,18 @@
     flex-direction: column;
   }
 }
+
+/* Replaces the old countdown: reassurance instead of time pressure. */
+.quiz-relax {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--card-soft);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-round);
+  padding: 0.4rem 1rem;
+  color: var(--text-soft);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.quiz-relax-icon { font-size: 1.2rem; }

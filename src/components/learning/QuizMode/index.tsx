@@ -37,7 +37,6 @@ const QuizMode: React.FC<QuizModeProps> = ({
   const [isAnswered, setIsAnswered] = useState(false)
   const [wrongAnswers, setWrongAnswers] = useState(0)
   const [quizCompleted, setQuizCompleted] = useState(false)
-  const [timeLeft, setTimeLeft] = useState(60)
   // Refs mirror score/wrong so completeQuiz (fired from a setTimeout) always
   // reports the up-to-date totals instead of a stale closured value.
   const scoreRef = useRef(0)
@@ -47,21 +46,9 @@ const QuizMode: React.FC<QuizModeProps> = ({
     generateQuiz()
   }, [type, difficulty, providedWords])
 
-  useEffect(() => {
-    if (type === 'vocab' && !quizCompleted && !isAnswered) {
-      const timer = setInterval(() => {
-        setTimeLeft(prev => {
-          if (prev <= 1) {
-            handleTimeUp()
-            return 60
-          }
-          return prev - 1
-        })
-      }, 1000)
-
-      return () => clearInterval(timer)
-    }
-  }, [type, quizCompleted, isAnswered])
+  // Deliberately NO countdown. A ticking clock that marks a young child wrong
+  // for thinking too long is the fastest way to make them give up, so they can
+  // take as long as they need on every question.
 
   const generateQuiz = () => {
     const goal = learningFlow.getDailyGoal(type)
@@ -117,26 +104,6 @@ const QuizMode: React.FC<QuizModeProps> = ({
     }
   }
 
-  const handleTimeUp = () => {
-    if (!isAnswered && !quizCompleted) {
-      setSelectedOption(null)
-      setIsAnswered(true)
-      wrongRef.current += 1
-      setWrongAnswers(wrongRef.current)
-
-      const updatedQuestions = [...questions]
-      updatedQuestions[currentQuestion] = {
-        ...updatedQuestions[currentQuestion],
-        userAnswer: undefined,
-        isCorrect: false
-      }
-      setQuestions(updatedQuestions)
-
-      setTimeout(() => {
-        moveToNextQuestion()
-      }, 2000)
-    }
-  }
 
   const handleAnswer = (answer: string) => {
     if (isAnswered || quizCompleted) return
@@ -182,7 +149,6 @@ const QuizMode: React.FC<QuizModeProps> = ({
       setCurrentQuestion(prev => prev + 1)
       setSelectedOption(null)
       setIsAnswered(false)
-      setTimeLeft(60)
 
       // Speak next question
       if (type === 'vocab') {
@@ -345,9 +311,9 @@ const QuizMode: React.FC<QuizModeProps> = ({
         </div>
 
         {type === 'vocab' && (
-          <div className="timer">
-            <div className="timer-label">Time Left</div>
-            <div className="timer-value">{timeLeft}s</div>
+          <div className="quiz-relax">
+            <div className="quiz-relax-icon" aria-hidden>😊</div>
+            <div className="quiz-relax-text">Take your time!</div>
           </div>
         )}
       </div>

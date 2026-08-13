@@ -333,7 +333,9 @@ export class LearningFlowController {
     this.progress.wordsSpelledToday = []
     this.progress.spellQuizUnlocked = false
     this.progress.vocabQuizUnlocked = false
-    this.progress.gamesUnlocked = false
+    // NOTE: gamesUnlocked is deliberately NOT reset. Taking away games a child
+    // already earned — just because the clock passed midnight — reads as
+    // punishment. Today's learning still has its own goal to work toward.
     this.progress.lockedModes = []
     this.saveProgress()
   }
