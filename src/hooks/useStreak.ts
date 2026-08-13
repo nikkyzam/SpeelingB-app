@@ -7,48 +7,79 @@ interface StreakData {
   longestStreak: number
   lastLogin: string | null
   totalLogins: number
+  /** Date a "streak freeze" was last spent to forgive a missed day. */
+  lastFreezeUsed?: string | null
 }
+
+/** A freeze can only be spent once per this many days, so the streak still
+ *  means something while a single busy day never wipes it out. */
+const FREEZE_COOLDOWN_DAYS = 7
 
 export const useStreak = () => {
   const [streakData, setStreakData] = useLocalStorage<StreakData>('streak', {
     currentStreak: 0,
     longestStreak: 0,
     lastLogin: null,
-    totalLogins: 0
+    totalLogins: 0,
+    lastFreezeUsed: null
   })
 
   const [todaysStars, setTodaysStars] = useState(0)
+  /** True when this visit's missed day was forgiven — lets the UI celebrate it. */
+  const [freezeUsed, setFreezeUsed] = useState(false)
 
   const updateStreak = () => {
     const today = dayjs().format('YYYY-MM-DD')
-    const yesterday = dayjs().subtract(1, 'day').format('YYYY-MM-DD')
 
     let newCurrentStreak = streakData.currentStreak
     let newTotalLogins = streakData.totalLogins
+    let newLastFreeze = streakData.lastFreezeUsed ?? null
+    let usedFreezeNow = false
 
     if (streakData.lastLogin === today) {
       // Already logged in today
       return
     }
 
-    if (streakData.lastLogin === yesterday) {
+    // Whole days since the last visit (1 = came back the very next day).
+    const daysAway = streakData.lastLogin
+      ? dayjs(today).diff(dayjs(streakData.lastLogin), 'day')
+      : null
+
+    if (daysAway === 1) {
       // Consecutive day
       newCurrentStreak += 1
-    } else if (streakData.lastLogin && streakData.lastLogin !== today) {
-      // Streak broken
+    } else if (daysAway === 2 && newCurrentStreak > 0) {
+      // Missed exactly ONE day. Losing a long streak over a single busy day is
+      // crushing for a child, so we forgive it with a "streak freeze" — but
+      // only once per cooldown, so the streak still means something.
+      const freezeAvailable =
+        !newLastFreeze || dayjs(today).diff(dayjs(newLastFreeze), 'day') >= FREEZE_COOLDOWN_DAYS
+
+      if (freezeAvailable) {
+        newCurrentStreak += 1
+        newLastFreeze = today
+        usedFreezeNow = true
+      } else {
+        newCurrentStreak = 1
+      }
+    } else if (daysAway !== null) {
+      // Away too long — start a fresh streak
       newCurrentStreak = 1
     } else {
-      // First login or same day
+      // First ever login
       newCurrentStreak = Math.max(1, newCurrentStreak)
     }
 
     newTotalLogins += 1
+    setFreezeUsed(usedFreezeNow)
 
     const newStreakData = {
       currentStreak: newCurrentStreak,
       longestStreak: Math.max(newCurrentStreak, streakData.longestStreak),
       lastLogin: today,
-      totalLogins: newTotalLogins
+      totalLogins: newTotalLogins,
+      lastFreezeUsed: newLastFreeze
     }
 
     setStreakData(newStreakData)
@@ -72,14 +103,17 @@ export const useStreak = () => {
       currentStreak: 0,
       longestStreak: streakData.longestStreak,
       lastLogin: null,
-      totalLogins: streakData.totalLogins
+      totalLogins: streakData.totalLogins,
+      lastFreezeUsed: streakData.lastFreezeUsed ?? null
     })
     setTodaysStars(0)
+    setFreezeUsed(false)
   }
 
   return {
     streakData,
     todaysStars,
+    freezeUsed,
     updateStreak,
     getStreakReward,
     resetStreak

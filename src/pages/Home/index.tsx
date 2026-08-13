@@ -17,7 +17,7 @@ const Home: React.FC = () => {
   const wordsLearnedToday = learningFlow.getWordsLearnedToday().length
   const dailyGoal = learningFlow.getDailyGoal('learn')
   const { heavenlyStars } = useRewardStore()
-  const { streakData, updateStreak } = useStreak()
+  const { streakData, updateStreak, freezeUsed } = useStreak()
 
   const [dailyCompleted, setDailyCompleted] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
@@ -113,6 +113,16 @@ const Home: React.FC = () => {
           </p>
         )}
       </section>
+
+      {/* A missed day was forgiven — tell the child their streak survived. */}
+      {freezeUsed && (
+        <section className="streak-saved pop-in">
+          <span className="streak-saved-icon" aria-hidden>❄️</span>
+          <span>
+            We saved your <strong>{streakData.currentStreak}-day streak</strong>! Welcome back — let&apos;s keep it going! 🔥
+          </span>
+        </section>
+      )}
 
       {/* Spaced-repetition review — appears every couple of days */}
       {reviewDue && (
