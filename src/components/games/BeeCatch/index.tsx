@@ -37,7 +37,7 @@ const BeeCatch: React.FC<BeeCatchProps> = ({ onComplete, words: providedWords, d
   const { speak } = useAudio()
 
   const pool = useMemo<Word[]>(() => {
-    const list = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(40, 1)
+    const list = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(40)
     return shuffle(list).filter((w) => /^[a-z]+$/i.test(w.word) && w.word.length >= 3)
   }, [providedWords])
 

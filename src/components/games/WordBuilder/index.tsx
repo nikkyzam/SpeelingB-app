@@ -30,7 +30,7 @@ const WordBuilder: React.FC<WordBuilderProps> = ({ onComplete, words: providedWo
   const { speak } = useAudio()
 
   const roundWords = useMemo<Word[]>(() => {
-    const pool = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(rounds, 1)
+    const pool = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(rounds)
     return shuffle(pool).slice(0, rounds)
   }, [providedWords, rounds])
 

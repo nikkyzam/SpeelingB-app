@@ -45,7 +45,7 @@ const BalloonPop: React.FC<BalloonPopProps> = ({ onComplete, wordCount = 3, word
       const selected = [...providedWords].sort(() => 0.5 - Math.random()).slice(0, wordCount)
       wordList = selected.map(w => w.word.toUpperCase())
     } else {
-      const randomWords = wordBank.getRandomWords(wordCount, 1)
+      const randomWords = wordBank.getRandomWords(wordCount)
       wordList = randomWords.map(w => w.word.toUpperCase())
     }
     

@@ -26,7 +26,7 @@ const RescueTheBee: React.FC<RescueTheBeeProps> = ({ onComplete, words: provided
   const { speak } = useAudio()
 
   const roundWords = useMemo<Word[]>(() => {
-    const pool = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(rounds * 2, 1)
+    const pool = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(rounds * 2)
     return shuffle(pool).filter((w) => w.word.length >= 3 && /^[a-z]+$/i.test(w.word)).slice(0, rounds)
   }, [providedWords, rounds])
 

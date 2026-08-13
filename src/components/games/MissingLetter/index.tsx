@@ -35,7 +35,7 @@ const MissingLetter: React.FC<MissingLetterProps> = ({ onComplete, words: provid
   const puzzles = useMemo<Puzzle[]>(() => {
     const pool = providedWords && providedWords.length > 0
       ? providedWords
-      : wordBank.getRandomWords(rounds * 2, 1)
+      : wordBank.getRandomWords(rounds * 2)
     const chosen = shuffle(pool).filter(w => w.word.length >= 3).slice(0, rounds)
     return chosen.map(w => {
       const word = w.word.toLowerCase()

@@ -89,7 +89,7 @@ const WordSearch: React.FC<WordSearchProps> = ({ onComplete, words: providedWord
     const pool =
       providedWords && providedWords.length > 0
         ? providedWords.map((w) => w.word)
-        : wordBank.getRandomWords(30, 1).map((w) => w.word)
+        : wordBank.getRandomWords(30).map((w) => w.word)
     return buildPuzzle(pool, count)
   }, [providedWords, count])
 

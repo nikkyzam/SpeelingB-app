@@ -39,6 +39,14 @@ import './GameCenter.css'
 const prettyGameName = (id: string) =>
   id.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
 
+// Off-topic mini-games (reflex/memory/art/math/music/physics) are hidden so the
+// Games hub stays focused on spelling & words. Their code remains for later.
+const HIDDEN_GAMES = new Set([
+  'bonus', 'shape-catcher', 'pattern-memory', 'rhythm-tap', 'memory-grid',
+  'reaction-test', 'pattern-sequencer', 'color-mixer', 'math-puzzle',
+  'music-composer', 'physics-puzzle', 'puzzle-slider',
+])
+
 type GameMode = 
   | 'bonus' | 'word-race' | 'memory-match' | 'balloon-pop' 
   | 'word-scramble' | 'spell-sprint' | 'shape-catcher' | 'spelling-adventure'
@@ -59,17 +67,17 @@ const GameCenter: React.FC = () => {
   const { learningFlow } = useProgress()
 
   const selectedWords = useMemo(() => {
+    // Level-aware word pool: use the child's current difficulty tier (set by a
+    // grown-up or the learner). A shuffled, capped sample gives every game good
+    // variety at the RIGHT level instead of a fixed handful.
     const difficulty = learningFlow.getDifficulty()
-    const selectedGroup = learningFlow.getSelectedGroup()
-    const groupSize = learningFlow.getDailyGoal('learn')
-    
-    const filteredWords = difficulty 
-      ? wordBank.getWordsByDifficulty(difficulty) 
+    const pool = difficulty
+      ? wordBank.getWordsByDifficulty(difficulty)
       : wordBank.getAllWords()
-    
-    const start = selectedGroup * groupSize
-    return filteredWords.slice(start, start + groupSize)
-  }, [learningFlow])
+    const shuffled = [...pool].sort(() => 0.5 - Math.random())
+    return shuffled.slice(0, 60)
+    // activeGame in deps → a fresh shuffle each time a game is opened.
+  }, [learningFlow, activeGame])
 
   useEffect(() => {
     if (location.state && (location.state as any).startGame) {
@@ -410,7 +418,7 @@ const GameCenter: React.FC = () => {
       </div>
 
       <div className="games-grid">
-        {games.map(game => (
+        {games.filter(game => !HIDDEN_GAMES.has(game.id)).map(game => (
           <div
             key={game.id}
             className={`game-card ${game.unlocked ? '' : 'locked'}`}
