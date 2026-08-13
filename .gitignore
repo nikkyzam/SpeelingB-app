@@ -4,6 +4,9 @@
 # Build output
 /dist/
 
+# Firebase deploy cache
+/.firebase/
+
 # Local env / secrets — never commit
 .env
 .cypress.env.json
