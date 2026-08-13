@@ -13,6 +13,7 @@ interface User {
   avatar: string
   dailyGoal: number
   isGuest: boolean
+  isAdmin?: boolean // from the Firebase Auth "admin" custom claim
 }
 
 interface UserContextType {
@@ -47,13 +48,13 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const { user: storeUser, setUser: setStoreUser, logout: storeLogout } = useUserStore()
   
   const [user, setUserState] = useState<User | null>(() => {
-    // Normalize any stored goal down to the current kid-friendly target.
-    // (There is no custom-goal UI, so the computed value is always correct and
-    //  this migrates older profiles that were saved with the old goal of 30.)
-    const normalizeGoal = (u: User): User => ({
-      ...u,
-      dailyGoal: calculateDailyGoal(u.name, u.email),
-    })
+    // Migrate ONLY the old oversized default (goal of 30) down to the kid-sized
+    // target. Any smaller value is a deliberate choice (e.g. a grown-up set it),
+    // so it is preserved.
+    const normalizeGoal = (u: User): User => {
+      const legacyOversized = !u.dailyGoal || u.dailyGoal > 20
+      return legacyOversized ? { ...u, dailyGoal: calculateDailyGoal(u.name, u.email) } : u
+    }
 
     // Priority 1: User Store (Zustand/Persist)
     if (storeUser) {

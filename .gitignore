@@ -7,6 +7,8 @@
 # Local env / secrets — never commit
 .env
 .cypress.env.json
+serviceAccountKey.json
+*-service-account*.json
 
 # Test / coverage artifacts
 /coverage/

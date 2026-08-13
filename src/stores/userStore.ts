@@ -9,6 +9,7 @@ interface User {
   avatar: string
   dailyGoal: number
   isGuest: boolean
+  isAdmin?: boolean // set from the Firebase Auth "admin" custom claim
 }
 
 interface UserState {

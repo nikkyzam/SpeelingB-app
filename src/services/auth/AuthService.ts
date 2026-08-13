@@ -12,8 +12,19 @@ import FirebaseSync from '../persistence/FirebaseSync';
 
 export class AuthService {
   static init() {
-    onAuthStateChanged(auth, (firebaseUser) => {
+    onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
+        // Read the "admin" custom claim from the ID token. This is the source
+        // of truth for admin status — set server-side via scripts/set-admin.mjs
+        // and enforced in Firestore security rules.
+        let isAdmin = false;
+        try {
+          const token = await firebaseUser.getIdTokenResult();
+          isAdmin = token.claims.admin === true;
+        } catch (e) {
+          console.error('Could not read auth claims:', e);
+        }
+
         // User is signed in, update store
         const user = useUserStore.getState().user;
         useUserStore.getState().setUser({
@@ -23,7 +34,8 @@ export class AuthService {
           age: user?.age || 6,
           avatar: user?.avatar || 'ava',
           dailyGoal: user?.dailyGoal || 10,
-          isGuest: false
+          isGuest: false,
+          isAdmin
         });
         // Sync to server after potential local changes
         FirebaseSync.syncToServer();
