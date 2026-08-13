@@ -76,24 +76,31 @@ const GameCenter: React.FC = () => {
 
   const selectedWords = useMemo(() => {
     const shuffled = <T,>(a: T[]): T[] => [...a].sort(() => 0.5 - Math.random())
+    // Games spell words letter by letter, so only plain a-z words of a sane
+    // length are usable. Anything else (hyphens, accents, 1-2 letters) would
+    // break a game's own filter and leave it stuck on an empty screen.
+    const playable = (w: { word: string }) => /^[a-z]+$/i.test(w.word) && w.word.length >= 3
 
     const learned = learningFlow
       .getWordsLearnedTotal()
       .map((id) => wordBank.getWordById(id))
-      .filter((w): w is NonNullable<typeof w> => !!w)
+      .filter((w): w is NonNullable<typeof w> => !!w && playable(w))
+
+    const difficulty = learningFlow.getDifficulty()
+    const levelPool = (difficulty ? wordBank.getWordsByDifficulty(difficulty) : wordBank.getAllWords())
+      .filter(playable)
 
     if (learned.length >= MIN_GAME_WORDS) {
       return shuffled(learned).slice(0, 60)
     }
 
-    // Not enough studied words yet — top up from the child's level.
-    const difficulty = learningFlow.getDifficulty()
-    const levelPool = difficulty
-      ? wordBank.getWordsByDifficulty(difficulty)
-      : wordBank.getAllWords()
+    // Not enough studied words yet — top up from the child's level so every
+    // game still has plenty to work with.
     const learnedIds = new Set(learned.map((w) => w.id))
     const filler = shuffled(levelPool.filter((w) => !learnedIds.has(w.id)))
-    return [...learned, ...filler].slice(0, 60)
+    const combined = [...learned, ...filler].slice(0, 60)
+    // Last resort: if a level somehow has nothing usable, fall back to all words.
+    return combined.length > 0 ? combined : shuffled(wordBank.getAllWords().filter(playable)).slice(0, 60)
     // activeGame in deps → a fresh shuffle each time a game is opened.
   }, [learningFlow, activeGame])
 

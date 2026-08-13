@@ -86,10 +86,20 @@ const key = (r: number, c: number) => `${r},${c}`
 /** Find the hidden words by tapping the first and last letter of each. */
 const WordSearch: React.FC<WordSearchProps> = ({ onComplete, words: providedWords, count = 5 }) => {
   const puzzle = useMemo(() => {
-    const pool =
-      providedWords && providedWords.length > 0
-        ? providedWords.map((w) => w.word)
-        : wordBank.getRandomWords(30).map((w) => w.word)
+    const fits = (w: string) => /^[a-z]+$/.test(w) && w.length >= 3 && w.length <= 6
+    const studied = (providedWords || []).map((w) => w.word.toLowerCase()).filter(fits)
+
+    // The grid can only hide SHORT words. If the child's studied words are all
+    // long, top up from the word bank — otherwise the puzzle would hide nothing
+    // and instantly (and wrongly) look "complete".
+    let pool = studied
+    if (pool.length < count) {
+      const extra = wordBank
+        .getRandomWords(120)
+        .map((w) => w.word.toLowerCase())
+        .filter((w) => fits(w) && !pool.includes(w))
+      pool = [...pool, ...extra]
+    }
     return buildPuzzle(pool, count)
   }, [providedWords, count])
 
@@ -169,7 +179,17 @@ const WordSearch: React.FC<WordSearchProps> = ({ onComplete, words: providedWord
         ))}
       </div>
 
-      {remaining.length === 0 && <div className="ws-win">🎉 You found them all!</div>}
+      {puzzle.targets.length > 0 && remaining.length === 0 && (
+        <div className="ws-win">🎉 You found them all!</div>
+      )}
+
+      {/* Safety net: never strand the player on an unplayable puzzle. */}
+      {puzzle.targets.length === 0 && (
+        <div className="ws-win">
+          <p>Couldn&apos;t build a puzzle this time!</p>
+          <button className="ws-retry" onClick={() => onComplete(0)}>Back to Games</button>
+        </div>
+      )}
     </div>
   )
 }

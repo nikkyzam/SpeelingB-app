@@ -288,8 +288,12 @@ export class LearningFlowController {
   }
 
   /** Move on to the next word group (called when the kid chooses to continue). */
-  advanceToNextGroup(): void {
-    this.progress.selectedGroup += 1
+  /** Move on to the next group. `maxGroups` clamps so we can never land past
+   *  the last group (which would leave the learner with an empty word set). */
+  advanceToNextGroup(maxGroups?: number): void {
+    const next = this.progress.selectedGroup + 1
+    this.progress.selectedGroup =
+      typeof maxGroups === 'number' && maxGroups > 0 ? Math.min(next, maxGroups - 1) : next
     this.saveProgress()
   }
 

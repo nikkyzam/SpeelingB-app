@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useProgress } from '../../contexts/ProgressContext'
 import { useUser } from '../../contexts/UserContext'
@@ -46,12 +46,24 @@ const LearningHub: React.FC = () => {
     return base.length > 0 ? base : wordBank.getAllWords()
   }, [difficulty])
 
-  const groupsCount = Math.ceil(filteredWords.length / groupSize)
+  const groupsCount = Math.max(1, Math.ceil(filteredWords.length / groupSize))
+
+  // A stored group can point past the end (e.g. after finishing the last group,
+  // or after switching to a level with fewer words). Clamp it, or the learner
+  // gets an EMPTY word set and the whole learn -> spell -> game chain freezes.
+  const safeGroup = Math.min(Math.max(selectedGroup, 0), groupsCount - 1)
+
+  useEffect(() => {
+    if (safeGroup !== selectedGroup) {
+      setSelectedGroup(safeGroup)
+      learningFlow.setSelectedGroup(safeGroup)
+    }
+  }, [safeGroup, selectedGroup, learningFlow])
 
   const groupWords = useMemo(() => {
-    const start = selectedGroup * groupSize
+    const start = safeGroup * groupSize
     return filteredWords.slice(start, start + groupSize)
-  }, [filteredWords, selectedGroup, groupSize])
+  }, [filteredWords, safeGroup, groupSize])
 
   // --- Per-group succession: Learn all -> Spell unlocks -> spell all -> Game unlocks ---
   const groupIds = useMemo(() => groupWords.map(w => w.id), [groupWords])
@@ -137,7 +149,7 @@ const LearningHub: React.FC = () => {
                 <Button
                   key={i}
                   onClick={() => handleGroupSelect(i)}
-                  variant={selectedGroup === i ? 'primary' : 'secondary'}
+                  variant={safeGroup === i ? 'primary' : 'secondary'}
                   size="small"
                 >
                   Group {i + 1} ({i * groupSize + 1}-{Math.min((i + 1) * groupSize, filteredWords.length)})
@@ -319,7 +331,7 @@ const LearningHub: React.FC = () => {
       <div className="learning-path">
         <h2>🚀 Your Word Adventure</h2>
         <p className="path-intro">
-          Group {selectedGroup + 1} • {groupCount} words. Learn them all, spell them all, then a game pops open! 🎮
+          Group {safeGroup + 1} • {groupCount} words. Learn them all, spell them all, then a game pops open! 🎮
         </p>
 
         {renderMissedDays()}
@@ -385,7 +397,7 @@ const LearningHub: React.FC = () => {
               {isGroupSpelled && groupsCount > 1 && (
                 <Button
                   onClick={() => {
-                    learningFlow.advanceToNextGroup()
+                    learningFlow.advanceToNextGroup(groupsCount)
                     setSelectedGroup(g => Math.min(g + 1, groupsCount - 1))
                   }}
                   variant="secondary"
