@@ -19,6 +19,8 @@ export { default as PhysicsPuzzle } from './PhysicsPuzzle'
 export { default as PuzzleSlider } from './PuzzleSlider'
 export { default as WordBuilder } from './WordBuilder'
 export { default as MissingLetter } from './MissingLetter'
+export { default as SpellingCheck } from './SpellingCheck'
+export { default as RescueTheBee } from './RescueTheBee'
 
 // Bible Games with API Integration
 export { default as BibleTriviaEnhanced } from './BibleTriviaEnhanced'

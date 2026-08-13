@@ -94,7 +94,8 @@ describe('LearningFlowController', () => {
       selectedGroup: 3,
       difficulty: 2,
       missedDays: [],
-      lastGoalCheck: null
+      lastGoalCheck: null,
+      lastReviewDate: null
     }
     localStorage.setItem('learningProgress', JSON.stringify(savedState))
     
@@ -233,7 +234,7 @@ describe('LearningFlowController', () => {
       dailyGoal: 30, dailyGoalSpell: 1, dailyGoalVocab: 30,
       spellQuizUnlocked: false, vocabQuizUnlocked: false, gamesUnlocked: false,
       unlockedGames: [], lockedModes: [], currentStreak: 0, selectedGroup: 0, difficulty: undefined,
-      missedDays: [], lastGoalCheck: null
+      missedDays: [], lastGoalCheck: null, lastReviewDate: null
     }
     localStorage.setItem('learningProgress', JSON.stringify(savedState))
     controller = new LearningFlowController()

@@ -34,6 +34,7 @@ const Home: React.FC = () => {
   }, [])
 
   const progressPercentage = Math.min((wordsLearnedToday / dailyGoal) * 100, 100)
+  const reviewDue = learningFlow.isReviewDue()
   const name = user?.name || 'friend'
 
   const greeting = dailyCompleted
@@ -112,6 +113,20 @@ const Home: React.FC = () => {
           </p>
         )}
       </section>
+
+      {/* Spaced-repetition review — appears every couple of days */}
+      {reviewDue && (
+        <section className="review-cta pop-in">
+          <div className="review-cta-icon" aria-hidden>🧠</div>
+          <div className="review-cta-text">
+            <h2>Review Time!</h2>
+            <p>Let&apos;s practice some words you already learned. Earn bonus stars! ⭐</p>
+          </div>
+          <Button variant="primary" icon="🧠" onClick={() => navigate('/review')}>
+            Start Review
+          </Button>
+        </section>
+      )}
 
       {/* Big play buttons */}
       <section className="play-section">

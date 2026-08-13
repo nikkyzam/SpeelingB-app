@@ -25,6 +25,8 @@ import {
   PuzzleSlider,
   WordBuilder,
   MissingLetter,
+  SpellingCheck,
+  RescueTheBee,
   BibleTriviaEnhanced,
   BibleMemorizer
 } from '../../components/games'
@@ -42,6 +44,7 @@ type GameMode =
   | 'pattern-sequencer' | 'color-mixer' | 'math-puzzle' | 'music-composer'
   | 'physics-puzzle' | 'puzzle-slider'
   | 'word-builder' | 'missing-letter'
+  | 'spelling-check' | 'rescue-the-bee'
   | 'bible-trivia' | 'bible-memorizer'
   | null
 
@@ -122,6 +125,24 @@ const GameCenter: React.FC = () => {
       icon: '🔡',
       color: '#0EA5E9',
       duration: '6 words',
+      unlocked: true
+    },
+    {
+      id: 'spelling-check',
+      title: '🔍 Spelling Check',
+      description: 'Hear the word, tap the correct spelling',
+      icon: '🔍',
+      color: '#EF476F',
+      duration: '6 words',
+      unlocked: true
+    },
+    {
+      id: 'rescue-the-bee',
+      title: '🐝 Rescue the Bee',
+      description: 'Guess the letters to spell the word',
+      icon: '🐝',
+      color: '#F4A300',
+      duration: '5 words',
       unlocked: true
     },
     {
@@ -323,6 +344,8 @@ const GameCenter: React.FC = () => {
       case 'puzzle-slider': return <PuzzleSlider onComplete={handleGameComplete} />
       case 'word-builder': return <WordBuilder words={selectedWords} onComplete={handleGameComplete} />
       case 'missing-letter': return <MissingLetter words={selectedWords} onComplete={handleGameComplete} />
+      case 'spelling-check': return <SpellingCheck words={selectedWords} onComplete={handleGameComplete} />
+      case 'rescue-the-bee': return <RescueTheBee words={selectedWords} onComplete={handleGameComplete} />
       case 'bible-trivia': return <BibleTriviaEnhanced onComplete={handleGameComplete} />
       case 'bible-memorizer': return <BibleMemorizer onComplete={handleGameComplete} />
       default: return null

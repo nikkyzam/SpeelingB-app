@@ -19,7 +19,13 @@ export interface LearningProgress {
   difficulty: 1 | 2 | 3 | undefined
   missedDays: string[] // Array of date strings "YYYY-MM-DD"
   lastGoalCheck: string | null // Last date goals were checked/reset
+  lastReviewDate: string | null // Last date the "Review Time!" quiz was completed
 }
+
+// How often the spaced-repetition review of already-learned words is offered.
+export const REVIEW_INTERVAL_DAYS = 2
+// Need at least this many learned words before a review is worthwhile.
+const MIN_WORDS_FOR_REVIEW = 5
 
 export class LearningFlowController {
   private progress: LearningProgress
@@ -54,7 +60,8 @@ export class LearningFlowController {
       // Start on the easiest tier so young kids meet approachable words first.
       difficulty: 1,
       missedDays: [],
-      lastGoalCheck: null
+      lastGoalCheck: null,
+      lastReviewDate: null
     }
 
     if (saved) {
@@ -203,7 +210,7 @@ export class LearningFlowController {
 
   isGameUnlocked(gameId: string): boolean {
     // Some games might be unlocked by default
-    const defaultUnlocked = ['bonus', 'word-race', 'memory-match', 'balloon-pop', 'word-builder', 'missing-letter', 'bible-trivia', 'bible-memorizer']
+    const defaultUnlocked = ['bonus', 'word-race', 'memory-match', 'balloon-pop', 'word-builder', 'missing-letter', 'spelling-check', 'rescue-the-bee', 'bible-trivia', 'bible-memorizer']
     if (defaultUnlocked.includes(gameId)) return true
     
     // Others require the general games unlock AND being in the unlockedGames list
@@ -330,5 +337,38 @@ export class LearningFlowController {
   resetStreak(): void {
     this.progress.currentStreak = 0
     this.saveProgress()
+  }
+
+  // --- Spaced-repetition review of already-learned words ---
+
+  /** True when enough words have been learned and it's been REVIEW_INTERVAL_DAYS
+   *  since the last review (or one has never been done). */
+  isReviewDue(): boolean {
+    if (this.progress.wordsLearnedTotal.length < MIN_WORDS_FOR_REVIEW) return false
+    const last = this.progress.lastReviewDate
+    if (!last) return true
+    const days = (Date.now() - new Date(last).getTime()) / (1000 * 60 * 60 * 24)
+    return days >= REVIEW_INTERVAL_DAYS
+  }
+
+  /** A random sample of previously-learned word IDs to quiz on. */
+  getReviewWordIds(count = 8): string[] {
+    const pool = [...this.progress.wordsLearnedTotal]
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[pool[i], pool[j]] = [pool[j], pool[i]]
+    }
+    return pool.slice(0, count)
+  }
+
+  /** Record that today's review was completed so it won't be offered again
+   *  until the interval passes. */
+  markReviewDone(): void {
+    this.progress.lastReviewDate = new Date().toISOString()
+    this.saveProgress()
+  }
+
+  getLastReviewDate(): string | null {
+    return this.progress.lastReviewDate
   }
 }

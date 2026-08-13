@@ -1,0 +1,30 @@
+.review-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.review-header {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+.review-header h1 {
+  margin: var(--spacing-sm) 0 0;
+  background: linear-gradient(45deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.review-header p { color: var(--text-soft); }
+
+.review-empty {
+  text-align: center;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xxl) var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+  color: var(--text);
+}
+.review-empty-icon { font-size: 3.5rem; }
+.review-empty h1 { margin: var(--spacing-md) 0 var(--spacing-sm); }
+.review-empty p { color: var(--text-soft); margin-bottom: var(--spacing-lg); }

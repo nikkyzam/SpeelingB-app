@@ -18,6 +18,7 @@ import RewardShop from './pages/RewardShop'
 import Settings from './pages/Settings'
 import BibleDashboard from './pages/BibleDashboard'
 import ReadingHub from './pages/ReadingHub'
+import Review from './pages/Review'
 
 // Layout Components
 import Header from './components/layout/Header'
@@ -66,6 +67,7 @@ function App() {
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/learn" element={<LearningHub />} />
+                    <Route path="/review" element={<Review />} />
                     <Route path="/games" element={<GameCenter />} />
                     <Route path="/bible" element={<BibleDashboard />} />
                     <Route path="/reading" element={<ReadingHub />} />

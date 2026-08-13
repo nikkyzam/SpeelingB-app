@@ -154,3 +154,21 @@
   .chips-row { justify-content: center; }
   .hero-card h1 { font-size: 1.5rem; }
 }
+
+/* --- Review Time! call-to-action --- */
+.review-cta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  background: linear-gradient(135deg, var(--card), var(--card-soft));
+  border: 2px dashed var(--primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+}
+.review-cta-icon { font-size: 2.6rem; line-height: 1; }
+.review-cta-text { flex: 1; min-width: 200px; }
+.review-cta-text h2 { margin: 0 0 4px; color: var(--primary-2); }
+.review-cta-text p { margin: 0; color: var(--text-soft); }
