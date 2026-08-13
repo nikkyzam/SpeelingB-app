@@ -40,14 +40,8 @@ function App() {
     // Initialize daily reset service
     DailyResetService.initialize()
 
-    // Check for Firebase sync if logged in
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        FirebaseSync.syncFromServer().then(() => {
-          // Force refresh stores if needed
-        })
-      }
-    })
+    // Note: AuthService.init() already pulls saved progress from Firebase on
+    // sign-in (and blocks uploads until that completes), so no sync here.
 
     // Request notification permission
     if ('Notification' in window && Notification.permission === 'default') {

@@ -1,0 +1,134 @@
+.word-chef {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  text-align: center;
+}
+
+.wc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  border-bottom: 2px dashed var(--border);
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  text-align: left;
+}
+.wc-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.wc-stats { display: flex; gap: var(--spacing-lg); }
+.wc-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
+.wc-stat strong { font-size: 1.15rem; color: var(--text); }
+.wc-stat strong.low { color: var(--error); animation: pulse 0.8s infinite; }
+
+.wc-hint { color: var(--text-soft); margin-bottom: var(--spacing-lg); }
+
+.wc-build {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-lg);
+}
+.wc-slot {
+  width: 2.6rem;
+  height: 3.2rem;
+  border-radius: var(--radius-sm);
+  border: 3px dashed var(--border);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.5rem;
+  background: var(--card-soft);
+}
+.wc-slot.filled { border-style: solid; border-color: var(--primary); animation: pop-in 180ms both; }
+
+.wc-tiles {
+  display: flex;
+  justify-content: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-lg);
+}
+.wc-tile {
+  width: 3rem;
+  height: 3.3rem;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(180deg, var(--primary), var(--primary-2));
+  box-shadow: 0 5px 0 rgba(0,0,0,0.18);
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+.wc-tile:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,0.18); }
+.wc-tile.used { opacity: 0.25; pointer-events: none; }
+
+.wc-actions { display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; }
+.wc-btn {
+  font-family: var(--font-primary);
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  padding: 0.55rem 1.4rem;
+  border-radius: var(--radius-round);
+  color: #fff;
+  background: linear-gradient(180deg, var(--success), #21A366);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+}
+.wc-btn.ghost { background: transparent; color: var(--text-soft); box-shadow: none; border: 2px solid var(--border); }
+.wc-btn:active:not(:disabled) { transform: translateY(3px); box-shadow: none; }
+.wc-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.wc-flash {
+  margin-top: var(--spacing-md);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-md);
+  animation: pop-in var(--transition-normal) both;
+}
+.wc-flash.ok { background: linear-gradient(90deg, var(--success), #4EF4C5); color: #fff; }
+.wc-flash.bad { background: var(--card-soft); color: var(--text); border: 2px solid var(--error); }
+
+.wc-found { margin-top: var(--spacing-lg); text-align: left; }
+.wc-found-label { font-size: 0.8rem; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+.wc-found-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.wc-empty { color: var(--text-soft); font-size: 0.9rem; }
+.wc-chip {
+  font-family: var(--font-primary);
+  font-weight: 800;
+  padding: 0.25rem 0.85rem;
+  border-radius: var(--radius-round);
+  background: rgba(47,191,113,0.15);
+  border: 2px solid var(--success);
+  color: var(--success);
+  font-size: 0.9rem;
+}
+.wc-chip.star { background: linear-gradient(90deg, var(--primary), var(--accent)); border-color: var(--primary); color: #fff; }
+
+.wc-win {
+  margin-top: var(--spacing-lg);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--success);
+  animation: pop-in var(--transition-normal) both;
+}
+
+@media (max-width: 520px) {
+  .wc-header { flex-direction: column; align-items: stretch; }
+  .wc-stats { justify-content: center; }
+  .wc-slot { width: 2.1rem; height: 2.8rem; font-size: 1.2rem; }
+  .wc-tile { width: 2.6rem; height: 3rem; font-size: 1.2rem; }
+}

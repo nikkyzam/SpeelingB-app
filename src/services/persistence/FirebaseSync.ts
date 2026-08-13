@@ -1,7 +1,25 @@
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db, auth } from '../../config/firebase';
 
+const SYNC_FLAG_PREFIX = 'fb-synced:';
+
+/**
+ * The uid whose saved data we have already pulled down in this page session.
+ * Uploads are BLOCKED until this matches the signed-in user, otherwise a fresh
+ * login (whose localStorage was cleared on logout) would push empty progress
+ * and wipe the studied words stored on the server.
+ */
+let hydratedUid: string | null = null;
+
 export class FirebaseSync {
+  /** Forget hydration + per-session sync flags (called on logout). */
+  static resetHydration() {
+    hydratedUid = null;
+    Object.keys(sessionStorage)
+      .filter((k) => k.startsWith(SYNC_FLAG_PREFIX))
+      .forEach((k) => sessionStorage.removeItem(k));
+  }
+
   static async syncFromServer() {
     const user = auth.currentUser;
     // Don't sync for anonymous/guest users or if not logged in
@@ -10,13 +28,19 @@ export class FirebaseSync {
     // Guard against an infinite reload loop: syncing applies data by reloading
     // the page, which re-fires the auth listener. Only run once per session per
     // user so the reload can't chain forever.
-    const flag = `fb-synced:${user.uid}`;
-    if (sessionStorage.getItem(flag)) return;
+    const flag = `${SYNC_FLAG_PREFIX}${user.uid}`;
+    if (sessionStorage.getItem(flag)) {
+      // Already pulled earlier in this session (e.g. before a reload) — the
+      // local copy is authoritative, so allow uploads again.
+      hydratedUid = user.uid;
+      return;
+    }
 
     try {
       const docRef = doc(db, 'users', user.uid);
       const docSnap = await getDoc(docRef);
       sessionStorage.setItem(flag, '1'); // mark before any reload
+      hydratedUid = user.uid; // safe to upload from here on
 
       if (docSnap.exists()) {
         const data = docSnap.data();
@@ -63,6 +87,10 @@ export class FirebaseSync {
     const user = auth.currentUser;
     // Don't sync for anonymous/guest users or if not logged in
     if (!user || user.isAnonymous) return;
+
+    // Never upload before we've pulled this user's saved data down, or we would
+    // overwrite their studied words with a blank local state after a logout.
+    if (hydratedUid !== user.uid) return;
 
     try {
       const progress = localStorage.getItem('learningProgress');

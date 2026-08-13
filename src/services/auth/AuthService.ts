@@ -37,8 +37,9 @@ export class AuthService {
           isGuest: false,
           isAdmin
         });
-        // Sync to server after potential local changes
-        FirebaseSync.syncToServer();
+        // Pull the saved progress down FIRST. Uploads are blocked until this
+        // finishes, so a fresh login can never overwrite the studied words.
+        FirebaseSync.syncFromServer();
       } else {
         // User is signed out, but we might want to keep the guest user or set to null
         // For now, let's keep it simple
@@ -79,7 +80,11 @@ export class AuthService {
 
   static async logout() {
     try {
+      // Make sure the latest progress is safely on the server before we clear
+      // the local copy, then forget hydration so the next login re-pulls it.
+      await FirebaseSync.syncToServer().catch(() => {})
       await signOut(auth);
+      FirebaseSync.resetHydration();
       useUserStore.getState().logout();
       // Clear all persistent stores and data
       localStorage.removeItem('user');

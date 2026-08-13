@@ -23,7 +23,8 @@ vi.mock('firebase/auth', () => ({
 vi.mock('@/services/persistence/FirebaseSync', () => ({
   default: {
     syncToServer: vi.fn().mockResolvedValue(undefined),
-    syncFromServer: vi.fn().mockResolvedValue(undefined)
+    syncFromServer: vi.fn().mockResolvedValue(undefined),
+    resetHydration: vi.fn()
   }
 }))
 

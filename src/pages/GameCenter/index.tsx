@@ -29,6 +29,8 @@ import {
   RescueTheBee,
   WordSearch,
   BeeCatch,
+  WordChef,
+  AbcOrder,
   BibleTriviaEnhanced,
   BibleMemorizer
 } from '../../components/games'
@@ -56,6 +58,7 @@ type GameMode =
   | 'word-builder' | 'missing-letter'
   | 'spelling-check' | 'rescue-the-bee'
   | 'word-search' | 'bee-catch'
+  | 'word-chef' | 'abc-order'
   | 'bible-trivia' | 'bible-memorizer'
   | null
 
@@ -66,16 +69,31 @@ const GameCenter: React.FC = () => {
   const { addStars } = useRewardStore()
   const { learningFlow } = useProgress()
 
+  // Games practise what the child has ALREADY studied. We draw from their
+  // learned words first; only if they haven't learned enough yet do we top up
+  // with words from their current level so no game is left unplayable.
+  const MIN_GAME_WORDS = 12
+
   const selectedWords = useMemo(() => {
-    // Level-aware word pool: use the child's current difficulty tier (set by a
-    // grown-up or the learner). A shuffled, capped sample gives every game good
-    // variety at the RIGHT level instead of a fixed handful.
+    const shuffled = <T,>(a: T[]): T[] => [...a].sort(() => 0.5 - Math.random())
+
+    const learned = learningFlow
+      .getWordsLearnedTotal()
+      .map((id) => wordBank.getWordById(id))
+      .filter((w): w is NonNullable<typeof w> => !!w)
+
+    if (learned.length >= MIN_GAME_WORDS) {
+      return shuffled(learned).slice(0, 60)
+    }
+
+    // Not enough studied words yet — top up from the child's level.
     const difficulty = learningFlow.getDifficulty()
-    const pool = difficulty
+    const levelPool = difficulty
       ? wordBank.getWordsByDifficulty(difficulty)
       : wordBank.getAllWords()
-    const shuffled = [...pool].sort(() => 0.5 - Math.random())
-    return shuffled.slice(0, 60)
+    const learnedIds = new Set(learned.map((w) => w.id))
+    const filler = shuffled(levelPool.filter((w) => !learnedIds.has(w.id)))
+    return [...learned, ...filler].slice(0, 60)
     // activeGame in deps → a fresh shuffle each time a game is opened.
   }, [learningFlow, activeGame])
 
@@ -172,6 +190,24 @@ const GameCenter: React.FC = () => {
       icon: '🐝',
       color: '#FF8C42',
       duration: '60s',
+      unlocked: true
+    },
+    {
+      id: 'word-chef',
+      title: '🍲 Word Chef',
+      description: 'Cook up as many words as you can!',
+      icon: '🍲',
+      color: '#E85D75',
+      duration: '90s',
+      unlocked: true
+    },
+    {
+      id: 'abc-order',
+      title: '🔤 ABC Order',
+      description: 'Tap the words in alphabet order',
+      icon: '🔤',
+      color: '#7C5CFF',
+      duration: '4 rounds',
       unlocked: true
     },
     {
@@ -377,6 +413,8 @@ const GameCenter: React.FC = () => {
       case 'rescue-the-bee': return <RescueTheBee words={selectedWords} onComplete={handleGameComplete} />
       case 'word-search': return <WordSearch words={selectedWords} onComplete={handleGameComplete} />
       case 'bee-catch': return <BeeCatch words={selectedWords} onComplete={handleGameComplete} />
+      case 'word-chef': return <WordChef words={selectedWords} onComplete={handleGameComplete} />
+      case 'abc-order': return <AbcOrder words={selectedWords} onComplete={handleGameComplete} />
       case 'bible-trivia': return <BibleTriviaEnhanced onComplete={handleGameComplete} />
       case 'bible-memorizer': return <BibleMemorizer onComplete={handleGameComplete} />
       default: return null
