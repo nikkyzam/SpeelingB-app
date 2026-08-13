@@ -40,12 +40,13 @@ describe('DailyResetService', () => {
     
     const updatedProgress = JSON.parse(store['learningProgress'] || '{}')
     
-    // Learn goal: 10 - 1 = 9 missed. New goal: 10 + 9 = 19
-    expect(updatedProgress.dailyGoal).toBe(19)
-    // Spell goal: 10 - 0 = 10 missed. New goal: 10 + 10 = 20
-    expect(updatedProgress.dailyGoalSpell).toBe(20)
-    // Vocab goal: 10 - 0 = 10 missed. New goal: 10 + 10 = 20
-    expect(updatedProgress.dailyGoalVocab).toBe(20)
+    // Carry-over is capped at a kid-sized ceiling (12) so goals can't snowball.
+    // Learn goal: 10 - 1 = 9 missed -> 10 + 9 = 19, capped to 12
+    expect(updatedProgress.dailyGoal).toBe(12)
+    // Spell goal: 10 missed -> 20, capped to 12
+    expect(updatedProgress.dailyGoalSpell).toBe(12)
+    // Vocab goal: 10 missed -> 20, capped to 12
+    expect(updatedProgress.dailyGoalVocab).toBe(12)
     
     // Check missed days log
     expect(updatedProgress.missedDays).toContain(yesterdayStr)
@@ -53,6 +54,28 @@ describe('DailyResetService', () => {
     // Daily progress should be reset
     expect(updatedProgress.wordsLearnedToday).toEqual([])
     expect(updatedProgress.wordsSpelledToday).toEqual([])
+  })
+
+  it('never snowballs the goal, even after many missed days', () => {
+    // Regression: carry-over used to be `goal + missed`, which DOUBLED the goal
+    // every missed day (5 -> 10 -> 20 ... 640 after a week), making the
+    // learn -> spell -> game chain impossible for a child returning from a break.
+    store['learningProgress'] = JSON.stringify({
+      wordsLearnedToday: [], wordsSpelledToday: [],
+      dailyGoal: 5, dailyGoalSpell: 5, dailyGoalVocab: 5, gamesUnlocked: false
+    })
+
+    for (let day = 0; day < 10; day++) {
+      const past = new Date()
+      past.setDate(past.getDate() - (10 - day))
+      store['lastDailyReset'] = past.toDateString()
+      DailyResetService.initialize()
+    }
+
+    const p = JSON.parse(store['learningProgress'] || '{}')
+    expect(p.dailyGoal).toBeLessThanOrEqual(12)
+    expect(p.dailyGoalSpell).toBeLessThanOrEqual(12)
+    expect(p.dailyGoalVocab).toBeLessThanOrEqual(12)
   })
 
   it('should not increase goal if it was met', () => {

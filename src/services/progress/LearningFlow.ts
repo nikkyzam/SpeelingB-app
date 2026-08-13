@@ -24,6 +24,13 @@ export interface LearningProgress {
 
 // How often the spaced-repetition review of already-learned words is offered.
 export const REVIEW_INTERVAL_DAYS = 2
+
+/** Largest daily goal we will ever load. Saved data from an older build could
+ *  hold a goal that doubled on every missed day (hundreds of words), which
+ *  makes the learn -> spell -> game chain impossible to finish. */
+const MAX_SANE_GOAL = 20
+const sane = (value: unknown, fallback: number): number =>
+  typeof value === 'number' && value > 0 ? Math.min(value, MAX_SANE_GOAL) : fallback
 // Need at least this many learned words before a review is worthwhile.
 const MIN_WORDS_FOR_REVIEW = 5
 
@@ -83,10 +90,12 @@ export class LearningFlowController {
         spellQuizUnlocked: !!parsed.spellQuizUnlocked,
         vocabQuizUnlocked: !!parsed.vocabQuizUnlocked,
         gamesUnlocked: !!parsed.gamesUnlocked,
-        // Ensure numbers are numbers
-        dailyGoal: parsed.dailyGoal !== undefined ? parsed.dailyGoal : baseDefault.dailyGoal,
-        dailyGoalSpell: parsed.dailyGoalSpell !== undefined ? parsed.dailyGoalSpell : baseDefault.dailyGoalSpell,
-        dailyGoalVocab: parsed.dailyGoalVocab !== undefined ? parsed.dailyGoalVocab : baseDefault.dailyGoalVocab,
+        // Ensure numbers are numbers. Goals are also capped: an older build
+        // doubled them on every missed day, so saved data can hold an
+        // impossible goal (hundreds of words) that would block all progress.
+        dailyGoal: sane(parsed.dailyGoal, baseDefault.dailyGoal),
+        dailyGoalSpell: sane(parsed.dailyGoalSpell, baseDefault.dailyGoalSpell),
+        dailyGoalVocab: sane(parsed.dailyGoalVocab, baseDefault.dailyGoalVocab),
         currentStreak: parsed.currentStreak !== undefined ? parsed.currentStreak : baseDefault.currentStreak,
         selectedGroup: parsed.selectedGroup !== undefined ? parsed.selectedGroup : baseDefault.selectedGroup,
       }

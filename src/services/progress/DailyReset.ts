@@ -1,3 +1,19 @@
+/**
+ * Ceiling for a goal that has grown from missed days.
+ *
+ * Carry-over used to be `goal = goal + missed`, which DOUBLES every missed day
+ * (5 -> 10 -> 20 -> 40 ... 640 after a week away). Since the word-group size is
+ * the daily goal, that made the learn -> spell -> game chain impossible to
+ * finish and effectively bricked the app for any child who took a break.
+ * Carry-over is now capped so coming back is always winnable.
+ */
+const MAX_CARRY_GOAL = 12
+
+/** Grow a goal by what was missed, but never past a kid-sized ceiling.
+ *  A goal a grown-up deliberately set higher is left alone, never inflated. */
+const carryOver = (goal: number, missed: number): number =>
+  Math.min(goal + missed, Math.max(goal, MAX_CARRY_GOAL))
+
 export class DailyResetService {
   static initialize() {
     // Check if we need to reset daily progress
@@ -31,21 +47,21 @@ export class DailyResetService {
       // Learn carry over
       if (learnProgress < learnGoal) {
         const missed = learnGoal - learnProgress
-        learningProgress.dailyGoal = learnGoal + missed
+        learningProgress.dailyGoal = carryOver(learnGoal, missed)
         wasGoalMissed = true
       }
 
       // Spell carry over
       if (spellProgress < spellGoal) {
         const missed = spellGoal - spellProgress
-        learningProgress.dailyGoalSpell = spellGoal + missed
+        learningProgress.dailyGoalSpell = carryOver(spellGoal, missed)
         wasGoalMissed = true
       }
 
       // Vocab carry over
       if (vocabProgress < vocabGoal) {
         const missed = vocabGoal - vocabProgress
-        learningProgress.dailyGoalVocab = vocabGoal + missed
+        learningProgress.dailyGoalVocab = carryOver(vocabGoal, missed)
         wasGoalMissed = true
       }
 
