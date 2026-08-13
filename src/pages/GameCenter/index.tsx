@@ -27,6 +27,8 @@ import {
   MissingLetter,
   SpellingCheck,
   RescueTheBee,
+  WordSearch,
+  BeeCatch,
   BibleTriviaEnhanced,
   BibleMemorizer
 } from '../../components/games'
@@ -45,6 +47,7 @@ type GameMode =
   | 'physics-puzzle' | 'puzzle-slider'
   | 'word-builder' | 'missing-letter'
   | 'spelling-check' | 'rescue-the-bee'
+  | 'word-search' | 'bee-catch'
   | 'bible-trivia' | 'bible-memorizer'
   | null
 
@@ -143,6 +146,24 @@ const GameCenter: React.FC = () => {
       icon: '🐝',
       color: '#F4A300',
       duration: '5 words',
+      unlocked: true
+    },
+    {
+      id: 'word-search',
+      title: '🔎 Word Search',
+      description: 'Find the hidden words in the grid',
+      icon: '🔎',
+      color: '#06B6A4',
+      duration: '5 words',
+      unlocked: true
+    },
+    {
+      id: 'bee-catch',
+      title: '🐝 Bee Catch',
+      description: 'Tap the buzzing letters in order!',
+      icon: '🐝',
+      color: '#FF8C42',
+      duration: '60s',
       unlocked: true
     },
     {
@@ -346,6 +367,8 @@ const GameCenter: React.FC = () => {
       case 'missing-letter': return <MissingLetter words={selectedWords} onComplete={handleGameComplete} />
       case 'spelling-check': return <SpellingCheck words={selectedWords} onComplete={handleGameComplete} />
       case 'rescue-the-bee': return <RescueTheBee words={selectedWords} onComplete={handleGameComplete} />
+      case 'word-search': return <WordSearch words={selectedWords} onComplete={handleGameComplete} />
+      case 'bee-catch': return <BeeCatch words={selectedWords} onComplete={handleGameComplete} />
       case 'bible-trivia': return <BibleTriviaEnhanced onComplete={handleGameComplete} />
       case 'bible-memorizer': return <BibleMemorizer onComplete={handleGameComplete} />
       default: return null
