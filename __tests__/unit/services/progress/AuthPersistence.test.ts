@@ -108,7 +108,6 @@ describe('Persistence after Logout and Login', () => {
 
     expect(restoredController.getSelectedGroup()).toBe(10)
     expect(restoredController.areGamesUnlocked()).toBe(true)
-    expect(restoredController.isGameUnlocked('spell-sprint')).toBe(true)
     expect(restoredController.getWordsLearnedTotal()).toEqual(['word1', 'word2']) // Use toEqual for array comparison
   })
 

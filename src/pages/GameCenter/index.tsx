@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useRewardStore } from '../../stores/rewards/useRewardStore'
 import { useProgress } from '../../contexts/ProgressContext'
 import { wordBank } from '../../services/wordBank'
@@ -42,9 +42,6 @@ import BibleApiDashboard from '../../components/bible/BibleApiDashboard'
 import Celebration, { CelebrationData } from '../../components/common/Celebration'
 import './GameCenter.css'
 
-const prettyGameName = (id: string) =>
-  id.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
-
 // Off-topic mini-games (reflex/memory/art/math/music/physics) are hidden so the
 // Games hub stays focused on spelling & words. Their code remains for later.
 const HIDDEN_GAMES = new Set([
@@ -69,6 +66,7 @@ type GameMode =
 
 const GameCenter: React.FC = () => {
   const location = useLocation()
+  const navigate = useNavigate()
   const [activeGame, setActiveGame] = useState<GameMode>(null)
   const [celebration, setCelebration] = useState<CelebrationData | null>(null)
   const { addStars } = useRewardStore()
@@ -116,6 +114,13 @@ const GameCenter: React.FC = () => {
   }, [location.state])
 
   const isGamesUnlocked = learningFlow.areGamesUnlocked()
+  const quizPassed = learningFlow.isDailyQuizPassed()
+  // Count words the quiz can actually ASK. Word ids are positional, so a saved
+  // id could stop resolving; counting raw ids here would promise a quiz that
+  // then says "no words" — leaving the games locked with no way through.
+  const learnedCount = learningFlow
+    .getWordsLearnedTotal()
+    .filter((id) => !!wordBank.getWordById(id)).length
 
   const handleStartChallenge = () => {
     // For "Memory Match Master" challenge
@@ -130,7 +135,7 @@ const GameCenter: React.FC = () => {
       icon: '🎯',
       color: '#FF6B6B',
       duration: '15s',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('bonus')
     },
     {
       id: 'word-race',
@@ -139,7 +144,7 @@ const GameCenter: React.FC = () => {
       icon: '📝',
       color: '#4ECDC4',
       duration: '60s',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('word-race')
     },
     {
       id: 'memory-match',
@@ -148,7 +153,7 @@ const GameCenter: React.FC = () => {
       icon: '🎴',
       color: '#FFD166',
       duration: 'Unlimited',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('memory-match')
     },
     {
       id: 'word-builder',
@@ -157,7 +162,7 @@ const GameCenter: React.FC = () => {
       icon: '🧱',
       color: '#8338EC',
       duration: '5 words',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('word-builder')
     },
     {
       id: 'missing-letter',
@@ -166,7 +171,7 @@ const GameCenter: React.FC = () => {
       icon: '🔡',
       color: '#0EA5E9',
       duration: '6 words',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('missing-letter')
     },
     {
       id: 'spelling-check',
@@ -175,7 +180,7 @@ const GameCenter: React.FC = () => {
       icon: '🔍',
       color: '#EF476F',
       duration: '6 words',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('spelling-check')
     },
     {
       id: 'rescue-the-bee',
@@ -184,7 +189,7 @@ const GameCenter: React.FC = () => {
       icon: '🐝',
       color: '#F4A300',
       duration: '5 words',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('rescue-the-bee')
     },
     {
       id: 'word-search',
@@ -193,7 +198,7 @@ const GameCenter: React.FC = () => {
       icon: '🔎',
       color: '#06B6A4',
       duration: '5 words',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('word-search')
     },
     {
       id: 'bee-catch',
@@ -202,7 +207,7 @@ const GameCenter: React.FC = () => {
       icon: '🐝',
       color: '#FF8C42',
       duration: '60s',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('bee-catch')
     },
     {
       id: 'word-chef',
@@ -211,7 +216,7 @@ const GameCenter: React.FC = () => {
       icon: '🍲',
       color: '#E85D75',
       duration: '90s',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('word-chef')
     },
     {
       id: 'abc-order',
@@ -220,7 +225,7 @@ const GameCenter: React.FC = () => {
       icon: '🔤',
       color: '#7C5CFF',
       duration: '4 rounds',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('abc-order')
     },
     {
       id: 'typo-detective',
@@ -229,7 +234,7 @@ const GameCenter: React.FC = () => {
       icon: '🕵️',
       color: '#5B7CFA',
       duration: '5 cases',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('typo-detective')
     },
     {
       id: 'mystery-picture',
@@ -238,7 +243,7 @@ const GameCenter: React.FC = () => {
       icon: '🖼️',
       color: '#20C997',
       duration: '6 words',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('mystery-picture')
     },
     {
       id: 'secret-code',
@@ -247,7 +252,7 @@ const GameCenter: React.FC = () => {
       icon: '🔐',
       color: '#845EF7',
       duration: '5 codes',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('secret-code')
     },
     {
       id: 'ghost-word',
@@ -256,7 +261,7 @@ const GameCenter: React.FC = () => {
       icon: '👻',
       color: '#748FFC',
       duration: '5 words',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('ghost-word')
     },
     {
       id: 'balloon-pop',
@@ -265,7 +270,7 @@ const GameCenter: React.FC = () => {
       icon: '💥',
       color: '#06D6A0',
       duration: '3 words',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('balloon-pop')
     },
     {
       id: 'word-scramble',
@@ -400,7 +405,7 @@ const GameCenter: React.FC = () => {
       icon: '✝️',
       color: '#FFD700',
       duration: 'Unlimited',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('word-scramble')
     },
     {
       id: 'bible-memorizer',
@@ -409,7 +414,7 @@ const GameCenter: React.FC = () => {
       icon: '🧠',
       color: '#4A90E2',
       duration: 'Unlimited',
-      unlocked: true
+      unlocked: learningFlow.isGameUnlocked('bible-memorizer')
     }
   ]
 
@@ -418,13 +423,10 @@ const GameCenter: React.FC = () => {
     const starsEarned = Math.max(1, Math.floor(score / 100))
     addStars(starsEarned)
 
-    const nextGame = activeGame ? learningFlow.unlockNextGame(activeGame) : null
-
     setCelebration({
       title: 'Great job! 🎉',
       message: `You scored ${score}!`,
       stars: starsEarned,
-      unlockedLabel: nextGame ? prettyGameName(nextGame) : null,
     })
 
     // Return to game selection behind the celebration
@@ -434,6 +436,9 @@ const GameCenter: React.FC = () => {
   const handleBackToGames = () => {
     setActiveGame(null)
   }
+
+  // How many visible games are still behind today's quiz.
+  const lockedCount = games.filter((g) => !HIDDEN_GAMES.has(g.id) && !g.unlocked).length
 
   const renderActiveGame = () => {
     switch (activeGame) {
@@ -502,9 +507,37 @@ const GameCenter: React.FC = () => {
           </div>
           <div className="games-tip">
             <span className="tip-icon">💡</span>
-            <span className="tip-text">Complete daily learning to unlock more games</span>
+            <span className="tip-text">
+              {quizPassed
+                ? 'Today’s quiz is done — every game is unlocked!'
+                : 'Pass today’s quiz to unlock every game'}
+            </span>
           </div>
         </div>
+      </div>
+
+      {/* The daily gate: spell every word you've learned to open all the games. */}
+      <div className={`daily-gate ${quizPassed ? 'done' : ''}`}>
+        <div className="daily-gate-icon" aria-hidden>{quizPassed ? '🏆' : '🔒'}</div>
+        <div className="daily-gate-text">
+          <h3>{quizPassed ? 'All games unlocked today!' : 'Today’s Quiz'}</h3>
+          <p>
+            {quizPassed
+              ? 'Great work — come back tomorrow for a new quiz.'
+              : learnedCount === 0
+                ? 'Learn some words first, then take the quiz to open every game.'
+                : `Spell all ${learnedCount} of your words to unlock ${lockedCount} more games.`}
+          </p>
+        </div>
+        {!quizPassed && (
+          <Button
+            variant="primary"
+            icon="🏆"
+            onClick={() => navigate(learnedCount === 0 ? '/learn' : '/daily-quiz')}
+          >
+            {learnedCount === 0 ? 'Learn Words' : 'Start Quiz'}
+          </Button>
+        )}
       </div>
 
       <div className="games-grid">

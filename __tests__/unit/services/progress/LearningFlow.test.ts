@@ -95,7 +95,8 @@ describe('LearningFlowController', () => {
       difficulty: 2,
       missedDays: [],
       lastGoalCheck: null,
-      lastReviewDate: null
+      lastReviewDate: null,
+      dailyQuizPassedDate: null
     }
     localStorage.setItem('learningProgress', JSON.stringify(savedState))
     
@@ -187,13 +188,14 @@ describe('LearningFlowController', () => {
   it('should increment selectedGroup and unlock games if vocab quiz completed with 0 errors', () => {
     expect(controller.getSelectedGroup()).toBe(0)
     expect(controller.areGamesUnlocked()).toBe(false)
-    expect(controller.isGameUnlocked('word-scramble')).toBe(false) // Not unlocked by default
+    expect(controller.isGameUnlocked('word-scramble')).toBe(false)
 
     controller.completeVocabQuiz(['wordV1', 'wordV2'], 0) // 0 wrong answers
 
     expect(controller.getSelectedGroup()).toBe(1) // Should increment
     expect(controller.areGamesUnlocked()).toBe(true)
-    expect(controller.isGameUnlocked('word-scramble')).toBe(true) // Should unlock first game
+    // Playable games are gated by the DAILY QUIZ, not by the vocab quiz.
+    expect(controller.isGameUnlocked('word-scramble')).toBe(false)
     expect(controller.getWordsLearnedToday()).toContain('wordV1')
     expect(controller.getWordsLearnedTotal()).toContain('wordV1')
   })
@@ -234,7 +236,7 @@ describe('LearningFlowController', () => {
       dailyGoal: 30, dailyGoalSpell: 1, dailyGoalVocab: 30,
       spellQuizUnlocked: false, vocabQuizUnlocked: false, gamesUnlocked: false,
       unlockedGames: [], lockedModes: [], currentStreak: 0, selectedGroup: 0, difficulty: undefined,
-      missedDays: [], lastGoalCheck: null, lastReviewDate: null
+      missedDays: [], lastGoalCheck: null, lastReviewDate: null, dailyQuizPassedDate: null
     }
     localStorage.setItem('learningProgress', JSON.stringify(savedState))
     controller = new LearningFlowController()
@@ -251,21 +253,7 @@ describe('LearningFlowController', () => {
   })
 
   // --- Game Unlocking ---
-  it('should unlock next game in sequence', () => {
-    // First, unlock games generally
-    controller.completeVocabQuiz(['wordV1'], 0)
-    expect(controller.isGameUnlocked('word-scramble')).toBe(true)
-    expect(controller.isGameUnlocked('spell-sprint')).toBe(false)
 
-    controller.unlockNextGame('word-scramble')
-    expect(controller.isGameUnlocked('spell-sprint')).toBe(true)
-  })
-
-  it('should not unlock next game if games are not generally unlocked', () => {
-    expect(controller.areGamesUnlocked()).toBe(false)
-    controller.unlockNextGame('word-scramble')
-    expect(controller.isGameUnlocked('spell-sprint')).toBe(false)
-  })
 
   // --- Reset Daily Progress ---
   it('should reset daily progress but keep total learned words and streak', () => {

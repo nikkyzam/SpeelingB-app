@@ -20,7 +20,14 @@ export interface LearningProgress {
   missedDays: string[] // Array of date strings "YYYY-MM-DD"
   lastGoalCheck: string | null // Last date goals were checked/reset
   lastReviewDate: string | null // Last date the "Review Time!" quiz was completed
+  dailyQuizPassedDate: string | null // Date the daily all-words quiz was passed
 }
+
+/**
+ * The only games playable without earning them. Everything else opens by
+ * passing today's quiz over every word the child has learned.
+ */
+export const FREE_GAMES = ['word-builder', 'missing-letter', 'balloon-pop']
 
 // How often the spaced-repetition review of already-learned words is offered.
 export const REVIEW_INTERVAL_DAYS = 2
@@ -68,7 +75,8 @@ export class LearningFlowController {
       difficulty: 1,
       missedDays: [],
       lastGoalCheck: null,
-      lastReviewDate: null
+      lastReviewDate: null,
+      dailyQuizPassedDate: null
     }
 
     if (saved) {
@@ -218,36 +226,34 @@ export class LearningFlowController {
   }
 
   isGameUnlocked(gameId: string): boolean {
-    // Some games might be unlocked by default
-    const defaultUnlocked = ['bonus', 'word-race', 'memory-match', 'balloon-pop', 'word-builder', 'missing-letter', 'spelling-check', 'rescue-the-bee', 'word-search', 'bee-catch', 'word-chef', 'abc-order', 'typo-detective', 'mystery-picture', 'secret-code', 'ghost-word', 'bible-trivia', 'bible-memorizer']
-    if (defaultUnlocked.includes(gameId)) return true
-    
-    // Others require the general games unlock AND being in the unlockedGames list
-    return this.progress.gamesUnlocked && this.progress.unlockedGames.includes(gameId)
+    // Three starter games are always free so there is something to play on day
+    // one. Everything else is earned by passing today's all-words quiz.
+    if (FREE_GAMES.includes(gameId)) return true
+    return this.isDailyQuizPassed()
   }
 
-  unlockNextGame(currentGameId: string): string | null {
-    if (!this.progress.gamesUnlocked) return null
+  /** True once today's all-words quiz has been passed (resets each day). */
+  isDailyQuizPassed(): boolean {
+    return this.progress.dailyQuizPassedDate === new Date().toDateString()
+  }
 
-    const gameOrder = [
-      'bonus', 'word-race', 'memory-match', 'balloon-pop',
-      'word-scramble', 'spell-sprint', 'shape-catcher', 'spelling-adventure',
-      'pattern-memory', 'rhythm-tap', 'memory-grid', 'reaction-test',
-      'pattern-sequencer', 'color-mixer', 'math-puzzle', 'music-composer',
-      'physics-puzzle', 'puzzle-slider'
-    ]
+  /** Record a successful daily quiz — this is what opens the games. */
+  passDailyQuiz(): void {
+    this.progress.dailyQuizPassedDate = new Date().toDateString()
+    this.progress.gamesUnlocked = true
+    this.saveProgress()
+  }
 
-    const currentIndex = gameOrder.indexOf(currentGameId)
-    if (currentIndex !== -1 && currentIndex < gameOrder.length - 1) {
-      const nextGameId = gameOrder[currentIndex + 1]
-      if (!this.progress.unlockedGames.includes(nextGameId)) {
-        this.progress.unlockedGames.push(nextGameId)
-        this.saveProgress()
-        return nextGameId
-      }
+  /** Every word the child has ever learned, shuffled — the daily quiz set. */
+  getDailyQuizWordIds(): string[] {
+    const ids = [...this.progress.wordsLearnedTotal]
+    for (let i = ids.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[ids[i], ids[j]] = [ids[j], ids[i]]
     }
-    return null
+    return ids
   }
+
 
   getLockedModes(): ('learn' | 'spell')[] {
     return this.progress.lockedModes

@@ -326,3 +326,23 @@
     gap: var(--spacing-md);
   }
 }
+
+/* --- Daily quiz gate banner --- */
+.daily-gate {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  background: linear-gradient(135deg, var(--card), var(--card-soft));
+  border: 2px dashed var(--primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+}
+.daily-gate.done { border-style: solid; border-color: var(--success); }
+.daily-gate-icon { font-size: 2.4rem; line-height: 1; }
+.daily-gate-text { flex: 1; min-width: 210px; }
+.daily-gate-text h3 { margin: 0 0 4px; color: var(--primary-2); }
+.daily-gate.done .daily-gate-text h3 { color: var(--success); }
+.daily-gate-text p { margin: 0; color: var(--text-soft); }

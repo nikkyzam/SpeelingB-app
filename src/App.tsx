@@ -19,6 +19,7 @@ import Settings from './pages/Settings'
 import BibleDashboard from './pages/BibleDashboard'
 import ReadingHub from './pages/ReadingHub'
 import Review from './pages/Review'
+import DailyQuiz from './pages/DailyQuiz'
 
 // Layout Components
 import Header from './components/layout/Header'
@@ -62,6 +63,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/learn" element={<LearningHub />} />
                     <Route path="/review" element={<Review />} />
+                    <Route path="/daily-quiz" element={<DailyQuiz />} />
                     <Route path="/games" element={<GameCenter />} />
                     <Route path="/bible" element={<BibleDashboard />} />
                     <Route path="/reading" element={<ReadingHub />} />
