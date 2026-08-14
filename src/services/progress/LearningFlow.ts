@@ -219,7 +219,7 @@ export class LearningFlowController {
 
   isGameUnlocked(gameId: string): boolean {
     // Some games might be unlocked by default
-    const defaultUnlocked = ['bonus', 'word-race', 'memory-match', 'balloon-pop', 'word-builder', 'missing-letter', 'spelling-check', 'rescue-the-bee', 'word-search', 'bee-catch', 'word-chef', 'abc-order', 'bible-trivia', 'bible-memorizer']
+    const defaultUnlocked = ['bonus', 'word-race', 'memory-match', 'balloon-pop', 'word-builder', 'missing-letter', 'spelling-check', 'rescue-the-bee', 'word-search', 'bee-catch', 'word-chef', 'abc-order', 'typo-detective', 'mystery-picture', 'secret-code', 'ghost-word', 'bible-trivia', 'bible-memorizer']
     if (defaultUnlocked.includes(gameId)) return true
     
     // Others require the general games unlock AND being in the unlockedGames list

@@ -31,6 +31,10 @@ import {
   BeeCatch,
   WordChef,
   AbcOrder,
+  TypoDetective,
+  MysteryPicture,
+  SecretCode,
+  GhostWord,
   BibleTriviaEnhanced,
   BibleMemorizer
 } from '../../components/games'
@@ -59,6 +63,7 @@ type GameMode =
   | 'spelling-check' | 'rescue-the-bee'
   | 'word-search' | 'bee-catch'
   | 'word-chef' | 'abc-order'
+  | 'typo-detective' | 'mystery-picture' | 'secret-code' | 'ghost-word'
   | 'bible-trivia' | 'bible-memorizer'
   | null
 
@@ -215,6 +220,42 @@ const GameCenter: React.FC = () => {
       icon: '🔤',
       color: '#7C5CFF',
       duration: '4 rounds',
+      unlocked: true
+    },
+    {
+      id: 'typo-detective',
+      title: '🕵️ Typo Detective',
+      description: 'One word is spelled wrong — catch it!',
+      icon: '🕵️',
+      color: '#5B7CFA',
+      duration: '5 cases',
+      unlocked: true
+    },
+    {
+      id: 'mystery-picture',
+      title: '🖼️ Mystery Picture',
+      description: 'Spell words to uncover a hidden picture',
+      icon: '🖼️',
+      color: '#20C997',
+      duration: '6 words',
+      unlocked: true
+    },
+    {
+      id: 'secret-code',
+      title: '🔐 Secret Code',
+      description: 'Crack the number code to find the word',
+      icon: '🔐',
+      color: '#845EF7',
+      duration: '5 codes',
+      unlocked: true
+    },
+    {
+      id: 'ghost-word',
+      title: '👻 Ghost Word',
+      description: 'It vanishes! Type it from memory',
+      icon: '👻',
+      color: '#748FFC',
+      duration: '5 words',
       unlocked: true
     },
     {
@@ -422,6 +463,10 @@ const GameCenter: React.FC = () => {
       case 'bee-catch': return <BeeCatch words={selectedWords} onComplete={handleGameComplete} />
       case 'word-chef': return <WordChef words={selectedWords} onComplete={handleGameComplete} />
       case 'abc-order': return <AbcOrder words={selectedWords} onComplete={handleGameComplete} />
+      case 'typo-detective': return <TypoDetective words={selectedWords} onComplete={handleGameComplete} />
+      case 'mystery-picture': return <MysteryPicture words={selectedWords} onComplete={handleGameComplete} />
+      case 'secret-code': return <SecretCode words={selectedWords} onComplete={handleGameComplete} />
+      case 'ghost-word': return <GhostWord words={selectedWords} onComplete={handleGameComplete} />
       case 'bible-trivia': return <BibleTriviaEnhanced onComplete={handleGameComplete} />
       case 'bible-memorizer': return <BibleMemorizer onComplete={handleGameComplete} />
       default: return null
