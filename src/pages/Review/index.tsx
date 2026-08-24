@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useProgress } from '../../contexts/ProgressContext'
-import { useRewardStore } from '../../stores/rewardStore'
+// Same store as the header, so review stars actually show up.
+import { useRewardStore } from '../../stores/rewards/useRewardStore'
 import { wordBank, Word } from '../../services/wordBank'
 import Button from '../../components/common/Button'
 import SpellMode from '../../components/learning/SpellMode'

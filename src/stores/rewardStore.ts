@@ -1,3 +1,14 @@
+/**
+ * RETIRED — do not import this store.
+ *
+ * It kept a second star balance to the one in the header, so stars awarded by
+ * the daily quiz and the review screen landed somewhere the child never saw.
+ * Every consumer now uses `stores/rewards/useRewardStore` (backed by
+ * PointsService); leftover balances are folded in once by
+ * `services/rewards/migrateLegacyStars`.
+ *
+ * Kept only so that migration can still read the old persisted data.
+ */
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 

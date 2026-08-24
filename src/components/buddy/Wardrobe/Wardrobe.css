@@ -1,0 +1,110 @@
+.wardrobe {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: grid;
+  place-items: center;
+  z-index: 80;
+  padding: var(--spacing-md);
+}
+
+.wd-card {
+  width: min(560px, 100%);
+  max-height: min(80vh, 720px);
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border: 4px solid var(--primary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  animation: pop-in var(--transition-normal) both;
+}
+
+.wd-head {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  color: #fff;
+}
+.wd-head h3 { flex: 1; font-family: var(--font-primary); font-size: 1.2rem; color: #fff; margin: 0; }
+.wd-purse {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-round);
+  padding: 3px 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.wd-close {
+  border: none;
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.wd-body { overflow-y: auto; padding: var(--spacing-lg); }
+.wd-section + .wd-section { margin-top: var(--spacing-lg); }
+.wd-section h4 {
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  color: var(--primary-2);
+  margin-bottom: var(--spacing-sm);
+}
+
+.wd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: var(--spacing-sm); }
+
+.wd-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  border: 3px solid var(--border);
+  background: var(--card-soft);
+  color: var(--text);
+  cursor: pointer;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+.wd-item:hover { transform: translateY(-3px); border-color: var(--primary); }
+.wd-item.owned { border-color: var(--secondary); }
+.wd-item.wearing {
+  border-color: var(--success);
+  background: color-mix(in srgb, var(--success) 16%, var(--card-soft));
+}
+.wd-item.denied { animation: shake 0.45s; border-color: var(--error); }
+
+.wd-emoji { font-size: 1.9rem; line-height: 1.1; }
+.wd-name { font-family: var(--font-primary); font-weight: 800; font-size: 0.78rem; text-align: center; line-height: 1.1; }
+.wd-tag { font-size: 0.72rem; font-weight: 800; color: var(--text-soft); }
+.wd-item.wearing .wd-tag { color: var(--success); }
+
+.wd-denied {
+  position: absolute;
+  inset: auto 4px 4px;
+  background: var(--error);
+  color: #fff;
+  font-size: 0.66rem;
+  font-weight: 800;
+  border-radius: var(--radius-round);
+  padding: 1px 6px;
+}
+
+.wd-foot {
+  padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-md);
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  border-top: 2px dashed var(--border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wd-card { animation: none; }
+}

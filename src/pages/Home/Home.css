@@ -48,6 +48,9 @@
 .chip-value { font-weight: 900; font-size: 1.05rem; }
 .chip-label { font-size: 0.82rem; opacity: 0.92; }
 
+/* ---- Explorer rank ---- */
+.level-section { margin-bottom: var(--spacing-lg); }
+
 /* ---- Today's Quest ---- */
 .quest-card {
   background: var(--card);
@@ -187,3 +190,6 @@
   font-weight: 600;
 }
 .streak-saved-icon { font-size: 1.8rem; line-height: 1; }
+
+/* ---- Buddy ---- */
+.buddy-section { margin-bottom: var(--spacing-lg); }

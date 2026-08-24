@@ -1,0 +1,105 @@
+.parrot-party {
+  max-width: 660px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  text-align: center;
+}
+
+.pp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  border-bottom: 2px dashed var(--border);
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  text-align: left;
+}
+.pp-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.pp-stats { display: flex; gap: var(--spacing-lg); }
+.pp-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
+.pp-stat strong { font-size: 1.15rem; color: var(--text); }
+
+.pp-stage {
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  background:
+    radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--secondary) 22%, transparent), transparent 65%),
+    var(--card-soft);
+  margin-bottom: var(--spacing-sm);
+}
+.pp-parrot { font-size: clamp(2.8rem, 13vw, 4rem); line-height: 1; display: inline-block; }
+.pp-parrot.talking { animation: wiggle 0.5s ease-in-out infinite; }
+.pp-parrot.party { animation: bounce 0.6s ease-in-out infinite; }
+
+.pp-dots { display: flex; justify-content: center; gap: 6px; margin-top: 8px; min-height: 14px; }
+.pp-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background var(--transition-fast);
+}
+.pp-dot.done { background: var(--success); }
+
+.pp-message {
+  font-family: var(--font-primary);
+  font-weight: 700;
+  min-height: 2.2rem;
+  padding: 0.55rem;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+}
+.pp-message.good { background: color-mix(in srgb, var(--success) 20%, transparent); }
+.pp-message.oops { background: color-mix(in srgb, var(--warning) 22%, transparent); }
+.pp-message.won { background: linear-gradient(90deg, var(--success), var(--secondary-2)); color: #fff; animation: pop-in var(--transition-normal) both; }
+.pp-message.over { background: var(--card-soft); border: 2px dashed var(--border); }
+
+.pp-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-sm); }
+.pp-tile {
+  padding: 1rem 0.4rem;
+  border: 3px solid hsl(var(--tile-hue) 60% 62%);
+  background: hsl(var(--tile-hue) 80% 94%);
+  color: #33322f;
+  border-radius: var(--radius-md);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: clamp(0.85rem, 3.6vw, 1.15rem);
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  word-break: break-word;
+  min-height: 62px;
+}
+.pp-tile:hover:not(:disabled) { transform: translateY(-3px); }
+.pp-tile:disabled { opacity: 0.75; cursor: default; }
+.pp-tile.lit {
+  background: hsl(var(--tile-hue) 85% 65%);
+  color: #fff;
+  transform: scale(1.06);
+  box-shadow: 0 0 0 4px hsl(var(--tile-hue) 85% 75%), var(--shadow-md);
+}
+
+.pp-btn {
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(180deg, var(--primary), var(--primary-2));
+  border-radius: var(--radius-round);
+  padding: 0.7rem 1.4rem;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+}
+.pp-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
+
+@media (max-width: 520px) {
+  .pp-header { flex-direction: column; align-items: stretch; }
+  .pp-stats { justify-content: center; }
+  .pp-tiles { grid-template-columns: repeat(2, 1fr); }
+}

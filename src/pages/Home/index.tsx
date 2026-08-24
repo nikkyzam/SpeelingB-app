@@ -3,10 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import { useUser } from '../../contexts/UserContext'
 import { useProgress } from '../../contexts/ProgressContext'
 import { useTheme } from '../../contexts/ThemeContext'
-import { useRewardStore } from '../../stores/rewardStore'
+// The star balance the header and every game writes to — Home used to read a
+// second, separate store, so the two numbers disagreed on screen.
+import { useRewardStore } from '../../stores/rewards/useRewardStore'
 import { useStreak } from '../../hooks/useStreak'
 import Button from '../../components/common/Button'
 import AuthModal from '../../components/auth/AuthModal'
+import ExplorerLevel from '../../components/progress/ExplorerLevel'
+import BuddyCard from '../../components/buddy/BuddyCard'
 import './Home.css'
 
 const Home: React.FC = () => {
@@ -45,6 +49,7 @@ const Home: React.FC = () => {
     { icon: '📖', label: 'Learn Words', sub: 'Meet new words', path: '/learn', tone: 'primary' },
     { icon: '✏️', label: 'Spell It!', sub: 'Type what you hear', path: '/learn?mode=spell', tone: 'secondary' },
     { icon: '🎮', label: 'Play Games', sub: dailyCompleted ? 'Unlocked!' : 'Finish learning first', path: '/games', tone: 'accent' },
+    { icon: '🗂️', label: 'My Words', sub: 'Your word collection', path: '/collection', tone: 'success' },
     { icon: '🏆', label: 'My Prizes', sub: 'Spend your stars', path: '/rewards', tone: 'success' },
   ] as const
 
@@ -86,6 +91,16 @@ const Home: React.FC = () => {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* The buddy: the friend who grows because the child learns */}
+      <section className="buddy-section">
+        <BuddyCard />
+      </section>
+
+      {/* Explorer rank — the long game, always climbing */}
+      <section className="level-section">
+        <ExplorerLevel onClick={() => navigate('/collection')} />
       </section>
 
       {/* Today's quest progress */}

@@ -734,3 +734,28 @@
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
+
+/* ---- Buddy wardrobe pointer ---- */
+.buddy-shop-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+  text-align: left;
+  margin: var(--spacing-lg) 0;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  border: 3px dashed var(--accent);
+  background: linear-gradient(135deg, var(--card), var(--card-soft));
+  cursor: pointer;
+  color: var(--text);
+  transition: transform var(--transition-fast);
+}
+.buddy-shop-banner:hover { transform: translateY(-3px); }
+.bsb-icon { font-size: 2.2rem; animation: wiggle 2.6s ease-in-out infinite; }
+.bsb-text { flex: 1; display: flex; flex-direction: column; }
+.bsb-text strong { font-family: var(--font-primary); font-size: 1.05rem; color: var(--primary-2); }
+.bsb-text span { font-size: 0.85rem; color: var(--text-soft); }
+.bsb-go { font-size: 1.4rem; color: var(--primary-2); font-weight: 900; }
+
+@media (prefers-reduced-motion: reduce) { .bsb-icon { animation: none; } }

@@ -64,6 +64,22 @@ const renderWithProviders = (ui: React.ReactElement) => {
   )
 }
 
+/**
+ * A word is only banked once the child answers its quick check. Tests take the
+ * "Show me" route: it needs no timers and works whichever check kind a word got.
+ */
+const finishWord = async (buttonLabel: 'Got it!' = 'Got it!') => {
+  await act(async () => {
+    fireEvent.click(screen.getByText(buttonLabel))
+  })
+  await act(async () => {
+    fireEvent.click(screen.getByText(/Show me/i))
+  })
+  await act(async () => {
+    fireEvent.click(screen.getByRole('button', { name: /Next word|Finish!/i }))
+  })
+}
+
 describe('LearnMode Component', () => {
   let mockLearningFlow: LearningFlowController
 
@@ -97,16 +113,25 @@ describe('LearnMode Component', () => {
     expect(screen.getByText('"I eat an apple."')).toBeInTheDocument()
   })
 
-  it('navigates to the next word when "Next Word" is clicked', async () => {
+  it('only banks a word after its quick check is answered', async () => {
     await act(async () => {
       renderWithProviders(<LearnMode words={TWO_WORDS} />)
     })
-    
-    const nextBtn = screen.getByText('Got it!')
+
+    // "Got it!" opens the check — the word does NOT count yet.
     await act(async () => {
-      fireEvent.click(nextBtn)
+      fireEvent.click(screen.getByText('Got it!'))
     })
-    
+    expect(screen.getByText(/Quick check!/i)).toBeInTheDocument()
+    expect(mockLearningFlow.completeWord).not.toHaveBeenCalled()
+
+    await act(async () => {
+      fireEvent.click(screen.getByText(/Show me/i))
+    })
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /Next word/i }))
+    })
+
     expect(screen.getByText('banana')).toBeInTheDocument()
     expect(screen.getByText('a yellow fruit')).toBeInTheDocument()
     expect(mockLearningFlow.completeWord).toHaveBeenCalledWith('1')
@@ -116,12 +141,10 @@ describe('LearnMode Component', () => {
     await act(async () => {
       renderWithProviders(<LearnMode words={TWO_WORDS} />)
     })
-    
-    await act(async () => {
-      fireEvent.click(screen.getByText('Got it!'))
-    })
+
+    await finishWord()
     expect(screen.getByText('banana')).toBeInTheDocument()
-    
+
     await act(async () => {
       fireEvent.click(screen.getByText('← Previous'))
     })
@@ -133,15 +156,10 @@ describe('LearnMode Component', () => {
     await act(async () => {
       renderWithProviders(<LearnMode words={TWO_WORDS} onComplete={onComplete} />)
     })
-    
-    await act(async () => {
-      fireEvent.click(screen.getByText('Got it!'))
-    })
-    
-    await act(async () => {
-      fireEvent.click(screen.getByText('Finish!'))
-    })
-    
+
+    await finishWord()
+    await finishWord()
+
     expect(onComplete).toHaveBeenCalled()
     expect(screen.getByText('Awesome job!')).toBeInTheDocument()
     expect(mockLearningFlow.completeWord).toHaveBeenCalledWith('2')
@@ -165,9 +183,7 @@ describe('LearnMode Component', () => {
     })
 
     // Completing this word crosses the daily goal → celebration prompt appears.
-    await act(async () => {
-      fireEvent.click(screen.getByText('Got it!'))
-    })
+    await finishWord()
 
     expect(screen.getByText('You did it! 🌟')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Let's Spell!/i })).toBeInTheDocument()

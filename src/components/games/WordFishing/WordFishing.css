@@ -1,0 +1,162 @@
+.word-fishing {
+  max-width: 660px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  text-align: center;
+}
+
+.wf-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  border-bottom: 2px dashed var(--border);
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  text-align: left;
+}
+.wf-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.wf-stats { display: flex; gap: var(--spacing-lg); }
+.wf-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
+.wf-stat strong { font-size: 1.15rem; color: var(--text); }
+
+.wf-target {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 4px;
+  font-family: var(--font-primary);
+  font-weight: 900;
+  font-size: clamp(1.6rem, 7vw, 2.6rem);
+  letter-spacing: 0.04em;
+}
+.wf-head { color: var(--text); }
+.wf-gap {
+  color: var(--primary-2);
+  border-bottom: 5px dotted var(--primary);
+  padding: 0 6px;
+  min-width: 60px;
+}
+.wf-gap.filled { color: var(--success); border-bottom-color: var(--success); animation: pop-in var(--transition-normal) both; }
+
+.wf-hint { color: var(--text-soft); font-weight: 600; margin: var(--spacing-sm) 0 var(--spacing-md); }
+.wf-speak {
+  margin-left: 8px;
+  border: 2px solid var(--border);
+  background: var(--card-soft);
+  border-radius: var(--radius-round);
+  padding: 2px 10px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.wf-pond {
+  position: relative;
+  height: 260px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 3px solid var(--border);
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--secondary) 22%, var(--card-soft)) 0%,
+      color-mix(in srgb, var(--secondary) 45%, var(--card-soft)) 100%);
+}
+
+.wf-water {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 34px;
+  background: repeating-linear-gradient(90deg,
+    color-mix(in srgb, #fff 35%, transparent) 0 18px,
+    transparent 18px 36px);
+  opacity: 0.35;
+  animation: wf-ripple 4s linear infinite;
+}
+@keyframes wf-ripple {
+  from { transform: translateX(0); }
+  to   { transform: translateX(36px); }
+}
+
+.wf-fish {
+  position: absolute;
+  left: 0;
+  display: flex;
+  /* Tail behind the body: the fish swims left-to-right, so it faces forward. */
+  flex-direction: row-reverse;
+  align-items: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  animation-name: wf-swim;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+/* `left` (not transform) so a lap is measured against the pond, not the screen. */
+@keyframes wf-swim {
+  from { left: -28%; }
+  to   { left: 104%; }
+}
+
+.wf-fish-body {
+  background: var(--fish-color, var(--primary));
+  color: #21323f;
+  font-family: var(--font-primary);
+  font-weight: 900;
+  font-size: clamp(0.95rem, 4vw, 1.35rem);
+  padding: 0.45rem 0.9rem;
+  border-radius: 50% 46% 46% 50%;
+  border: 3px solid rgba(255, 255, 255, 0.75);
+  box-shadow: var(--shadow-sm);
+  white-space: nowrap;
+}
+.wf-tail {
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-right: 16px solid var(--fish-color, var(--primary));
+  filter: brightness(0.9);
+}
+
+.wf-fish.hooked { animation-play-state: paused; z-index: 4; }
+.wf-fish.hooked .wf-fish-body { background: var(--success); color: #fff; animation: pulse 0.6s 2; }
+.wf-fish.swim-away { opacity: 0.35; }
+.wf-fish.splash .wf-fish-body { animation: shake 0.5s; }
+
+.wf-flash,
+.wf-nudge {
+  margin-top: var(--spacing-md);
+  padding: 0.7rem 1rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  animation: pop-in var(--transition-normal) both;
+}
+.wf-flash { background: linear-gradient(90deg, var(--success), #4EF4C5); color: #fff; }
+.wf-nudge { background: var(--card-soft); border: 2px dashed var(--border); color: var(--text-soft); }
+
+.wf-btn {
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(180deg, var(--primary), var(--primary-2));
+  border-radius: var(--radius-round);
+  padding: 0.7rem 1.4rem;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+}
+.wf-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
+
+@media (max-width: 520px) {
+  .wf-header { flex-direction: column; align-items: stretch; }
+  .wf-stats { justify-content: center; }
+  .wf-pond { height: 230px; }
+}

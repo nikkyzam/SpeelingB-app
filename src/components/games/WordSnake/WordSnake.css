@@ -1,0 +1,136 @@
+.word-snake {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  text-align: center;
+  transition: box-shadow var(--transition-fast);
+}
+.word-snake.flash-good { box-shadow: 0 0 0 4px var(--success), var(--shadow-lg); }
+.word-snake.flash-bad { box-shadow: 0 0 0 4px var(--error), var(--shadow-lg); }
+
+.ws-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  border-bottom: 2px dashed var(--border);
+  padding-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  text-align: left;
+}
+.ws-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.ws-stats { display: flex; gap: var(--spacing-lg); }
+.ws-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
+.ws-stat strong { font-size: 1.1rem; color: var(--text); }
+
+.ws-word { display: flex; justify-content: center; gap: 6px; margin-bottom: 4px; flex-wrap: wrap; }
+.ws-slot {
+  min-width: 34px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--card-soft);
+  border: 2px solid var(--border);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+.ws-slot.eaten { background: var(--success); border-color: var(--success); color: #fff; }
+.ws-slot.next { border-color: var(--primary); color: var(--primary-2); animation: pulse 1.1s infinite; }
+
+.ws-hint { color: var(--text-soft); font-weight: 700; margin-bottom: var(--spacing-sm); }
+.ws-hint strong { color: var(--primary-2); font-size: 1.15rem; }
+
+.ws-board {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  gap: 2px;
+  aspect-ratio: 1;
+  max-width: 420px;
+  margin: 0 auto var(--spacing-md);
+  padding: 6px;
+  border-radius: var(--radius-md);
+  background:
+    repeating-linear-gradient(45deg,
+      color-mix(in srgb, var(--secondary) 14%, transparent) 0 12px,
+      transparent 12px 24px),
+    var(--card-soft);
+  border: 3px solid var(--border);
+  touch-action: none; /* swipes steer the snake, they don't scroll the page */
+}
+
+.ws-cell { position: relative; display: grid; place-items: center; border-radius: 4px; }
+
+.ws-snake {
+  position: absolute;
+  inset: 1px;
+  border-radius: 40%;
+  background: linear-gradient(160deg, var(--secondary-2), var(--secondary));
+  display: grid;
+  place-items: center;
+  font-size: clamp(0.6rem, 2.4vw, 1rem);
+}
+.ws-snake.head {
+  border-radius: 45% 45% 35% 35%;
+  background: linear-gradient(160deg, var(--secondary), var(--accent));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 45%, transparent);
+  z-index: 2;
+}
+
+.ws-letter {
+  font-family: var(--font-primary);
+  font-weight: 900;
+  font-size: clamp(0.7rem, 2.8vw, 1.15rem);
+  color: var(--text);
+  background: var(--card);
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  width: 92%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  animation: pop-in var(--transition-normal) both;
+}
+
+.ws-pad { display: grid; justify-items: center; gap: 6px; }
+.ws-pad-mid { display: flex; gap: 62px; }
+.ws-dpad {
+  width: 56px;
+  height: 46px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(180deg, var(--primary), var(--primary-2));
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+}
+.ws-dpad:active { transform: translateY(3px); box-shadow: none; }
+
+.ws-tip { margin-top: var(--spacing-sm); color: var(--text-soft); font-size: 0.85rem; }
+
+.ws-btn {
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(180deg, var(--primary), var(--primary-2));
+  border-radius: var(--radius-round);
+  padding: 0.7rem 1.4rem;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+}
+.ws-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
+
+@media (max-width: 520px) {
+  .ws-header { flex-direction: column; align-items: stretch; }
+  .ws-stats { justify-content: center; }
+  .ws-pad-mid { gap: 48px; }
+}

@@ -2,7 +2,15 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useProgress } from '../../contexts/ProgressContext'
 import { useUser } from '../../contexts/UserContext'
+import { useRewardStore } from '../../stores/rewards/useRewardStore'
 import { wordBank } from '../../services/wordBank'
+import WordMastery, {
+  MASTERY_EVENT,
+  LEARN_CHALLENGE_TARGET,
+  LEARN_CHALLENGE_REWARD,
+} from '../../services/progress/WordMastery'
+import ExplorerLevel from '../../components/progress/ExplorerLevel'
+import WordJourney from '../../components/progress/WordJourney'
 import Button from '../../components/common/Button'
 import LearnMode from '../../components/learning/LearnMode'
 import SpellMode from '../../components/learning/SpellMode'
@@ -23,7 +31,24 @@ const LearningHub: React.FC = () => {
   const [difficulty, setDifficulty] = useState<Difficulty>(() => learningFlow.getDifficulty())
   const [selectedGroup, setSelectedGroup] = useState(() => learningFlow.getSelectedGroup())
   const [isGroupsExpanded, setIsGroupsExpanded] = useState(false)
+  // Re-read today's challenge whenever a word is learned or spelled.
+  const [challengeTick, setChallengeTick] = useState(0)
   const navigate = useNavigate()
+  const { addStars } = useRewardStore()
+
+  useEffect(() => {
+    const bump = () => setChallengeTick((t) => t + 1)
+    window.addEventListener(MASTERY_EVENT, bump)
+    return () => window.removeEventListener(MASTERY_EVENT, bump)
+  }, [])
+
+  const challenge = useMemo(() => WordMastery.getChallenge(), [challengeTick, activeMode])
+  const challengeDone = challenge.learned >= LEARN_CHALLENGE_TARGET.learned
+    && challenge.spelled >= LEARN_CHALLENGE_TARGET.spelled
+  const challengeSteps = LEARN_CHALLENGE_TARGET.learned + LEARN_CHALLENGE_TARGET.spelled
+  const challengeProgress =
+    Math.min(challenge.learned, LEARN_CHALLENGE_TARGET.learned) +
+    Math.min(challenge.spelled, LEARN_CHALLENGE_TARGET.spelled)
 
   const dailyGoal = learningFlow.getDailyGoal('learn')
   const groupSize = dailyGoal // Word groups based on daily goal
@@ -203,14 +228,16 @@ const LearningHub: React.FC = () => {
   const isLearnLocked = learningFlow.getLockedModes().includes('learn')
   const isSpellLocked = learningFlow.getLockedModes().includes('spell')
 
-  const handleStartChallenge = () => {
-    // For "Master Animal Words" challenge
-    const animalWords = wordBank.getWordsByCategory('animals').slice(0, dailyGoal)
-    if (animalWords.length > 0) {
-      setActiveMode('learn')
-      setIsGroupsExpanded(true) // Ensure we use the filtered words
-      setSelectedGroup(0)
+  /** Claim today's bonus, or jump to whichever half of it is still unfinished. */
+  const handleChallengeAction = () => {
+    if (challengeDone) {
+      if (WordMastery.claimChallenge()) {
+        addStars(LEARN_CHALLENGE_REWARD)
+        setChallengeTick((t) => t + 1)
+      }
+      return
     }
+    handleModeSelect(challenge.learned < LEARN_CHALLENGE_TARGET.learned ? 'learn' : 'spell')
   }
 
   if (activeMode === 'learn') {
@@ -223,10 +250,12 @@ const LearningHub: React.FC = () => {
           <h1>📚 Learn Mode</h1>
           {renderCommonSelectors()}
         </div>
+        {/* No onComplete handler on purpose: finishing a set should land on
+            LearnMode's own celebration (stars, best streak, a word joke), not
+            snap straight back to the hub. "Back to Hub" sits in the header. */}
         <LearnMode
           words={groupWords}
           difficulty={difficulty}
-          onComplete={handleBack}
           onMoveToPractice={() => handleModeSelect('spell')}
         />
       </div>
@@ -328,11 +357,24 @@ const LearningHub: React.FC = () => {
         </div>
       </div>
 
+      {/* The rank that only ever goes up — tap it to see the words behind it. */}
+      <ExplorerLevel onClick={() => navigate('/collection')} />
+
       <div className="learning-path">
         <h2>🚀 Your Word Adventure</h2>
         <p className="path-intro">
           Group {safeGroup + 1} • {groupCount} words. Learn them all, spell them all, then a game pops open! 🎮
         </p>
+
+        {/* The whole adventure at a glance, with the mascot standing on today's stop */}
+        <WordJourney
+          words={filteredWords}
+          groupSize={groupSize}
+          current={safeGroup}
+          learnedIds={learnedTotal}
+          spelledIds={spelledTotal}
+          onSelect={handleGroupSelect}
+        />
 
         {renderMissedDays()}
 
@@ -463,14 +505,14 @@ const LearningHub: React.FC = () => {
           </div>
 
           <div className="mode-card">
-            <div className="mode-icon">📊</div>
-            <h3>Progress Review</h3>
-            <p>View your learning progress and stats</p>
+            <div className="mode-icon">🗂️</div>
+            <h3>My Word Collection</h3>
+            <p>Every word you&apos;ve met, with the stars you earned for it</p>
             <Button
-              onClick={() => {/* Navigate to progress */}}
+              onClick={() => navigate('/collection')}
               variant="primary"
             >
-              View Progress
+              Open Collection
             </Button>
           </div>
         </div>
@@ -505,22 +547,37 @@ const LearningHub: React.FC = () => {
         </div>
       </div>
 
+      {/* Counted from what actually happened today, not a fixed 30% bar. */}
       <div className="todays-challenge">
-        <h2>🏆 Today's Challenge</h2>
+        <h2>🏆 Today&apos;s Challenge</h2>
         <div className="challenge-card">
-          <div className="challenge-icon">🎯</div>
+          <div className="challenge-icon">{challengeDone ? '🎉' : '🎯'}</div>
           <div className="challenge-content">
-            <h3>Master 10 Animal Words</h3>
-            <p>Learn and spell 10 animal-related words to earn a special sticker!</p>
+            <h3>Learn {LEARN_CHALLENGE_TARGET.learned} words &amp; spell {LEARN_CHALLENGE_TARGET.spelled}</h3>
+            <p>
+              {challenge.claimed
+                ? 'Bonus claimed — what a day of learning! 🌟'
+                : challengeDone
+                  ? `You did it! Claim your ${LEARN_CHALLENGE_REWARD} bonus stars.`
+                  : `📖 ${Math.min(challenge.learned, LEARN_CHALLENGE_TARGET.learned)}/${LEARN_CHALLENGE_TARGET.learned} learned · ✏️ ${Math.min(challenge.spelled, LEARN_CHALLENGE_TARGET.spelled)}/${LEARN_CHALLENGE_TARGET.spelled} spelled — ${LEARN_CHALLENGE_REWARD} stars when you finish!`}
+            </p>
             <div className="challenge-progress">
               <div className="progress-bar">
-                <div className="progress-fill" style={{ width: '30%' }} />
+                <div
+                  className="progress-fill"
+                  style={{ width: `${(challengeProgress / challengeSteps) * 100}%` }}
+                />
               </div>
-              <span className="progress-text">3/10 words</span>
+              <span className="progress-text">{challengeProgress}/{challengeSteps} done</span>
             </div>
           </div>
-          <Button variant="success" icon="🏃‍♀️" onClick={handleStartChallenge}>
-            Start Challenge
+          <Button
+            variant="success"
+            icon={challengeDone && !challenge.claimed ? '⭐' : '🏃‍♀️'}
+            onClick={handleChallengeAction}
+            disabled={challenge.claimed}
+          >
+            {challenge.claimed ? 'Claimed' : challengeDone ? 'Claim stars' : 'Keep going'}
           </Button>
         </div>
       </div>

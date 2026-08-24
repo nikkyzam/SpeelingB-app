@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useRewardStore } from '../../stores/rewards/useRewardStore';
+import { useNavigate } from 'react-router-dom';
+import BuddyService from '../../services/buddy/BuddyService';
 import { RewardItem } from '../../types/rewards';
 import { RewardsDataService } from '../../services/rewards/RewardsDataService';
 import PointsDisplay from './PointsDisplay';
 import RewardCard from './RewardCard';
 import BadgeCollection from './BadgeCollection';
 import { useRewardStore as useV2RewardStore } from '../../stores/rewards/useRewardStore';
-import { useRewardStore as useV1RewardStore } from '../../stores/rewardStore';
 import './RewardShop.css';
 
 const RewardShop: React.FC = () => {
@@ -21,7 +21,8 @@ const RewardShop: React.FC = () => {
     loadRewards
   } = useV2RewardStore();
 
-  const { addStars } = useV1RewardStore();
+  const navigate = useNavigate();
+  const buddyName = BuddyService.get().name;
 
   const [purchaseMessage, setPurchaseMessage] = useState<string>('');
   const [showRealRewards, setShowRealRewards] = useState<boolean>(true);
@@ -76,6 +77,20 @@ const RewardShop: React.FC = () => {
         <p>Spend your Heavenly Stars on awesome rewards!</p>
 
         <PointsDisplay />
+
+        {/* Stars used to have nowhere visible to go. This is where they land. */}
+        <button className="buddy-shop-banner" onClick={() => navigate('/')}>
+          <span className="bsb-icon" aria-hidden>🎽</span>
+          <span className="bsb-text">
+            <strong>{buddyName ? `Dress up ${buddyName}` : 'Meet your buddy'}</strong>
+            <span>
+              {buddyName
+                ? 'Spend your stars on hats, specs and sparkles for your buddy'
+                : 'Hatch a buddy on the home screen, then spend your stars on it'}
+            </span>
+          </span>
+          <span className="bsb-go" aria-hidden>→</span>
+        </button>
       </div>
 
       {purchaseMessage && (

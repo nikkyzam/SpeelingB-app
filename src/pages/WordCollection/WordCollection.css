@@ -1,0 +1,153 @@
+.word-collection {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+}
+
+.wc-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+}
+.wc-header h1 {
+  flex: 1;
+  text-align: center;
+  color: var(--primary-2);
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+}
+
+.wc-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--spacing-md);
+  margin: var(--spacing-lg) 0;
+}
+.wc-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-md);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+.wc-stat-value {
+  font-family: var(--font-primary);
+  font-weight: 900;
+  font-size: 1.9rem;
+  color: var(--primary-2);
+  line-height: 1.1;
+}
+.wc-stat-label { font-size: 0.8rem; color: var(--text-soft); font-weight: 700; text-align: center; }
+
+.wc-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-sm);
+}
+.wc-filters { display: flex; gap: var(--spacing-sm); flex-wrap: wrap; }
+.wc-chip {
+  border: 2px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  border-radius: var(--radius-round);
+  padding: 0.4rem 0.95rem;
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+.wc-chip:hover { transform: translateY(-2px); }
+.wc-chip.active {
+  background: linear-gradient(180deg, var(--primary), var(--primary-2));
+  border-color: var(--primary-2);
+  color: #fff;
+}
+
+.wc-search {
+  min-width: 180px;
+  padding: 0.5rem 1rem;
+  border: 3px solid var(--border);
+  border-radius: var(--radius-round);
+  background: var(--card);
+  color: var(--text);
+  font-family: var(--font-secondary);
+  font-weight: 600;
+}
+.wc-search:focus { outline: none; border-color: var(--primary); }
+
+.wc-hint { color: var(--text-soft); font-size: 0.85rem; margin-bottom: var(--spacing-md); }
+
+.wc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.wc-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-lg);
+  border: 3px solid var(--border);
+  background: var(--card);
+  cursor: pointer;
+  text-align: center;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+  color: var(--text);
+}
+.wc-card:hover { transform: translateY(-5px) rotate(-1deg); box-shadow: var(--shadow-md); }
+.wc-card.stars-2 { border-color: var(--secondary); }
+.wc-card.stars-3 {
+  border-color: var(--warning);
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--warning) 25%, transparent), transparent 60%),
+    var(--card);
+}
+.wc-card.open { grid-column: span 2; }
+
+.wc-card-stars { font-size: 0.85rem; letter-spacing: 0.05em; }
+.wc-card-word {
+  font-family: var(--font-primary);
+  font-weight: 900;
+  font-size: clamp(1.05rem, 3.4vw, 1.35rem);
+  color: var(--text);
+  word-break: break-word;
+}
+.wc-card-chunks { font-size: 0.72rem; color: var(--text-soft); letter-spacing: 0.06em; }
+.wc-card-meaning {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: pop-in var(--transition-normal) both;
+}
+.wc-card-tip { color: var(--primary-2); font-weight: 700; font-style: italic; }
+
+.wc-none, .wc-empty { grid-column: 1 / -1; text-align: center; color: var(--text-soft); }
+.wc-empty {
+  padding: var(--spacing-xxl) var(--spacing-lg);
+  background: var(--card);
+  border: 3px dashed var(--border);
+  border-radius: var(--radius-lg);
+}
+.wc-empty-icon { font-size: 3.5rem; animation: floaty 4s ease-in-out infinite; }
+.wc-empty h2 { color: var(--text); margin: var(--spacing-sm) 0; }
+.wc-empty p { margin-bottom: var(--spacing-lg); }
+
+@media (max-width: 520px) {
+  .wc-header h1 { text-align: left; }
+  .wc-card.open { grid-column: span 1; }
+}

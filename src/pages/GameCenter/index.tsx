@@ -1,13 +1,18 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useRewardStore } from '../../stores/rewards/useRewardStore'
 import { useProgress } from '../../contexts/ProgressContext'
 import { wordBank } from '../../services/wordBank'
+import GameStats, {
+  GAME_STATS_EVENT,
+  DAILY_CHALLENGE_TARGET,
+  DAILY_CHALLENGE_REWARD,
+} from '../../services/games/GameStats'
 import Button from '../../components/common/Button'
-import { 
-  BonusGame, 
-  WordRace, 
-  MemoryMatch, 
+import {
+  BonusGame,
+  WordRace,
+  MemoryMatch,
   BalloonPop,
   WordScramble,
   SpellSprint,
@@ -35,6 +40,17 @@ import {
   MysteryPicture,
   SecretCode,
   GhostWord,
+  WordSnake,
+  DragonDuel,
+  WordWhack,
+  WordFishing,
+  RhymeTime,
+  SpellTower,
+  WordSort,
+  ParrotParty,
+  SillyStory,
+  TreasureTrail,
+  PrizeWheel,
   BibleTriviaEnhanced,
   BibleMemorizer
 } from '../../components/games'
@@ -50,8 +66,8 @@ const HIDDEN_GAMES = new Set([
   'music-composer', 'physics-puzzle', 'puzzle-slider',
 ])
 
-type GameMode = 
-  | 'bonus' | 'word-race' | 'memory-match' | 'balloon-pop' 
+type GameMode =
+  | 'bonus' | 'word-race' | 'memory-match' | 'balloon-pop'
   | 'word-scramble' | 'spell-sprint' | 'shape-catcher' | 'spelling-adventure'
   | 'pattern-memory' | 'rhythm-tap' | 'memory-grid' | 'reaction-test'
   | 'pattern-sequencer' | 'color-mixer' | 'math-puzzle' | 'music-composer'
@@ -61,16 +77,60 @@ type GameMode =
   | 'word-search' | 'bee-catch'
   | 'word-chef' | 'abc-order'
   | 'typo-detective' | 'mystery-picture' | 'secret-code' | 'ghost-word'
+  | 'word-snake' | 'dragon-duel' | 'word-whack' | 'word-fishing' | 'rhyme-time'
+  | 'spell-tower' | 'word-sort' | 'parrot-party' | 'silly-story' | 'treasure-trail'
   | 'bible-trivia' | 'bible-memorizer'
   | null
+
+/** How the hub groups games so a child can find the kind of play they're after. */
+type Category = 'spelling' | 'listen' | 'arcade' | 'think' | 'bible'
+
+interface GameCard {
+  id: string
+  title: string
+  description: string
+  icon: string
+  color: string
+  duration: string
+  category: Category
+  /** freshly added — flagged in the grid until the child opens it once */
+  isNew?: boolean
+  unlocked: boolean
+}
+
+const FILTERS: { id: Category | 'all' | 'favorites'; label: string; icon: string }[] = [
+  { id: 'all', label: 'All games', icon: '🎮' },
+  { id: 'favorites', label: 'Favorites', icon: '⭐' },
+  { id: 'spelling', label: 'Spelling', icon: '✏️' },
+  { id: 'listen', label: 'Listening', icon: '👂' },
+  { id: 'arcade', label: 'Arcade', icon: '🕹️' },
+  { id: 'think', label: 'Puzzles', icon: '🧠' },
+  { id: 'bible', label: 'Bible', icon: '✝️' },
+]
 
 const GameCenter: React.FC = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const [activeGame, setActiveGame] = useState<GameMode>(null)
   const [celebration, setCelebration] = useState<CelebrationData | null>(null)
+  const [filter, setFilter] = useState<Category | 'all' | 'favorites'>('all')
+  // Bumped whenever a best score, favourite or daily play is written, so the
+  // cards below always show what actually happened.
+  const [statsTick, setStatsTick] = useState(0)
   const { addStars } = useRewardStore()
   const { learningFlow } = useProgress()
+
+  useEffect(() => {
+    const bump = () => setStatsTick((t) => t + 1)
+    window.addEventListener(GAME_STATS_EVENT, bump)
+    return () => window.removeEventListener(GAME_STATS_EVENT, bump)
+  }, [])
+
+  const bests = useMemo(() => GameStats.getAllBests(), [statsTick])
+  const favorites = useMemo(() => GameStats.getFavorites(), [statsTick])
+  const challenge = useMemo(() => GameStats.getDailyChallenge(), [statsTick])
+  const seen = useMemo(() => GameStats.getSeen(), [statsTick])
+  const gridRef = useRef<HTMLDivElement>(null)
 
   // Games practise what the child has ALREADY studied. We draw from their
   // learned words first; only if they haven't learned enough yet do we top up
@@ -113,7 +173,6 @@ const GameCenter: React.FC = () => {
     }
   }, [location.state])
 
-  const isGamesUnlocked = learningFlow.areGamesUnlocked()
   const quizPassed = learningFlow.isDailyQuizPassed()
   // Count words the quiz can actually ASK. Word ids are positional, so a saved
   // id could stop resolving; counting raw ids here would promise a quiz that
@@ -122,12 +181,7 @@ const GameCenter: React.FC = () => {
     .getWordsLearnedTotal()
     .filter((id) => !!wordBank.getWordById(id)).length
 
-  const handleStartChallenge = () => {
-    // For "Memory Match Master" challenge
-    setActiveGame('memory-match')
-  }
-
-  const games = [
+  const games: GameCard[] = [
     {
       id: 'bonus',
       title: '🎁 Bonus Game',
@@ -135,6 +189,7 @@ const GameCenter: React.FC = () => {
       icon: '🎯',
       color: '#FF6B6B',
       duration: '15s',
+      category: 'arcade' as Category,
       unlocked: learningFlow.isGameUnlocked('bonus')
     },
     {
@@ -144,6 +199,7 @@ const GameCenter: React.FC = () => {
       icon: '📝',
       color: '#4ECDC4',
       duration: '60s',
+      category: 'arcade' as Category,
       unlocked: learningFlow.isGameUnlocked('word-race')
     },
     {
@@ -153,6 +209,7 @@ const GameCenter: React.FC = () => {
       icon: '🎴',
       color: '#FFD166',
       duration: 'Unlimited',
+      category: 'think' as Category,
       unlocked: learningFlow.isGameUnlocked('memory-match')
     },
     {
@@ -162,6 +219,7 @@ const GameCenter: React.FC = () => {
       icon: '🧱',
       color: '#8338EC',
       duration: '5 words',
+      category: 'spelling' as Category,
       unlocked: learningFlow.isGameUnlocked('word-builder')
     },
     {
@@ -171,6 +229,7 @@ const GameCenter: React.FC = () => {
       icon: '🔡',
       color: '#0EA5E9',
       duration: '6 words',
+      category: 'spelling' as Category,
       unlocked: learningFlow.isGameUnlocked('missing-letter')
     },
     {
@@ -180,6 +239,7 @@ const GameCenter: React.FC = () => {
       icon: '🔍',
       color: '#EF476F',
       duration: '6 words',
+      category: 'listen' as Category,
       unlocked: learningFlow.isGameUnlocked('spelling-check')
     },
     {
@@ -189,6 +249,7 @@ const GameCenter: React.FC = () => {
       icon: '🐝',
       color: '#F4A300',
       duration: '5 words',
+      category: 'spelling' as Category,
       unlocked: learningFlow.isGameUnlocked('rescue-the-bee')
     },
     {
@@ -198,6 +259,7 @@ const GameCenter: React.FC = () => {
       icon: '🔎',
       color: '#06B6A4',
       duration: '5 words',
+      category: 'think' as Category,
       unlocked: learningFlow.isGameUnlocked('word-search')
     },
     {
@@ -207,6 +269,7 @@ const GameCenter: React.FC = () => {
       icon: '🐝',
       color: '#FF8C42',
       duration: '60s',
+      category: 'arcade' as Category,
       unlocked: learningFlow.isGameUnlocked('bee-catch')
     },
     {
@@ -216,6 +279,7 @@ const GameCenter: React.FC = () => {
       icon: '🍲',
       color: '#E85D75',
       duration: '90s',
+      category: 'spelling' as Category,
       unlocked: learningFlow.isGameUnlocked('word-chef')
     },
     {
@@ -225,6 +289,7 @@ const GameCenter: React.FC = () => {
       icon: '🔤',
       color: '#7C5CFF',
       duration: '4 rounds',
+      category: 'think' as Category,
       unlocked: learningFlow.isGameUnlocked('abc-order')
     },
     {
@@ -234,6 +299,7 @@ const GameCenter: React.FC = () => {
       icon: '🕵️',
       color: '#5B7CFA',
       duration: '5 cases',
+      category: 'think' as Category,
       unlocked: learningFlow.isGameUnlocked('typo-detective')
     },
     {
@@ -243,6 +309,7 @@ const GameCenter: React.FC = () => {
       icon: '🖼️',
       color: '#20C997',
       duration: '6 words',
+      category: 'spelling' as Category,
       unlocked: learningFlow.isGameUnlocked('mystery-picture')
     },
     {
@@ -252,6 +319,7 @@ const GameCenter: React.FC = () => {
       icon: '🔐',
       color: '#845EF7',
       duration: '5 codes',
+      category: 'think' as Category,
       unlocked: learningFlow.isGameUnlocked('secret-code')
     },
     {
@@ -261,7 +329,118 @@ const GameCenter: React.FC = () => {
       icon: '👻',
       color: '#748FFC',
       duration: '5 words',
+      category: 'spelling' as Category,
       unlocked: learningFlow.isGameUnlocked('ghost-word')
+    },
+    {
+      id: 'word-snake',
+      title: '🐍 Word Snake',
+      description: 'Slither around and eat the letters in order',
+      icon: '🐍',
+      color: '#3AB795',
+      duration: '90s',
+      category: 'arcade' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('word-snake')
+    },
+    {
+      id: 'dragon-duel',
+      title: '🐉 Dragon Duel',
+      description: 'Spell to attack — can you tame the dragon?',
+      icon: '🐉',
+      color: '#E03131',
+      duration: 'Boss fight',
+      category: 'spelling' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('dragon-duel')
+    },
+    {
+      id: 'word-whack',
+      title: '🔨 Word Whack',
+      description: 'Bonk the bugs holding misspelled words!',
+      icon: '🔨',
+      color: '#FF922B',
+      duration: '45s',
+      category: 'arcade' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('word-whack')
+    },
+    {
+      id: 'word-fishing',
+      title: '🎣 Word Fishing',
+      description: 'Hook the fish with the missing word ending',
+      icon: '🎣',
+      color: '#1C7ED6',
+      duration: '6 words',
+      category: 'listen' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('word-fishing')
+    },
+    {
+      id: 'rhyme-time',
+      title: '🎤 Rhyme Time',
+      description: 'Find the word that rhymes — use your ears!',
+      icon: '🎤',
+      color: '#BE4BDB',
+      duration: '6 rounds',
+      category: 'listen' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('rhyme-time')
+    },
+    {
+      id: 'spell-tower',
+      title: '🏰 Spell Tower',
+      description: 'Every word you spell builds another floor',
+      icon: '🏰',
+      color: '#F59F00',
+      duration: '8 floors',
+      category: 'spelling' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('spell-tower')
+    },
+    {
+      id: 'word-sort',
+      title: '🧺 Word Sort',
+      description: 'Drop each word in the basket where it belongs',
+      icon: '🧺',
+      color: '#12B886',
+      duration: '10 words',
+      category: 'think' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('word-sort')
+    },
+    {
+      id: 'parrot-party',
+      title: '🦜 Parrot Party',
+      description: 'Polly says… now say the words back in order!',
+      icon: '🦜',
+      color: '#40C057',
+      duration: '6 rounds',
+      category: 'listen' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('parrot-party')
+    },
+    {
+      id: 'silly-story',
+      title: '📜 Silly Story',
+      description: 'Fill the blanks and make a giggly story',
+      icon: '📜',
+      color: '#FA5252',
+      duration: '4 blanks',
+      category: 'think' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('silly-story')
+    },
+    {
+      id: 'treasure-trail',
+      title: '🗺️ Treasure Trail',
+      description: 'Roll the dice, solve puzzles, find the treasure',
+      icon: '🗺️',
+      color: '#D6336C',
+      duration: '12 steps',
+      category: 'think' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('treasure-trail')
     },
     {
       id: 'balloon-pop',
@@ -270,6 +449,7 @@ const GameCenter: React.FC = () => {
       icon: '💥',
       color: '#06D6A0',
       duration: '3 words',
+      category: 'arcade' as Category,
       unlocked: learningFlow.isGameUnlocked('balloon-pop')
     },
     {
@@ -279,6 +459,7 @@ const GameCenter: React.FC = () => {
       icon: '🌀',
       color: '#118AB2',
       duration: '45s',
+      category: 'spelling' as Category,
       unlocked: learningFlow.isGameUnlocked('word-scramble')
     },
     {
@@ -288,6 +469,7 @@ const GameCenter: React.FC = () => {
       icon: '🏃‍♂️',
       color: '#8338EC',
       duration: '60s',
+      category: 'spelling' as Category,
       unlocked: learningFlow.isGameUnlocked('spell-sprint')
     },
     {
@@ -297,6 +479,7 @@ const GameCenter: React.FC = () => {
       icon: '🎮',
       color: '#FF006E',
       duration: '60s',
+      category: 'arcade' as Category,
       unlocked: learningFlow.isGameUnlocked('shape-catcher')
     },
     {
@@ -306,6 +489,7 @@ const GameCenter: React.FC = () => {
       icon: '🌟',
       color: '#FB5607',
       duration: 'Adventure',
+      category: 'arcade' as Category,
       unlocked: learningFlow.isGameUnlocked('spelling-adventure')
     },
     {
@@ -315,6 +499,7 @@ const GameCenter: React.FC = () => {
       icon: '🧩',
       color: '#FF9F1C',
       duration: '60s',
+      category: 'think' as Category,
       unlocked: learningFlow.isGameUnlocked('pattern-memory')
     },
     {
@@ -324,6 +509,7 @@ const GameCenter: React.FC = () => {
       icon: '🎵',
       color: '#2EC4B6',
       duration: '60s',
+      category: 'arcade' as Category,
       unlocked: learningFlow.isGameUnlocked('rhythm-tap')
     },
     {
@@ -333,6 +519,7 @@ const GameCenter: React.FC = () => {
       icon: '🔢',
       color: '#E71D36',
       duration: '90s',
+      category: 'think' as Category,
       unlocked: learningFlow.isGameUnlocked('memory-grid')
     },
     {
@@ -342,6 +529,7 @@ const GameCenter: React.FC = () => {
       icon: '⚡',
       color: '#FF9F1C',
       duration: '30s',
+      category: 'arcade' as Category,
       unlocked: learningFlow.isGameUnlocked('reaction-test')
     },
     {
@@ -351,6 +539,7 @@ const GameCenter: React.FC = () => {
       icon: '🧬',
       color: '#7209B7',
       duration: '120s',
+      category: 'think' as Category,
       unlocked: learningFlow.isGameUnlocked('pattern-sequencer')
     },
     {
@@ -360,6 +549,7 @@ const GameCenter: React.FC = () => {
       icon: '🎨',
       color: '#3A86FF',
       duration: '60s',
+      category: 'think' as Category,
       unlocked: learningFlow.isGameUnlocked('color-mixer')
     },
     {
@@ -369,6 +559,7 @@ const GameCenter: React.FC = () => {
       icon: '➕',
       color: '#8AC926',
       duration: '60s',
+      category: 'think' as Category,
       unlocked: learningFlow.isGameUnlocked('math-puzzle')
     },
     {
@@ -378,6 +569,7 @@ const GameCenter: React.FC = () => {
       icon: '🎹',
       color: '#FFCA3A',
       duration: 'Unlimited',
+      category: 'arcade' as Category,
       unlocked: learningFlow.isGameUnlocked('music-composer')
     },
     {
@@ -387,6 +579,7 @@ const GameCenter: React.FC = () => {
       icon: '⚙️',
       color: '#1982C4',
       duration: '120s',
+      category: 'think' as Category,
       unlocked: learningFlow.isGameUnlocked('physics-puzzle')
     },
     {
@@ -396,6 +589,7 @@ const GameCenter: React.FC = () => {
       icon: '🖼️',
       color: '#6A4C93',
       duration: '180s',
+      category: 'think' as Category,
       unlocked: learningFlow.isGameUnlocked('puzzle-slider')
     },
     {
@@ -405,6 +599,7 @@ const GameCenter: React.FC = () => {
       icon: '✝️',
       color: '#FFD700',
       duration: 'Unlimited',
+      category: 'bible' as Category,
       unlocked: learningFlow.isGameUnlocked('word-scramble')
     },
     {
@@ -414,18 +609,29 @@ const GameCenter: React.FC = () => {
       icon: '🧠',
       color: '#4A90E2',
       duration: 'Unlimited',
+      category: 'bible' as Category,
       unlocked: learningFlow.isGameUnlocked('bible-memorizer')
     }
   ]
 
   const handleGameComplete = (score: number) => {
+    const finishedId = activeGame
+
     // Award stars based on score
     const starsEarned = Math.max(1, Math.floor(score / 100))
     addStars(starsEarned)
 
+    let newBest = false
+    if (finishedId) {
+      newBest = GameStats.recordScore(finishedId, score).isNewBest
+      GameStats.recordDailyPlay(finishedId)
+    }
+
     setCelebration({
-      title: 'Great job! 🎉',
-      message: `You scored ${score}!`,
+      title: newBest ? '🏆 New best score!' : 'Great job! 🎉',
+      message: newBest
+        ? `${score} points — that's your best ever at this game!`
+        : `You scored ${score}!`,
       stars: starsEarned,
     })
 
@@ -433,12 +639,52 @@ const GameCenter: React.FC = () => {
     setActiveGame(null)
   }
 
+  const openGame = (id: string) => {
+    GameStats.markSeen(id)
+    setActiveGame(id as GameMode)
+  }
+
+  const toggleFavorite = (id: string) => {
+    GameStats.toggleFavorite(id)
+  }
+
+  const claimChallenge = () => {
+    if (!GameStats.claimDailyChallenge()) return
+    addStars(DAILY_CHALLENGE_REWARD)
+    setCelebration({
+      title: 'Daily challenge complete! 🏅',
+      message: `You played ${DAILY_CHALLENGE_TARGET} different games today!`,
+      stars: DAILY_CHALLENGE_REWARD,
+    })
+  }
+
   const handleBackToGames = () => {
     setActiveGame(null)
   }
 
+  const visibleGames = games.filter((g) => !HIDDEN_GAMES.has(g.id))
+
   // How many visible games are still behind today's quiz.
-  const lockedCount = games.filter((g) => !HIDDEN_GAMES.has(g.id) && !g.unlocked).length
+  const lockedCount = visibleGames.filter((g) => !g.unlocked).length
+
+  // Favourites float to the top, then anything brand new, then the usual order.
+  const shownGames = visibleGames
+    .filter((g) => {
+      if (filter === 'all') return true
+      if (filter === 'favorites') return favorites.includes(g.id)
+      return g.category === filter
+    })
+    .map((g, i) => ({ ...g, order: i }))
+    .sort((a, b) => {
+      const fav = Number(favorites.includes(b.id)) - Number(favorites.includes(a.id))
+      if (fav !== 0) return fav
+      const fresh = Number(!!b.isNew) - Number(!!a.isNew)
+      if (fresh !== 0) return fresh
+      return a.order - b.order
+    })
+
+  const challengeProgress = Math.min(challenge.games.length, DAILY_CHALLENGE_TARGET)
+  const challengeDone = challengeProgress >= DAILY_CHALLENGE_TARGET
 
   const renderActiveGame = () => {
     switch (activeGame) {
@@ -472,6 +718,16 @@ const GameCenter: React.FC = () => {
       case 'mystery-picture': return <MysteryPicture words={selectedWords} onComplete={handleGameComplete} />
       case 'secret-code': return <SecretCode words={selectedWords} onComplete={handleGameComplete} />
       case 'ghost-word': return <GhostWord words={selectedWords} onComplete={handleGameComplete} />
+      case 'word-snake': return <WordSnake words={selectedWords} onComplete={handleGameComplete} />
+      case 'dragon-duel': return <DragonDuel words={selectedWords} onComplete={handleGameComplete} />
+      case 'word-whack': return <WordWhack words={selectedWords} onComplete={handleGameComplete} />
+      case 'word-fishing': return <WordFishing words={selectedWords} onComplete={handleGameComplete} />
+      case 'rhyme-time': return <RhymeTime words={selectedWords} onComplete={handleGameComplete} />
+      case 'spell-tower': return <SpellTower words={selectedWords} onComplete={handleGameComplete} />
+      case 'word-sort': return <WordSort words={selectedWords} onComplete={handleGameComplete} />
+      case 'parrot-party': return <ParrotParty words={selectedWords} onComplete={handleGameComplete} />
+      case 'silly-story': return <SillyStory words={selectedWords} onComplete={handleGameComplete} />
+      case 'treasure-trail': return <TreasureTrail words={selectedWords} onComplete={handleGameComplete} />
       case 'bible-trivia': return <BibleTriviaEnhanced onComplete={handleGameComplete} />
       case 'bible-memorizer': return <BibleMemorizer onComplete={handleGameComplete} />
       default: return null
@@ -480,6 +736,7 @@ const GameCenter: React.FC = () => {
 
   if (activeGame) {
     const gameInfo = games.find(g => g.id === activeGame)
+    const best = bests[activeGame] || 0
     return (
       <div className="game-container">
         <div className="game-header-bar">
@@ -487,6 +744,7 @@ const GameCenter: React.FC = () => {
             ← Back to Games
           </Button>
           <h1>{gameInfo?.title || 'Game'}</h1>
+          {best > 0 && <span className="game-best-chip">🏆 Best: {best}</span>}
         </div>
         {renderActiveGame()}
         <Celebration data={celebration} onClose={() => setCelebration(null)} />
@@ -516,6 +774,9 @@ const GameCenter: React.FC = () => {
         </div>
       </div>
 
+      {/* A free spin every day — the reason to open the app tomorrow. */}
+      <PrizeWheel />
+
       {/* The daily gate: spell every word you've learned to open all the games. */}
       <div className={`daily-gate ${quizPassed ? 'done' : ''}`}>
         <div className="daily-gate-icon" aria-hidden>{quizPassed ? '🏆' : '🔒'}</div>
@@ -540,44 +801,85 @@ const GameCenter: React.FC = () => {
         )}
       </div>
 
-      <div className="games-grid">
-        {games.filter(game => !HIDDEN_GAMES.has(game.id)).map(game => (
-          <div
-            key={game.id}
-            className={`game-card ${game.unlocked ? '' : 'locked'}`}
-            style={{ '--card-color': game.color } as React.CSSProperties}
+      {/* Pick the kind of play you're in the mood for. */}
+      <div className="games-filters" role="tablist" aria-label="Game categories">
+        {FILTERS.map((f) => (
+          <button
+            key={f.id}
+            role="tab"
+            aria-selected={filter === f.id}
+            className={`filter-chip ${filter === f.id ? 'active' : ''}`}
+            onClick={() => setFilter(f.id)}
           >
-            <div className="game-card-header">
-              <div className="game-icon">{game.icon}</div>
-              <div className="game-meta">
-                <span className="game-duration">{game.duration}</span>
-                {!game.unlocked && <span className="lock-icon">🔒</span>}
+            <span aria-hidden>{f.icon}</span> {f.label}
+            {f.id === 'favorites' && favorites.length > 0 && (
+              <span className="filter-count">{favorites.length}</span>
+            )}
+          </button>
+        ))}
+      </div>
+
+      <div className="games-grid" ref={gridRef}>
+        {shownGames.map(game => {
+          const best = bests[game.id] || 0
+          const isFavorite = favorites.includes(game.id)
+          return (
+            <div
+              key={game.id}
+              className={`game-card ${game.unlocked ? '' : 'locked'}`}
+              style={{ '--card-color': game.color } as React.CSSProperties}
+            >
+              <div className="game-card-header">
+                <div className="game-icon">{game.icon}</div>
+                <div className="game-meta">
+                  {game.isNew && !seen.includes(game.id) && <span className="new-badge">NEW</span>}
+                  <span className="game-duration">{game.duration}</span>
+                  {!game.unlocked && <span className="lock-icon">🔒</span>}
+                  <button
+                    className={`fav-btn ${isFavorite ? 'on' : ''}`}
+                    onClick={() => toggleFavorite(game.id)}
+                    aria-label={isFavorite ? `Remove ${game.title} from favorites` : `Add ${game.title} to favorites`}
+                    aria-pressed={isFavorite}
+                    title="Favorite"
+                  >
+                    {isFavorite ? '⭐' : '☆'}
+                  </button>
+                </div>
+              </div>
+
+              <div className="game-card-content">
+                <h3>{game.title}</h3>
+                <p>{game.description}</p>
+                {best > 0 && <p className="game-best">🏆 Your best: <strong>{best}</strong></p>}
+              </div>
+
+              <div className="game-card-footer">
+                <Button
+                  onClick={() => game.unlocked && openGame(game.id)}
+                  variant={game.unlocked ? 'primary' : 'secondary'}
+                  disabled={!game.unlocked}
+                  fullWidth
+                >
+                  {game.unlocked ? (best > 0 ? 'Beat your best!' : 'Play Now') : 'Locked'}
+                </Button>
+
+                {!game.unlocked && (
+                  <p className="unlock-requirement">
+                    Complete daily learning to unlock
+                  </p>
+                )}
               </div>
             </div>
+          )
+        })}
 
-            <div className="game-card-content">
-              <h3>{game.title}</h3>
-              <p>{game.description}</p>
-            </div>
-
-            <div className="game-card-footer">
-              <Button
-                onClick={() => game.unlocked && setActiveGame(game.id as GameMode)}
-                variant={game.unlocked ? 'primary' : 'secondary'}
-                disabled={!game.unlocked}
-                fullWidth
-              >
-                {game.unlocked ? 'Play Now' : 'Locked'}
-              </Button>
-
-              {!game.unlocked && (
-                <p className="unlock-requirement">
-                  Complete daily learning to unlock
-                </p>
-              )}
-            </div>
-          </div>
-        ))}
+        {shownGames.length === 0 && (
+          <p className="games-empty">
+            {filter === 'favorites'
+              ? 'No favorites yet — tap the ☆ on a game to pin it here!'
+              : 'No games in this group yet.'}
+          </p>
+        )}
       </div>
 
       <div className="games-info">
@@ -592,36 +894,57 @@ const GameCenter: React.FC = () => {
         <div className="info-card">
           <div className="info-icon">🏆</div>
           <div className="info-content">
-            <h3>Achievements</h3>
-            <p>Unlock badges by playing games and setting high scores!</p>
+            <h3>Beat Your Best</h3>
+            <p>Every game remembers your top score. Can you beat it?</p>
           </div>
         </div>
 
         <div className="info-card">
           <div className="info-icon">📚</div>
           <div className="info-content">
-            <h3>Learn & Play</h3>
+            <h3>Learn &amp; Play</h3>
             <p>Games help reinforce spelling skills in a fun way!</p>
           </div>
         </div>
       </div>
 
+      {/* Real progress, counted from the games actually finished today. */}
       <div className="todays-challenge">
-        <h2>🏆 Today's Game Challenge</h2>
+        <h2>🏆 Today&apos;s Game Challenge</h2>
         <div className="challenge-card">
-          <div className="challenge-icon">🎯</div>
+          <div className="challenge-icon">{challengeDone ? '🎉' : '🎯'}</div>
           <div className="challenge-content">
-            <h3>Memory Match Master</h3>
-            <p>Complete 3 Memory Match games with perfect scores to earn a special sticker!</p>
+            <h3>Play {DAILY_CHALLENGE_TARGET} different games</h3>
+            <p>
+              {challenge.claimed
+                ? 'Reward claimed — brilliant playing today!'
+                : challengeDone
+                  ? `You did it! Claim your ${DAILY_CHALLENGE_REWARD} bonus stars.`
+                  : `Finish ${DAILY_CHALLENGE_TARGET - challengeProgress} more to earn ${DAILY_CHALLENGE_REWARD} bonus stars!`}
+            </p>
             <div className="challenge-progress">
               <div className="progress-bar">
-                <div className="progress-fill" style={{ width: '33%' }} />
+                <div
+                  className="progress-fill"
+                  style={{ width: `${(challengeProgress / DAILY_CHALLENGE_TARGET) * 100}%` }}
+                />
               </div>
-              <span className="progress-text">1/3 games</span>
+              <span className="progress-text">{challengeProgress}/{DAILY_CHALLENGE_TARGET} games</span>
             </div>
           </div>
-          <Button variant="success" icon="🎮" onClick={handleStartChallenge}>
-            Start Challenge
+          <Button
+            variant="success"
+            icon={challengeDone && !challenge.claimed ? '⭐' : '🎮'}
+            // Never launches a game directly — some are still behind today's
+            // quiz, so we point at the grid and let the cards do the gating.
+            onClick={() =>
+              challengeDone && !challenge.claimed
+                ? claimChallenge()
+                : gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }
+            disabled={challenge.claimed}
+          >
+            {challenge.claimed ? 'Claimed' : challengeDone ? 'Claim stars' : 'Pick a game'}
           </Button>
         </div>
       </div>

@@ -4,6 +4,7 @@ import LearningHub from '@/pages/LearningHub'
 import { UserProvider } from '@/contexts/UserContext'
 import { ProgressProvider } from '@/contexts/ProgressContext'
 import { AudioProvider } from '@/contexts/AudioContext'
+import { ThemeProvider } from '@/contexts/ThemeContext'
 import { MemoryRouter } from 'react-router-dom'
 import React from 'react'
 import { LearningFlowController } from '@/services/progress/LearningFlow'
@@ -36,11 +37,15 @@ vi.mock('@/services/persistence/FirebaseSync', () => ({
 const renderWithProviders = (ui: React.ReactElement) => {
   return render(
     <MemoryRouter>
-      <AudioProvider>
-        <ProgressProvider>
-          <UserProvider>{ui}</UserProvider>
-        </ProgressProvider>
-      </AudioProvider>
+      {/* Mirrors App.tsx: the hub renders themed components (the word trail
+          uses the chosen world's mascot), so the theme has to be present. */}
+      <ThemeProvider>
+        <AudioProvider>
+          <ProgressProvider>
+            <UserProvider>{ui}</UserProvider>
+          </ProgressProvider>
+        </AudioProvider>
+      </ThemeProvider>
     </MemoryRouter>
   )
 }
