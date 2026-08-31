@@ -50,6 +50,9 @@ import {
   ParrotParty,
   SillyStory,
   TreasureTrail,
+  HomophoneHero,
+  WordFamily,
+  SyllableClap,
   PrizeWheel,
   BibleTriviaEnhanced,
   BibleMemorizer
@@ -79,6 +82,7 @@ type GameMode =
   | 'typo-detective' | 'mystery-picture' | 'secret-code' | 'ghost-word'
   | 'word-snake' | 'dragon-duel' | 'word-whack' | 'word-fishing' | 'rhyme-time'
   | 'spell-tower' | 'word-sort' | 'parrot-party' | 'silly-story' | 'treasure-trail'
+  | 'homophone-hero' | 'word-family' | 'syllable-clap'
   | 'bible-trivia' | 'bible-memorizer'
   | null
 
@@ -443,6 +447,39 @@ const GameCenter: React.FC = () => {
       unlocked: learningFlow.isGameUnlocked('treasure-trail')
     },
     {
+      id: 'homophone-hero',
+      title: '🦸 Homophone Hero',
+      description: 'Their or there? Pick the right one and learn the trick',
+      icon: '🦸',
+      color: '#4C6EF5',
+      duration: '6 rounds',
+      category: 'spelling' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('homophone-hero')
+    },
+    {
+      id: 'word-family',
+      title: '🏭 Word Family Factory',
+      description: 'Build a whole family of words from one ending',
+      icon: '🏭',
+      color: '#0CA678',
+      duration: '3 families',
+      category: 'spelling' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('word-family')
+    },
+    {
+      id: 'syllable-clap',
+      title: '👏 Syllable Clap',
+      description: 'Clap out the beats hiding inside a long word',
+      icon: '👏',
+      color: '#F76707',
+      duration: '6 words',
+      category: 'listen' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('syllable-clap')
+    },
+    {
       id: 'balloon-pop',
       title: '🎈 Balloon Pop',
       description: 'Pop balloons in order to spell words',
@@ -728,6 +765,9 @@ const GameCenter: React.FC = () => {
       case 'parrot-party': return <ParrotParty words={selectedWords} onComplete={handleGameComplete} />
       case 'silly-story': return <SillyStory words={selectedWords} onComplete={handleGameComplete} />
       case 'treasure-trail': return <TreasureTrail words={selectedWords} onComplete={handleGameComplete} />
+      case 'homophone-hero': return <HomophoneHero onComplete={handleGameComplete} />
+      case 'word-family': return <WordFamily onComplete={handleGameComplete} />
+      case 'syllable-clap': return <SyllableClap words={selectedWords} onComplete={handleGameComplete} />
       case 'bible-trivia': return <BibleTriviaEnhanced onComplete={handleGameComplete} />
       case 'bible-memorizer': return <BibleMemorizer onComplete={handleGameComplete} />
       default: return null

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { wordBank, Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, isPlayable } from '../shared/wordTricks'
+import ReviewSchedule from '../../../services/progress/ReviewSchedule'
 import sfx from '../shared/sfx'
 import './DragonDuel.css'
 
@@ -74,6 +75,9 @@ const DragonDuel: React.FC<DragonDuelProps> = ({ onComplete, words: providedWord
 
   const attack = () => {
     if (over || phase !== 'ready' || !input.trim()) return
+
+    // Typing a word you heard is a spelling test — tell the scheduler.
+    ReviewSchedule.record(current.id, input.trim().toLowerCase() === answer)
 
     if (input.trim().toLowerCase() === answer) {
       // Three in a row lands a critical hit — streaks should feel spectacular.

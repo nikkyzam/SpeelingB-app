@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { wordBank, Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, isPlayable } from '../shared/wordTricks'
+import ReviewSchedule from '../../../services/progress/ReviewSchedule'
 import sfx from '../shared/sfx'
 import './SpellTower.css'
 
@@ -70,6 +71,9 @@ const SpellTower: React.FC<SpellTowerProps> = ({ onComplete, words: providedWord
 
   const build = () => {
     if (state !== 'typing' || !input.trim()) return
+
+    // Same as a spelling round: record it so review targets what's shaky.
+    ReviewSchedule.record(current.id, input.trim().toLowerCase() === current.word.toLowerCase())
 
     if (input.trim().toLowerCase() === current.word.toLowerCase()) {
       const floor: Floor = {

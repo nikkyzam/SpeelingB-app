@@ -5,6 +5,7 @@ import { useRewardStore } from '../../../stores/rewards/useRewardStore'
 import { wordBank, Word } from '../../../services/wordBank'
 import { chunkWord, wordFacts } from '../../../services/words/wordShape'
 import WordMastery from '../../../services/progress/WordMastery'
+import ReviewSchedule from '../../../services/progress/ReviewSchedule'
 import BuddyService from '../../../services/buddy/BuddyService'
 import randomJoke, { WordJoke } from '../../../services/words/wordJokes'
 import sfx from '../../games/shared/sfx'
@@ -126,6 +127,8 @@ const LearnMode: React.FC<LearnModeProps> = ({
       return next
     })
     WordMastery.recordLearned()
+    // Needing the answer shown means it hasn't stuck yet — schedule it soon.
+    ReviewSchedule.record(currentWord.id, !helped)
     // Every word learned is a snack for the buddy — the only way to get them.
     BuddyService.earnSnack()
 

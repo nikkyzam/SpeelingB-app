@@ -11,6 +11,7 @@ import Button from '../../components/common/Button'
 import AuthModal from '../../components/auth/AuthModal'
 import ExplorerLevel from '../../components/progress/ExplorerLevel'
 import BuddyCard from '../../components/buddy/BuddyCard'
+import ReviewSchedule from '../../services/progress/ReviewSchedule'
 import './Home.css'
 
 const Home: React.FC = () => {
@@ -38,7 +39,11 @@ const Home: React.FC = () => {
   }, [])
 
   const progressPercentage = Math.min((wordsLearnedToday / dailyGoal) * 100, 100)
-  const reviewDue = learningFlow.isReviewDue()
+  // How many words the scheduler says are ripe, and how many keep catching
+  // them out. Both beat the old "it has been two days" rule of thumb.
+  const dueCount = ReviewSchedule.dueCount()
+  const trickyCount = ReviewSchedule.getTrickyWordIds().length
+  const reviewDue = dueCount > 0 || learningFlow.isReviewDue()
   const name = user?.name || 'friend'
 
   const greeting = dailyCompleted
@@ -145,11 +150,22 @@ const Home: React.FC = () => {
           <div className="review-cta-icon" aria-hidden>🧠</div>
           <div className="review-cta-text">
             <h2>Review Time!</h2>
-            <p>Let&apos;s practice some words you already learned. Earn bonus stars! ⭐</p>
+            <p>
+              {dueCount > 0
+                ? `${dueCount} word${dueCount === 1 ? ' is' : 's are'} ready for another go — that's how they stick! ⭐`
+                : 'Let\u2019s practice some words you already learned. Earn bonus stars! ⭐'}
+            </p>
           </div>
-          <Button variant="primary" icon="🧠" onClick={() => navigate('/review')}>
-            Start Review
-          </Button>
+          <div className="review-cta-actions">
+            <Button variant="primary" icon="🧠" onClick={() => navigate('/review')}>
+              Start Review
+            </Button>
+            {trickyCount >= 3 && (
+              <Button variant="warning" icon="💪" onClick={() => navigate('/review?mode=tricky')}>
+                Tricky words ({trickyCount})
+              </Button>
+            )}
+          </div>
         </section>
       )}
 

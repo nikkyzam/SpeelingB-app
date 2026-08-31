@@ -5,22 +5,26 @@ import { useAudio } from '../../contexts/AudioContext'
 import { wordBank, Word } from '../../services/wordBank'
 import WordMastery, { MASTERY_EVENT, MasteryLevel } from '../../services/progress/WordMastery'
 import { chunkWord } from '../../services/words/wordShape'
+import ReviewSchedule from '../../services/progress/ReviewSchedule'
 import ExplorerLevel from '../../components/progress/ExplorerLevel'
 import Button from '../../components/common/Button'
 import './WordCollection.css'
 
-type Filter = 'all' | 1 | 2 | 3
+type Filter = 'all' | 'tricky' | 1 | 2 | 3
 
 const FILTERS: { id: Filter; label: string; icon: string }[] = [
   { id: 'all', label: 'Everything', icon: '📚' },
   { id: 1, label: 'Just met', icon: '⭐' },
   { id: 2, label: 'Spelled', icon: '⭐⭐' },
   { id: 3, label: 'Mastered', icon: '⭐⭐⭐' },
+  { id: 'tricky', label: 'Tricky', icon: '💪' },
 ]
 
 interface CollectedWord {
   word: Word
   stars: MasteryLevel
+  /** keeps getting missed — worth extra practice */
+  tricky: boolean
 }
 
 /**
@@ -61,7 +65,11 @@ const WordCollection: React.FC = () => {
     return [...new Set([...learnedIds, ...spelledIds])]
       .map((id) => ({ id, word: wordBank.getWordById(id) }))
       .filter((entry): entry is { id: string; word: Word } => !!entry.word)
-      .map(({ id, word }) => ({ word, stars: WordMastery.levelFor(id, learned, spelled) }))
+      .map(({ id, word }) => ({
+        word,
+        stars: WordMastery.levelFor(id, learned, spelled),
+        tricky: ReviewSchedule.isTricky(id),
+      }))
       .sort((a, b) => b.stars - a.stars || a.word.word.localeCompare(b.word.word))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [learningFlow, tick])
@@ -69,7 +77,8 @@ const WordCollection: React.FC = () => {
   const shown = useMemo(() => {
     const q = search.trim().toLowerCase()
     return collected.filter((c) => {
-      if (filter !== 'all' && c.stars !== filter) return false
+      if (filter === 'tricky' && !c.tricky) return false
+      if (filter !== 'all' && filter !== 'tricky' && c.stars !== filter) return false
       return !q || c.word.word.toLowerCase().includes(q)
     })
   }, [collected, filter, search])
@@ -147,21 +156,31 @@ const WordCollection: React.FC = () => {
             />
           </div>
 
+          {collected.some((c) => c.tricky) && (
+            <div className="wc-tricky-cta">
+              <span>💪 Some words keep catching you out — want to beat them?</span>
+              <Button variant="warning" icon="💪" onClick={() => navigate('/review?mode=tricky')}>
+                Practise tricky words
+              </Button>
+            </div>
+          )}
+
           <p className="wc-hint">Tap a card to hear the word and see what it means. ⭐ met it · ⭐⭐ spelled it · ⭐⭐⭐ mastered it</p>
 
           <div className="wc-grid">
-            {shown.map(({ word, stars }) => {
+            {shown.map(({ word, stars, tricky }) => {
               const open = openId === word.id
               return (
                 <button
                   key={word.id}
-                  className={`wc-card stars-${stars} ${open ? 'open' : ''}`}
-                  onClick={() => openWord({ word, stars })}
+                  className={`wc-card stars-${stars} ${tricky ? 'tricky' : ''} ${open ? 'open' : ''}`}
+                  onClick={() => openWord({ word, stars, tricky })}
                 >
                   <span className="wc-card-stars" aria-label={`${stars} of 3 stars`}>
                     {'⭐'.repeat(stars)}{'☆'.repeat(3 - stars)}
                   </span>
                   <span className="wc-card-word">{word.word}</span>
+                  {tricky && <span className="wc-card-tricky" title="This one keeps catching you out">💪 tricky</span>}
                   {/* Only worth showing when it actually splits into pieces. */}
                   {chunkWord(word.word).length > 1 && (
                     <span className="wc-card-chunks">{chunkWord(word.word).join('·')}</span>

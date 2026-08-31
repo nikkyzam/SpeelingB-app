@@ -39,6 +39,9 @@ export { default as WordSort } from './WordSort'
 export { default as ParrotParty } from './ParrotParty'
 export { default as SillyStory } from './SillyStory'
 export { default as TreasureTrail } from './TreasureTrail'
+export { default as HomophoneHero } from './HomophoneHero'
+export { default as WordFamily } from './WordFamily'
+export { default as SyllableClap } from './SyllableClap'
 
 // Hub extras (not a game — a daily reward the hub shows above the grid)
 export { default as PrizeWheel } from './PrizeWheel'

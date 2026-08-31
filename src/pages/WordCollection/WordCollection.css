@@ -151,3 +151,27 @@
   .wc-header h1 { text-align: left; }
   .wc-card.open { grid-column: span 1; }
 }
+
+/* ---- Tricky words ---- */
+.wc-card.tricky { border-color: var(--warning); border-style: dashed; }
+.wc-card-tricky {
+  font-size: 0.62rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--warning);
+}
+.wc-tricky-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  border: 3px dashed var(--warning);
+  background: color-mix(in srgb, var(--warning) 12%, var(--card));
+  font-weight: 700;
+  color: var(--text);
+}

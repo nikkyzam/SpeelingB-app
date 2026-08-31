@@ -4,6 +4,7 @@ import { useProgress } from '../../../contexts/ProgressContext'
 import { useTheme } from '../../../contexts/ThemeContext'
 import { wordBank, Word } from '../../../services/wordBank'
 import WordMastery from '../../../services/progress/WordMastery'
+import ReviewSchedule from '../../../services/progress/ReviewSchedule'
 import BuddyService from '../../../services/buddy/BuddyService'
 import sfx from '../../games/shared/sfx'
 import Button from '../../common/Button'
@@ -98,6 +99,8 @@ const SpellMode: React.FC<SpellModeProps> = ({
 
     const correct = userInput.toLowerCase() === currentWord.word.toLowerCase()
     setIsCorrect(correct)
+    // Right or wrong, this word's next review date depends on what just happened.
+    ReviewSchedule.record(currentWord.id, correct)
 
     if (correct) {
       // Correct answer
