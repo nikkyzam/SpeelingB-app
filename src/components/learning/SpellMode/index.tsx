@@ -3,6 +3,10 @@ import { useAudio } from '../../../contexts/AudioContext'
 import { useProgress } from '../../../contexts/ProgressContext'
 import { useTheme } from '../../../contexts/ThemeContext'
 import { wordBank, Word } from '../../../services/wordBank'
+import WordMastery from '../../../services/progress/WordMastery'
+import ReviewSchedule from '../../../services/progress/ReviewSchedule'
+import BuddyService from '../../../services/buddy/BuddyService'
+import sfx from '../../games/shared/sfx'
 import Button from '../../common/Button'
 import './SpellMode.css'
 
@@ -95,14 +99,22 @@ const SpellMode: React.FC<SpellModeProps> = ({
 
     const correct = userInput.toLowerCase() === currentWord.word.toLowerCase()
     setIsCorrect(correct)
+    // Right or wrong, this word's next review date depends on what just happened.
+    ReviewSchedule.record(currentWord.id, correct)
 
     if (correct) {
       // Correct answer
+      sfx.correct()
       setScore(prev => prev + (streak + 1) * 10)
       setStreak(prev => prev + 1)
 
       // Track as spelled correctly today
       learningFlow.completeSpellQuiz([currentWord.id], 0)
+      // Each correct spelling counts towards this word's third mastery star
+      // and today's learning challenge.
+      WordMastery.recordCorrect(currentWord.id)
+      WordMastery.recordSpelled()
+      BuddyService.earnSnack()
 
       if (isQuiz) {
         // In quiz mode, mark as learned
@@ -114,6 +126,7 @@ const SpellMode: React.FC<SpellModeProps> = ({
       }, 1500)
     } else {
       // Wrong answer
+      sfx.wrong()
       setStreak(0)
 
       if (isQuiz) {

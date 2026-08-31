@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useProgress } from '../../contexts/ProgressContext'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useAudio } from '../../contexts/AudioContext'
-import { useRewardStore } from '../../stores/rewardStore'
+// Stars must land in the same pot the header shows, or the reward never
+// visibly arrives.
+import { useRewardStore } from '../../stores/rewards/useRewardStore'
 import { wordBank, Word } from '../../services/wordBank'
 import Button from '../../components/common/Button'
 import Celebration, { CelebrationData } from '../../components/common/Celebration'

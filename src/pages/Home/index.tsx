@@ -3,10 +3,16 @@ import { useNavigate } from 'react-router-dom'
 import { useUser } from '../../contexts/UserContext'
 import { useProgress } from '../../contexts/ProgressContext'
 import { useTheme } from '../../contexts/ThemeContext'
-import { useRewardStore } from '../../stores/rewardStore'
+// The star balance the header and every game writes to — Home used to read a
+// second, separate store, so the two numbers disagreed on screen.
+import { useRewardStore } from '../../stores/rewards/useRewardStore'
 import { useStreak } from '../../hooks/useStreak'
 import Button from '../../components/common/Button'
 import AuthModal from '../../components/auth/AuthModal'
+import ExplorerLevel from '../../components/progress/ExplorerLevel'
+import BuddyCard from '../../components/buddy/BuddyCard'
+import WordOfTheDay from '../../components/learning/WordOfTheDay'
+import ReviewSchedule from '../../services/progress/ReviewSchedule'
 import './Home.css'
 
 const Home: React.FC = () => {
@@ -34,7 +40,11 @@ const Home: React.FC = () => {
   }, [])
 
   const progressPercentage = Math.min((wordsLearnedToday / dailyGoal) * 100, 100)
-  const reviewDue = learningFlow.isReviewDue()
+  // How many words the scheduler says are ripe, and how many keep catching
+  // them out. Both beat the old "it has been two days" rule of thumb.
+  const dueCount = ReviewSchedule.dueCount()
+  const trickyCount = ReviewSchedule.getTrickyWordIds().length
+  const reviewDue = dueCount > 0 || learningFlow.isReviewDue()
   const name = user?.name || 'friend'
 
   const greeting = dailyCompleted
@@ -45,6 +55,7 @@ const Home: React.FC = () => {
     { icon: '📖', label: 'Learn Words', sub: 'Meet new words', path: '/learn', tone: 'primary' },
     { icon: '✏️', label: 'Spell It!', sub: 'Type what you hear', path: '/learn?mode=spell', tone: 'secondary' },
     { icon: '🎮', label: 'Play Games', sub: dailyCompleted ? 'Unlocked!' : 'Finish learning first', path: '/games', tone: 'accent' },
+    { icon: '🗂️', label: 'My Words', sub: 'Your word collection', path: '/collection', tone: 'success' },
     { icon: '🏆', label: 'My Prizes', sub: 'Spend your stars', path: '/rewards', tone: 'success' },
   ] as const
 
@@ -86,6 +97,16 @@ const Home: React.FC = () => {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* The buddy: the friend who grows because the child learns */}
+      <section className="buddy-section">
+        <BuddyCard />
+      </section>
+
+      {/* Explorer rank — the long game, always climbing */}
+      <section className="level-section">
+        <ExplorerLevel onClick={() => navigate('/collection')} />
       </section>
 
       {/* Today's quest progress */}
@@ -130,13 +151,27 @@ const Home: React.FC = () => {
           <div className="review-cta-icon" aria-hidden>🧠</div>
           <div className="review-cta-text">
             <h2>Review Time!</h2>
-            <p>Let&apos;s practice some words you already learned. Earn bonus stars! ⭐</p>
+            <p>
+              {dueCount > 0
+                ? `${dueCount} word${dueCount === 1 ? ' is' : 's are'} ready for another go — that's how they stick! ⭐`
+                : 'Let\u2019s practice some words you already learned. Earn bonus stars! ⭐'}
+            </p>
           </div>
-          <Button variant="primary" icon="🧠" onClick={() => navigate('/review')}>
-            Start Review
-          </Button>
+          <div className="review-cta-actions">
+            <Button variant="primary" icon="🧠" onClick={() => navigate('/review')}>
+              Start Review
+            </Button>
+            {trickyCount >= 3 && (
+              <Button variant="warning" icon="💪" onClick={() => navigate('/review?mode=tricky')}>
+                Tricky words ({trickyCount})
+              </Button>
+            )}
+          </div>
         </section>
       )}
+
+      {/* One free word a day, with nothing to prove */}
+      <WordOfTheDay />
 
       {/* Big play buttons */}
       <section className="play-section">

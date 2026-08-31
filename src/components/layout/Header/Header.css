@@ -76,3 +76,49 @@
 @media (max-width: 380px) {
   .logo-world { display: none; }
 }
+
+/* ---- Mascot easter egg ---- */
+.logo { position: relative; }
+.logo-icon {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: transform var(--transition-fast);
+}
+/* pause the idle bounce while being poked, so the reaction is visible */
+.logo-icon:hover { animation: none; transform: scale(1.12) rotate(-6deg); }
+.logo-icon:active { animation: none; transform: scale(0.9); }
+.logo-icon.dancing { animation: logo-dance 0.5s ease-in-out infinite; }
+@keyframes logo-dance {
+  0%, 100% { transform: rotate(-16deg) translateY(0) scale(1.1); }
+  25%      { transform: rotate(0deg) translateY(-8px) scale(1.2); }
+  50%      { transform: rotate(16deg) translateY(0) scale(1.1); }
+  75%      { transform: rotate(0deg) translateY(-4px) scale(1.15); }
+}
+
+.logo-block { cursor: pointer; }
+
+.logo-whisper {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 6px;
+  white-space: nowrap;
+  background: var(--card);
+  color: var(--text);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-round);
+  padding: 3px 12px;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 0.78rem;
+  box-shadow: var(--shadow-md);
+  z-index: 30;
+  animation: pop-in var(--transition-normal) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-icon.dancing { animation: none; }
+}

@@ -1,0 +1,98 @@
+.word-journey {
+  padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  border: 3px dashed var(--border);
+  background:
+    radial-gradient(circle at 12% 15%, color-mix(in srgb, var(--secondary) 18%, transparent), transparent 50%),
+    radial-gradient(circle at 88% 85%, color-mix(in srgb, var(--primary) 16%, transparent), transparent 50%),
+    var(--card-soft);
+  margin-bottom: var(--spacing-lg);
+}
+
+.wj-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--spacing-sm); flex-wrap: wrap; margin-bottom: var(--spacing-md); }
+.wj-title { font-family: var(--font-primary); font-weight: 900; color: var(--primary-2); }
+.wj-sub { font-size: 0.8rem; color: var(--text-soft); font-weight: 700; }
+
+.wj-path {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 2vw, 18px);
+  overflow-x: auto;
+  /* room for the "you are here" flag, which sits above and wider than its stone */
+  padding: 26px 26px 30px;
+  scrollbar-width: thin;
+}
+/* the winding trail behind the stones */
+.wj-path::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 0;
+  border-top: 5px dotted color-mix(in srgb, var(--border) 85%, transparent);
+  z-index: 0;
+}
+
+.wj-stone {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  width: clamp(44px, 12vw, 58px);
+  height: clamp(44px, 12vw, 58px);
+  border-radius: 45% 55% 52% 48%;
+  border: 3px solid var(--border);
+  background: var(--card);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  gap: 0;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+  color: var(--text);
+}
+.wj-stone:hover { transform: translateY(-4px) rotate(-3deg); border-color: var(--primary); }
+/* zig-zag so it reads as a path rather than a row of buttons */
+.wj-stone:nth-child(even) { transform: translateY(16px); }
+.wj-stone:nth-child(even):hover { transform: translateY(12px) rotate(3deg); }
+
+.wj-icon { font-size: clamp(1rem, 4vw, 1.4rem); line-height: 1; }
+.wj-number { font-size: 0.62rem; font-weight: 800; color: var(--text-soft); }
+
+.wj-stone.future { opacity: 0.55; border-style: dashed; }
+.wj-stone.started { border-color: var(--warning); }
+.wj-stone.learned { border-color: var(--secondary); background: color-mix(in srgb, var(--secondary) 12%, var(--card)); }
+.wj-stone.done {
+  border-color: var(--warning);
+  background: color-mix(in srgb, var(--warning) 22%, var(--card));
+}
+.wj-stone.current {
+  border-color: var(--primary);
+  border-width: 4px;
+  background: var(--card);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--primary) 30%, transparent), var(--shadow-md);
+  animation: bounce 1.6s ease-in-out infinite;
+}
+.wj-stone.current .wj-icon { font-size: clamp(1.3rem, 5vw, 1.8rem); }
+
+.wj-here {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.6rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--primary-2);
+  background: var(--card);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-round);
+  padding: 1px 7px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wj-stone.current { animation: none; }
+}

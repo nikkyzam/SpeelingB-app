@@ -1,0 +1,128 @@
+.fun-fx {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+}
+
+/* ---- stars flying to the counter ---- */
+.fx-star {
+  position: fixed;
+  font-size: 1.6rem;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+  transition:
+    left 900ms cubic-bezier(0.5, 0, 0.75, 0),
+    top 900ms cubic-bezier(0.5, 0, 0.75, 0),
+    transform 900ms ease-in,
+    opacity 900ms ease-in;
+}
+.fx-star.flying {
+  transform: translate(-50%, -50%) scale(0.4) rotate(220deg);
+  opacity: 0.15;
+}
+
+/* the counter itself reacts when the stars land */
+.star-display.star-pop {
+  animation: fx-counter-pop 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes fx-counter-pop {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.35); filter: brightness(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* ---- badge toasts ---- */
+.fx-toasts {
+  position: fixed;
+  top: 84px;
+  right: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  max-width: min(320px, calc(100vw - 2 * var(--spacing-lg)));
+}
+.fx-toast {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-lg);
+  border: 3px solid var(--warning);
+  background: var(--card);
+  box-shadow: var(--shadow-lg);
+  animation: fx-slide-in 400ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes fx-slide-in {
+  0%   { transform: translateX(120%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+.fx-toast-icon { font-size: 2rem; animation: wiggle 1.2s ease-in-out infinite; }
+.fx-toast-text { display: flex; flex-direction: column; font-family: var(--font-primary); color: var(--text); }
+.fx-toast-text strong { color: var(--primary-2); font-size: 1rem; }
+.fx-toast-text span { font-size: 0.86rem; color: var(--text-soft); font-weight: 700; }
+
+/* ---- rank up ---- */
+.fx-rankup {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  animation: fx-fade 300ms both;
+}
+@keyframes fx-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.fx-rankup-card {
+  position: relative;
+  /* a level-up should fill the eye, not sit in a small box */
+  min-width: min(360px, 86vw);
+  padding: var(--spacing-xxl) var(--spacing-xl);
+  border-radius: var(--radius-xl);
+  border: 4px solid var(--warning);
+  background: linear-gradient(150deg, var(--card), var(--card-soft));
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  overflow: hidden;
+  animation: pop-in 420ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.fx-rankup-rays {
+  position: absolute;
+  inset: -60%;
+  background: repeating-conic-gradient(
+    color-mix(in srgb, var(--warning) 35%, transparent) 0deg 12deg,
+    transparent 12deg 24deg
+  );
+  animation: fx-spin 9s linear infinite;
+  opacity: 0.5;
+}
+@keyframes fx-spin { to { transform: rotate(360deg); } }
+
+.fx-rankup-icon {
+  position: relative;
+  font-size: 4.5rem;
+  animation: bounce 0.9s ease-in-out infinite;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
+}
+.fx-rankup-card h3 {
+  position: relative;
+  font-family: var(--font-primary);
+  font-size: 2rem;
+  color: var(--primary-2);
+  margin: var(--spacing-sm) 0 4px;
+}
+.fx-rankup-card p { position: relative; color: var(--text); font-weight: 700; }
+.fx-rankup-card strong { color: var(--primary-2); }
+
+@media (max-width: 520px) {
+  .fx-toasts { top: 74px; right: var(--spacing-sm); left: var(--spacing-sm); max-width: none; }
+}
+
+/* Respect a reduced-motion preference: keep the news, drop the acrobatics. */
+@media (prefers-reduced-motion: reduce) {
+  .fx-star { display: none; }
+  .fx-rankup-rays { animation: none; }
+  .fx-rankup-icon { animation: none; }
+  .fx-toast-icon { animation: none; }
+}

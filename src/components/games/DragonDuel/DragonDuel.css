@@ -1,0 +1,170 @@
+.dragon-duel {
+  max-width: 660px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  text-align: center;
+}
+
+.dd-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  border-bottom: 2px dashed var(--border);
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  text-align: left;
+}
+.dd-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.dd-stats { display: flex; gap: var(--spacing-lg); }
+.dd-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
+.dd-stat strong { font-size: 1.15rem; color: var(--text); }
+
+.dd-arena {
+  position: relative;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  background:
+    radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--error) 22%, transparent), transparent 65%),
+    var(--card-soft);
+  margin-bottom: var(--spacing-md);
+  overflow: hidden;
+}
+
+.dd-dragon { position: relative; font-size: clamp(3.4rem, 16vw, 5.5rem); line-height: 1; display: inline-block; animation: dd-hover 3s ease-in-out infinite; }
+@keyframes dd-hover {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-10px) rotate(2deg); }
+}
+.dd-dragon.struck { animation: shake 0.45s; }
+.dd-dragon.tamed { animation: pulse 0.9s infinite; }
+
+.dd-damage {
+  position: absolute;
+  top: -10px;
+  right: -34px;
+  font-family: var(--font-primary);
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: var(--error);
+  animation: dd-float-up 1.4s ease-out forwards;
+}
+@keyframes dd-float-up {
+  0%   { opacity: 1; transform: translateY(0) scale(0.8); }
+  100% { opacity: 0; transform: translateY(-46px) scale(1.3); }
+}
+
+.dd-fire {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  font-size: 2.2rem;
+  animation: dd-breathe 0.8s ease-out;
+}
+@keyframes dd-breathe {
+  0%   { opacity: 0; transform: translate(-50%, 10px) scale(0.4); }
+  50%  { opacity: 1; transform: translate(-50%, 34px) scale(1.5); }
+  100% { opacity: 0; transform: translate(-50%, 60px) scale(2); }
+}
+
+.dd-hp {
+  position: relative;
+  height: 22px;
+  margin: var(--spacing-md) auto 0;
+  max-width: 340px;
+  background: color-mix(in srgb, var(--text) 15%, transparent);
+  border-radius: var(--radius-round);
+  overflow: hidden;
+  border: 2px solid var(--border);
+}
+.dd-hp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--error), var(--warning));
+  transition: width var(--transition-slow);
+}
+.dd-hp-text {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 0.8rem;
+  color: var(--text);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+.dd-hearts { display: flex; justify-content: center; gap: 6px; font-size: 1.5rem; margin-bottom: var(--spacing-sm); }
+.dd-heart.gone { opacity: 0.5; }
+
+.dd-message {
+  font-family: var(--font-primary);
+  font-weight: 700;
+  min-height: 2.4rem;
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+  color: var(--text);
+}
+.dd-message.hit { background: color-mix(in srgb, var(--success) 20%, transparent); }
+.dd-message.burned { background: color-mix(in srgb, var(--error) 18%, transparent); }
+.dd-message.won { background: linear-gradient(90deg, var(--success), var(--secondary-2)); color: #fff; animation: pop-in var(--transition-normal) both; }
+.dd-message.lost { background: var(--card-soft); border: 2px dashed var(--border); }
+
+.dd-blanks { display: flex; justify-content: center; gap: 8px; margin-bottom: var(--spacing-md); flex-wrap: wrap; }
+.dd-blank {
+  font-family: var(--font-primary);
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: var(--primary-2);
+  min-width: 20px;
+}
+
+.dd-controls { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; align-items: center; }
+.dd-input {
+  flex: 1;
+  min-width: 170px;
+  max-width: 260px;
+  padding: 0.7rem 1rem;
+  border: 3px solid var(--border);
+  border-radius: var(--radius-round);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.1rem;
+  text-align: center;
+  letter-spacing: 0.06em;
+  background: var(--card-soft);
+  color: var(--text);
+}
+.dd-input:focus { outline: none; border-color: var(--primary); }
+.dd-input.ok { border-color: var(--success); background: rgba(47, 191, 113, 0.15); }
+.dd-input.bad { border-color: var(--error); background: rgba(239, 71, 111, 0.12); animation: shake 0.4s; }
+
+.dd-btn {
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(180deg, var(--primary), var(--primary-2));
+  border-radius: var(--radius-round);
+  padding: 0.7rem 1.3rem;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+}
+.dd-btn.ghost { background: transparent; color: var(--text-soft); box-shadow: none; border: 2px solid var(--border); }
+.dd-btn.potion { margin-top: var(--spacing-md); background: linear-gradient(180deg, var(--accent), var(--primary-2)); }
+.dd-btn:active:not(:disabled) { transform: translateY(3px); box-shadow: none; }
+.dd-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.dd-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
+
+@media (max-width: 520px) {
+  .dd-header { flex-direction: column; align-items: stretch; }
+  .dd-stats { justify-content: center; }
+}

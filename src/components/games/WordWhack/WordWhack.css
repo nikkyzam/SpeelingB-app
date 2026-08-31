@@ -1,0 +1,135 @@
+.word-whack {
+  position: relative;
+  max-width: 660px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  text-align: center;
+}
+
+.ww-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  border-bottom: 2px dashed var(--border);
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+  text-align: left;
+}
+.ww-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.ww-stats { display: flex; gap: var(--spacing-md); flex-wrap: wrap; }
+.ww-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.72rem; color: var(--text-soft); }
+.ww-stat strong { font-size: 1.05rem; color: var(--text); }
+
+.ww-brief { color: var(--text-soft); font-weight: 600; margin-bottom: var(--spacing-md); }
+.ww-brief strong { color: var(--text); }
+
+.ww-field {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-sm);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* A square tile so the longest word still fits without being cropped. */
+.ww-hole {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, var(--card-soft), color-mix(in srgb, var(--secondary) 14%, var(--card-soft)));
+  border: 3px solid var(--border);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  padding: 4px;
+}
+/* the burrow the bugs pop out of */
+.ww-hole::after {
+  content: '';
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  bottom: -7%;
+  height: 28%;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--text) 26%, transparent);
+}
+
+.ww-mole {
+  position: relative;
+  z-index: 1;
+  width: 96%;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  padding: 6px 4px;
+  display: grid;
+  gap: 2px;
+  justify-items: center;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  color: var(--text);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+  animation: ww-rise 180ms ease-out both;
+}
+@keyframes ww-rise {
+  0%   { transform: translateY(100%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.ww-mole.bug { border: 3px solid var(--warning); }
+.ww-mole.bee { border: 3px solid var(--secondary); }
+.ww-mole.bonk { animation: ww-squash 380ms ease-out both; background: var(--success); color: #fff; }
+@keyframes ww-squash {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.2, 0.7); }
+  100% { transform: scale(0.3) translateY(30%); opacity: 0; }
+}
+.ww-mole.oops { animation: shake 380ms; border-color: var(--error); }
+
+.ww-face { font-size: clamp(1.2rem, 5vw, 1.8rem); line-height: 1; }
+.ww-word {
+  font-size: clamp(0.72rem, 3.2vw, 1rem);
+  letter-spacing: 0.02em;
+  word-break: break-all;
+  line-height: 1.1;
+}
+
+.ww-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  background: var(--card);
+  border: 3px solid var(--primary);
+  border-radius: var(--radius-round);
+  padding: 0.5rem 1.1rem;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  box-shadow: var(--shadow-md);
+  animation: pop-in var(--transition-normal) both;
+  z-index: 3;
+}
+
+.ww-over {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  background: linear-gradient(90deg, var(--success), var(--secondary-2));
+  color: #fff;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  animation: pop-in var(--transition-normal) both;
+}
+
+@media (max-width: 520px) {
+  .ww-header { flex-direction: column; align-items: stretch; }
+  .ww-stats { justify-content: center; }
+}

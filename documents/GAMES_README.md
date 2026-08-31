@@ -44,6 +44,45 @@ A collection of educational spelling and vocabulary games built with React and T
 - **Description**: Match words with their definitions
 - **Features**: Card matching, timer, scoring system
 
+## The Play Pack (10 newer games)
+
+Ten games added to widen the *kinds* of play on offer — arcade, boss battle,
+board game, story-making and ear training — not just more "tap the letters".
+Every one draws from the words the child has already studied, is theme-aware,
+and reports a score so it can be beaten next time.
+
+| Game | What you do | Skill it builds |
+| --- | --- | --- |
+| 🐍 **Word Snake** | Steer a snake to eat the letters of a word in order. Walls wrap, the snake never bites itself, and a wrong letter costs one segment. | Letter sequence, spelling under light pressure |
+| 🐉 **Dragon Duel** | Turn-based boss fight: spell to strike, miss and the dragon breathes fire. Three in a row lands a critical hit. A potion reveals the first letter. | Listening then spelling from memory |
+| 🔨 **Word Whack** | Whack-a-mole where bugs carry misspelled words and bees carry correct ones. Bonk the bugs only. | Proofreading at speed |
+| 🎣 **Word Fishing** | The end of the word swam off — hook the fish carrying the piece that completes it. | Word chunks, listening |
+| 🎤 **Rhyme Time** | Pick the word that rhymes. Uses curated rhyme families plus the child's own words when they genuinely rhyme. | Phonics, ear training |
+| 🏰 **Spell Tower** | Every word spelled right adds a floor to a tower; three wobbles knocks the top block off. | Spelling with a visible reward |
+| 🧺 **Word Sort** | Two baskets, one rule ("starts with a vowel", "has double letters"…). Sort each word into the right one. | Noticing word shape |
+| 🦜 **Parrot Party** | Simon-says with words: Polly says a growing sequence, you tap it back. One free "listen again" per run. | Working memory, word recognition |
+| 📜 **Silly Story** | Fill the blanks of a story with your own words, then hear the whole thing read out. Optional spelling bonus round. | Vocabulary in context, reading aloud |
+| 🗺️ **Treasure Trail** | Roll the dice along a 12-tile map; each tile is a small puzzle (right spelling / missing letter / matching meaning). | Mixed practice, persistence |
+
+### Hub features that go with them
+
+- **Daily Prize Wheel** — one free spin a day, every slice wins stars. No blanks:
+  a wheel that can land on "nothing" is a wheel a child stops trusting.
+- **Personal bests** — each game remembers your top score; the card shows it and
+  the play button becomes "Beat your best!". Beating it pops a fanfare.
+- **Favourites** — tap ☆ on any card to pin a game to the top of the hub.
+- **Category filters** — All / Favourites / Spelling / Listening / Arcade /
+  Puzzles / Bible.
+- **Daily challenge** — play 3 *different* games in a day for 25 bonus stars.
+  Progress is counted from games actually finished, not a mock-up.
+- **Sound effects** — a shared `sfx` kit (Web Audio, no asset files) for correct,
+  wrong, pop, whoosh, thud, star, win and fanfare. Honours the same mute switch
+  as the spoken words.
+
+Shared code lives in `src/components/games/shared/` (`wordTricks.ts` for
+misspellings, rhymes and chunking, `sfx.ts` for sound) and
+`src/services/games/GameStats.ts` (bests, play counts, favourites, daily challenge).
+
 ## Installation
 
 ```bash

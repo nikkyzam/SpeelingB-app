@@ -1,0 +1,124 @@
+.syllable-clap {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  text-align: center;
+}
+
+.sc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  border-bottom: 2px dashed var(--border);
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+  text-align: left;
+}
+.sc-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.sc-stats { display: flex; gap: var(--spacing-lg); }
+.sc-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
+.sc-stat strong { font-size: 1.15rem; color: var(--text); }
+
+.sc-brief { color: var(--text-soft); font-weight: 600; margin-bottom: var(--spacing-md); }
+
+.sc-word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-md);
+}
+.sc-word-text {
+  font-family: var(--font-primary);
+  font-weight: 900;
+  font-size: clamp(1.8rem, 8vw, 2.8rem);
+  color: var(--text);
+  letter-spacing: 0.03em;
+}
+.sc-chunks { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.sc-chunk {
+  font-family: var(--font-primary);
+  font-weight: 900;
+  font-size: clamp(1.4rem, 6vw, 2.1rem);
+  color: var(--primary-2);
+  background: var(--card-soft);
+  border: 3px solid var(--primary);
+  border-radius: var(--radius-md);
+  padding: 0.1rem 0.6rem;
+  animation: pop-in var(--transition-normal) both;
+}
+.sc-chunk-dash { font-size: 1.4rem; color: var(--text-soft); font-weight: 900; }
+.sc-speak {
+  border: 2px solid var(--border);
+  background: var(--card-soft);
+  border-radius: var(--radius-round);
+  padding: 2px 10px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.sc-dots { display: flex; justify-content: center; gap: 6px; min-height: 34px; margin-bottom: var(--spacing-sm); }
+.sc-dot { font-size: 1.5rem; opacity: 0.25; }
+.sc-dot.on { opacity: 1; animation: pop-in var(--transition-normal) both; }
+
+.sc-pad {
+  width: min(230px, 78%);
+  padding: var(--spacing-lg) var(--spacing-md);
+  border-radius: var(--radius-xl);
+  border: none;
+  background: linear-gradient(180deg, var(--secondary-2), var(--secondary));
+  color: #fff;
+  cursor: pointer;
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  box-shadow: 0 7px 0 rgba(0, 0, 0, 0.16);
+  /* a grid button is block-level, so text-align on the parent cannot centre it */
+  margin: 0 auto var(--spacing-md);
+}
+.sc-pad:active:not(:disabled) { transform: translateY(5px); box-shadow: 0 2px 0 rgba(0, 0, 0, 0.16); }
+.sc-pad.locked { opacity: 0.5; cursor: default; }
+.sc-pad-icon { font-size: 2.6rem; line-height: 1; }
+.sc-pad-label { font-family: var(--font-primary); font-weight: 800; font-size: 1rem; }
+
+.sc-actions { display: flex; gap: var(--spacing-sm); justify-content: center; flex-wrap: wrap; }
+.sc-btn {
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(180deg, var(--primary), var(--primary-2));
+  border-radius: var(--radius-round);
+  padding: 0.7rem 1.3rem;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+}
+.sc-btn.ghost { background: transparent; color: var(--text-soft); border: 2px solid var(--border); box-shadow: none; }
+.sc-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.sc-btn:active:not(:disabled) { transform: translateY(3px); box-shadow: none; }
+
+.sc-flash {
+  margin-top: var(--spacing-md);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  animation: pop-in var(--transition-normal) both;
+}
+.sc-flash.ok { background: linear-gradient(90deg, var(--success), #4EF4C5); color: #fff; }
+.sc-flash.bad { background: var(--card-soft); border: 2px solid var(--warning); color: var(--text); }
+
+.sc-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
+
+@media (max-width: 520px) {
+  .sc-header { flex-direction: column; align-items: stretch; }
+  .sc-stats { justify-content: center; }
+}

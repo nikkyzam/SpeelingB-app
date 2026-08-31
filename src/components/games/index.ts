@@ -29,6 +29,23 @@ export { default as SecretCode } from './SecretCode'
 export { default as GhostWord } from './GhostWord'
 export { default as WordChef } from './WordChef'
 export { default as AbcOrder } from './AbcOrder'
+export { default as WordSnake } from './WordSnake'
+export { default as DragonDuel } from './DragonDuel'
+export { default as WordWhack } from './WordWhack'
+export { default as WordFishing } from './WordFishing'
+export { default as RhymeTime } from './RhymeTime'
+export { default as SpellTower } from './SpellTower'
+export { default as WordSort } from './WordSort'
+export { default as ParrotParty } from './ParrotParty'
+export { default as SillyStory } from './SillyStory'
+export { default as TreasureTrail } from './TreasureTrail'
+export { default as HomophoneHero } from './HomophoneHero'
+export { default as WordFamily } from './WordFamily'
+export { default as SyllableClap } from './SyllableClap'
+export { default as DefinitionDetective } from './DefinitionDetective'
+
+// Hub extras (not a game — a daily reward the hub shows above the grid)
+export { default as PrizeWheel } from './PrizeWheel'
 
 // Bible Games with API Integration
 export { default as BibleTriviaEnhanced } from './BibleTriviaEnhanced'

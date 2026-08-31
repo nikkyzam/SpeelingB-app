@@ -1,4 +1,5 @@
 import React from 'react'
+import sfx from '../../games/shared/sfx'
 import './Button.css'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -7,6 +8,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean
   icon?: React.ReactNode
   fullWidth?: boolean
+  /** Set false for buttons that fire their own sound (games handle their own). */
+  clickSound?: boolean
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -18,6 +21,8 @@ const Button: React.FC<ButtonProps> = ({
   fullWidth = false,
   disabled,
   className = '',
+  clickSound = true,
+  onClick,
   ...props
 }) => {
   const baseClass = 'btn'
@@ -27,10 +32,18 @@ const Button: React.FC<ButtonProps> = ({
   const loadingClass = isLoading ? 'btn-loading' : ''
   const disabledClass = disabled ? 'btn-disabled' : ''
 
+  // A small click makes every button feel like a real thing being pressed.
+  // It rides the same mute switch as the rest of the app's audio.
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (clickSound) sfx.tap()
+    onClick?.(event)
+  }
+
   return (
     <button
       className={`${baseClass} ${variantClass} ${sizeClass} ${widthClass} ${loadingClass} ${disabledClass} ${className}`}
       disabled={disabled || isLoading}
+      onClick={handleClick}
       {...props}
     >
       {isLoading ? (
