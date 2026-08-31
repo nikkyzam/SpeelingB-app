@@ -11,6 +11,7 @@ import Button from '../../components/common/Button'
 import AuthModal from '../../components/auth/AuthModal'
 import ExplorerLevel from '../../components/progress/ExplorerLevel'
 import BuddyCard from '../../components/buddy/BuddyCard'
+import WordOfTheDay from '../../components/learning/WordOfTheDay'
 import ReviewSchedule from '../../services/progress/ReviewSchedule'
 import './Home.css'
 
@@ -168,6 +169,9 @@ const Home: React.FC = () => {
           </div>
         </section>
       )}
+
+      {/* One free word a day, with nothing to prove */}
+      <WordOfTheDay />
 
       {/* Big play buttons */}
       <section className="play-section">

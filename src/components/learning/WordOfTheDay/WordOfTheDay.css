@@ -1,0 +1,95 @@
+.wotd {
+  position: relative;
+  padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  border: 3px solid var(--accent);
+  background:
+    radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 55%),
+    radial-gradient(circle at 88% 100%, color-mix(in srgb, var(--primary) 18%, transparent), transparent 55%),
+    var(--card);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.wotd-ribbon {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--accent), var(--primary-2));
+  color: #fff;
+  font-family: var(--font-primary);
+  font-weight: 900;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  padding: 4px 16px;
+  border-radius: var(--radius-round);
+  box-shadow: var(--shadow-sm);
+  white-space: nowrap;
+}
+
+.wotd-word {
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-primary);
+  font-weight: 900;
+  font-size: clamp(1.9rem, 8vw, 2.9rem);
+  color: var(--primary-2);
+  letter-spacing: 0.03em;
+  padding: 0;
+}
+.wotd-word:active { transform: scale(0.97); }
+.wotd-speak { font-size: 1.1rem; opacity: 0.6; }
+
+.wotd-chunks { display: flex; justify-content: center; align-items: center; gap: 4px; flex-wrap: wrap; margin: 4px 0 var(--spacing-sm); }
+.wotd-chunk {
+  border: 2px solid var(--secondary);
+  background: color-mix(in srgb, var(--secondary) 12%, var(--card));
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  padding: 1px 8px;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.wotd-dash { color: var(--text-soft); font-weight: 900; }
+
+.wotd-meaning { color: var(--text); font-weight: 700; margin-bottom: 4px; }
+.wotd-sentence { color: var(--text-soft); font-style: italic; margin-bottom: var(--spacing-sm); }
+
+.wotd-facts { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin-bottom: var(--spacing-md); }
+.wotd-fact {
+  background: var(--card-soft);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-round);
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-soft);
+}
+
+.wotd-keep {
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1rem;
+  color: #fff;
+  background: linear-gradient(180deg, var(--accent), var(--primary-2));
+  border-radius: var(--radius-round);
+  padding: 0.65rem 1.6rem;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.15);
+}
+.wotd-keep:active:not(:disabled) { transform: translateY(3px); box-shadow: none; }
+.wotd-keep.done {
+  background: var(--card-soft);
+  color: var(--success);
+  border: 2px solid var(--success);
+  box-shadow: none;
+  cursor: default;
+}

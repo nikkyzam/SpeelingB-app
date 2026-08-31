@@ -8,6 +8,7 @@
 
 const CORRECT_KEY = 'word_correct_counts'
 const CHALLENGE_KEY = 'learn_daily_challenge'
+const HISTORY_KEY = 'learn_history'
 
 export const MASTERY_EVENT = 'wordMasteryUpdated'
 
@@ -119,7 +120,33 @@ export interface LearnChallenge {
 export const LEARN_CHALLENGE_TARGET = { learned: 3, spelled: 3 }
 export const LEARN_CHALLENGE_REWARD = 20
 
+/** How many words were learned on a given day: { 'YYYY-MM-DD': count }. */
+export type LearnHistory = Record<string, number>
+
 export const WordMastery = {
+  // --- day-by-day history, so a grown-up can see the shape of a week ---
+
+  getHistory(): LearnHistory {
+    return read<LearnHistory>(HISTORY_KEY, {})
+  },
+
+  /** The last `days` days, oldest first, including days with nothing on them. */
+  getRecentHistory(days = 7): { date: string; label: string; count: number }[] {
+    const history = this.getHistory()
+    const out: { date: string; label: string; count: number }[] = []
+    for (let i = days - 1; i >= 0; i--) {
+      const d = new Date()
+      d.setDate(d.getDate() - i)
+      const key = d.toISOString().slice(0, 10)
+      out.push({
+        date: key,
+        label: d.toLocaleDateString(undefined, { weekday: 'short' }),
+        count: history[key] || 0,
+      })
+    }
+    return out
+  },
+
   // --- per-word ---
 
   /** Record one correct spelling of a word (drives the third mastery star). */
@@ -177,6 +204,13 @@ export const WordMastery = {
     const challenge = this.getChallenge()
     challenge.learned += 1
     write(CHALLENGE_KEY, challenge)
+
+    // Also keep a day-by-day tally for the grown-ups' report.
+    const today = new Date().toISOString().slice(0, 10)
+    const history = this.getHistory()
+    history[today] = (history[today] || 0) + 1
+    write(HISTORY_KEY, history)
+
     return challenge
   },
 

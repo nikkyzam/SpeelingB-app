@@ -12,6 +12,14 @@ const VOWELS = 'aeiouy'
 const isVowel = (c: string): boolean => VOWELS.includes(c.toLowerCase())
 
 /**
+ * Two letters making one sound. Splitting through one of these produces
+ * nonsense a child then tries to say — "misc-hief" instead of "mis-chief".
+ */
+const OPENING_DIGRAPHS = ['ch', 'sh', 'th', 'ph', 'wh']
+/** These close a syllable rather than open one: "pock-et", not "po-cket". */
+const CLOSING_DIGRAPHS = ['ck', 'ng', 'gh']
+
+/**
  * Split a word into sayable chunks (roughly syllables).
  *
  * This is a spelling-based heuristic, not a dictionary: it breaks between two
@@ -46,8 +54,28 @@ export const chunkWord = (word: string): string[] => {
     const tailIsSilentE = next === 'e' && i + 2 >= w.length
     if (tailIsSilentE) continue
 
-    // VC|CV — two consonants between vowels split between them (but|ter).
+    // VC|CV — two consonants between vowels split between them (but|ter),
+    // unless those two letters are really one sound.
     if (next && !isVowel(next) && after && isVowel(after)) {
+      const pair = c + next
+
+      if (OPENING_DIGRAPHS.includes(pair)) {
+        // The digraph starts the next chunk: mis|chief, wa|shing.
+        chunks.push(current.slice(0, -1))
+        current = c
+        seenVowel = false
+        continue
+      }
+
+      if (CLOSING_DIGRAPHS.includes(pair)) {
+        // The digraph finishes this chunk: pock|et, sing|er.
+        chunks.push(current + next)
+        current = ''
+        seenVowel = false
+        i++ // both letters are spoken for
+        continue
+      }
+
       chunks.push(current)
       current = ''
       seenVowel = false

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useUser } from '../../contexts/UserContext'
 import Button from '../../components/common/Button'
@@ -9,6 +10,7 @@ import './Settings.css'
 const Settings: React.FC = () => {
   const { user, logout } = useUser()
   const { world } = useTheme()
+  const navigate = useNavigate()
 
   return (
     <div className="settings">
@@ -16,6 +18,17 @@ const Settings: React.FC = () => {
         <h1>Settings ⚙️</h1>
         <p>Make the app feel just right for you!</p>
       </div>
+
+      {/* The progress report is for every grown-up, not just admins. */}
+      <section className="settings-section">
+        <h2>Progress 📈</h2>
+        <p className="settings-sub">
+          See which words are sticking, which need practice, and how the week has gone.
+        </p>
+        <Button variant="primary" icon="📈" onClick={() => navigate('/progress')}>
+          Open progress report
+        </Button>
+      </section>
 
       {/* Grown-up tools — only visible to admins (Firebase "admin" custom claim). */}
       {user?.isAdmin && (

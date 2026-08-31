@@ -53,6 +53,7 @@ import {
   HomophoneHero,
   WordFamily,
   SyllableClap,
+  DefinitionDetective,
   PrizeWheel,
   BibleTriviaEnhanced,
   BibleMemorizer
@@ -82,7 +83,7 @@ type GameMode =
   | 'typo-detective' | 'mystery-picture' | 'secret-code' | 'ghost-word'
   | 'word-snake' | 'dragon-duel' | 'word-whack' | 'word-fishing' | 'rhyme-time'
   | 'spell-tower' | 'word-sort' | 'parrot-party' | 'silly-story' | 'treasure-trail'
-  | 'homophone-hero' | 'word-family' | 'syllable-clap'
+  | 'homophone-hero' | 'word-family' | 'syllable-clap' | 'definition-detective'
   | 'bible-trivia' | 'bible-memorizer'
   | null
 
@@ -480,6 +481,17 @@ const GameCenter: React.FC = () => {
       unlocked: learningFlow.isGameUnlocked('syllable-clap')
     },
     {
+      id: 'definition-detective',
+      title: '🕵️ Definition Detective',
+      description: 'Read the clue and work out which word it means',
+      icon: '🕵️',
+      color: '#7048E8',
+      duration: '6 cases',
+      category: 'think' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('definition-detective')
+    },
+    {
       id: 'balloon-pop',
       title: '🎈 Balloon Pop',
       description: 'Pop balloons in order to spell words',
@@ -768,6 +780,7 @@ const GameCenter: React.FC = () => {
       case 'homophone-hero': return <HomophoneHero onComplete={handleGameComplete} />
       case 'word-family': return <WordFamily onComplete={handleGameComplete} />
       case 'syllable-clap': return <SyllableClap words={selectedWords} onComplete={handleGameComplete} />
+      case 'definition-detective': return <DefinitionDetective words={selectedWords} onComplete={handleGameComplete} />
       case 'bible-trivia': return <BibleTriviaEnhanced onComplete={handleGameComplete} />
       case 'bible-memorizer': return <BibleMemorizer onComplete={handleGameComplete} />
       default: return null

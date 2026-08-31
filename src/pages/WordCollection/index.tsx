@@ -103,6 +103,7 @@ const WordCollection: React.FC = () => {
       <div className="wc-header">
         <Button variant="secondary" size="small" onClick={() => navigate('/learn')}>← Back to Learning</Button>
         <h1>🗂️ My Word Collection</h1>
+        <Button variant="secondary" size="small" onClick={() => navigate('/progress')}>📈 Progress</Button>
       </div>
 
       <ExplorerLevel />

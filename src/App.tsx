@@ -23,6 +23,7 @@ import ReadingHub from './pages/ReadingHub'
 import Review from './pages/Review'
 import DailyQuiz from './pages/DailyQuiz'
 import WordCollection from './pages/WordCollection'
+import ProgressReport from './pages/Progress'
 
 // Layout Components
 import Header from './components/layout/Header'
@@ -74,6 +75,7 @@ function App() {
                     <Route path="/review" element={<Review />} />
                     <Route path="/daily-quiz" element={<DailyQuiz />} />
                     <Route path="/collection" element={<WordCollection />} />
+                    <Route path="/progress" element={<ProgressReport />} />
                     <Route path="/games" element={<GameCenter />} />
                     <Route path="/bible" element={<BibleDashboard />} />
                     <Route path="/reading" element={<ReadingHub />} />

@@ -42,6 +42,7 @@ export { default as TreasureTrail } from './TreasureTrail'
 export { default as HomophoneHero } from './HomophoneHero'
 export { default as WordFamily } from './WordFamily'
 export { default as SyllableClap } from './SyllableClap'
+export { default as DefinitionDetective } from './DefinitionDetective'
 
 // Hub extras (not a game — a daily reward the hub shows above the grid)
 export { default as PrizeWheel } from './PrizeWheel'
