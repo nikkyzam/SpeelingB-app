@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import './WordSearch.css'
 
 interface WordSearchProps {
@@ -89,18 +89,9 @@ const WordSearch: React.FC<WordSearchProps> = ({ onComplete, words: providedWord
     const fits = (w: string) => /^[a-z]+$/.test(w) && w.length >= 3 && w.length <= 6
     const studied = (providedWords || []).map((w) => w.word.toLowerCase()).filter(fits)
 
-    // The grid can only hide SHORT words. If the child's studied words are all
-    // long, top up from the word bank — otherwise the puzzle would hide nothing
-    // and instantly (and wrongly) look "complete".
-    let pool = studied
-    if (pool.length < count) {
-      const extra = wordBank
-        .getRandomWords(120)
-        .map((w) => w.word.toLowerCase())
-        .filter((w) => fits(w) && !pool.includes(w))
-      pool = [...pool, ...extra]
-    }
-    return buildPuzzle(pool, count)
+    // The grid can only hide SHORT words, and only ever the child's own. If
+    // they have just a few short enough, the puzzle simply hides fewer.
+    return buildPuzzle(studied, Math.min(count, studied.length))
   }, [providedWords, count])
 
   const [first, setFirst] = useState<[number, number] | null>(null)
@@ -144,6 +135,15 @@ const WordSearch: React.FC<WordSearchProps> = ({ onComplete, words: providedWord
     setFlash('miss')
     setTimeout(() => setFlash(null), 350)
     setFirst([r, c]) // treat as a fresh start
+  }
+
+  if (puzzle.targets.length === 0) {
+    return (
+      <div className="word-search">
+        <p className="ws-empty">No short words to hide yet — learn a few more! 🔍</p>
+        <button className="ws-btn" onClick={() => onComplete(0)}>Back to Games</button>
+      </div>
+    )
   }
 
   return (

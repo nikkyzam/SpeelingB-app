@@ -37,13 +37,13 @@ const WordChef: React.FC<WordChefProps> = ({ onComplete, words: providedWords, d
   const { speak } = useAudio()
 
   const { base, targets } = useMemo(() => {
-    const pool = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(60)
+    const pool = providedWords && providedWords.length > 0 ? providedWords : []
     const candidates = pool
       .map((w) => w.word.toLowerCase())
       .filter((w) => /^[a-z]+$/.test(w) && w.length >= 5 && w.length <= 8)
-    const chosen = candidates.length
-      ? shuffle(candidates)[0]
-      : shuffle(wordBank.getAllWords().map((w) => w.word.toLowerCase()).filter((w) => /^[a-z]{5,8}$/.test(w)))[0] || 'spelling'
+    // The base word is always one of the child's own; no word, no kitchen.
+    const chosen = candidates.length ? shuffle(candidates)[0] : ''
+    if (!chosen) return { base: '', targets: new Set<string>() }
 
     const baseCount = letterCounts(chosen)
     // Validate against common kid words AND the word bank: the bank alone is
@@ -71,7 +71,7 @@ const WordChef: React.FC<WordChefProps> = ({ onComplete, words: providedWords, d
   const [flash, setFlash] = useState<{ kind: 'ok' | 'bad'; msg: string } | null>(null)
 
   const build = used.map((i) => tiles[i]).join('')
-  const finished = found.length >= targets.size
+  const finished = !!base && found.length >= targets.size
 
   useEffect(() => {
     if (timeLeft <= 0 || finished) {
@@ -121,6 +121,15 @@ const WordChef: React.FC<WordChefProps> = ({ onComplete, words: providedWords, d
       say('bad', `"${word}" isn't on the menu`)
     }
     clear()
+  }
+
+  if (!base) {
+    return (
+      <div className="word-chef">
+        <p className="wc-none">The kitchen is bare — learn a few longer words first! 👨‍🍳</p>
+        <button className="wc-btn" onClick={() => onComplete(0)}>Back to Games</button>
+      </div>
+    )
   }
 
   return (

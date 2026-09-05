@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import './RescueTheBee.css'
 
@@ -26,7 +26,7 @@ const RescueTheBee: React.FC<RescueTheBeeProps> = ({ onComplete, words: provided
   const { speak } = useAudio()
 
   const roundWords = useMemo<Word[]>(() => {
-    const pool = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(rounds * 2)
+    const pool = providedWords && providedWords.length > 0 ? providedWords : []
     return shuffle(pool).filter((w) => w.word.length >= 3 && /^[a-z]+$/i.test(w.word)).slice(0, rounds)
   }, [providedWords, rounds])
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { wordBank } from '../../../services/wordBank'
 import './MemoryMatch.css'
 
 interface Card {
@@ -24,27 +23,32 @@ const MemoryMatch: React.FC<MemoryMatchProps> = ({ onComplete, gridSize = 4, wor
   const [moves, setMoves] = useState(0)
   const [gameComplete, setGameComplete] = useState(false)
   const [isChecking, setIsChecking] = useState(false)
+  // The board is as big as the child's own word list allows, so the target is
+  // the number of pairs actually dealt — not the size of a full grid.
+  const [totalPairs, setTotalPairs] = useState(0)
 
   useEffect(() => {
     initializeGame()
   }, [providedWords])
 
   useEffect(() => {
-    if (matches === (gridSize * gridSize) / 2) {
+    if (totalPairs > 0 && matches === totalPairs) {
       setGameComplete(true)
       const score = calculateScore()
       setTimeout(() => onComplete(score), 1000)
     }
-  }, [matches])
+  }, [matches, totalPairs])
 
   const initializeGame = () => {
-    const totalPairs = (gridSize * gridSize) / 2
+    const maxPairs = (gridSize * gridSize) / 2
     let words = []
     
-    if (providedWords && providedWords.length >= totalPairs) {
-      words = [...providedWords].sort(() => 0.5 - Math.random()).slice(0, totalPairs)
+    if (providedWords && providedWords.length > 0) {
+      // Fewer pairs is fine — a short board of their own words beats a full
+      // board of strangers.
+      words = [...providedWords].sort(() => 0.5 - Math.random()).slice(0, maxPairs)
     } else {
-      words = wordBank.getRandomWords(totalPairs)
+      words = []
     }
 
     const cardPairs: Card[] = []
@@ -74,6 +78,11 @@ const MemoryMatch: React.FC<MemoryMatchProps> = ({ onComplete, gridSize = 4, wor
     // Shuffle cards
     const shuffled = [...cardPairs].sort(() => Math.random() - 0.5)
     setCards(shuffled)
+    setTotalPairs(words.length)
+    setMatches(0)
+    setMoves(0)
+    setFlippedCards([])
+    setGameComplete(false)
   }
 
   const handleCardClick = (id: number) => {
@@ -144,6 +153,15 @@ const MemoryMatch: React.FC<MemoryMatchProps> = ({ onComplete, gridSize = 4, wor
     return type === 'word' ? '🔤' : '📖'
   }
 
+  if (totalPairs === 0) {
+    return (
+      <div className="memory-match">
+        <p className="mm-empty">No word pairs yet — learn a few words first! 🧠</p>
+        <button className="mm-btn" onClick={() => onComplete(0)}>Back to Games</button>
+      </div>
+    )
+  }
+
   return (
     <div className="memory-match">
       <div className="game-header">
@@ -151,7 +169,7 @@ const MemoryMatch: React.FC<MemoryMatchProps> = ({ onComplete, gridSize = 4, wor
         <div className="game-stats">
           <div className="stat">
             <span className="stat-label">Matches</span>
-            <span className="stat-value">{matches}/{(gridSize * gridSize) / 2}</span>
+            <span className="stat-value">{matches}/{totalPairs}</span>
           </div>
           <div className="stat">
             <span className="stat-label">Moves</span>

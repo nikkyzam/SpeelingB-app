@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, misspell, isPlayable } from '../shared/wordTricks'
 import sfx from '../shared/sfx'
@@ -35,9 +35,9 @@ const WordWhack: React.FC<WordWhackProps> = ({ onComplete, words: providedWords,
   const { speak } = useAudio()
 
   const pool = useMemo<Word[]>(() => {
-    const base = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(40)
+    const base = providedWords && providedWords.length > 0 ? providedWords : []
     const usable = shuffle(base).filter((w) => isPlayable(w))
-    return usable.length >= 6 ? usable : [...usable, ...wordBank.getRandomWords(40).filter((w) => isPlayable(w))]
+    return usable
   }, [providedWords])
 
   const [moles, setMoles] = useState<Mole[]>([])

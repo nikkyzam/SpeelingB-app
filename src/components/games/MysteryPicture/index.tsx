@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle } from '../shared/wordTricks'
 import './MysteryPicture.css'
@@ -29,7 +29,7 @@ const MysteryPicture: React.FC<MysteryPictureProps> = ({ onComplete, words: prov
   const scene = useMemo(() => SCENES[Math.floor(Math.random() * SCENES.length)], [])
 
   const words = useMemo<Word[]>(() => {
-    const pool = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(30)
+    const pool = providedWords && providedWords.length > 0 ? providedWords : []
     return shuffle(pool).filter((w) => /^[a-z]+$/i.test(w.word) && w.word.length >= 3).slice(0, 6)
   }, [providedWords])
 

@@ -4,6 +4,7 @@ import { useTheme } from '../../contexts/ThemeContext'
 import { useUser } from '../../contexts/UserContext'
 import Button from '../../components/common/Button'
 import WorldPicker from '../../components/theme/WorldPicker'
+import WhoIsPlaying from '../../components/profile/WhoIsPlaying'
 import AdminUsers from '../../components/admin/AdminUsers'
 import './Settings.css'
 
@@ -18,6 +19,16 @@ const Settings: React.FC = () => {
         <h1>Settings ⚙️</h1>
         <p>Make the app feel just right for you!</p>
       </div>
+
+      <section className="settings-section">
+        <h2>Who&apos;s Playing? 🧒</h2>
+        <p className="settings-sub">
+          Choose your name and the face that shows at the top of the screen.
+        </p>
+        <div className="settings-info-card">
+          <WhoIsPlaying />
+        </div>
+      </section>
 
       {/* The progress report is for every grown-up, not just admins. */}
       <section className="settings-section">
@@ -35,11 +46,10 @@ const Settings: React.FC = () => {
         <section className="settings-section">
           <h2>Grown-up Tools <span className="admin-badge">Admin</span></h2>
           <p className="settings-sub">
-            Set how many new words each child learns per group before spelling &amp; games unlock.
+            See how each child is doing, size their daily words, adjust stars, and
+            open or restart a day.
           </p>
-          <div className="settings-info-card">
-            <AdminUsers />
-          </div>
+          <AdminUsers />
         </section>
       )}
 

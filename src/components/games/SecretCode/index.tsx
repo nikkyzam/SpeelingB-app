@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle } from '../shared/wordTricks'
 import './SecretCode.css'
@@ -18,7 +18,7 @@ const SecretCode: React.FC<SecretCodeProps> = ({ onComplete, words: providedWord
   const { speak } = useAudio()
 
   const words = useMemo<Word[]>(() => {
-    const pool = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(40)
+    const pool = providedWords && providedWords.length > 0 ? providedWords : []
     return shuffle(pool)
       .filter((w) => /^[a-z]+$/i.test(w.word) && w.word.length >= 3 && w.word.length <= 8)
       .slice(0, rounds)

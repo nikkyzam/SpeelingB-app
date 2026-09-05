@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import React, { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react'
 import { WorldId, World, getWorld, applyWorld, DEFAULT_WORLD, WORLD_LIST } from '../../theme/worlds'
+import { setWorldSoundProfile } from '../../components/games/shared/sfx'
+import sfx from '../../components/games/shared/sfx'
 
 interface ThemeContextType {
   /** Current world id (also the legacy `theme` value) */
@@ -43,9 +45,19 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     return localStorage.getItem(CHOSEN_KEY) === 'true'
   })
 
+  const firstRender = useRef(true)
+
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, theme)
     applyWorld(theme)
+    // The world sounds like itself now — and sings a hello when the child
+    // switches worlds (skipped on first load; browsers block pre-gesture audio).
+    setWorldSoundProfile(theme)
+    if (firstRender.current) {
+      firstRender.current = false
+    } else {
+      sfx.worldJingle()
+    }
   }, [theme])
 
   const setTheme = (newTheme: WorldId) => {

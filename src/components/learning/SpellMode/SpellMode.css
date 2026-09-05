@@ -144,3 +144,15 @@
   .action-buttons { flex-direction: column; }
   .score-item { min-width: 110px; padding: var(--spacing-md); }
 }
+
+/* Spell-by-speaking */
+.mic-hint {
+  margin-top: 8px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 15%, var(--card));
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 700;
+  animation: pop-in 0.25s ease;
+}

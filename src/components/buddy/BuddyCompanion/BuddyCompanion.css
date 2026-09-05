@@ -1,0 +1,94 @@
+.buddy-companion {
+  position: fixed;
+  left: 12px;
+  bottom: 84px; /* sits above the bottom navigation */
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  pointer-events: none; /* only the buddy itself is tappable */
+}
+
+.companion-creature {
+  pointer-events: auto;
+  position: relative;
+  border: none;
+  background: var(--card);
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  border: 3px solid var(--primary);
+  transition: transform 0.15s ease;
+}
+
+.companion-creature:hover {
+  transform: scale(1.08);
+}
+
+.companion-emoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.companion-hat {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-8deg);
+  font-size: 1.2rem;
+}
+
+.companion-creature.bounce {
+  animation: companion-bounce 0.7s ease;
+}
+
+.companion-creature.dance {
+  animation: companion-dance 1.6s ease;
+}
+
+.companion-bubble {
+  pointer-events: auto;
+  max-width: 200px;
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  background: var(--card);
+  color: var(--text);
+  border: 2px solid var(--primary);
+  border-radius: 14px 14px 14px 4px;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  animation: pop-in 0.25s ease;
+}
+
+@keyframes companion-bounce {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-14px) scale(1.05); }
+  70% { transform: translateY(2px); }
+}
+
+@keyframes companion-dance {
+  0%, 100% { transform: rotate(0); }
+  20% { transform: rotate(-14deg) translateY(-6px); }
+  40% { transform: rotate(12deg) translateY(0); }
+  60% { transform: rotate(-10deg) translateY(-8px); }
+  80% { transform: rotate(8deg); }
+}
+
+@media (max-width: 480px) {
+  .companion-creature {
+    width: 54px;
+    height: 54px;
+  }
+  .companion-emoji {
+    font-size: 1.6rem;
+  }
+  .companion-bubble {
+    max-width: 160px;
+    font-size: 0.8rem;
+  }
+}

@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle } from '../shared/wordTricks'
 import './GhostWord.css'
@@ -19,7 +19,7 @@ const GhostWord: React.FC<GhostWordProps> = ({ onComplete, words: providedWords,
   const { speak } = useAudio()
 
   const words = useMemo<Word[]>(() => {
-    const pool = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(30)
+    const pool = providedWords && providedWords.length > 0 ? providedWords : []
     return shuffle(pool).filter((w) => /^[a-z]+$/i.test(w.word) && w.word.length >= 3).slice(0, rounds)
   }, [providedWords, rounds])
 

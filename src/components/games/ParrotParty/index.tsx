@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, isPlayable } from '../shared/wordTricks'
 import sfx from '../shared/sfx'
@@ -27,12 +27,11 @@ const ParrotParty: React.FC<ParrotPartyProps> = ({ onComplete, words: providedWo
   const { speak } = useAudio()
 
   const tiles = useMemo<string[]>(() => {
-    const pool = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(30)
+    const pool = providedWords && providedWords.length > 0 ? providedWords : []
     const usable = shuffle(pool).filter((w) => isPlayable(w)).map((w) => w.word.toLowerCase())
     const unique = [...new Set(usable)]
-    if (unique.length >= TILES) return unique.slice(0, TILES)
-    const extra = wordBank.getRandomWords(40).filter((w) => isPlayable(w)).map((w) => w.word.toLowerCase())
-    return [...new Set([...unique, ...extra])].slice(0, TILES)
+    // Polly only ever repeats words this child has met.
+    return unique.slice(0, TILES)
   }, [providedWords])
 
   const [sequence, setSequence] = useState<number[]>([])

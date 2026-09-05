@@ -3,6 +3,7 @@ import { useAudio } from '../../../contexts/AudioContext'
 import { useProgress } from '../../../contexts/ProgressContext'
 import { wordBank, Word } from '../../../services/wordBank'
 import ReviewSchedule from '../../../services/progress/ReviewSchedule'
+import { AchievementsService } from '../../../services/rewards/AchievementsService'
 import Button from '../../common/Button'
 import './QuizMode.css'
 
@@ -125,6 +126,7 @@ const QuizMode: React.FC<QuizModeProps> = ({
 
     // Every answer teaches the scheduler something about this word.
     ReviewSchedule.record(currentQ.word.id, isCorrect)
+    AchievementsService.recordWordSpelled(isCorrect, true)
 
     if (isCorrect) {
       scoreRef.current += 10

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, isPlayable } from '../shared/wordTricks'
 import sfx from '../shared/sfx'
@@ -85,12 +85,11 @@ const SillyStory: React.FC<SillyStoryProps> = ({ onComplete, words: providedWord
   const blanks = template.parts.length - 1
 
   const pool = useMemo<string[]>(() => {
-    const base = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(40)
+    const base = providedWords && providedWords.length > 0 ? providedWords : []
     const usable = shuffle(base).filter((w) => isPlayable(w)).map((w) => w.word.toLowerCase())
     const unique = [...new Set(usable)]
-    if (unique.length >= blanks * 3) return unique
-    const extra = wordBank.getRandomWords(60).filter((w) => isPlayable(w)).map((w) => w.word.toLowerCase())
-    return [...new Set([...unique, ...extra])]
+    // The story is silly because *their* words are in it.
+    return unique
   }, [providedWords, blanks])
 
   const [filled, setFilled] = useState<string[]>([])

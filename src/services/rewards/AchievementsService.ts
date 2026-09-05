@@ -49,6 +49,28 @@ export class AchievementsService {
     return badges;
   }
 
+  /**
+   * Set a badge's progress outright, for badges that track a *best so far*
+   * rather than a running total.
+   *
+   * "Get a 10-word combo" and "Maintain a 7-day streak" were both being
+   * incremented by one each time they were achieved, so a 10-combo had to
+   * happen ten times before the badge for doing it once would unlock.
+   */
+  static setBadgeProgress(badgeId: string, value: number): Badge[] {
+    const badges = this.getBadges();
+    const index = badges.findIndex(b => b.id === badgeId);
+    if (index === -1) return badges;
+
+    const badge = badges[index];
+    // Never walk progress backwards — a shorter streak today shouldn't undo it.
+    const next = Math.min(Math.max(badge.requirements.current, value), badge.requirements.target);
+    if (next === badge.requirements.current) return badges;
+
+    // Reuse the increment path so unlocking, points and the event stay in one place.
+    return this.updateBadgeProgress(badgeId, next - badge.requirements.current);
+  }
+
   static recordWordSpelled(correct: boolean, isQuiz: boolean = false): void {
     if (correct) {
       this.updateBadgeProgress('first-word');
@@ -77,13 +99,12 @@ export class AchievementsService {
     gamesPlayed[gameId] = (gamesPlayed[gameId] || 0) + 1;
     localStorage.setItem('games_played', JSON.stringify(gamesPlayed));
 
-    const allGames = ['word-race', 'spell-sprint', 'memory-match', 'balloon-pop',
-                     'word-scramble', 'shape-catcher', 'spelling-adventure', 'bonus-game'];
-    const playedGames = Object.keys(gamesPlayed).filter(game => gamesPlayed[game] > 0).length;
-
-    if (playedGames >= allGames.length) {
-      this.updateBadgeProgress('game-master');
-    }
+    // How many *different* games have been played. The old version compared
+    // this against a hardcoded list of eight long-since-renamed game ids, then
+    // incremented by one — so the badge needed eight more plays after already
+    // qualifying. The badge's own target is the bar to clear.
+    const distinctGames = Object.keys(gamesPlayed).filter(game => gamesPlayed[game] > 0).length;
+    this.setBadgeProgress('game-master', distinctGames);
   }
 
   static recordDailyGoalComplete(): void {
@@ -94,15 +115,12 @@ export class AchievementsService {
   }
 
   static recordComboAchieved(combo: number): void {
-    if (combo >= 10) {
-      this.updateBadgeProgress('combo-master');
-    }
+    // Progress is the best combo so far, so the bar fills as they get closer.
+    this.setBadgeProgress('combo-master', combo);
   }
 
   static recordStreakAchieved(streak: number): void {
-    if (streak >= 7) {
-      this.updateBadgeProgress('streak-champion');
-    }
+    this.setBadgeProgress('streak-champion', streak);
   }
 
   static getUnlockedBadges(): Badge[] {

@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { withoutAdminClaim, withAdminClaimDenied } from '../services/auth/adminClaim'
 
 interface User {
   id: string
@@ -27,12 +28,14 @@ const calculateDailyGoal = (_name: string, _email?: string): number => {
 export const useUserStore = create<UserState>()(
   persist(
     (set) => ({
+      // A guest is nobody in particular — naming them after one child meant
+      // every family's app greeted them as "Ava" until they signed in.
       user: {
-        id: 'guest-ava',
-        name: 'Ava',
+        id: 'guest',
+        name: 'Friend',
         age: 6,
-        avatar: 'ava',
-        dailyGoal: calculateDailyGoal('Ava'),
+        avatar: '🧒',
+        dailyGoal: calculateDailyGoal('Friend'),
         isGuest: true
       },
       setUser: (user) => {
@@ -48,7 +51,19 @@ export const useUserStore = create<UserState>()(
       logout: () => set({ user: null })
     }),
     {
-      name: 'user-storage'
+      name: 'user-storage',
+      // The admin claim is read from the signed ID token on every auth state
+      // change. It must never be written to localStorage (where a child could
+      // set it) nor trusted on the way back out.
+      partialize: (state) => ({ ...state, user: withoutAdminClaim(state.user) }),
+      merge: (persisted, current) => {
+        const saved = (persisted || {}) as Partial<UserState>
+        return {
+          ...current,
+          ...saved,
+          user: saved.user ? withAdminClaimDenied(saved.user) : current.user,
+        }
+      },
     }
   )
 )

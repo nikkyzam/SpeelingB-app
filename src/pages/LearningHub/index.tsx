@@ -1,16 +1,17 @@
 import React, { useState, useMemo, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useProgress } from '../../contexts/ProgressContext'
 import { useUser } from '../../contexts/UserContext'
 import { useRewardStore } from '../../stores/rewards/useRewardStore'
 import { wordBank } from '../../services/wordBank'
+import { getSeasonalEventById } from '../../services/seasonal'
 import WordMastery, {
   MASTERY_EVENT,
   LEARN_CHALLENGE_TARGET,
   LEARN_CHALLENGE_REWARD,
 } from '../../services/progress/WordMastery'
 import ExplorerLevel from '../../components/progress/ExplorerLevel'
-import WordJourney from '../../components/progress/WordJourney'
+import QuestMap from '../../components/progress/QuestMap'
 import Button from '../../components/common/Button'
 import LearnMode from '../../components/learning/LearnMode'
 import SpellMode from '../../components/learning/SpellMode'
@@ -35,6 +36,13 @@ const LearningHub: React.FC = () => {
   const [challengeTick, setChallengeTick] = useState(0)
   const navigate = useNavigate()
   const { addStars } = useRewardStore()
+  const [searchParams] = useSearchParams()
+  // A seasonal event (?seasonal=halloween) swaps the whole word list for the
+  // event's curated set — everything downstream (groups, learn, spell) just works.
+  const seasonalEvent = useMemo(
+    () => getSeasonalEventById(searchParams.get('seasonal') || ''),
+    [searchParams]
+  )
 
   useEffect(() => {
     const bump = () => setChallengeTick((t) => t + 1)
@@ -65,11 +73,12 @@ const LearningHub: React.FC = () => {
   const missedDays = learningFlow.getMissedDays()
 
   const filteredWords = useMemo(() => {
+    if (seasonalEvent) return seasonalEvent.words
     const base = difficulty ? wordBank.getWordsByDifficulty(difficulty) : wordBank.getAllWords()
     // Some difficulty tiers may have no words yet — never leave the learner with
     // an empty set (which would soft-lock on "Loading words...").
     return base.length > 0 ? base : wordBank.getAllWords()
-  }, [difficulty])
+  }, [difficulty, seasonalEvent])
 
   const groupsCount = Math.max(1, Math.ceil(filteredWords.length / groupSize))
 
@@ -79,11 +88,15 @@ const LearningHub: React.FC = () => {
   const safeGroup = Math.min(Math.max(selectedGroup, 0), groupsCount - 1)
 
   useEffect(() => {
+    // A seasonal event swaps in a much shorter word list, so the clamp above
+    // fires — but that is a temporary detour, not a move. Writing it back would
+    // lose the child's place in the main list (group 37 becomes group 1).
+    if (seasonalEvent) return
     if (safeGroup !== selectedGroup) {
       setSelectedGroup(safeGroup)
       learningFlow.setSelectedGroup(safeGroup)
     }
-  }, [safeGroup, selectedGroup, learningFlow])
+  }, [safeGroup, selectedGroup, learningFlow, seasonalEvent])
 
   const groupWords = useMemo(() => {
     const start = safeGroup * groupSize
@@ -360,14 +373,27 @@ const LearningHub: React.FC = () => {
       {/* The rank that only ever goes up — tap it to see the words behind it. */}
       <ExplorerLevel onClick={() => navigate('/collection')} />
 
+      {seasonalEvent && (
+        <div className="seasonal-hub-banner pop-in">
+          <span className="seasonal-hub-icon" aria-hidden>{seasonalEvent.icon}</span>
+          <div>
+            <h2>{seasonalEvent.name}</h2>
+            <p>{seasonalEvent.tagline} These special words are only here for a little while!</p>
+          </div>
+          <Button variant="secondary" size="small" onClick={() => navigate('/learn')}>
+            ← Regular words
+          </Button>
+        </div>
+      )}
+
       <div className="learning-path">
-        <h2>🚀 Your Word Adventure</h2>
+        <h2>{seasonalEvent ? `${seasonalEvent.icon} ${seasonalEvent.name}` : '🚀 Your Word Adventure'}</h2>
         <p className="path-intro">
           Group {safeGroup + 1} • {groupCount} words. Learn them all, spell them all, then a game pops open! 🎮
         </p>
 
-        {/* The whole adventure at a glance, with the mascot standing on today's stop */}
-        <WordJourney
+        {/* The whole adventure as a winding trail, with the mascot on today's stop */}
+        <QuestMap
           words={filteredWords}
           groupSize={groupSize}
           current={safeGroup}

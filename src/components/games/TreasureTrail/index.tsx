@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { useTheme } from '../../../contexts/ThemeContext'
 import { shuffle, misspell, isPlayable } from '../shared/wordTricks'
@@ -87,9 +87,9 @@ const TreasureTrail: React.FC<TreasureTrailProps> = ({ onComplete, words: provid
   const { world } = useTheme()
 
   const pool = useMemo<Word[]>(() => {
-    const base = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(40)
+    const base = providedWords && providedWords.length > 0 ? providedWords : []
     const usable = shuffle(base).filter((w) => isPlayable(w))
-    return usable.length >= 6 ? usable : [...usable, ...wordBank.getRandomWords(40).filter((w) => isPlayable(w))]
+    return usable
   }, [providedWords])
 
   // A trail of mostly-puzzle tiles, sprinkled with freebies so there's a reason

@@ -8,6 +8,7 @@ import GameStats, {
   DAILY_CHALLENGE_TARGET,
   DAILY_CHALLENGE_REWARD,
 } from '../../services/games/GameStats'
+import { AchievementsService } from '../../services/rewards/AchievementsService'
 import Button from '../../components/common/Button'
 import {
   BonusGame,
@@ -137,10 +138,10 @@ const GameCenter: React.FC = () => {
   const seen = useMemo(() => GameStats.getSeen(), [statsTick])
   const gridRef = useRef<HTMLDivElement>(null)
 
-  // Games practise what the child has ALREADY studied. We draw from their
-  // learned words first; only if they haven't learned enough yet do we top up
-  // with words from their current level so no game is left unplayable.
-  const MIN_GAME_WORDS = 12
+  // Games practise what the child has ALREADY studied — nothing else. Feeding a
+  // game words a child has never met turns practice into a guessing exercise
+  // and pollutes the review scheduler with words they were never taught.
+  const MIN_GAME_WORDS = 4
 
   const selectedWords = useMemo(() => {
     const shuffled = <T,>(a: T[]): T[] => [...a].sort(() => 0.5 - Math.random())
@@ -149,26 +150,19 @@ const GameCenter: React.FC = () => {
     // break a game's own filter and leave it stuck on an empty screen.
     const playable = (w: { word: string }) => /^[a-z]+$/i.test(w.word) && w.word.length >= 3
 
-    const learned = learningFlow
-      .getWordsLearnedTotal()
+    // Everything the child has actually studied: met in a lesson, or spelled.
+    const studiedIds = new Set([
+      ...learningFlow.getWordsLearnedTotal(),
+      ...learningFlow.getWordsSpelledTotal(),
+    ])
+
+    const studied = [...studiedIds]
       .map((id) => wordBank.getWordById(id))
       .filter((w): w is NonNullable<typeof w> => !!w && playable(w))
 
-    const difficulty = learningFlow.getDifficulty()
-    const levelPool = (difficulty ? wordBank.getWordsByDifficulty(difficulty) : wordBank.getAllWords())
-      .filter(playable)
-
-    if (learned.length >= MIN_GAME_WORDS) {
-      return shuffled(learned).slice(0, 60)
-    }
-
-    // Not enough studied words yet — top up from the child's level so every
-    // game still has plenty to work with.
-    const learnedIds = new Set(learned.map((w) => w.id))
-    const filler = shuffled(levelPool.filter((w) => !learnedIds.has(w.id)))
-    const combined = [...learned, ...filler].slice(0, 60)
-    // Last resort: if a level somehow has nothing usable, fall back to all words.
-    return combined.length > 0 ? combined : shuffled(wordBank.getAllWords().filter(playable)).slice(0, 60)
+    // No top-up from the wider bank: if they have not learned enough words yet,
+    // the hub keeps the games shut rather than handing over strangers.
+    return shuffled(studied).slice(0, 60)
     // activeGame in deps → a fresh shuffle each time a game is opened.
   }, [learningFlow, activeGame])
 
@@ -186,7 +180,17 @@ const GameCenter: React.FC = () => {
     .getWordsLearnedTotal()
     .filter((id) => !!wordBank.getWordById(id)).length
 
-  const games: GameCard[] = [
+  // Enough studied words to fill a game? Bible and reflex games don't use the
+  // word list, so they are never gated on it.
+  const enoughWords = selectedWords.length >= MIN_GAME_WORDS
+  const wordlessGames = new Set([
+    'bible-trivia', 'bible-memorizer', 'bonus', 'shape-catcher', 'pattern-memory',
+    'rhythm-tap', 'memory-grid', 'reaction-test', 'pattern-sequencer', 'color-mixer',
+    'math-puzzle', 'music-composer', 'physics-puzzle', 'puzzle-slider',
+    'homophone-hero', 'word-family',
+  ])
+
+  const rawGames: GameCard[] = [
     {
       id: 'bonus',
       title: '🎁 Bonus Game',
@@ -663,6 +667,12 @@ const GameCenter: React.FC = () => {
     }
   ]
 
+  // A word game with nothing of the child's to practise would have to invent
+  // words, so it stays shut until they have studied a few.
+  const games: GameCard[] = rawGames.map((g) =>
+    wordlessGames.has(g.id) ? g : { ...g, unlocked: g.unlocked && enoughWords }
+  )
+
   const handleGameComplete = (score: number) => {
     const finishedId = activeGame
 
@@ -674,6 +684,8 @@ const GameCenter: React.FC = () => {
     if (finishedId) {
       newBest = GameStats.recordScore(finishedId, score).isNewBest
       GameStats.recordDailyPlay(finishedId)
+      // Counts towards the "play lots of different games" badge.
+      AchievementsService.recordGamePlayed(finishedId)
     }
 
     setCelebration({
@@ -918,7 +930,9 @@ const GameCenter: React.FC = () => {
 
                 {!game.unlocked && (
                   <p className="unlock-requirement">
-                    Complete daily learning to unlock
+                    {!wordlessGames.has(game.id) && !enoughWords
+                      ? `Learn ${MIN_GAME_WORDS - selectedWords.length} more word${MIN_GAME_WORDS - selectedWords.length === 1 ? '' : 's'} to play`
+                      : 'Complete daily learning to unlock'}
                   </p>
                 )}
               </div>

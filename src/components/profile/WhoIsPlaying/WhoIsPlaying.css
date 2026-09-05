@@ -1,0 +1,78 @@
+.who-playing { display: flex; flex-direction: column; gap: var(--spacing-md); }
+
+.wp-preview {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.wp-preview-avatar { font-size: 2.6rem; line-height: 1; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25)); }
+.wp-preview-name { font-family: var(--font-primary); font-weight: 900; font-size: 1.3rem; }
+
+.wp-field { display: flex; flex-direction: column; gap: 4px; }
+.wp-label {
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
+.wp-input {
+  padding: 0.6rem 1rem;
+  border: 3px solid var(--border);
+  border-radius: var(--radius-round);
+  background: var(--card);
+  color: var(--text);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+.wp-input:focus { outline: none; border-color: var(--primary); }
+
+.wp-avatars {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+  gap: var(--spacing-sm);
+}
+.wp-avatar {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  font-size: 1.7rem;
+  border: 3px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  cursor: pointer;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+.wp-avatar:hover { transform: translateY(-3px) scale(1.05); }
+.wp-avatar.chosen {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 18%, var(--card));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 35%, transparent);
+  transform: scale(1.06);
+}
+
+.wp-actions { display: flex; align-items: center; gap: var(--spacing-md); flex-wrap: wrap; }
+.wp-save {
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1rem;
+  color: #fff;
+  background: linear-gradient(180deg, var(--primary), var(--primary-2));
+  border-radius: var(--radius-round);
+  padding: 0.6rem 1.6rem;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+}
+.wp-save:active:not(:disabled) { transform: translateY(3px); box-shadow: none; }
+.wp-save:disabled { opacity: 0.45; cursor: not-allowed; }
+.wp-note { font-size: 0.8rem; color: var(--text-soft); }
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-avatar:hover { transform: none; }
+}

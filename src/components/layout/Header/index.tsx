@@ -82,7 +82,9 @@ const Header: React.FC = () => {
       <div className="header-right">
         {user && (
           <div className="user-chip">
-            <span className="user-avatar">{user.avatar === 'ava' ? '👧' : '🧒'}</span>
+            {/* Whatever they picked. 'ava' is the legacy stored value from
+                when the avatar was hardcoded to one of two faces. */}
+            <span className="user-avatar">{!user.avatar || user.avatar === 'ava' ? '🧒' : user.avatar}</span>
             <span className="user-name">{user.name || 'Friend'}</span>
           </div>
         )}

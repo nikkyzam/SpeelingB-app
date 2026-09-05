@@ -11,7 +11,10 @@ import Button from '../../components/common/Button'
 import AuthModal from '../../components/auth/AuthModal'
 import ExplorerLevel from '../../components/progress/ExplorerLevel'
 import BuddyCard from '../../components/buddy/BuddyCard'
+import NextUp from '../../components/progress/NextUp'
 import WordOfTheDay from '../../components/learning/WordOfTheDay'
+import MysteryBox from '../../components/rewards/MysteryBox'
+import SeasonalBanner from '../../components/seasonal/SeasonalBanner'
 import ReviewSchedule from '../../services/progress/ReviewSchedule'
 import './Home.css'
 
@@ -55,6 +58,9 @@ const Home: React.FC = () => {
     { icon: '📖', label: 'Learn Words', sub: 'Meet new words', path: '/learn', tone: 'primary' },
     { icon: '✏️', label: 'Spell It!', sub: 'Type what you hear', path: '/learn?mode=spell', tone: 'secondary' },
     { icon: '🎮', label: 'Play Games', sub: dailyCompleted ? 'Unlocked!' : 'Finish learning first', path: '/games', tone: 'accent' },
+    { icon: '⚔️', label: 'Showdown', sub: 'Two players, one device', path: '/showdown', tone: 'accent' },
+    { icon: '🃏', label: 'Silly Sentences', sub: 'Make word jokes', path: '/silly', tone: 'secondary' },
+    { icon: '🔍', label: 'Word Hunt', sub: 'Find letters at home', path: '/hunt', tone: 'primary' },
     { icon: '🗂️', label: 'My Words', sub: 'Your word collection', path: '/collection', tone: 'success' },
     { icon: '🏆', label: 'My Prizes', sub: 'Spend your stars', path: '/rewards', tone: 'success' },
   ] as const
@@ -98,6 +104,15 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Limited-time seasonal words, only while the event runs */}
+      <SeasonalBanner />
+
+      {/* One free surprise a day */}
+      <MysteryBox />
+
+      {/* One clear thing to do, before any of the other choices */}
+      <NextUp />
 
       {/* The buddy: the friend who grows because the child learns */}
       <section className="buddy-section">

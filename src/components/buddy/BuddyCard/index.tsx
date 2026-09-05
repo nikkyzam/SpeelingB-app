@@ -5,6 +5,7 @@ import { useAudio } from '../../../contexts/AudioContext'
 import WordMastery, { MASTERY_EVENT } from '../../../services/progress/WordMastery'
 import BuddyService, { BUDDY_EVENT, stageForLevel } from '../../../services/buddy/BuddyService'
 import { itemById } from '../../../services/buddy/wardrobe'
+import { buddyVoiceOptions, personalityFor } from '../../../services/buddy/personality'
 import Wardrobe from '../Wardrobe'
 import sfx from '../../games/shared/sfx'
 import './BuddyCard.css'
@@ -93,7 +94,7 @@ const BuddyCard: React.FC = () => {
 
   const say = (text: string) => {
     setBubble(text)
-    speak(text)
+    speak(text, buddyVoiceOptions(buddy.name))
     if (bubbleTimer.current) window.clearTimeout(bubbleTimer.current)
     bubbleTimer.current = window.setTimeout(() => setBubble(null), 5200)
   }
@@ -177,6 +178,11 @@ const BuddyCard: React.FC = () => {
         )}
 
         <p className="buddy-blurb">{buddy.name ? stage.blurb : 'Tap the egg to give it a name.'}</p>
+        {buddy.name && (
+          <p className="buddy-personality">
+            “{personalityFor(buddy.name).catchphrase}” — loves {personalityFor(buddy.name).loves}
+          </p>
+        )}
 
         <div className="buddy-meter" title={toNextStage}>
           <div className="buddy-meter-fill" style={{ width: `${Math.round(level.progress * 100)}%` }} />

@@ -74,9 +74,44 @@ const play = (notes: ToneOptions[]) => {
   }
 }
 
+// --- Per-world sound personality -------------------------------------------
+//
+// Every world gets its own instrument and its own win-tune, so switching
+// worlds *sounds* different, not just looks different. Buzzy Meadow is bright
+// and square-wave chiptune; Cosmic Quest is slow, low and swooshy.
+
+interface WorldSoundProfile {
+  /** oscillator flavour for the world's win jingle */
+  type: OscillatorType
+  /** the four notes of the world's win jingle */
+  winNotes: number[]
+  /** tap tick frequency */
+  tapFreq: number
+  /** short motif played when the child arrives in the world */
+  motif: number[]
+}
+
+const SOUND_PROFILES: Record<string, WorldSoundProfile> = {
+  bee:      { type: 'square',   winNotes: [523, 659, 784, 1047], tapFreq: 620, motif: [784, 880, 784] },
+  space:    { type: 'sawtooth', winNotes: [392, 523, 659, 880],  tapFreq: 340, motif: [523, 392, 659] },
+  unicorn:  { type: 'triangle', winNotes: [659, 784, 988, 1319], tapFreq: 720, motif: [988, 1175, 1319] },
+  dino:     { type: 'square',   winNotes: [330, 392, 494, 659],  tapFreq: 240, motif: [330, 294, 392] },
+  ocean:    { type: 'sine',     winNotes: [440, 554, 659, 880],  tapFreq: 520, motif: [659, 554, 440] },
+  princess: { type: 'triangle', winNotes: [587, 740, 880, 1175], tapFreq: 680, motif: [880, 988, 1175] },
+  jungle:   { type: 'square',   winNotes: [440, 523, 587, 784],  tapFreq: 300, motif: [587, 523, 440] },
+  candy:    { type: 'triangle', winNotes: [698, 880, 1047, 1397], tapFreq: 760, motif: [1047, 1175, 1397] },
+}
+
+let currentProfile: WorldSoundProfile = SOUND_PROFILES.bee
+
+/** Called by the theme system whenever the world changes. */
+export const setWorldSoundProfile = (worldId: string): void => {
+  currentProfile = SOUND_PROFILES[worldId] || SOUND_PROFILES.bee
+}
+
 export const sfx = {
-  /** light tick for taps and selections */
-  tap: () => play([{ freq: 620, duration: 0.06, type: 'triangle', volume: 0.1 }]),
+  /** light tick for taps and selections — pitched to the current world */
+  tap: () => play([{ freq: currentProfile.tapFreq, duration: 0.06, type: 'triangle', volume: 0.1 }]),
 
   /** cheerful two-note "yes!" */
   correct: () =>
@@ -91,14 +126,29 @@ export const sfx = {
       { freq: 300, duration: 0.16, type: 'sine', volume: 0.13, glideTo: 200 },
     ]),
 
-  /** rising arpeggio for finishing a game or level */
+  /** rising arpeggio for finishing a game or level — each world has its own tune */
   win: () =>
-    play([
-      { freq: 523, duration: 0.13, type: 'triangle', volume: 0.17 },
-      { freq: 659, duration: 0.13, delay: 0.12, type: 'triangle', volume: 0.17 },
-      { freq: 784, duration: 0.13, delay: 0.24, type: 'triangle', volume: 0.17 },
-      { freq: 1047, duration: 0.3, delay: 0.36, type: 'triangle', volume: 0.19 },
-    ]),
+    play(
+      currentProfile.winNotes.map((freq, i) => ({
+        freq,
+        duration: i === 3 ? 0.3 : 0.13,
+        delay: i * 0.12,
+        type: currentProfile.type,
+        volume: i === 3 ? 0.15 : 0.13,
+      }))
+    ),
+
+  /** the world's little hello-motif, played when the child arrives in it */
+  worldJingle: () =>
+    play(
+      currentProfile.motif.map((freq, i) => ({
+        freq,
+        duration: 0.16,
+        delay: i * 0.14,
+        type: currentProfile.type,
+        volume: 0.1,
+      }))
+    ),
 
   /** coin/star pickup */
   star: () =>

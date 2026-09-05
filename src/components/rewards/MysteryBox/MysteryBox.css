@@ -1,0 +1,105 @@
+.mystery-box {
+  margin: 0 0 16px;
+}
+
+.mystery-gift {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border: 3px dashed var(--primary);
+  border-radius: 20px;
+  background: var(--card);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  color: var(--text);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.mystery-gift:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(var(--primary-rgb), 0.35);
+}
+
+.mystery-gift-icon {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.mystery-gift.opening .mystery-gift-icon {
+  animation: mystery-shake 0.9s ease-in-out infinite;
+}
+
+.mystery-gift-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mystery-gift-text strong {
+  font-size: 1.1rem;
+}
+
+.mystery-gift-text small {
+  color: var(--text-soft);
+}
+
+.mystery-reveal {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  color: var(--on-primary);
+  animation: pop-in 0.4s ease;
+}
+
+.mystery-reveal-icon {
+  font-size: 3rem;
+  line-height: 1;
+  animation: mystery-prize-bounce 0.8s ease infinite alternate;
+}
+
+.mystery-reveal-text h2 {
+  margin: 0 0 4px;
+  font-size: 1.3rem;
+}
+
+.mystery-reveal-text p {
+  margin: 0;
+  opacity: 0.95;
+}
+
+.mystery-again {
+  font-size: 0.85rem;
+  margin-top: 6px !important;
+  opacity: 0.85 !important;
+}
+
+.mystery-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.25);
+  color: inherit;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+@keyframes mystery-shake {
+  0%, 100% { transform: rotate(-8deg) scale(1); }
+  50% { transform: rotate(8deg) scale(1.15); }
+}
+
+@keyframes mystery-prize-bounce {
+  from { transform: translateY(0) scale(1); }
+  to { transform: translateY(-8px) scale(1.1); }
+}

@@ -4,6 +4,7 @@ import {
   getRandomWords,
   searchWords as searchWordsHelper
 } from '../../data/wordData.js';
+import { getAllSeasonalWords } from '../seasonal'
 
 export interface Word {
   id: string
@@ -34,6 +35,10 @@ export class WordBank {
 
   constructor() {
     this.words = this.processWordData()
+    // Seasonal words are part of the bank even out of season: a child who
+    // learned "pumpkin" last October must still find it in their collection,
+    // and every consumer resolves studied ids through getWordById.
+    this.registerWords(getAllSeasonalWords())
     this.categories = this.createCategories()
     console.log(`WordBank initialized with ${this.words.length} words`)
   }
@@ -162,6 +167,20 @@ export class WordBank {
   getRandomWords(count: number, difficulty?: 1 | 2 | 3): Word[] {
     const rawWords = getRandomWords(count, difficulty);
     return rawWords.map(w => this.getWordByWord(w.word)).filter((w): w is Word => !!w);
+  }
+
+  /**
+   * Add words that don't come from the bundled data files (seasonal events).
+   * Ids must be stable and unique; anything already present is left alone.
+   */
+  registerWords(extra: Word[]): void {
+    const known = new Set(this.words.map((w) => w.id))
+    for (const word of extra) {
+      if (!known.has(word.id)) {
+        this.words.push(word)
+        known.add(word.id)
+      }
+    }
   }
 
   getWordById(id: string): Word | undefined {

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { wordBank } from '../../../services/wordBank'
 import './BalloonPop.css'
 
 interface Balloon {
@@ -45,7 +44,7 @@ const BalloonPop: React.FC<BalloonPopProps> = ({ onComplete, wordCount = 3, word
       const selected = [...providedWords].sort(() => 0.5 - Math.random()).slice(0, wordCount)
       wordList = selected.map(w => w.word.toUpperCase())
     } else {
-      const randomWords = wordBank.getRandomWords(wordCount)
+      const randomWords: typeof providedWords = []
       wordList = randomWords.map(w => w.word.toUpperCase())
     }
     

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, isPlayable } from '../shared/wordTricks'
 import ReviewSchedule from '../../../services/progress/ReviewSchedule'
@@ -28,10 +28,10 @@ const DragonDuel: React.FC<DragonDuelProps> = ({ onComplete, words: providedWord
   const { speak } = useAudio()
 
   const words = useMemo<Word[]>(() => {
-    const pool = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(40)
+    const pool = providedWords && providedWords.length > 0 ? providedWords : []
     const usable = shuffle(pool).filter((w) => isPlayable(w))
-    if (usable.length >= 10) return usable
-    return [...usable, ...shuffle(wordBank.getRandomWords(60)).filter((w) => isPlayable(w))].slice(0, 20)
+    // Only their own words — a shorter duel is better than fighting strangers.
+    return usable.slice(0, 20)
   }, [providedWords])
 
   const [index, setIndex] = useState(0)

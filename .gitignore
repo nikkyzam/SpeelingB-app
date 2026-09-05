@@ -11,6 +11,11 @@
 .env
 .cypress.env.json
 serviceAccountKey.json
+
+# Data exported before deleting a user (scripts/delete-user.mjs, and the
+# admin console's "download a copy"). These hold a child's full history.
+*-backup.json
+*-spelling-bee.json
 *-service-account*.json
 
 # Test / coverage artifacts

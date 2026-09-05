@@ -92,29 +92,96 @@
 }
 
 .wc-card {
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  perspective: 900px;
+  min-height: 150px;
+  color: var(--text);
+}
+.wc-card-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 150px;
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.wc-card.open .wc-card-inner { transform: rotateY(180deg); }
+.wc-card-face {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 4px;
   padding: var(--spacing-md);
   border-radius: var(--radius-lg);
   border: 3px solid var(--border);
   background: var(--card);
-  cursor: pointer;
   text-align: center;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
   box-shadow: var(--shadow-sm);
-  color: var(--text);
+  backface-visibility: hidden;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
-.wc-card:hover { transform: translateY(-5px) rotate(-1deg); box-shadow: var(--shadow-md); }
-.wc-card.stars-2 { border-color: var(--secondary); }
-.wc-card.stars-3 {
+.wc-card-back {
+  transform: rotateY(180deg);
+  background: var(--card-soft);
+}
+.wc-card:hover .wc-card-face { box-shadow: var(--shadow-md); }
+.wc-card.stars-2 .wc-card-face { border-color: var(--secondary); }
+.wc-card.stars-3 .wc-card-face {
   border-color: var(--warning);
   background:
     radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--warning) 25%, transparent), transparent 60%),
     var(--card);
 }
-.wc-card.open { grid-column: span 2; }
+/* Mastered cards get a travelling foil shine. */
+.wc-card.stars-3 .wc-card-front::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.55) 48%, transparent 62%);
+  background-size: 250% 100%;
+  animation: wc-foil 3.2s linear infinite;
+  pointer-events: none;
+}
+@keyframes wc-foil {
+  from { background-position: 120% 0; }
+  to { background-position: -120% 0; }
+}
+
+/* Rarity frames */
+.wc-card.rarity-rare .wc-card-face { border-color: var(--secondary); border-style: double; border-width: 5px; }
+.wc-card.rarity-sparkly .wc-card-face {
+  border-color: var(--accent);
+  background:
+    radial-gradient(circle at 20% 15%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 55%),
+    var(--card);
+}
+.wc-card.rarity-event .wc-card-face { border-style: dashed; border-color: var(--primary-2); }
+
+.wc-card-rarity {
+  font-size: 0.62rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-soft);
+}
+.rarity-rare .wc-card-rarity { color: var(--secondary); }
+.rarity-sparkly .wc-card-rarity { color: var(--accent); }
+.rarity-event .wc-card-rarity { color: var(--primary-2); }
+
+.wc-card-flip-hint {
+  font-size: 0.62rem;
+  color: var(--text-soft);
+  opacity: 0.75;
+  margin-top: 2px;
+}
 
 .wc-card-stars { font-size: 0.85rem; letter-spacing: 0.05em; }
 .wc-card-word {
@@ -132,7 +199,6 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  animation: pop-in var(--transition-normal) both;
 }
 .wc-card-tip { color: var(--primary-2); font-weight: 700; font-style: italic; }
 
@@ -149,11 +215,10 @@
 
 @media (max-width: 520px) {
   .wc-header h1 { text-align: left; }
-  .wc-card.open { grid-column: span 1; }
 }
 
 /* ---- Tricky words ---- */
-.wc-card.tricky { border-color: var(--warning); border-style: dashed; }
+.wc-card.tricky .wc-card-face { border-color: var(--warning); border-style: dashed; }
 .wc-card-tricky {
   font-size: 0.62rem;
   font-weight: 900;
@@ -175,3 +240,24 @@
   font-weight: 700;
   color: var(--text);
 }
+
+/* Rarity tally under the stats */
+.wc-rarity-tally {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 0 0 var(--spacing-md);
+}
+.wc-tally {
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 2px solid var(--border);
+  color: var(--text-soft);
+}
+.wc-tally-sparkly { border-color: var(--accent); color: var(--accent); }
+.wc-tally-rare { border-color: var(--secondary); color: var(--secondary); }
+.wc-tally-event { border-color: var(--primary-2); color: var(--primary-2); }
