@@ -20,11 +20,28 @@ const FILTERS: { id: Filter; label: string; icon: string }[] = [
   { id: 'tricky', label: 'Tricky', icon: '💪' },
 ]
 
+type Rarity = 'common' | 'rare' | 'sparkly' | 'event'
+
+const RARITY_META: Record<Rarity, { label: string; icon: string }> = {
+  common: { label: 'Common', icon: '🃏' },
+  rare: { label: 'Rare', icon: '💎' },
+  sparkly: { label: 'Sparkly', icon: '✨' },
+  event: { label: 'Event', icon: '🎉' },
+}
+
+const rarityFor = (word: Word): Rarity => {
+  if (word.category === 'seasonal') return 'event'
+  if (word.difficulty === 3) return 'sparkly'
+  if (word.difficulty === 2) return 'rare'
+  return 'common'
+}
+
 interface CollectedWord {
   word: Word
   stars: MasteryLevel
   /** keeps getting missed — worth extra practice */
   tricky: boolean
+  rarity: Rarity
 }
 
 /**
@@ -69,6 +86,7 @@ const WordCollection: React.FC = () => {
         word,
         stars: WordMastery.levelFor(id, learned, spelled),
         tricky: ReviewSchedule.isTricky(id),
+        rarity: rarityFor(word),
       }))
       .sort((a, b) => b.stars - a.stars || a.word.word.localeCompare(b.word.word))
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -127,6 +145,19 @@ const WordCollection: React.FC = () => {
         </div>
       </div>
 
+      {collected.length > 0 && (
+        <p className="wc-rarity-tally">
+          {(['sparkly', 'rare', 'common', 'event'] as const).map((r) => {
+            const n = collected.filter((c) => c.rarity === r).length
+            return n > 0 ? (
+              <span key={r} className={`wc-tally wc-tally-${r}`}>
+                {RARITY_META[r].icon} {n} {RARITY_META[r].label.toLowerCase()}
+              </span>
+            ) : null
+          })}
+        </p>
+      )}
+
       {collected.length === 0 ? (
         <div className="wc-empty">
           <div className="wc-empty-icon" aria-hidden>🗂️</div>
@@ -166,36 +197,47 @@ const WordCollection: React.FC = () => {
             </div>
           )}
 
-          <p className="wc-hint">Tap a card to hear the word and see what it means. ⭐ met it · ⭐⭐ spelled it · ⭐⭐⭐ mastered it</p>
+          <p className="wc-hint">Tap a card to flip it over and hear the word! ⭐ met it · ⭐⭐ spelled it · ⭐⭐⭐ mastered it</p>
 
           <div className="wc-grid">
-            {shown.map(({ word, stars, tricky }) => {
+            {shown.map(({ word, stars, tricky, rarity }) => {
               const open = openId === word.id
+              const meta = RARITY_META[rarity]
               return (
                 <button
                   key={word.id}
-                  className={`wc-card stars-${stars} ${tricky ? 'tricky' : ''} ${open ? 'open' : ''}`}
-                  onClick={() => openWord({ word, stars, tricky })}
+                  className={`wc-card stars-${stars} rarity-${rarity} ${tricky ? 'tricky' : ''} ${open ? 'open' : ''}`}
+                  onClick={() => openWord({ word, stars, tricky, rarity })}
                 >
-                  <span className="wc-card-stars" aria-label={`${stars} of 3 stars`}>
-                    {'⭐'.repeat(stars)}{'☆'.repeat(3 - stars)}
-                  </span>
-                  <span className="wc-card-word">{word.word}</span>
-                  {tricky && <span className="wc-card-tricky" title="This one keeps catching you out">💪 tricky</span>}
-                  {/* Only worth showing when it actually splits into pieces. */}
-                  {chunkWord(word.word).length > 1 && (
-                    <span className="wc-card-chunks">{chunkWord(word.word).join('·')}</span>
-                  )}
-                  {open && (
-                    <span className="wc-card-meaning">
-                      {word.meaning || 'A word you have met!'}
-                      {stars < 3 && (
-                        <em className="wc-card-tip">
-                          {stars === 1 ? 'Spell it right to earn a second star!' : 'Spell it right a few more times to master it!'}
-                        </em>
+                  <span className="wc-card-inner">
+                    <span className="wc-card-face wc-card-front">
+                      <span className="wc-card-rarity" title={`${meta.label} card`}>
+                        {meta.icon} {meta.label}
+                      </span>
+                      <span className="wc-card-stars" aria-label={`${stars} of 3 stars`}>
+                        {'⭐'.repeat(stars)}{'☆'.repeat(3 - stars)}
+                      </span>
+                      <span className="wc-card-word">{word.word}</span>
+                      {tricky && <span className="wc-card-tricky" title="This one keeps catching you out">💪 tricky</span>}
+                      {/* Only worth showing when it actually splits into pieces. */}
+                      {chunkWord(word.word).length > 1 && (
+                        <span className="wc-card-chunks">{chunkWord(word.word).join('·')}</span>
                       )}
+                      <span className="wc-card-flip-hint" aria-hidden>🔄 tap to flip</span>
                     </span>
-                  )}
+                    <span className="wc-card-face wc-card-back">
+                      <span className="wc-card-rarity" aria-hidden>{meta.icon}</span>
+                      <span className="wc-card-word">{word.word}</span>
+                      <span className="wc-card-meaning">
+                        {word.meaning || 'A word you have met!'}
+                        {stars < 3 && (
+                          <em className="wc-card-tip">
+                            {stars === 1 ? 'Spell it right to earn a second star!' : 'Spell it right a few more times to master it!'}
+                          </em>
+                        )}
+                      </span>
+                    </span>
+                  </span>
                 </button>
               )
             })}

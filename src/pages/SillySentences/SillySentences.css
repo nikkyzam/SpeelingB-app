@@ -1,0 +1,82 @@
+.silly-page {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.silly-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.silly-header h1 { margin: 0; font-size: 1.5rem; color: var(--text); }
+
+.silly-intro {
+  text-align: center;
+  color: var(--text-soft);
+  margin: 0;
+}
+
+.silly-picks {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.silly-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 3px solid var(--primary);
+  background: var(--card);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1.15rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.silly-chip:hover { transform: scale(1.07) rotate(-1deg); }
+.silly-chip-swap { font-size: 0.85rem; opacity: 0.7; }
+
+.silly-stage {
+  background: var(--card);
+  border: 3px dashed var(--accent);
+  border-radius: 24px;
+  padding: 26px 22px;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+}
+
+.silly-jester { font-size: 2.6rem; animation: floaty 3s ease-in-out infinite; }
+
+.silly-sentence {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.5;
+  margin: 10px 0 0;
+}
+
+.silly-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.silly-bonus {
+  text-align: center;
+  color: var(--accent);
+  font-weight: 800;
+  margin: 0;
+}

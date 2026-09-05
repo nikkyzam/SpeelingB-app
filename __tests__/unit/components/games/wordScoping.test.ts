@@ -2,7 +2,9 @@ import { describe, it, expect } from 'vitest'
 import fs from 'fs'
 import path from 'path'
 
-const GAMES_DIR = path.resolve(__dirname, '../../../../src/components/games')
+const SRC = path.resolve(__dirname, '../../../../src')
+const GAMES_DIR = path.join(SRC, 'components/games')
+const PAGES_DIR = path.join(SRC, 'pages')
 
 /**
  * A child should only ever meet words they are actually learning. It is very
@@ -20,6 +22,20 @@ const gameFiles = fs
   .map((d) => ({ name: d.name, file: path.join(GAMES_DIR, d.name, 'index.tsx') }))
   .filter((g) => fs.existsSync(g.file))
 
+/**
+ * Playful pages outside src/components/games play with the child's words too —
+ * Silly Sentences and Word Hunt both shipped padding from the whole bank
+ * because this test only looked at the games folder.
+ */
+const playPages = fs
+  .readdirSync(PAGES_DIR, { withFileTypes: true })
+  .filter((d) => d.isDirectory())
+  .map((d) => ({ name: d.name, file: path.join(PAGES_DIR, d.name, 'index.tsx') }))
+  .filter((p) => fs.existsSync(p.file))
+  // Pages that legitimately present the whole bank: the hub is where words are
+  // chosen in the first place, and Review/DailyQuiz work off the same list.
+  .filter((p) => !['LearningHub', 'Review', 'DailyQuiz', 'GameCenter'].includes(p.name))
+
 describe('games only use the words a child is learning', () => {
   it('finds the games to check', () => {
     expect(gameFiles.length).toBeGreaterThan(20)
@@ -34,6 +50,14 @@ describe('games only use the words a child is learning', () => {
         expect(leaks, `${name} sources words outside the child's own list`).toBeNull()
       })
     })
+
+  playPages.forEach(({ name, file }) => {
+    it(`page ${name} never pads from the shared bank`, () => {
+      const src = fs.readFileSync(file, 'utf-8')
+      const leaks = src.match(/wordBank\.(getRandomWords|getAllWords|getWordsByDifficulty)/g)
+      expect(leaks, `${name} sources words outside the child's own list`).toBeNull()
+    })
+  })
 
   it('WordChef uses the bank only to check spelling, never to pick words', () => {
     const src = fs.readFileSync(path.join(GAMES_DIR, 'WordChef/index.tsx'), 'utf-8')

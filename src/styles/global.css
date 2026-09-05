@@ -274,3 +274,101 @@ input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px
 @media (prefers-reduced-motion: reduce) {
   *, body::before, body::after { animation: none !important; }
 }
+
+/* ============================================================
+   Polish pass — nicer everywhere
+   ============================================================ */
+
+/* Softer, more colourful selection */
+::selection {
+  background: rgba(var(--primary-rgb), 0.35);
+  color: var(--text);
+}
+
+/* A pretty scrollbar that matches the world */
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--primary), var(--primary-2));
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Text crisper on the colourful backgrounds */
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 { text-wrap: balance; }
+
+/* Buttons: glassy top highlight + shine sweep on hover */
+.btn {
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.35),
+    0 5px 0 rgba(0, 0, 0, 0.16),
+    var(--shadow-sm);
+}
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+.btn:hover::after { left: 130%; }
+.btn:active {
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.2),
+    0 1px 0 rgba(0, 0, 0, 0.16);
+}
+
+/* Cards: layered, world-tinted shadows feel softer than grey */
+.card {
+  box-shadow:
+    0 1px 2px rgba(var(--primary-rgb), 0.08),
+    0 8px 24px rgba(var(--primary-rgb), 0.14);
+}
+.card:hover {
+  box-shadow:
+    0 2px 4px rgba(var(--primary-rgb), 0.1),
+    0 16px 40px rgba(var(--primary-rgb), 0.2);
+}
+
+/* Inputs: friendlier and rounder */
+input[type="text"], input[type="email"], input[type="password"] {
+  border-radius: var(--radius-lg);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+input:focus {
+  box-shadow: 0 0 0 5px rgba(var(--primary-rgb), 0.18);
+}
+
+/* Progress bars get a candy-stripe shimmer */
+.progress-fill, .quest-fill {
+  position: relative;
+  overflow: hidden;
+}
+.progress-fill::after, .quest-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -55deg,
+    rgba(255, 255, 255, 0.25) 0 10px,
+    transparent 10px 20px
+  );
+  animation: stripe-slide 1.2s linear infinite;
+}
+@keyframes stripe-slide {
+  from { background-position: 0 0; }
+  to { background-position: 28px 0; }
+}

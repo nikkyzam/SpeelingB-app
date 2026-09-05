@@ -24,12 +24,16 @@ import Review from './pages/Review'
 import DailyQuiz from './pages/DailyQuiz'
 import WordCollection from './pages/WordCollection'
 import ProgressReport from './pages/Progress'
+import SillySentences from './pages/SillySentences'
+import WordHunt from './pages/WordHunt'
+import SiblingShowdown from './components/games/SiblingShowdown'
 
 // Layout Components
 import Header from './components/layout/Header'
 import Navigation from './components/layout/Navigation'
 import Confetti from './components/common/Confetti'
 import FunFx from './components/common/FunFx'
+import BuddyCompanion from './components/buddy/BuddyCompanion'
 import { useTheme } from './contexts/ThemeContext'
 import { WorldPickerModal } from './components/theme/WorldPicker'
 
@@ -81,6 +85,9 @@ function App() {
                     <Route path="/reading" element={<ReadingHub />} />
                     <Route path="/reading/book/:bookId" element={<ReadingHub />} />
                     <Route path="/rewards" element={<RewardShop />} />
+                    <Route path="/silly" element={<SillySentences />} />
+                    <Route path="/hunt" element={<WordHunt />} />
+                    <Route path="/showdown" element={<SiblingShowdown />} />
                     <Route path="/settings" element={<Settings />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>
@@ -88,6 +95,7 @@ function App() {
                 <Navigation />
                 <Confetti />
                 <FunFx />
+                <BuddyCompanion />
                 <FirstRunWorldPicker />
               </div>
             </AudioProvider>

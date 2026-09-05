@@ -7,6 +7,7 @@ import WordMastery from '../../../services/progress/WordMastery'
 import ReviewSchedule from '../../../services/progress/ReviewSchedule'
 import { AchievementsService } from '../../../services/rewards/AchievementsService'
 import BuddyService from '../../../services/buddy/BuddyService'
+import useSpeechRecognition, { parseSpelling } from '../../../hooks/useSpeechRecognition'
 import sfx from '../../games/shared/sfx'
 import Button from '../../common/Button'
 import './SpellMode.css'
@@ -38,6 +39,8 @@ const SpellMode: React.FC<SpellModeProps> = ({
   const [streak, setStreak] = useState(0)
   const [showHint, setShowHint] = useState(false)
   const [isCompleted, setIsCompleted] = useState(false)
+  // Spell-by-speaking: like a real spelling bee, say the letters out loud.
+  const mic = useSpeechRecognition()
 
   useEffect(() => {
     if (providedWords && providedWords.length > 0) {
@@ -95,10 +98,26 @@ const SpellMode: React.FC<SpellModeProps> = ({
     }
   }
 
-  const handleSubmit = () => {
-    if (!currentWord) return
+  // When the child spells out loud, fill the box and check it straight away.
+  useEffect(() => {
+    if (!mic.transcript) return
+    const spelled = parseSpelling(mic.transcript)
+    mic.reset()
+    if (!spelled) return
+    setUserInput(spelled)
+    handleSubmit(spelled)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mic.transcript])
 
-    const correct = userInput.toLowerCase() === currentWord.word.toLowerCase()
+  const handleSubmit = (spokenValue?: string) => {
+    if (!currentWord) return
+    // One answer per word. Without this a second tap on Check (or a late
+    // transcript from the microphone) scores the word twice, double-counts
+    // mastery and review, and queues a second moveToNextWord that skips a word.
+    if (isCorrect !== null) return
+
+    const answer = (spokenValue ?? userInput).toLowerCase().trim()
+    const correct = answer === currentWord.word.toLowerCase()
     setIsCorrect(correct)
     // Right or wrong, this word's next review date depends on what just happened.
     ReviewSchedule.record(currentWord.id, correct)
@@ -323,6 +342,15 @@ const SpellMode: React.FC<SpellModeProps> = ({
               autoFocus
             />
             <div className="input-actions">
+              {mic.supported && (
+                <Button
+                  onClick={mic.listening ? mic.stop : mic.start}
+                  variant={mic.listening ? 'warning' : 'secondary'}
+                  size="small"
+                >
+                  {mic.listening ? '🎤 Listening…' : '🎤 Say it!'}
+                </Button>
+              )}
               <Button
                 onClick={handleHint}
                 disabled={showHint}
@@ -333,6 +361,12 @@ const SpellMode: React.FC<SpellModeProps> = ({
               </Button>
             </div>
           </div>
+
+          {mic.listening && (
+            <div className="mic-hint" role="status">
+              🐝 Say the letters one by one — like “C… A… T”!
+            </div>
+          )}
 
           {showHint && currentWord.hint && (
             <div className="hint-display">
@@ -364,9 +398,9 @@ const SpellMode: React.FC<SpellModeProps> = ({
           </Button>
 
           <Button
-            onClick={handleSubmit}
+            onClick={() => handleSubmit()}
             variant="primary"
-            disabled={!userInput.trim()}
+            disabled={!userInput.trim() || isCorrect !== null}
             size="large"
           >
             {isCorrect === null ? 'Check it!' : 'Next Word'} →

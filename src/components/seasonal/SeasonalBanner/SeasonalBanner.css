@@ -1,0 +1,41 @@
+.seasonal-banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--accent), var(--primary-2));
+  color: var(--on-primary);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.seasonal-icon {
+  font-size: 2.6rem;
+  line-height: 1;
+  animation: floaty 3s ease-in-out infinite;
+}
+
+.seasonal-text { flex: 1; }
+.seasonal-text h2 { margin: 0 0 2px; font-size: 1.25rem; }
+.seasonal-text p { margin: 0; font-size: 0.9rem; opacity: 0.95; }
+
+.seasonal-sprinkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.seasonal-sprinkle {
+  position: absolute;
+  font-size: 1.1rem;
+  opacity: 0.55;
+  animation: floaty 4s ease-in-out infinite;
+}
+
+.ss0 { top: 8%; left: 30%; animation-delay: 0.2s; }
+.ss1 { top: 60%; left: 55%; animation-delay: 0.8s; }
+.ss2 { top: 15%; right: 12%; animation-delay: 1.4s; }
+.ss3 { bottom: 10%; left: 8%; animation-delay: 2s; }
