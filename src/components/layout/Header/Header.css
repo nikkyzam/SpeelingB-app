@@ -71,7 +71,11 @@
 @media (max-width: 768px) {
   .header { padding: 0.5rem var(--spacing-md); }
   .logo-text { font-size: 1.15rem; }
-  .user-chip { display: none; }
+  /* Keep the face — it is the child's own avatar and the whole point of
+     letting them pick one. Only the name text is dropped, which is what
+     actually crowded the bar on a phone. */
+  .user-chip { padding: 0.25rem 0.45rem; }
+  .user-name { display: none; }
 }
 @media (max-width: 380px) {
   .logo-world { display: none; }

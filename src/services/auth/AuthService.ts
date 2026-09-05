@@ -10,6 +10,16 @@ import { auth } from '../../config/firebase';
 import { useUserStore } from '../../stores/userStore';
 import FirebaseSync from '../persistence/FirebaseSync';
 
+/**
+ * A friendly first name from an email address, for accounts that never set a
+ * display name: "sam.smith@x.com" -> "Sam".
+ */
+const nameFromEmail = (email?: string | null): string | undefined => {
+  const local = (email || '').split('@')[0];
+  const first = local.split(/[._\-+0-9]/).filter(Boolean)[0];
+  return first ? first.charAt(0).toUpperCase() + first.slice(1) : undefined;
+};
+
 export class AuthService {
   static init() {
     onAuthStateChanged(auth, async (firebaseUser) => {
@@ -25,15 +35,25 @@ export class AuthService {
           console.error('Could not read auth claims:', e);
         }
 
-        // User is signed in, update store
-        const user = useUserStore.getState().user;
+        // User is signed in, update store.
+        const previous = useUserStore.getState().user;
+        // Only carry details forward when they already belong to THIS account.
+        // The old code fell back to `user?.name`, which was the guest default —
+        // so signing in as anyone kept showing the guest's name ("Ava") unless
+        // the Firebase account happened to have a displayName set.
+        const sameAccount = !!previous && !previous.isGuest && previous.id === firebaseUser.uid;
+
         useUserStore.getState().setUser({
           id: firebaseUser.uid,
-          name: firebaseUser.displayName || user?.name || 'Explorer',
+          name:
+            firebaseUser.displayName?.trim() ||
+            (sameAccount ? previous!.name : undefined) ||
+            nameFromEmail(firebaseUser.email) ||
+            'Explorer',
           email: firebaseUser.email || undefined,
-          age: user?.age || 6,
-          avatar: user?.avatar || 'ava',
-          dailyGoal: user?.dailyGoal || 10,
+          age: sameAccount ? previous!.age : 6,
+          avatar: sameAccount ? previous!.avatar : '🧒',
+          dailyGoal: sameAccount ? previous!.dailyGoal : 5,
           isGuest: false,
           isAdmin
         });
@@ -55,6 +75,17 @@ export class AuthService {
       console.error('Login error:', error);
       throw error;
     }
+  }
+
+  /**
+   * Rename the signed-in account so the new name survives a re-login (the
+   * store alone would be overwritten from the Firebase profile next time).
+   * Safe to call when signed out — it just does nothing.
+   */
+  static async updateDisplayName(name: string): Promise<void> {
+    const current = auth.currentUser;
+    if (!current || !name.trim()) return;
+    await updateProfile(current, { displayName: name.trim() });
   }
 
   static async signUp(email: string, pass: string, name?: string) {

@@ -4,6 +4,7 @@ import { useTheme } from '../../contexts/ThemeContext'
 import { useUser } from '../../contexts/UserContext'
 import Button from '../../components/common/Button'
 import WorldPicker from '../../components/theme/WorldPicker'
+import WhoIsPlaying from '../../components/profile/WhoIsPlaying'
 import AdminUsers from '../../components/admin/AdminUsers'
 import './Settings.css'
 
@@ -18,6 +19,16 @@ const Settings: React.FC = () => {
         <h1>Settings ⚙️</h1>
         <p>Make the app feel just right for you!</p>
       </div>
+
+      <section className="settings-section">
+        <h2>Who&apos;s Playing? 🧒</h2>
+        <p className="settings-sub">
+          Choose your name and the face that shows at the top of the screen.
+        </p>
+        <div className="settings-info-card">
+          <WhoIsPlaying />
+        </div>
+      </section>
 
       {/* The progress report is for every grown-up, not just admins. */}
       <section className="settings-section">

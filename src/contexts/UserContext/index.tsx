@@ -67,13 +67,13 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       return normalizeGoal(JSON.parse(saved))
     }
 
-    // Default guest user (Ava)
-    const defaultName = 'Ava'
+    // Default guest: deliberately not a specific child's name.
+    const defaultName = 'Friend'
     return {
-      id: 'guest-ava',
+      id: 'guest',
       name: defaultName,
       age: 6,
-      avatar: 'ava',
+      avatar: '🧒',
       dailyGoal: calculateDailyGoal(defaultName),
       isGuest: true
     }
