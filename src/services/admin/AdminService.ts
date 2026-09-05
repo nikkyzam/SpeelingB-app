@@ -67,6 +67,7 @@ const log = async (uid: string, action: string, detail: string): Promise<void> =
 export async function listUsers(): Promise<AdminUser[]> {
   const snap = await getDocs(collection(db, 'users'))
   return snap.docs
+    .filter((d) => !(d.data() as any)?.deleted) // removed children are gone from the list
     .map((d) => {
       const data = d.data() as any
       const ud = data.userData || {}
@@ -180,4 +181,49 @@ export async function getAdminLog(uid: string, limit = 20): Promise<AdminLogEntr
   const snap = await getDoc(doc(db, 'users', uid))
   const entries = ((snap.data() as any)?.adminLog || []) as AdminLogEntry[]
   return [...entries].sort((a, b) => (a.at < b.at ? 1 : -1)).slice(0, limit)
+}
+
+/** The signed-in grown-up — used to stop an admin removing themselves. */
+export const currentAdminUid = (): string | undefined => auth.currentUser?.uid
+
+/**
+ * Everything stored about one child, for the grown-up to keep before removing
+ * them. A learning history is months of a child's work; it should be possible
+ * to take a copy of it away.
+ */
+export async function exportUserData(uid: string): Promise<Record<string, unknown>> {
+  const snap = await getDoc(doc(db, 'users', uid))
+  if (!snap.exists()) throw new Error('That child has no saved data.')
+  return { uid, exportedAt: new Date().toISOString(), ...(snap.data() as object) }
+}
+
+/**
+ * Remove a child: erase everything the app stores about them and lock the
+ * account out.
+ *
+ * The document is replaced by a tombstone rather than deleted outright, for two
+ * reasons. A device that is still signed in would otherwise re-upload its local
+ * copy on the next sync and quietly resurrect the child; and signing in again
+ * would silently create a fresh blank account. `FirebaseSync` sees the
+ * tombstone, wipes that device and signs them out.
+ *
+ * This cannot remove their Firebase Auth login — the browser SDK can only
+ * delete the account it is signed in as. Run `scripts/delete-user.mjs` to take
+ * the login away for good.
+ */
+export async function deleteUserAccount(uid: string): Promise<void> {
+  if (uid === auth.currentUser?.uid) {
+    throw new Error('You cannot remove your own account from here.')
+  }
+  await updateDoc(doc(db, 'users', uid), {
+    deleted: true,
+    deletedAt: new Date().toISOString(),
+    deletedBy: auth.currentUser?.email || auth.currentUser?.uid || 'a grown-up',
+    // The data itself goes. What remains is the record that it was removed.
+    progress: deleteField(),
+    userData: deleteField(),
+    rewards: deleteField(),
+    points: deleteField(),
+    adminLog: deleteField(),
+  })
 }

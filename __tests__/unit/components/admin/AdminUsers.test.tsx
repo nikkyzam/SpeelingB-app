@@ -10,6 +10,9 @@ const setUserStars = vi.fn().mockResolvedValue(undefined)
 const resetToday = vi.fn().mockResolvedValue(undefined)
 const setGamesUnlockedToday = vi.fn().mockResolvedValue(undefined)
 const getAdminLog = vi.fn().mockResolvedValue([])
+const exportUserData = vi.fn().mockResolvedValue({ uid: 'kid-1' })
+const deleteUserAccount = vi.fn().mockResolvedValue(undefined)
+const currentAdminUid = vi.fn().mockReturnValue('grown-up-1')
 
 vi.mock('../../../../src/services/admin/AdminService', () => ({
   listUsers: (...a: any[]) => listUsers(...a),
@@ -19,6 +22,9 @@ vi.mock('../../../../src/services/admin/AdminService', () => ({
   resetToday: (...a: any[]) => resetToday(...a),
   setGamesUnlockedToday: (...a: any[]) => setGamesUnlockedToday(...a),
   getAdminLog: (...a: any[]) => getAdminLog(...a),
+  exportUserData: (...a: any[]) => exportUserData(...a),
+  deleteUserAccount: (...a: any[]) => deleteUserAccount(...a),
+  currentAdminUid: () => currentAdminUid(),
 }))
 
 import AdminUsers from '../../../../src/components/admin/AdminUsers'
@@ -48,6 +54,7 @@ describe('the grown-up console', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     listUsers.mockResolvedValue([{ ...maya, stats: { ...maya.stats } }])
+    currentAdminUid.mockReturnValue('grown-up-1')
   })
 
   it('shows how the child is doing before offering any controls', async () => {
@@ -123,5 +130,66 @@ describe('the grown-up console', () => {
     listUsers.mockRejectedValue(new Error('Missing or insufficient permissions.'))
     render(<AdminUsers />)
     expect(await screen.findByText(/insufficient permissions/)).toBeInTheDocument()
+  })
+
+  it('will not remove a child until their name is typed', async () => {
+    const user = userEvent.setup()
+    render(<AdminUsers />)
+    await screen.findByText('Maya')
+
+    await user.click(screen.getByRole('button', { name: /Remove Maya…/ }))
+
+    const go = screen.getByRole('button', { name: /Remove Maya for good/ })
+    expect(go).toBeDisabled()
+
+    await user.type(screen.getByLabelText('Type Maya to confirm removal'), 'Maya')
+    expect(go).toBeEnabled()
+
+    await user.click(go)
+    await waitFor(() => expect(deleteUserAccount).toHaveBeenCalledWith('kid-1'))
+
+    // The row goes; the list is what is left.
+    await waitFor(() => expect(screen.queryByText('Maya')).not.toBeInTheDocument())
+  })
+
+  it('does not accept a near-miss of the name', async () => {
+    const user = userEvent.setup()
+    render(<AdminUsers />)
+    await screen.findByText('Maya')
+
+    await user.click(screen.getByRole('button', { name: /Remove Maya…/ }))
+    await user.type(screen.getByLabelText('Type Maya to confirm removal'), 'maya')
+
+    expect(screen.getByRole('button', { name: /Remove Maya for good/ })).toBeDisabled()
+    expect(deleteUserAccount).not.toHaveBeenCalled()
+  })
+
+  it('offers a copy of the data before it goes', async () => {
+    const user = userEvent.setup()
+    render(<AdminUsers />)
+    await screen.findByText('Maya')
+
+    await user.click(screen.getByRole('button', { name: /Remove Maya…/ }))
+    await user.click(screen.getByRole('button', { name: /Download a copy first/ }))
+
+    await waitFor(() => expect(exportUserData).toHaveBeenCalledWith('kid-1'))
+  })
+
+  it('says the removal is permanent, in the panel itself', async () => {
+    const user = userEvent.setup()
+    render(<AdminUsers />)
+    await screen.findByText('Maya')
+
+    await user.click(screen.getByRole('button', { name: /Remove Maya…/ }))
+    expect(screen.getByText(/cannot be undone/)).toBeInTheDocument()
+    expect(screen.getByText(/signs them out on every device/)).toBeInTheDocument()
+  })
+
+  it('will not let a grown-up remove their own account', async () => {
+    currentAdminUid.mockReturnValue('kid-1') // signed in as the listed account
+    render(<AdminUsers />)
+    await screen.findByText('Maya')
+
+    expect(screen.getByRole('button', { name: /Remove Maya…/ })).toBeDisabled()
   })
 })

@@ -40,6 +40,7 @@ through those helpers too.
    node scripts/set-admin.mjs someone@example.com          # grant admin
    node scripts/set-admin.mjs someone@example.com --revoke # remove admin
    ```
+   The same key is used by `scripts/delete-user.mjs` (see *Removing a child*).
 4. **They sign out and back in** (the token refreshes with the new claim; it can
    otherwise take up to ~1 hour). After re-login, the **Grown-up Tools** section
    appears in Settings.
@@ -57,6 +58,7 @@ through those helpers too.
 | Games | open every game for today without the quiz, or lock them again |
 | Start today again | clears today's words, quiz and game unlock; everything learnt before today is untouched |
 | Recent changes | who changed what, and when |
+| Remove | erase everything about a child and lock them out — see below |
 
 Level, daily words and stars are drafted and written together with **Save
 changes**, and reach the child the next time they sign in. The two day controls
@@ -65,6 +67,43 @@ write immediately — that is the point of them.
 Every write leaves a line in that child's `adminLog`, readable under **Recent
 changes**. Stars buy real-world rewards, so a balance that jumps should be
 answerable.
+
+## Removing a child
+
+**Settings → Grown-up Tools → Remove [name]…** offers a copy of their data to
+download, then asks you to type their name. It then erases their words, stars,
+badges and streak, and signs them out on every device.
+
+It does **not** delete their Firebase Auth login. The browser SDK can only
+delete the account it is signed in as — removing somebody else's login needs the
+Admin SDK. So the in-app removal writes a *tombstone* on their document instead
+of deleting it outright, which does two necessary jobs:
+
+- a device that is still signed in would otherwise re-upload its local copy on
+  the next sync and quietly resurrect the child;
+- signing in again would otherwise create a fresh, blank account.
+
+`FirebaseSync` sees the tombstone, clears that device completely and signs them
+out. From the family's point of view the child is gone. The login is an empty
+shell that can do nothing.
+
+To take the login away for good:
+
+```bash
+node scripts/delete-user.mjs someone@example.com --dry-run  # show what would go
+node scripts/delete-user.mjs someone@example.com            # back up, ask, delete
+```
+
+It writes `<email>-backup.json` first (pass `--no-backup` to skip) and asks you
+to retype the email. It deletes the Firestore document *before* the login, so a
+failure part-way through never leaves data nobody can reach.
+
+You cannot remove your own account from the console — that control is disabled
+for the signed-in grown-up. Use the script if you really mean it.
+
+**One caveat while the app is used by more than one family:** any admin can
+remove any child, not only their own (see the access audit's F-06). Scope the
+rules to a household before that happens.
 
 ## Deploy the security rules
 

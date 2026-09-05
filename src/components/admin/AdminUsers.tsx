@@ -7,6 +7,9 @@ import {
   resetToday,
   setGamesUnlockedToday,
   getAdminLog,
+  exportUserData,
+  deleteUserAccount,
+  currentAdminUid,
   AdminUser,
   AdminLogEntry,
   WordLevel,
@@ -56,6 +59,8 @@ const AdminUsers: React.FC = () => {
   const [busyUid, setBusyUid] = useState('') // a day action is running
   const [confirmReset, setConfirmReset] = useState('')
   const [openLog, setOpenLog] = useState('')
+  const [removing, setRemoving] = useState('') // uid whose removal panel is open
+  const [typedName, setTypedName] = useState('')
   const [log, setLog] = useState<AdminLogEntry[]>([])
   const [logLoading, setLogLoading] = useState(false)
 
@@ -153,6 +158,40 @@ const AdminUsers: React.FC = () => {
     } finally {
       setBusyUid('')
       setConfirmReset('')
+    }
+  }
+
+  /** Hand the grown-up a copy of everything before it goes. */
+  const download = async (u: AdminUser) => {
+    setError('')
+    try {
+      const data = await exportUserData(u.uid)
+      const url = URL.createObjectURL(
+        new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+      )
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${u.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-spelling-bee.json`
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch (e: any) {
+      setError(e?.message || 'Could not download a copy.')
+    }
+  }
+
+  const remove = async (u: AdminUser) => {
+    setBusyUid(u.uid)
+    setError('')
+    try {
+      await deleteUserAccount(u.uid)
+      setDraft((list) => list.filter((x) => x.uid !== u.uid))
+      setOriginal((list) => list.filter((x) => x.uid !== u.uid))
+      setRemoving('')
+      setTypedName('')
+    } catch (e: any) {
+      setError(e?.message || 'Could not remove that child.')
+    } finally {
+      setBusyUid('')
     }
   }
 
@@ -320,6 +359,57 @@ const AdminUsers: React.FC = () => {
                 <button className="admin-users__link" onClick={() => toggleLog(u.uid)}>
                   {openLog === u.uid ? 'Hide changes' : 'Recent changes'}
                 </button>
+              </div>
+
+              <div className="admin-users__danger">
+                {removing === u.uid ? (
+                  <div className="admin-users__remove">
+                    <p className="admin-users__removewarn">
+                      This erases everything {u.name} has learnt — words, stars,
+                      badges and streak — and signs them out on every device.
+                      <strong> It cannot be undone.</strong>
+                    </p>
+                    <button className="admin-users__action" onClick={() => download(u)} disabled={busy}>
+                      ⬇ Download a copy first
+                    </button>
+                    <label className="admin-users__field">
+                      <span className="admin-users__label">type “{u.name}” to confirm</span>
+                      <input
+                        className="admin-users__confirm"
+                        value={typedName}
+                        disabled={busy}
+                        autoComplete="off"
+                        aria-label={`Type ${u.name} to confirm removal`}
+                        onChange={(e) => setTypedName(e.target.value)}
+                      />
+                    </label>
+                    <div className="admin-users__removeactions">
+                      <button
+                        className="admin-users__discard"
+                        disabled={busy}
+                        onClick={() => { setRemoving(''); setTypedName('') }}
+                      >
+                        Keep {u.name}
+                      </button>
+                      <button
+                        className="admin-users__remove-go"
+                        disabled={busy || typedName.trim() !== u.name}
+                        onClick={() => remove(u)}
+                      >
+                        {busy ? 'Removing…' : `Remove ${u.name} for good`}
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    className="admin-users__link admin-users__link--danger"
+                    disabled={saving || busy || u.uid === currentAdminUid()}
+                    title={u.uid === currentAdminUid() ? 'You cannot remove your own account here' : undefined}
+                    onClick={() => { setRemoving(u.uid); setTypedName('') }}
+                  >
+                    Remove {u.name}…
+                  </button>
+                )}
               </div>
 
               {openLog === u.uid && (

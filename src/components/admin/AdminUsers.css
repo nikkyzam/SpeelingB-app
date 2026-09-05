@@ -274,3 +274,62 @@
 .admin-users__logwhen { color: var(--text-soft); margin-right: 0.5rem; }
 .admin-users__logwho { color: var(--text-soft); }
 .admin-users__logempty { margin: 0; font-size: 0.8rem; color: var(--text-soft); }
+
+/* --- Removing a child -----------------------------------------------------
+   Deliberately the quietest control on the card until it is opened, and the
+   loudest once it is: this is the one action that cannot be undone. */
+.admin-users__danger {
+  border-top: 1px dashed var(--border);
+  padding-top: 0.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
+.admin-users__link--danger {
+  color: var(--error);
+  margin-left: 0;
+}
+.admin-users__link--danger:disabled {
+  color: var(--text-soft);
+  opacity: 0.5;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.admin-users__remove {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: color-mix(in srgb, var(--error) 8%, transparent);
+  border: 2px solid var(--error);
+  border-radius: var(--radius-md);
+  padding: 0.75rem;
+}
+.admin-users__removewarn { margin: 0; font-size: 0.85rem; color: var(--text); }
+.admin-users__confirm {
+  border: 2px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  border-radius: var(--radius-round);
+  padding: 0.45rem 0.75rem;
+  font-family: var(--font-primary);
+  font-weight: 700;
+  width: 100%;
+}
+.admin-users__removeactions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.admin-users__remove-go {
+  border: none;
+  background: var(--error);
+  color: #fff;
+  border-radius: var(--radius-round);
+  padding: 0.5rem 1.1rem;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  cursor: pointer;
+}
+.admin-users__remove-go:disabled { opacity: 0.45; cursor: not-allowed; }

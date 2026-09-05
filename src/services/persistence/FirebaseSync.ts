@@ -1,4 +1,5 @@
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { signOut } from 'firebase/auth';
 import { db, auth } from '../../config/firebase';
 import { withoutAdminClaim, withAdminClaimDenied } from '../auth/adminClaim';
 
@@ -12,10 +13,18 @@ const SYNC_FLAG_PREFIX = 'fb-synced:';
  */
 let hydratedUid: string | null = null;
 
+/**
+ * Set when the server says this account has been removed. Uploads are refused
+ * from that moment on, so a device that was mid-session cannot push its local
+ * copy back and resurrect the child.
+ */
+let removedUid: string | null = null;
+
 export class FirebaseSync {
   /** Forget hydration + per-session sync flags (called on logout). */
   static resetHydration() {
     hydratedUid = null;
+    removedUid = null;
     Object.keys(sessionStorage)
       .filter((k) => k.startsWith(SYNC_FLAG_PREFIX))
       .forEach((k) => sessionStorage.removeItem(k));
@@ -45,6 +54,15 @@ export class FirebaseSync {
 
       if (docSnap.exists()) {
         const data = docSnap.data();
+
+        // A grown-up removed this child. Take the data off this device and sign
+        // them out — otherwise the next upload would put it all back.
+        if (data.deleted) {
+          removedUid = user.uid;
+          await FirebaseSync.wipeDevice();
+          return;
+        }
+
         let changed = false;
 
         if (data.progress) {
@@ -96,6 +114,23 @@ export class FirebaseSync {
     }
   }
 
+  /**
+   * Clear this device of the signed-in child completely and send them back to
+   * the start. Used when the account has been removed: unlike logout, which
+   * keeps device preferences, this leaves nothing behind for the next person
+   * to inherit.
+   */
+  static async wipeDevice() {
+    try {
+      await signOut(auth);
+    } catch {
+      // Signing out can fail offline; the local wipe still matters.
+    }
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.href = '/';
+  }
+
   static async syncToServer() {
     const user = auth.currentUser;
     // Don't sync for anonymous/guest users or if not logged in
@@ -104,6 +139,9 @@ export class FirebaseSync {
     // Never upload before we've pulled this user's saved data down, or we would
     // overwrite their studied words with a blank local state after a logout.
     if (hydratedUid !== user.uid) return;
+
+    // A removed account must never write anything back.
+    if (removedUid === user.uid) return;
 
     try {
       const progress = localStorage.getItem('learningProgress');
