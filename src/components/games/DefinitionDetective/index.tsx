@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import ReviewSchedule from '../../../services/progress/ReviewSchedule'
 import { shuffle, isPlayable } from '../shared/wordTricks'
@@ -34,13 +34,11 @@ const DefinitionDetective: React.FC<DefinitionDetectiveProps> = ({
   const { speak } = useAudio()
 
   const cases = useMemo<Case[]>(() => {
-    const pool = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(50)
+    const pool = providedWords && providedWords.length > 0 ? providedWords : []
     // Only words that actually carry a meaning can be a case.
     const withMeaning = pool.filter((w) => isPlayable(w) && (w.meaning || '').trim().length > 8)
-    const backup = wordBank
-      .getRandomWords(90)
-      .filter((w) => isPlayable(w) && (w.meaning || '').trim().length > 8)
-    const usable = withMeaning.length >= rounds + 2 ? withMeaning : [...withMeaning, ...backup]
+    // Suspects and culprits alike are drawn only from words they've met.
+    const usable = withMeaning
 
     return shuffle(usable)
       .slice(0, rounds)

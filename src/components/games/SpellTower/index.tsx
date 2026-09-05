@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, isPlayable } from '../shared/wordTricks'
 import ReviewSchedule from '../../../services/progress/ReviewSchedule'
@@ -30,11 +30,10 @@ const SpellTower: React.FC<SpellTowerProps> = ({ onComplete, words: providedWord
   const { speak } = useAudio()
 
   const words = useMemo<Word[]>(() => {
-    const pool = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(40)
+    const pool = providedWords && providedWords.length > 0 ? providedWords : []
     const usable = shuffle(pool).filter((w) => isPlayable(w))
-    if (usable.length >= floors) return usable.slice(0, floors)
-    const extra = shuffle(wordBank.getRandomWords(80)).filter((w) => isPlayable(w))
-    return [...usable, ...extra].slice(0, floors)
+    // Only their own words: a short game beats a game full of strangers.
+    return usable.slice(0, floors)
   }, [providedWords, floors])
 
   const [index, setIndex] = useState(0)

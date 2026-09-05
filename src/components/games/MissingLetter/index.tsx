@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import './MissingLetter.css'
 
@@ -33,9 +33,7 @@ const MissingLetter: React.FC<MissingLetterProps> = ({ onComplete, words: provid
   const { speak } = useAudio()
 
   const puzzles = useMemo<Puzzle[]>(() => {
-    const pool = providedWords && providedWords.length > 0
-      ? providedWords
-      : wordBank.getRandomWords(rounds * 2)
+    const pool = providedWords && providedWords.length > 0 ? providedWords : []
     const chosen = shuffle(pool).filter(w => w.word.length >= 3).slice(0, rounds)
     return chosen.map(w => {
       const word = w.word.toLowerCase()

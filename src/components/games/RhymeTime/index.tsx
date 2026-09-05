@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, rhymes, rimeOf, RHYME_FAMILIES, isPlayable } from '../shared/wordTricks'
 import sfx from '../shared/sfx'
@@ -38,7 +38,7 @@ const RhymeTime: React.FC<RhymeTimeProps> = ({ onComplete, words: providedWords,
   const { speak } = useAudio()
 
   const gameRounds = useMemo<Round[]>(() => {
-    const pool = (providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(40))
+    const pool = (providedWords && providedWords.length > 0 ? providedWords : [])
       .filter((w) => isPlayable(w))
       .map((w) => w.word.toLowerCase())
     const built: Round[] = []
@@ -53,15 +53,8 @@ const RhymeTime: React.FC<RhymeTimeProps> = ({ onComplete, words: providedWords,
       if (choices.length === 3) built.push({ target, correct: partner, choices })
     })
 
-    // Top up from the classic rhyme families so the game is always full length.
-    shuffle(RHYME_FAMILIES).forEach((family) => {
-      if (built.length >= rounds) return
-      const [target, correct] = shuffle(family)
-      if (built.some((r) => r.target === target)) return
-      const choices = shuffle([correct, ...pickDecoys(target, correct, [])])
-      if (choices.length === 3) built.push({ target, correct, choices })
-    })
-
+    // The rhyme families supply partners and decoys, but never the target:
+    // the word a child is asked about is always one of their own.
     return built.slice(0, rounds)
   }, [providedWords, rounds])
 

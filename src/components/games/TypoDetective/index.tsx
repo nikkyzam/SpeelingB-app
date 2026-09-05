@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, misspell } from '../shared/wordTricks'
 import './TypoDetective.css'
@@ -46,16 +46,12 @@ const TypoDetective: React.FC<TypoDetectiveProps> = ({ onComplete, words: provid
   const { speak } = useAudio()
 
   const cases = useMemo<Case[]>(() => {
-    const pool = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(40)
+    const pool = providedWords && providedWords.length > 0 ? providedWords : []
     const built = shuffle(pool)
       .map(buildCase)
       .filter((c): c is Case => !!c)
-    if (built.length >= rounds) return built.slice(0, rounds)
-    // Top up from the whole bank if this child's words lacked usable sentences.
-    const extra = shuffle(wordBank.getRandomWords(80))
-      .map(buildCase)
-      .filter((c): c is Case => !!c)
-    return [...built, ...extra].slice(0, rounds)
+    // Only their own words: a shorter case file beats hunting strangers' typos.
+    return built.slice(0, rounds)
   }, [providedWords, rounds])
 
   const [index, setIndex] = useState(0)

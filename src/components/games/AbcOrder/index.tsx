@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import './AbcOrder.css'
 
@@ -24,7 +24,7 @@ const AbcOrder: React.FC<AbcOrderProps> = ({ onComplete, words: providedWords, r
   const { speak } = useAudio()
 
   const roundSets = useMemo<string[][]>(() => {
-    const pool = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(60)
+    const pool = providedWords && providedWords.length > 0 ? providedWords : []
     const clean = Array.from(
       new Set(pool.map((w) => w.word.toLowerCase()).filter((w) => /^[a-z]+$/.test(w)))
     )

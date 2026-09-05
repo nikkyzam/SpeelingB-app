@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, isPlayable } from '../shared/wordTricks'
 import sfx from '../shared/sfx'
@@ -62,11 +62,10 @@ const WordSort: React.FC<WordSortProps> = ({ onComplete, words: providedWords, r
   const { speak } = useAudio()
 
   const { rule, queue } = useMemo(() => {
-    const pool = (providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(60))
+    const pool = (providedWords && providedWords.length > 0 ? providedWords : [])
       .filter((w) => isPlayable(w))
       .map((w) => w.word.toLowerCase())
-    const backup = wordBank.getRandomWords(80).filter((w) => isPlayable(w)).map((w) => w.word.toLowerCase())
-    const all = [...new Set([...pool, ...backup])]
+    const all = [...new Set(pool)]
 
     // Pick a rule that actually splits this child's words — a rule where every
     // word lands in one basket is no fun to play.
@@ -77,7 +76,8 @@ const WordSort: React.FC<WordSortProps> = ({ onComplete, words: providedWords, r
     })
     const chosen = scored.find((s) => s.balance >= Math.ceil(rounds / 3)) || scored[0]
 
-    // Fill up from the whole bank if the child's own words lean one way.
+    // Both baskets come from the child's own words, so a lopsided pile just
+    // makes for a shorter round.
     const half = Math.ceil(rounds / 2)
     const yes = [...chosen.yes, ...all.filter((w) => chosen.rule.test(w) && !chosen.yes.includes(w))].slice(0, half)
     const no = [...chosen.no, ...all.filter((w) => !chosen.rule.test(w) && !chosen.no.includes(w))].slice(0, rounds - half)

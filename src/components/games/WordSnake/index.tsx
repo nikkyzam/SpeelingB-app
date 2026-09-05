@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, isPlayable } from '../shared/wordTricks'
 import sfx from '../shared/sfx'
@@ -42,11 +42,10 @@ const WordSnake: React.FC<WordSnakeProps> = ({ onComplete, words: providedWords,
   const { speak } = useAudio()
 
   const words = useMemo<Word[]>(() => {
-    const pool = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(40)
+    const pool = providedWords && providedWords.length > 0 ? providedWords : []
     const usable = shuffle(pool).filter((w) => isPlayable(w) && w.word.length <= 7)
-    if (usable.length >= rounds) return usable.slice(0, rounds)
-    const extra = shuffle(wordBank.getRandomWords(80)).filter((w) => isPlayable(w) && w.word.length <= 7)
-    return [...usable, ...extra].slice(0, rounds)
+    // Only their own words: a short game beats a game full of strangers.
+    return usable.slice(0, rounds)
   }, [providedWords, rounds])
 
   const [snake, setSnake] = useState<Cell[]>([

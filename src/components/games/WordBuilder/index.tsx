@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { wordBank, Word } from '../../../services/wordBank'
+import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import './WordBuilder.css'
 
@@ -30,7 +30,7 @@ const WordBuilder: React.FC<WordBuilderProps> = ({ onComplete, words: providedWo
   const { speak } = useAudio()
 
   const roundWords = useMemo<Word[]>(() => {
-    const pool = providedWords && providedWords.length > 0 ? providedWords : wordBank.getRandomWords(rounds)
+    const pool = providedWords && providedWords.length > 0 ? providedWords : []
     return shuffle(pool).slice(0, rounds)
   }, [providedWords, rounds])
 

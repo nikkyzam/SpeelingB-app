@@ -100,3 +100,15 @@
   border-radius: var(--radius-round);
   padding: 0.5rem 1.3rem;
 }
+
+.ws-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
+.ws-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  cursor: pointer;
+}
