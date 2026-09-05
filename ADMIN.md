@@ -4,13 +4,29 @@ Admin status is determined by a **Firebase Auth custom claim** named `admin`.
 The flag lives inside the user's signed ID token, so it is tamper-proof and is
 checked in two places:
 
-- **The app** (`AuthService`) reads `admin` from the token and sets
-  `user.isAdmin`, which reveals the **Settings → Grown-up Tools** section.
+- **The app** (`AuthService`) reads `admin` from the token on every auth state
+  change and sets `user.isAdmin`, which reveals the **Settings → Grown-up
+  Tools** section.
 - **Firestore security rules** (`firestore.rules`) allow admins to read/write
   any child's `users/{uid}` document (everyone else can only touch their own).
 
 There is no "self-appoint" — the first admin must be designated manually. That's
 the correct, secure design.
+
+### The claim is never written down
+
+`isAdmin` lives in memory for the life of a page session and nowhere else. It is
+stripped before anything durable is written and forced off on anything read back
+(`src/services/auth/adminClaim.ts`), because a value in `localStorage` or in a
+synced Firestore document is one a child could edit:
+
+- the Zustand `user-storage` `partialize` strips it, and `merge` denies it;
+- `UserContext` strips it from the legacy `user` key;
+- `FirebaseSync` strips it on upload and denies it on download.
+
+Regression tests live in `__tests__/unit/services/auth/AdminClaim.test.ts`. If
+you add another place the user object is persisted or transmitted, it must pass
+through those helpers too.
 
 ## Make someone an admin
 
@@ -28,6 +44,28 @@ the correct, secure design.
    otherwise take up to ~1 hour). After re-login, the **Grown-up Tools** section
    appears in Settings.
 
+## What the console can do
+
+**Settings → Grown-up Tools** lists every child with, for each one:
+
+| | |
+| --- | --- |
+| At a glance | words learnt, words spelled right, day streak, today against their goal, when they last played |
+| Word level | One Bee / Two Bee / All Words — changing it restarts them at that level's first group |
+| Daily words | 3–20 new words a day |
+| Stars ⭐ | set the balance directly; totals stay coherent (total = left + already spent) |
+| Games | open every game for today without the quiz, or lock them again |
+| Start today again | clears today's words, quiz and game unlock; everything learnt before today is untouched |
+| Recent changes | who changed what, and when |
+
+Level, daily words and stars are drafted and written together with **Save
+changes**, and reach the child the next time they sign in. The two day controls
+write immediately — that is the point of them.
+
+Every write leaves a line in that child's `adminLog`, readable under **Recent
+changes**. Stars buy real-world rewards, so a balance that jumps should be
+answerable.
+
 ## Deploy the security rules
 
 The rules only take effect once deployed:
@@ -39,5 +77,11 @@ firebase deploy --only firestore:rules
 ## How to verify
 
 - Log in as a non-admin → no Grown-up Tools in Settings.
-- Grant admin, re-login → Grown-up Tools (with the daily-word control) appears.
+- Grant admin, re-login → Grown-up Tools appears with the full console.
+- Forge the flag as a non-admin and reload — the section must stay hidden:
+  ```js
+  const s = JSON.parse(localStorage.getItem('user-storage'))
+  s.state.user.isAdmin = true
+  localStorage.setItem('user-storage', JSON.stringify(s))
+  ```
 - With rules deployed, a non-admin cannot read/write another user's document.

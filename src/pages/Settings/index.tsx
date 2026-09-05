@@ -46,11 +46,10 @@ const Settings: React.FC = () => {
         <section className="settings-section">
           <h2>Grown-up Tools <span className="admin-badge">Admin</span></h2>
           <p className="settings-sub">
-            Set how many new words each child learns per group before spelling &amp; games unlock.
+            See how each child is doing, size their daily words, adjust stars, and
+            open or restart a day.
           </p>
-          <div className="settings-info-card">
-            <AdminUsers />
-          </div>
+          <AdminUsers />
         </section>
       )}
 

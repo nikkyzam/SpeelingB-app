@@ -1,5 +1,6 @@
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db, auth } from '../../config/firebase';
+import { withoutAdminClaim, withAdminClaimDenied } from '../auth/adminClaim';
 
 const SYNC_FLAG_PREFIX = 'fb-synced:';
 
@@ -55,10 +56,22 @@ export class FirebaseSync {
         }
         if (data.userData) {
           const userStore = JSON.parse(localStorage.getItem('user-storage') || '{"state":{}}');
-          if (JSON.stringify(userStore.state?.user) !== JSON.stringify(data.userData)) {
+          // Anyone may write their own user document, so a saved `isAdmin` is
+          // self-declared. AuthService puts the real claim back from the token.
+          const incoming = withAdminClaimDenied(data.userData);
+          if (JSON.stringify(userStore.state?.user) !== JSON.stringify(incoming)) {
             userStore.state = userStore.state || {};
-            userStore.state.user = data.userData;
+            userStore.state.user = incoming;
             localStorage.setItem('user-storage', JSON.stringify(userStore));
+            changed = true;
+          }
+        }
+        if (data.points) {
+          // Stars buy real-world rewards, so a grown-up may correct the balance
+          // from the admin console — the server's copy wins on the way in.
+          const next = JSON.stringify(data.points);
+          if (localStorage.getItem('kids_spelling_points') !== next) {
+            localStorage.setItem('kids_spelling_points', next);
             changed = true;
           }
         }
@@ -102,8 +115,12 @@ export class FirebaseSync {
       };
 
       if (progress) syncData.progress = JSON.parse(progress);
-      if (userStore.state?.user) syncData.userData = userStore.state.user;
+      // Strip the admin claim on the way up: uploading it would let a forged
+      // flag persist to the server and come back on the next device.
+      if (userStore.state?.user) syncData.userData = withoutAdminClaim(userStore.state.user);
       if (rewardStore.state) syncData.rewards = rewardStore.state;
+      const points = localStorage.getItem('kids_spelling_points');
+      if (points) syncData.points = JSON.parse(points);
 
       await setDoc(doc(db, 'users', user.uid), syncData, { merge: true });
       console.log('Firebase data synced to server');

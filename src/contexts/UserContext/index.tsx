@@ -4,6 +4,7 @@ import { useUserStore } from '../../stores/userStore'
 
 import AuthService from '../../services/auth/AuthService'
 import { auth } from '../../config/firebase'
+import { withoutAdminClaim, withAdminClaimDenied } from '../../services/auth/adminClaim'
 
 interface User {
   id: string
@@ -64,7 +65,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     // Priority 2: Local Storage (Legacy)
     const saved = localStorage.getItem('user')
     if (saved) {
-      return normalizeGoal(JSON.parse(saved))
+      // Legacy key, and one a child could edit by hand — the admin claim in it
+      // is never believed.
+      return withAdminClaimDenied(normalizeGoal(JSON.parse(saved)))
     }
 
     // Default guest: deliberately not a specific child's name.
@@ -88,7 +91,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      localStorage.setItem('user', JSON.stringify(user))
+      localStorage.setItem('user', JSON.stringify(withoutAdminClaim(user)))
       setDailyGoal(user.dailyGoal)
       
       // Update store if different
