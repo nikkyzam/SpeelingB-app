@@ -8,6 +8,7 @@ import GameStats, {
   DAILY_CHALLENGE_TARGET,
   DAILY_CHALLENGE_REWARD,
 } from '../../services/games/GameStats'
+import { AchievementsService } from '../../services/rewards/AchievementsService'
 import Button from '../../components/common/Button'
 import {
   BonusGame,
@@ -674,6 +675,8 @@ const GameCenter: React.FC = () => {
     if (finishedId) {
       newBest = GameStats.recordScore(finishedId, score).isNewBest
       GameStats.recordDailyPlay(finishedId)
+      // Counts towards the "play lots of different games" badge.
+      AchievementsService.recordGamePlayed(finishedId)
     }
 
     setCelebration({

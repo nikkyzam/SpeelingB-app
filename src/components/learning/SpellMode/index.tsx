@@ -5,6 +5,7 @@ import { useTheme } from '../../../contexts/ThemeContext'
 import { wordBank, Word } from '../../../services/wordBank'
 import WordMastery from '../../../services/progress/WordMastery'
 import ReviewSchedule from '../../../services/progress/ReviewSchedule'
+import { AchievementsService } from '../../../services/rewards/AchievementsService'
 import BuddyService from '../../../services/buddy/BuddyService'
 import sfx from '../../games/shared/sfx'
 import Button from '../../common/Button'
@@ -115,6 +116,9 @@ const SpellMode: React.FC<SpellModeProps> = ({
       WordMastery.recordCorrect(currentWord.id)
       WordMastery.recordSpelled()
       BuddyService.earnSnack()
+      // Badges only move if something tells them to.
+      AchievementsService.recordWordSpelled(true, isQuiz)
+      AchievementsService.recordComboAchieved(streak + 1)
 
       if (isQuiz) {
         // In quiz mode, mark as learned

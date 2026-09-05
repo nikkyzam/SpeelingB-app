@@ -11,6 +11,7 @@ import Button from '../../components/common/Button'
 import AuthModal from '../../components/auth/AuthModal'
 import ExplorerLevel from '../../components/progress/ExplorerLevel'
 import BuddyCard from '../../components/buddy/BuddyCard'
+import NextUp from '../../components/progress/NextUp'
 import WordOfTheDay from '../../components/learning/WordOfTheDay'
 import ReviewSchedule from '../../services/progress/ReviewSchedule'
 import './Home.css'
@@ -98,6 +99,9 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* One clear thing to do, before any of the other choices */}
+      <NextUp />
 
       {/* The buddy: the friend who grows because the child learns */}
       <section className="buddy-section">

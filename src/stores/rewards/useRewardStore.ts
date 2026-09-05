@@ -207,4 +207,12 @@ if (typeof window !== 'undefined') {
       useRewardStore.getState().loadPoints();
     }
   });
+
+  // Points awarded straight through PointsService — a badge unlocking, for
+  // instance — never touched this store, so the header kept showing the old
+  // total until something else happened to refresh it. Stars a child has just
+  // earned should appear the moment they earn them.
+  window.addEventListener('pointsEarned', () => {
+    useRewardStore.getState().loadPoints();
+  });
 }

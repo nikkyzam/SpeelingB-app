@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
 import { useLocalStorage } from './useLocalStorage'
+import { AchievementsService } from '../services/rewards/AchievementsService'
 
 interface StreakData {
   currentStreak: number
@@ -85,6 +86,7 @@ export const useStreak = () => {
     setStreakData(newStreakData)
     // Let the celebration layer know: milestones (3, 7, 30 days...) are worth a party.
     window.dispatchEvent(new CustomEvent('streakUpdated', { detail: newStreakData }))
+    AchievementsService.recordStreakAchieved(newCurrentStreak)
 
     // Calculate today's stars based on streak
     const streakBonus = Math.min(newCurrentStreak * 5, 25) // Max 25 bonus
