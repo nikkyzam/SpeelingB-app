@@ -102,6 +102,9 @@ export class AuthService {
           isGuest: false,
         });
       }
+      // The auth listener can reach syncFromServer before updateProfile has
+      // set the display name, so pass the chosen name in explicitly.
+      await FirebaseSync.ensureUserDocument(name?.trim());
       return result.user;
     } catch (error) {
       console.error('Sign up error:', error);
