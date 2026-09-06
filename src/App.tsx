@@ -70,7 +70,7 @@ function App() {
         <UserProvider>
           <ProgressProvider>
             <AudioProvider>
-              <div className="app-container">
+              <div className="app-container" data-testid="app-container">
                 <Header />
                 <main className="main-content">
                   <Routes>
