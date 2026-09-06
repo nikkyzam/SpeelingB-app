@@ -47,6 +47,9 @@ export const USER_KEYS = [
   // the buddy — the one that was noticed
   'buddy_state',
 
+  // the trophy shelf
+  'trophy_case',
+
   // games
   'game_high_scores',
   'game_play_counts',
@@ -54,6 +57,7 @@ export const USER_KEYS = [
   'game_seen_ids',
   'game_daily_challenge',
   'game_of_day_bonus',
+  'bee_tournament_best',
   'games_played',
   'current_combo',
   'word_hunt_state',

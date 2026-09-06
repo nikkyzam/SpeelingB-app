@@ -25,6 +25,8 @@ import DailyQuiz from './pages/DailyQuiz'
 import WordCollection from './pages/WordCollection'
 import ProgressReport from './pages/Progress'
 import SentenceMaker from './pages/SentenceMaker'
+import BeeTournament from './pages/BeeTournament'
+import TrophyRoom from './pages/TrophyRoom'
 import WordHunt from './pages/WordHunt'
 import SiblingShowdown from './components/games/SiblingShowdown'
 
@@ -86,6 +88,8 @@ function App() {
                     <Route path="/reading/book/:bookId" element={<ReadingHub />} />
                     <Route path="/rewards" element={<RewardShop />} />
                     <Route path="/sentences" element={<SentenceMaker />} />
+                    <Route path="/tournament" element={<BeeTournament />} />
+                    <Route path="/trophies" element={<TrophyRoom />} />
                     <Route path="/hunt" element={<WordHunt />} />
                     <Route path="/showdown" element={<SiblingShowdown />} />
                     <Route path="/settings" element={<Settings />} />

@@ -1,0 +1,111 @@
+.bee {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  text-align: center;
+}
+.bee-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+.bee-header h1 { margin: 0; font-family: var(--font-primary); font-size: 1.4rem; color: var(--primary-2); }
+.bee-wings { font-size: 1.2rem; letter-spacing: 0.1rem; }
+.bee-empty { color: var(--text-soft); }
+
+/* --- The stage ------------------------------------------------------------
+   A spotlight behind the mascot does most of the "big event" work; the rest
+   is restraint, so the word itself stays the thing being looked at. */
+.bee-lobby,
+.bee-announce,
+.bee-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg) var(--spacing-md);
+  overflow: hidden;
+}
+.bee-spotlight {
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  width: 120%;
+  height: 130%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--primary) 30%, transparent), transparent 62%);
+  pointer-events: none;
+  animation: bee-glow 4s ease-in-out infinite;
+}
+@keyframes bee-glow { 0%,100% { opacity: 0.7 } 50% { opacity: 1 } }
+
+.bee-mascot { font-size: 3.4rem; position: relative; animation: bee-bob 3s ease-in-out infinite; }
+.bee-mascot.small { font-size: 2.2rem; }
+@keyframes bee-bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-8px) } }
+
+.bee-stage-lights { display: flex; gap: 0.6rem; }
+.bee-stage-lights span {
+  width: 0.7rem; height: 0.7rem; border-radius: 50%;
+  background: var(--primary);
+  animation: bee-blink 1.4s ease-in-out infinite;
+}
+.bee-stage-lights span:nth-child(2) { animation-delay: 0.25s }
+.bee-stage-lights span:nth-child(3) { animation-delay: 0.5s }
+@keyframes bee-blink { 0%,100% { opacity: 0.3 } 50% { opacity: 1 } }
+
+.bee-lobby h2, .bee-announce h2 { margin: 0; font-family: var(--font-primary); color: var(--primary-2); }
+.bee-announce h2 { font-size: 1.8rem; }
+.bee-blurb, .bee-announce p { margin: 0; color: var(--text); position: relative; }
+
+.bee-rounds { list-style: none; margin: 0; padding: 0; width: 100%; display: flex; flex-direction: column; gap: 0.3rem; }
+.bee-rounds li {
+  display: flex; justify-content: space-between; gap: var(--spacing-sm);
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius-md);
+  background: var(--card-soft);
+  font-size: 0.85rem;
+}
+.bee-rounds li.reached { border-left: 4px solid var(--success); }
+.bee-rounds span { color: var(--text-soft); }
+.bee-best { margin: 0; font-size: 0.85rem; color: var(--text-soft); }
+
+.bee-round-tag {
+  font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--text-soft); font-weight: 800; position: relative;
+}
+.bee-meaning { margin: 0; color: var(--text-soft); font-size: 0.9rem; position: relative; max-width: 26rem; }
+
+.bee-input {
+  position: relative;
+  width: 100%;
+  max-width: 18rem;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 3px solid var(--border);
+  border-radius: var(--radius-round);
+  background: var(--card-soft);
+  color: var(--text);
+  font-family: var(--font-primary);
+  font-size: 1.4rem;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 0.06em;
+}
+.bee-input.right { border-color: var(--success); }
+.bee-input.wrong { border-color: var(--error); }
+
+.bee-verdict { font-family: var(--font-primary); font-weight: 800; font-size: 1.1rem; position: relative; }
+.bee-verdict.right { color: var(--success); }
+.bee-verdict.wrong { color: var(--error); }
+.bee-tally { font-size: 0.85rem; color: var(--text-soft); position: relative; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bee-spotlight, .bee-mascot, .bee-stage-lights span { animation: none; }
+}

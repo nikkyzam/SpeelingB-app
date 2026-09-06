@@ -166,6 +166,23 @@ export const sfx = {
   /** big thud for a block landing or a dragon stomp */
   thud: () => play([{ freq: 160, duration: 0.18, type: 'sine', volume: 0.2, glideTo: 70 }]),
 
+  /**
+   * A room full of people clapping.
+   *
+   * Noise, not notes: short bursts of detuned high tones at uneven spacing.
+   * Evenly spaced claps sound like a machine, which is the opposite of a crowd.
+   */
+  applause: () =>
+    play(
+      Array.from({ length: 22 }, (_, i) => ({
+        freq: 1400 + Math.random() * 2600,
+        duration: 0.035,
+        delay: i * 0.045 + Math.random() * 0.035,
+        type: 'square' as OscillatorType,
+        volume: 0.035 + Math.random() * 0.03,
+      }))
+    ),
+
   /** a new personal best deserves its own fanfare */
   fanfare: () =>
     play([

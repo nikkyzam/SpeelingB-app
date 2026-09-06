@@ -62,6 +62,8 @@ const Home: React.FC = () => {
     { icon: '⚔️', label: 'Showdown', sub: 'Two players, one device', path: '/showdown', tone: 'accent' },
     { icon: '✍️', label: 'Sentence Maker', sub: 'Build with your words', path: '/sentences', tone: 'secondary' },
     { icon: '🔍', label: 'Word Hunt', sub: 'Find letters at home', path: '/hunt', tone: 'primary' },
+    { icon: '🏆', label: 'Spelling Bee', sub: 'Enter the tournament', path: '/tournament', tone: 'accent' },
+    { icon: '🏅', label: 'Trophy Room', sub: 'See what you\u2019ve won', path: '/trophies', tone: 'success' },
     { icon: '🗂️', label: 'My Words', sub: 'Your word collection', path: '/collection', tone: 'success' },
     { icon: '🏆', label: 'My Prizes', sub: 'Spend your stars', path: '/rewards', tone: 'success' },
   ] as const

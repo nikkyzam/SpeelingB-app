@@ -1,0 +1,160 @@
+.trophy-room {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.tr-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+.tr-header h1 {
+  margin: 0;
+  font-family: var(--font-primary);
+  font-size: 1.5rem;
+  color: var(--primary-2);
+}
+.tr-count {
+  font-family: var(--font-primary);
+  font-weight: 800;
+  color: var(--text-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.tr-intro { margin: 0; color: var(--text-soft); }
+.tr-fresh {
+  background: color-mix(in srgb, var(--success) 16%, var(--card));
+  border: 2px solid var(--success);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-weight: 800;
+  color: var(--text);
+}
+
+/* --- The buddy, at home in the room -------------------------------------- */
+.tr-buddy {
+  position: relative;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+.tr-buddy-creature { font-size: 3rem; animation: tr-bob 3.5s ease-in-out infinite; }
+.tr-buddy-hat { font-size: 1.5rem; margin-bottom: -0.6rem; z-index: 1; }
+.tr-buddy-name {
+  margin-top: 0.2rem;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 0.8rem;
+  color: var(--text-soft);
+}
+@keyframes tr-bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-6px) } }
+
+/* --- Shelves --------------------------------------------------------------
+   A plank under each row does the work of looking like a shelf; the trophies
+   sit on it rather than floating in a grid. */
+.tr-shelf { display: flex; flex-direction: column; gap: 0.4rem; }
+.tr-shelf-label { display: flex; align-items: baseline; gap: var(--spacing-sm); flex-wrap: wrap; }
+.tr-shelf-label h2 {
+  margin: 0;
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  color: var(--text);
+}
+.tr-shelf-label span { font-size: 0.78rem; color: var(--text-soft); }
+
+.tr-shelf-items {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  align-items: flex-end;
+  padding: var(--spacing-sm) var(--spacing-sm) 0;
+}
+.tr-shelf-plank {
+  height: 10px;
+  border-radius: var(--radius-round);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--primary) 45%, var(--card)), var(--card-soft));
+  box-shadow: 0 3px 8px -4px rgba(0, 0, 0, 0.35);
+}
+
+.tr-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 4.5rem;
+  padding: var(--spacing-sm) 0.4rem;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+}
+.tr-item:hover { background: var(--card-soft); }
+.tr-item-icon { font-size: 2.2rem; line-height: 1; }
+.tr-item-name {
+  font-family: var(--font-primary);
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--text);
+  text-align: center;
+}
+/* Unearned: a shape, not a blank. Enough to be curious about. */
+.tr-item.empty .tr-item-icon { opacity: 0.35; filter: grayscale(1); }
+.tr-item.empty .tr-item-name { color: var(--text-soft); }
+.tr-item.won .tr-item-icon { animation: tr-shine 4s ease-in-out infinite; }
+@keyframes tr-shine {
+  0%, 92%, 100% { transform: rotate(0) scale(1) }
+  95% { transform: rotate(-6deg) scale(1.08) }
+  97% { transform: rotate(6deg) scale(1.08) }
+}
+
+.tr-actions { display: flex; gap: var(--spacing-sm); flex-wrap: wrap; justify-content: center; }
+
+/* --- "Show a grown-up": bigger everything, from across the room ----------- */
+.trophy-room.showing { font-size: 1.35rem; }
+.trophy-room.showing .tr-item-icon { font-size: 3.4rem; }
+.trophy-room.showing .tr-item-name { font-size: 0.95rem; }
+.trophy-room.showing .tr-buddy-creature { font-size: 4.5rem; }
+.trophy-room.showing .tr-intro,
+.trophy-room.showing .tr-shelf-label span { display: none; }
+
+/* --- Tapping a trophy ------------------------------------------------------ */
+.tr-detail {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+  background: rgba(0, 0, 0, 0.45);
+}
+.tr-detail-card {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  max-width: 22rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+.tr-detail-icon { font-size: 4rem; line-height: 1; }
+.tr-detail-icon:not(.won) { opacity: 0.4; filter: grayscale(1); }
+.tr-detail-card h3 { margin: 0; font-family: var(--font-primary); color: var(--primary-2); }
+.tr-detail-card p { margin: 0; color: var(--text); }
+.tr-detail-date { color: var(--text-soft) !important; font-size: 0.85rem; font-weight: 700; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tr-buddy-creature, .tr-item.won .tr-item-icon { animation: none; }
+}
