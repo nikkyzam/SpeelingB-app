@@ -53,6 +53,7 @@ export const USER_KEYS = [
   'game_favorites',
   'game_seen_ids',
   'game_daily_challenge',
+  'game_of_day_bonus',
   'games_played',
   'current_combo',
   'word_hunt_state',

@@ -62,6 +62,7 @@ import {
 import BibleApiDashboard from '../../components/bible/BibleApiDashboard'
 import Celebration, { CelebrationData } from '../../components/common/Celebration'
 import ReviewSchedule from '../../services/progress/ReviewSchedule'
+import { pickGameOfTheDay, recommendNext } from '../../services/games/gameOfTheDay'
 import './GameCenter.css'
 
 // Off-topic mini-games (reflex/memory/art/math/music/physics) are hidden so the
@@ -138,6 +139,8 @@ const GameCenter: React.FC = () => {
   const challenge = useMemo(() => GameStats.getDailyChallenge(), [statsTick])
   const seen = useMemo(() => GameStats.getSeen(), [statsTick])
   const gridRef = useRef<HTMLDivElement>(null)
+  // What to try after finishing something, shown beside the celebration.
+  const [nextUp, setNextUp] = useState<{ id: string; title: string; icon: string } | null>(null)
 
   // Games practise what the child has ALREADY studied — nothing else. Feeding a
   // game words a child has never met turns practice into a guessing exercise
@@ -673,6 +676,15 @@ const GameCenter: React.FC = () => {
 
   // A word game with nothing of the child's to practise would have to invent
   // words, so it stays shut until they have studied a few.
+  // Chosen from the whole catalogue rather than this child's unlocked set, so
+  // two children genuinely see the same game on the same day. Whether they can
+  // play it yet is answered by the card itself.
+  const gameOfTheDayId = useMemo(
+    () => pickGameOfTheDay(rawGames.map((g) => g.id)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [rawGames.length]
+  )
+
   const games: GameCard[] = rawGames.map((g) =>
     wordlessGames.has(g.id) ? g : { ...g, unlocked: g.unlocked && enoughWords }
   )
@@ -680,8 +692,11 @@ const GameCenter: React.FC = () => {
   const handleGameComplete = (score: number) => {
     const finishedId = activeGame
 
-    // Award stars based on score
-    const starsEarned = Math.max(1, Math.floor(score / 100))
+    // Award stars based on score, doubled for the Game of the Day — but only
+    // the first time today, so replaying it is not a star farm.
+    const base = Math.max(1, Math.floor(score / 100))
+    const doubled = finishedId === gameOfTheDayId && GameStats.claimDailyBonus()
+    const starsEarned = doubled ? base * 2 : base
     addStars(starsEarned)
 
     let newBest = false
@@ -692,9 +707,21 @@ const GameCenter: React.FC = () => {
       AchievementsService.recordGamePlayed(finishedId)
     }
 
+    // Nudge them somewhere they have not been. Computed before the grid
+    // re-renders so it reflects what was just played.
+    const suggestionId = recommendNext(
+      games.map((g) => ({ id: g.id, category: g.category, unlocked: g.unlocked })),
+      finishedId,
+      GameStats.getSeen()
+    )
+    const suggestion = games.find((g) => g.id === suggestionId)
+    setNextUp(suggestion ? { id: suggestion.id, title: suggestion.title, icon: suggestion.icon } : null)
+
     setCelebration({
       title: newBest ? '🏆 New best score!' : 'Great job! 🎉',
-      message: newBest
+      message: doubled
+        ? `${score} points — and double stars for playing today's game! ⭐`
+        : newBest
         ? `${score} points — that's your best ever at this game!`
         : `You scored ${score}!`,
       stars: starsEarned,
@@ -888,6 +915,37 @@ const GameCenter: React.FC = () => {
         ))}
       </div>
 
+      {(() => {
+        const featured = games.find((g) => g.id === gameOfTheDayId)
+        if (!featured) return null
+        const claimed = GameStats.hasClaimedDailyBonus()
+        return (
+          <section className="gotd" aria-label="Game of the day">
+            <div className="gotd-icon" aria-hidden>{featured.icon}</div>
+            <div className="gotd-text">
+              <h2>⭐ Game of the Day</h2>
+              <p>
+                <strong>{featured.title}</strong> — {featured.description}
+              </p>
+              <p className="gotd-bonus">
+                {claimed
+                  ? 'Double stars claimed today — nice one! Come back tomorrow for a new game.'
+                  : featured.unlocked
+                  ? 'Play it today for DOUBLE stars!'
+                  : 'Finish today’s learning to play it for double stars.'}
+              </p>
+            </div>
+            <Button
+              variant="primary"
+              disabled={!featured.unlocked}
+              onClick={() => openGame(featured.id)}
+            >
+              {featured.unlocked ? 'Play it!' : '🔒 Locked'}
+            </Button>
+          </section>
+        )
+      })()}
+
       <div className="games-grid" ref={gridRef}>
         {shownGames.map(game => {
           const best = bests[game.id] || 0
@@ -902,6 +960,10 @@ const GameCenter: React.FC = () => {
                 <div className="game-icon">{game.icon}</div>
                 <div className="game-meta">
                   {game.isNew && !seen.includes(game.id) && <span className="new-badge">NEW</span>}
+                  {game.id === gameOfTheDayId && <span className="gotd-badge">⭐ 2× TODAY</span>}
+                  {!game.isNew && !seen.includes(game.id) && game.unlocked && (
+                    <span className="untried-badge">NOT TRIED YET</span>
+                  )}
                   <span className="game-duration">{game.duration}</span>
                   {!game.unlocked && <span className="lock-icon">🔒</span>}
                   <button
@@ -1026,6 +1088,20 @@ const GameCenter: React.FC = () => {
           </Button>
         </div>
       </div>
+
+      {nextUp && !celebration && (
+        <section className="nextup-game pop-in">
+          <span className="nextup-game-icon" aria-hidden>{nextUp.icon}</span>
+          <div className="nextup-game-text">
+            <strong>Next up: try {nextUp.title}!</strong>
+            <span>You haven’t played this one yet.</span>
+          </div>
+          <Button variant="secondary" size="small" onClick={() => { setNextUp(null); openGame(nextUp.id) }}>
+            Let’s go
+          </Button>
+          <button className="nextup-game-close" onClick={() => setNextUp(null)} aria-label="No thanks">✕</button>
+        </section>
+      )}
 
       <Celebration data={celebration} onClose={() => setCelebration(null)} />
     </div>

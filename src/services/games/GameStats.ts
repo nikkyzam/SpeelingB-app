@@ -11,6 +11,7 @@ const PLAYS_KEY = 'game_play_counts'
 const FAVS_KEY = 'game_favorites'
 const SEEN_KEY = 'game_seen_ids'
 const DAILY_KEY = 'game_daily_challenge'
+const GOTD_KEY = 'game_of_day_bonus'
 
 export const GAME_STATS_EVENT = 'gameStatsUpdated'
 
@@ -140,6 +141,32 @@ export const GameStats = {
   // --- "NEW" badges: a game is new until the child has actually opened it ---
 
   /** Every game the child has opened at least once. */
+  /**
+   * Has the Game of the Day bonus already been taken today?
+   *
+   * Stored as the day it was claimed rather than a boolean, so it expires on
+   * its own at midnight and cannot be re-claimed by replaying the same game.
+   */
+  hasClaimedDailyBonus(): boolean {
+    try {
+      return localStorage.getItem(GOTD_KEY) === new Date().toDateString()
+    } catch {
+      return false
+    }
+  },
+
+  /** Take today's bonus. Returns false if it was already taken. */
+  claimDailyBonus(): boolean {
+    if (this.hasClaimedDailyBonus()) return false
+    try {
+      localStorage.setItem(GOTD_KEY, new Date().toDateString())
+      window.dispatchEvent(new Event(GAME_STATS_EVENT))
+    } catch {
+      /* a bonus that cannot be saved is still a bonus this session */
+    }
+    return true
+  },
+
   getSeen(): string[] {
     return read<string[]>(SEEN_KEY, [])
   },
