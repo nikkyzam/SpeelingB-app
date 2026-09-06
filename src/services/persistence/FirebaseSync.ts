@@ -30,6 +30,46 @@ export class FirebaseSync {
       .forEach((k) => sessionStorage.removeItem(k));
   }
 
+  /**
+   * Make sure this child has a document, even before they have done anything.
+   *
+   * The grown-up console lists the `users` collection, so a child with no
+   * document simply is not there — pressing Refresh could never find them. The
+   * document used to be created only by the first progress save, which meant a
+   * child who signed up and handed the tablet back was invisible to their
+   * parent.
+   *
+   * Pass `name` from sign-up: the auth listener can reach here before
+   * updateProfile has set the display name.
+   */
+  static async ensureUserDocument(name?: string): Promise<void> {
+    const user = auth.currentUser;
+    if (!user || user.isAnonymous) return;
+
+    try {
+      const ref = doc(db, 'users', user.uid);
+      const snap = await getDoc(ref);
+
+      // A removed child stays removed — never rebuild their document.
+      if ((snap.data() as any)?.deleted) return;
+      // Already there, and no new name to record.
+      if (snap.exists() && !name) return;
+
+      const identity: Record<string, unknown> = { id: user.uid };
+      const chosen = name?.trim() || user.displayName?.trim();
+      if (chosen) identity.name = chosen;
+      if (user.email) identity.email = user.email;
+
+      await setDoc(
+        ref,
+        { userData: identity, lastUpdated: new Date().toISOString() },
+        { merge: true }
+      );
+    } catch (error) {
+      console.error('Could not create the user document:', error);
+    }
+  }
+
   static async syncFromServer() {
     const user = auth.currentUser;
     // Don't sync for anonymous/guest users or if not logged in
@@ -108,6 +148,10 @@ export class FirebaseSync {
           window.dispatchEvent(new Event('learningProgressUpdated'));
           window.location.reload();
         }
+      } else {
+        // First time we have seen this account: give them a document so a
+        // grown-up can find them before they have learned anything.
+        await FirebaseSync.ensureUserDocument();
       }
     } catch (error) {
       console.error('Error syncing from Firebase:', error);

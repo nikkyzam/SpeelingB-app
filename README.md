@@ -23,6 +23,55 @@ page renders blank with nothing in the console to explain it.
 | `npm run build` | Production build into `dist/` |
 | `npm test` | Vitest unit tests (uses `.env.test`, no setup needed) |
 | `npx tsc --noEmit` | Type-check |
+| `npx firebase-tools deploy --only hosting` | Ship `dist/` to Firebase Hosting |
+
+## Deploying
+
+The app is on Firebase Hosting at **https://spellingb-5ebae.web.app**
+(project `spellingb-5ebae`, set in `.firebaserc`; `firebase.json` serves
+`dist/`).
+
+```bash
+npx tsc --noEmit && npm test        # don't ship a red build
+npm run build                       # -> dist/
+npx firebase-tools deploy --only hosting
+```
+
+**Check `.env` before you build.** The Firebase config is read from
+`import.meta.env.VITE_FIREBASE_*` at *build* time and baked into the bundle
+(`src/config/firebase.ts`). Build with a missing or placeholder `.env` and the
+deploy succeeds, the site goes live, and every visitor gets a blank white page
+— `getAuth()` throws `auth/invalid-api-key` before React mounts. There is no
+error on screen to explain it. A quick sanity check on the built bundle:
+
+```bash
+grep -c "$VITE_FIREBASE_PROJECT_ID" dist/assets/*.js   # 0 means the env didn't reach the build
+```
+
+First time on a machine, install the CLI and sign in:
+
+```bash
+npm i -g firebase-tools && firebase login
+```
+
+Two things that are **not** part of a hosting deploy and have to be sent
+separately when they change:
+
+```bash
+npx firebase-tools deploy --only firestore:rules   # after editing firestore.rules
+node scripts/set-admin.mjs someone@example.com     # grant a grown-up admin
+```
+
+Deploy from `main`, not a feature branch — hosting has one live channel and
+whatever you push is what children see. To look at a branch first, use a
+preview channel, which gets its own temporary URL and expires on its own:
+
+```bash
+npx firebase-tools hosting:channel:deploy my-branch --expires 7d
+```
+
+Rolling back is done from the Firebase console (Hosting → release history →
+Rollback); there is no CLI flag for it.
 
 ## How the app fits together
 

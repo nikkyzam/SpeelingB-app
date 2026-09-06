@@ -108,4 +108,26 @@ describe('SpellMode Component', () => {
     const input = screen.getByPlaceholderText('Type the word...')
     expect(input).toHaveValue('apple')
   })
+
+  it('scores a word once, however many times Check is tapped', () => {
+    renderWithProviders(<SpellMode />)
+
+    const input = screen.getByPlaceholderText('Type the word...')
+    const submitBtn = screen.getByRole('button', { name: /Check it/i })
+
+    fireEvent.change(input, { target: { value: 'apple' } })
+    fireEvent.click(submitBtn)
+    expect(screen.getByText('🔥 1')).toBeInTheDocument()
+
+    // The answer is showing, so Check locks — and the guard inside handleSubmit
+    // holds even for callers that don't go through the button (the microphone).
+    expect(submitBtn).toBeDisabled()
+    fireEvent.click(submitBtn)
+    fireEvent.click(submitBtn)
+
+    // Still one word, one streak: no double mastery, no double score, and only
+    // one moveToNextWord queued (two would skip the next word entirely).
+    expect(screen.getByText('🔥 1')).toBeInTheDocument()
+    expect(screen.queryByText('🔥 2')).not.toBeInTheDocument()
+  })
 })
