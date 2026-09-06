@@ -3,6 +3,10 @@
     "rules": "firestore.rules"
   },
   "hosting": {
+    "predeploy": [
+      "npm run build",
+      "node scripts/verify-build.mjs"
+    ],
     "public": "dist",
     "ignore": [
       "firebase.json",
@@ -14,34 +18,61 @@
         "//": "Every route (e.g. /learn, /games) is served the SPA shell via the rewrite below. Those paths do NOT match '**/index.html', so without this rule they were cached and kids kept running an OLD app version after a deploy. Hashed assets are re-cached aggressively by the later rules, which take precedence.",
         "source": "**",
         "headers": [
-          { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, max-age=0" },
-          { "key": "Pragma", "value": "no-cache" },
-          { "key": "Expires", "value": "0" }
+          {
+            "key": "Cache-Control",
+            "value": "no-store, no-cache, must-revalidate, max-age=0"
+          },
+          {
+            "key": "Pragma",
+            "value": "no-cache"
+          },
+          {
+            "key": "Expires",
+            "value": "0"
+          }
         ]
       },
       {
         "source": "**/index.html",
         "headers": [
-          { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, max-age=0" },
-          { "key": "Pragma", "value": "no-cache" },
-          { "key": "Expires", "value": "0" }
+          {
+            "key": "Cache-Control",
+            "value": "no-store, no-cache, must-revalidate, max-age=0"
+          },
+          {
+            "key": "Pragma",
+            "value": "no-cache"
+          },
+          {
+            "key": "Expires",
+            "value": "0"
+          }
         ]
       },
       {
         "source": "**/assets/**",
         "headers": [
-          { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
         ]
       },
       {
         "source": "**/*.@(js|css|png|jpg|jpeg|gif|webp|svg|woff|woff2|json|webmanifest)",
         "headers": [
-          { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
         ]
       }
     ],
     "rewrites": [
-      { "source": "**", "destination": "/index.html" }
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ]
   }
 }

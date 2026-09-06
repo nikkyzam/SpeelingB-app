@@ -37,15 +37,19 @@ npm run build                       # -> dist/
 npx firebase-tools deploy --only hosting
 ```
 
-**Check `.env` before you build.** The Firebase config is read from
-`import.meta.env.VITE_FIREBASE_*` at *build* time and baked into the bundle
-(`src/config/firebase.ts`). Build with a missing or placeholder `.env` and the
-deploy succeeds, the site goes live, and every visitor gets a blank white page
-— `getAuth()` throws `auth/invalid-api-key` before React mounts. There is no
-error on screen to explain it. A quick sanity check on the built bundle:
+A `predeploy` hook in `firebase.json` rebuilds and then runs
+`scripts/verify-build.mjs`, which **stops the deploy** if the Firebase config is
+not actually in the bundle. That guard exists because the failure is silent
+otherwise: the config is read from `import.meta.env.VITE_FIREBASE_*` at *build*
+time and inlined (`src/config/firebase.ts`), so a missing or placeholder `.env`
+still builds, still deploys, and then serves a blank white page to every
+visitor — `getAuth()` throws `auth/invalid-api-key` before React mounts, with
+nothing on screen to explain it.
+
+Run the check by hand any time:
 
 ```bash
-grep -c "$VITE_FIREBASE_PROJECT_ID" dist/assets/*.js   # 0 means the env didn't reach the build
+node scripts/verify-build.mjs
 ```
 
 First time on a machine, install the CLI and sign in:
