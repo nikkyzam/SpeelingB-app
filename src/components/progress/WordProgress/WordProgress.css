@@ -1,0 +1,73 @@
+.word-progress {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  font: inherit;
+  color: inherit;
+}
+.word-progress.tappable { cursor: pointer; }
+.word-progress.tappable:active { transform: translateY(1px); }
+
+.wp-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+.wp-title { font-family: var(--font-primary); font-weight: 800; color: var(--text); }
+.wp-count { color: var(--text-soft); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+.wp-count strong { color: var(--primary-2); font-size: 1.1rem; }
+
+/* The bar carries two facts at once: how many words have been met (the wide
+   band) and how many are mastered (the bright band sitting on top of it). */
+.wp-bar {
+  position: relative;
+  height: 0.85rem;
+  border-radius: var(--radius-round);
+  background: var(--card-soft);
+  overflow: hidden;
+}
+.wp-bar.small { height: 0.5rem; }
+.wp-bar-fill,
+.wp-bar-mastered {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: var(--radius-round);
+  transition: width 0.6s ease-out;
+}
+.wp-bar-fill { background: linear-gradient(90deg, var(--primary), var(--primary-2)); }
+.wp-bar-mastered { background: var(--warning, #F6C445); }
+
+.wp-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.45rem;
+  font-size: 0.82rem;
+  color: var(--text-soft);
+  font-weight: 700;
+}
+.wp-pct { color: var(--primary-2); }
+.wp-dot { opacity: 0.5; }
+
+.wp-tiers { display: flex; flex-direction: column; gap: 0.6rem; margin-top: var(--spacing-md); }
+.wp-tier-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-soft);
+  margin-bottom: 0.25rem;
+}
+.wp-tier-count { font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-bar-fill, .wp-bar-mastered { transition: none; }
+}

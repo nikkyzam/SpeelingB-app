@@ -61,6 +61,7 @@ import {
 } from '../../components/games'
 import BibleApiDashboard from '../../components/bible/BibleApiDashboard'
 import Celebration, { CelebrationData } from '../../components/common/Celebration'
+import ReviewSchedule from '../../services/progress/ReviewSchedule'
 import './GameCenter.css'
 
 // Off-topic mini-games (reflex/memory/art/math/music/physics) are hidden so the
@@ -183,6 +184,9 @@ const GameCenter: React.FC = () => {
   // Enough studied words to fill a game? Bible and reflex games don't use the
   // word list, so they are never gated on it.
   const enoughWords = selectedWords.length >= MIN_GAME_WORDS
+  // Why the games are shut, so a child is told what to do rather than just "no".
+  const lockedReason = learningFlow.gamesLockedReason()
+  const reviewDueCount = ReviewSchedule.dueCount()
   const wordlessGames = new Set([
     'bible-trivia', 'bible-memorizer', 'bonus', 'shape-catcher', 'pattern-memory',
     'rhythm-tap', 'memory-grid', 'reaction-test', 'pattern-sequencer', 'color-mixer',
@@ -932,6 +936,13 @@ const GameCenter: React.FC = () => {
                   <p className="unlock-requirement">
                     {!wordlessGames.has(game.id) && !enoughWords
                       ? `Learn ${MIN_GAME_WORDS - selectedWords.length} more word${MIN_GAME_WORDS - selectedWords.length === 1 ? '' : 's'} to play`
+                      : lockedReason === 'review'
+                      // A review can be due because specific words are
+                      // scheduled, or because it has simply been a while. Only
+                      // the first has a number worth showing.
+                      ? reviewDueCount > 0
+                        ? `${reviewDueCount} word${reviewDueCount === 1 ? '' : 's'} ready for review — practise them to unlock`
+                        : 'Time for a quick review to unlock'
                       : 'Complete daily learning to unlock'}
                   </p>
                 )}

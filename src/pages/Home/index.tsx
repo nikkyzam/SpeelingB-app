@@ -12,6 +12,7 @@ import AuthModal from '../../components/auth/AuthModal'
 import ExplorerLevel from '../../components/progress/ExplorerLevel'
 import BuddyCard from '../../components/buddy/BuddyCard'
 import NextUp from '../../components/progress/NextUp'
+import WordProgress from '../../components/progress/WordProgress'
 import WordOfTheDay from '../../components/learning/WordOfTheDay'
 import MysteryBox from '../../components/rewards/MysteryBox'
 import SeasonalBanner from '../../components/seasonal/SeasonalBanner'
@@ -122,6 +123,10 @@ const Home: React.FC = () => {
       {/* Explorer rank — the long game, always climbing */}
       <section className="level-section">
         <ExplorerLevel onClick={() => navigate('/collection')} />
+
+        {/* How far through the whole list they are — the only place that
+            answers "how much is left?" */}
+        <WordProgress onClick={() => navigate('/collection')} />
       </section>
 
       {/* Today's quest progress */}

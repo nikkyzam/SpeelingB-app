@@ -14,8 +14,12 @@ vi.mock('@/services/persistence/FirebaseSync', () => ({
 }))
 
 /**
- * Games are gated by ONE rule: three starter games are free, and everything
- * else opens by passing today's quiz over all the words learned so far.
+ * Games are gated by learning, in two steps: the three starter games open once
+ * today's new words have been met, and everything else needs today's quiz
+ * passed AND whatever is waiting to be reviewed cleared.
+ *
+ * The review half is the point — spaced repetition used to be optional, so a
+ * child could unlock forty games without ever revisiting a word they got wrong.
  */
 describe('Game unlocking via the daily quiz', () => {
   let controller: LearningFlowController
@@ -26,7 +30,19 @@ describe('Game unlocking via the daily quiz', () => {
     controller = new LearningFlowController()
   })
 
-  it('leaves exactly the three starter games free before the quiz', () => {
+  /** Meet today's words, which is what opens the starter games. */
+  const learnTodaysWords = () => {
+    const goal = controller.getDailyGoal('learn')
+    for (let i = 0; i < goal; i++) controller.completeWord(`today-${i}`)
+  }
+
+  it('keeps even the starter games shut until today’s words are met', () => {
+    FREE_GAMES.forEach((id) => {
+      expect(controller.isGameUnlocked(id)).toBe(false)
+    })
+
+    learnTodaysWords()
+
     FREE_GAMES.forEach((id) => {
       expect(controller.isGameUnlocked(id)).toBe(true)
     })
@@ -40,7 +56,7 @@ describe('Game unlocking via the daily quiz', () => {
     expect(controller.isDailyQuizPassed()).toBe(false)
   })
 
-  it('unlocks all games once today’s quiz is passed', () => {
+  it('unlocks all games once today’s quiz is passed and review is clear', () => {
     controller.passDailyQuiz()
 
     expect(controller.isDailyQuizPassed()).toBe(true)
@@ -64,8 +80,63 @@ describe('Game unlocking via the daily quiz', () => {
 
     expect(controller.isDailyQuizPassed()).toBe(false)
     expect(controller.isGameUnlocked('ghost-word')).toBe(false)
-    // ...but the free games are always available.
+    // ...and the starter games are shut again too, until today's words are met.
+    expect(controller.isGameUnlocked(FREE_GAMES[0])).toBe(false)
+    learnTodaysWords()
     expect(controller.isGameUnlocked(FREE_GAMES[0])).toBe(true)
+  })
+
+  it('holds the games shut while words are waiting to be reviewed', () => {
+    // Enough history for the periodic review sweep to come due.
+    for (let i = 0; i < 30; i++) controller.completeWord(`old-${i}`)
+    controller.passDailyQuiz()
+
+    expect(controller.isReviewWaiting()).toBe(true)
+    expect(controller.isReviewSatisfiedToday()).toBe(false)
+    expect(controller.gamesLockedReason()).toBe('review')
+    expect(controller.isGameUnlocked('ghost-word')).toBe(false)
+
+    // One review session is all it asks for — not every due word.
+    controller.markReviewDone()
+
+    expect(controller.isReviewSatisfiedToday()).toBe(true)
+    expect(controller.gamesLockedReason()).toBeNull()
+    expect(controller.isGameUnlocked('ghost-word')).toBe(true)
+  })
+
+  it('does not ask for a review when there is nothing to review', () => {
+    controller.passDailyQuiz()
+    // A brand-new child has no history, so nothing is due and the quiz is enough.
+    expect(controller.isReviewWaiting()).toBe(false)
+    expect(controller.isReviewSatisfiedToday()).toBe(true)
+    expect(controller.isGameUnlocked('ghost-word')).toBe(true)
+  })
+
+  it('asks again once the review interval comes round', () => {
+    for (let i = 0; i < 30; i++) controller.completeWord(`old-${i}`)
+    controller.passDailyQuiz()
+    controller.markReviewDone()
+    expect(controller.isReviewSatisfiedToday()).toBe(true)
+
+    // A review done yesterday still counts today — nothing is due yet, and
+    // demanding one every single day would be nagging, not spacing.
+    const progress = JSON.parse(localStorage.getItem('learningProgress') || '{}')
+    const yesterday = new Date()
+    yesterday.setDate(yesterday.getDate() - 1)
+    progress.lastReviewDate = yesterday.toISOString()
+    localStorage.setItem('learningProgress', JSON.stringify(progress))
+    controller.refreshProgress()
+    expect(controller.isReviewWaiting()).toBe(false)
+    expect(controller.isReviewSatisfiedToday()).toBe(true)
+
+    // Once the interval has passed, it asks again.
+    const longAgo = new Date()
+    longAgo.setDate(longAgo.getDate() - 5)
+    progress.lastReviewDate = longAgo.toISOString()
+    localStorage.setItem('learningProgress', JSON.stringify(progress))
+    controller.refreshProgress()
+    expect(controller.isReviewWaiting()).toBe(true)
+    expect(controller.isReviewSatisfiedToday()).toBe(false)
   })
 
   it('quizzes every learned word, in a shuffled order', () => {

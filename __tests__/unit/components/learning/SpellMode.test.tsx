@@ -86,7 +86,10 @@ describe('SpellMode Component', () => {
     fireEvent.change(input, { target: { value: 'wrong' } })
     fireEvent.click(submitBtn)
     
-    expect(screen.getByText('Oops! Not quite — listen again and give it another go. 👂')).toBeInTheDocument()
+    // A wrong answer now names the word and the rule behind it, not just "nope".
+    expect(screen.getByText(/Oops! Not quite/)).toBeInTheDocument()
+    // "banana" doubles its n, so that is the rule it should teach.
+    expect(document.querySelector('.feedback-why')?.textContent).toMatch(/double|Sound|bits/)
     expect(screen.getByText('🔥 0')).toBeInTheDocument()
   })
 
@@ -109,25 +112,58 @@ describe('SpellMode Component', () => {
     expect(input).toHaveValue('apple')
   })
 
-  it('scores a word once, however many times Check is tapped', () => {
+  it('scores a word once, and cannot be made to score it twice', () => {
     renderWithProviders(<SpellMode />)
 
     const input = screen.getByPlaceholderText('Type the word...')
-    const submitBtn = screen.getByRole('button', { name: /Check it/i })
-
     fireEvent.change(input, { target: { value: 'apple' } })
-    fireEvent.click(submitBtn)
+    fireEvent.click(screen.getByRole('button', { name: /Check it/i }))
     expect(screen.getByText('🔥 1')).toBeInTheDocument()
 
-    // The answer is showing, so Check locks — and the guard inside handleSubmit
-    // holds even for callers that don't go through the button (the microphone).
-    expect(submitBtn).toBeDisabled()
-    fireEvent.click(submitBtn)
-    fireEvent.click(submitBtn)
+    // The button becomes "Next Word", so there is no way back to submitting.
+    expect(screen.queryByRole('button', { name: /Check it/i })).not.toBeInTheDocument()
 
-    // Still one word, one streak: no double mastery, no double score, and only
-    // one moveToNextWord queued (two would skip the next word entirely).
+    // And the guard inside handleSubmit holds for callers that skip the button
+    // entirely — the microphone calls it directly with the spoken word.
+    fireEvent.change(input, { target: { value: 'apple' } })
+    fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
+
     expect(screen.getByText('🔥 1')).toBeInTheDocument()
     expect(screen.queryByText('🔥 2')).not.toBeInTheDocument()
+  })
+
+  it('lets a child move on after getting a word wrong', () => {
+    renderWithProviders(<SpellMode />)
+
+    const input = screen.getByPlaceholderText('Type the word...')
+    fireEvent.change(input, { target: { value: 'zzzzz' } })
+    fireEvent.click(screen.getByRole('button', { name: /Check it/i }))
+
+    // The word is wrong, so nothing advances on its own — the child has to be
+    // able to move on themselves. This button was dead: it said "Next Word",
+    // was disabled, and called the guarded submit.
+    const next = screen.getByRole('button', { name: /Next Word/i })
+    expect(next).toBeEnabled()
+
+    fireEvent.click(next)
+
+    expect(screen.queryByText(/Oops! Not quite/)).not.toBeInTheDocument()
+    expect(screen.getByPlaceholderText('Type the word...')).toHaveValue('')
+  })
+
+  it('a correct answer still only advances once', () => {
+    renderWithProviders(<SpellMode />)
+
+    const input = screen.getByPlaceholderText('Type the word...')
+    fireEvent.change(input, { target: { value: 'apple' } })
+    fireEvent.click(screen.getByRole('button', { name: /Check it/i }))
+    expect(screen.getByText('Yes! You spelled it! 🎉')).toBeInTheDocument()
+
+    // Tapping "Next Word" cancels the automatic advance rather than adding to
+    // it, so the two together cannot skip the following word.
+    fireEvent.click(screen.getByRole('button', { name: /Next Word/i }))
+    act(() => { vi.advanceTimersByTime(3000) })
+
+    expect(screen.getByText('I eat a _______.')).toBeInTheDocument() // banana, not past it
   })
 })

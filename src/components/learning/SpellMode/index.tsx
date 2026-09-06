@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useAudio } from '../../../contexts/AudioContext'
 import { useProgress } from '../../../contexts/ProgressContext'
 import { useTheme } from '../../../contexts/ThemeContext'
@@ -8,6 +8,7 @@ import ReviewSchedule from '../../../services/progress/ReviewSchedule'
 import { AchievementsService } from '../../../services/rewards/AchievementsService'
 import BuddyService from '../../../services/buddy/BuddyService'
 import useSpeechRecognition, { parseSpelling } from '../../../hooks/useSpeechRecognition'
+import { explain } from '../../../services/words/explain'
 import sfx from '../../games/shared/sfx'
 import Button from '../../common/Button'
 import './SpellMode.css'
@@ -38,6 +39,12 @@ const SpellMode: React.FC<SpellModeProps> = ({
   const [score, setScore] = useState(0)
   const [streak, setStreak] = useState(0)
   const [showHint, setShowHint] = useState(false)
+  // What they wrote, kept after the box is cleared so the tip can name the
+  // exact mistake rather than give a generic rule.
+  const [lastAttempt, setLastAttempt] = useState('')
+  // A correct answer schedules an advance; tapping "Next Word" must cancel it,
+  // or the two together skip a word.
+  const advanceTimer = useRef<number | null>(null)
   const [isCompleted, setIsCompleted] = useState(false)
   // Spell-by-speaking: like a real spelling bee, say the letters out loud.
   const mic = useSpeechRecognition()
@@ -118,6 +125,7 @@ const SpellMode: React.FC<SpellModeProps> = ({
 
     const answer = (spokenValue ?? userInput).toLowerCase().trim()
     const correct = answer === currentWord.word.toLowerCase()
+    setLastAttempt(answer)
     setIsCorrect(correct)
     // Right or wrong, this word's next review date depends on what just happened.
     ReviewSchedule.record(currentWord.id, correct)
@@ -144,7 +152,8 @@ const SpellMode: React.FC<SpellModeProps> = ({
         learningFlow.completeWord(currentWord.id)
       }
 
-      setTimeout(() => {
+      advanceTimer.current = window.setTimeout(() => {
+        advanceTimer.current = null
         moveToNextWord()
       }, 1500)
     } else {
@@ -172,6 +181,10 @@ const SpellMode: React.FC<SpellModeProps> = ({
   }
 
   const moveToNextWord = () => {
+    if (advanceTimer.current) {
+      window.clearTimeout(advanceTimer.current)
+      advanceTimer.current = null
+    }
     if (currentIndex < words.length - 1) {
       const nextIndex = currentIndex + 1
       setCurrentIndex(nextIndex)
@@ -377,7 +390,11 @@ const SpellMode: React.FC<SpellModeProps> = ({
 
           {isCorrect === false && (
             <div className="feedback incorrect-feedback">
-              Oops! Not quite — listen again and give it another go. 👂
+              <div>Oops! Not quite — it’s <strong>{currentWord.word}</strong>.</div>
+              {/* The rule, not just the answer: one word learned versus fifty. */}
+              <div className="feedback-why">
+                <span aria-hidden>💡</span> {explain(currentWord.word, lastAttempt).tip}
+              </div>
             </div>
           )}
 
@@ -398,9 +415,13 @@ const SpellMode: React.FC<SpellModeProps> = ({
           </Button>
 
           <Button
-            onClick={() => handleSubmit()}
+            // Once an answer is in, this button moves on rather than re-scoring
+            // it. It used to call handleSubmit either way, which the one-answer
+            // guard then swallowed — leaving a child stuck on a word they had
+            // just got wrong, staring at a greyed-out "Next Word".
+            onClick={() => (isCorrect === null ? handleSubmit() : moveToNextWord())}
             variant="primary"
-            disabled={!userInput.trim() || isCorrect !== null}
+            disabled={isCorrect === null && !userInput.trim()}
             size="large"
           >
             {isCorrect === null ? 'Check it!' : 'Next Word'} →

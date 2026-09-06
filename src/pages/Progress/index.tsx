@@ -7,6 +7,7 @@ import { wordBank, Word } from '../../services/wordBank'
 import WordMastery from '../../services/progress/WordMastery'
 import ReviewSchedule from '../../services/progress/ReviewSchedule'
 import Button from '../../components/common/Button'
+import WordProgress from '../../components/progress/WordProgress'
 import './Progress.css'
 
 /**
@@ -87,6 +88,10 @@ const ProgressReport: React.FC = () => {
       </div>
 
       {/* This week */}
+      <section className="pg-section">
+        <WordProgress detailed />
+      </section>
+
       <section className="pg-section">
         <h2>This week</h2>
         <p className="pg-lead">

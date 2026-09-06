@@ -1,4 +1,5 @@
 import { useUserStore } from '../../stores/userStore'
+import ReviewSchedule from './ReviewSchedule'
 
 export interface LearningProgress {
   wordsLearnedToday: string[]
@@ -226,10 +227,41 @@ export class LearningFlowController {
   }
 
   isGameUnlocked(gameId: string): boolean {
-    // Three starter games are always free so there is something to play on day
-    // one. Everything else is earned by passing today's all-words quiz.
-    if (FREE_GAMES.includes(gameId)) return true
-    return this.isDailyQuizPassed()
+    // The three starter games open as soon as today's new words have been met,
+    // so a first session still begins with learning rather than play.
+    if (FREE_GAMES.includes(gameId)) return this.isDailyGoalReached('learn')
+    // Everything else is earned by passing today's quiz AND clearing whatever
+    // is waiting to be reviewed.
+    return this.isDailyQuizPassed() && this.isReviewSatisfiedToday()
+  }
+
+  /**
+   * Has the child dealt with what is waiting to be reviewed?
+   *
+   * Spaced repetition is the strongest thing in the app and it used to be
+   * entirely optional — a child could pass a quiz on five brand-new words and
+   * unlock forty games while never revisiting a word they had got wrong.
+   * Now it is part of finishing the day.
+   *
+   * Only ever asks for one review session: with thirty words due, clearing
+   * them all before playing would be a punishment, not a lesson.
+   */
+  isReviewSatisfiedToday(): boolean {
+    if (!this.isReviewWaiting()) return true
+    const last = this.progress.lastReviewDate
+    return !!last && new Date(last).toDateString() === new Date().toDateString()
+  }
+
+  /** Something to review: words the scheduler has due, or the periodic sweep. */
+  isReviewWaiting(): boolean {
+    return ReviewSchedule.dueCount() > 0 || this.isReviewDue()
+  }
+
+  /** Why the games are shut, for a child who wants to play right now. */
+  gamesLockedReason(): 'quiz' | 'review' | null {
+    if (!this.isDailyQuizPassed()) return 'quiz'
+    if (!this.isReviewSatisfiedToday()) return 'review'
+    return null
   }
 
   /** True once today's all-words quiz has been passed (resets each day). */
