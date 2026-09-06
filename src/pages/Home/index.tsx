@@ -60,7 +60,7 @@ const Home: React.FC = () => {
     { icon: '✏️', label: 'Spell It!', sub: 'Type what you hear', path: '/learn?mode=spell', tone: 'secondary' },
     { icon: '🎮', label: 'Play Games', sub: dailyCompleted ? 'Unlocked!' : 'Finish learning first', path: '/games', tone: 'accent' },
     { icon: '⚔️', label: 'Showdown', sub: 'Two players, one device', path: '/showdown', tone: 'accent' },
-    { icon: '🃏', label: 'Silly Sentences', sub: 'Make word jokes', path: '/silly', tone: 'secondary' },
+    { icon: '✍️', label: 'Sentence Maker', sub: 'Build with your words', path: '/sentences', tone: 'secondary' },
     { icon: '🔍', label: 'Word Hunt', sub: 'Find letters at home', path: '/hunt', tone: 'primary' },
     { icon: '🗂️', label: 'My Words', sub: 'Your word collection', path: '/collection', tone: 'success' },
     { icon: '🏆', label: 'My Prizes', sub: 'Spend your stars', path: '/rewards', tone: 'success' },

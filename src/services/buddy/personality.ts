@@ -3,12 +3,12 @@
  *
  * A name isn't just a label — it decides who the buddy *is*. The same name
  * always hatches the same personality, so "Captain Sprinkles" is reliably
- * giggly and "Rocky" is reliably brave. Everything is derived, never stored,
+ * playful and "Rocky" is reliably brave. Everything is derived, never stored,
  * so renaming the buddy re-hatches its character for free.
  */
 
 export interface BuddyPersonality {
-  id: 'giggly' | 'brave' | 'dreamy' | 'curious'
+  id: 'playful' | 'brave' | 'dreamy' | 'curious'
   /** speech synthesis settings that make the buddy sound like itself */
   pitch: number
   rate: number
@@ -21,11 +21,11 @@ export interface BuddyPersonality {
 
 const PERSONALITIES: BuddyPersonality[] = [
   {
-    id: 'giggly',
+    id: 'playful',
     pitch: 1.6,
     rate: 1.05,
     catchphrase: 'Tee hee hee!',
-    loves: 'silly words',
+    loves: 'wordplay',
     laugh: 'Tee hee hee!',
   },
   {
@@ -84,35 +84,35 @@ export const reactionFor = (
   switch (event) {
     case 'wordLearned':
       return {
-        giggly: `Ooh, a new word! ${p.laugh} Say it again, say it again!`,
+        playful: `Ooh, a new word! ${p.laugh} Say it again, say it again!`,
         brave: `A new word! Nothing can stop us now!`,
         dreamy: `A brand new word… I shall dream about it tonight…`,
         curious: `A new word! What does it mean? Can we use it in a sentence?`,
       }[p.id]
     case 'wordSpelled':
       return {
-        giggly: `You spelled it! ${p.laugh} You are SO clever!`,
+        playful: `You spelled it! ${p.laugh} You are SO clever!`,
         brave: `YES! Spelled perfectly! ${p.catchphrase}`,
         dreamy: `Beautiful spelling… like stars in a row…`,
         curious: `Correct! How did your brain DO that?`,
       }[p.id]
     case 'stars':
       return {
-        giggly: `Stars! Shiny shiny stars! ${p.laugh}`,
+        playful: `Stars! Shiny shiny stars! ${p.laugh}`,
         brave: `More stars! Earned, every single one!`,
         dreamy: `Ooh… stars for the star jar… twinkly…`,
         curious: `Stars! How many do we have now? Count them, count them!`,
       }[p.id]
     case 'greeting':
       return {
-        giggly: `Hi hi hi! ${p.laugh} Shall we play?`,
+        playful: `Hi hi hi! ${p.laugh} Shall we play?`,
         brave: `There you are! Ready for an adventure?`,
         dreamy: `Hello… I was just dreaming about words…`,
         curious: `Hello! What are we learning today? Huh? Huh?`,
       }[p.id]
     case 'gameWon':
       return {
-        giggly: `You WON! ${p.laugh} Again, again!`,
+        playful: `You WON! ${p.laugh} Again, again!`,
         brave: `Victory! I never doubted you for a second!`,
         dreamy: `You won… it was like watching a fireworks show…`,
         curious: `You won! How did you get SO good?`,

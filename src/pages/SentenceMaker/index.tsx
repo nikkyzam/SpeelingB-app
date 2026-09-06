@@ -6,7 +6,7 @@ import { useRewardStore } from '../../stores/rewards/useRewardStore'
 import { wordBank, Word } from '../../services/wordBank'
 import sfx from '../../components/games/shared/sfx'
 import Button from '../../components/common/Button'
-import './SillySentences.css'
+import './SentenceMaker.css'
 
 const STATE_KEY = 'silly_sentences_state'
 
@@ -43,11 +43,11 @@ const readToday = (): { date: string; made: number } => {
 }
 
 /**
- * The Silly Sentence Maker — pick three of your own words and the app builds
+ * The Sentence Maker — pick three of your own words and the app builds
  * something ridiculous out of them. Seeing "elephant", "danced" and "pizza"
  * turn into a joke is what makes a child *own* a word.
  */
-const SillySentences: React.FC = () => {
+const SentenceMaker: React.FC = () => {
   const navigate = useNavigate()
   const { speak } = useAudio()
   const { learningFlow } = useProgress()
@@ -87,8 +87,8 @@ const SillySentences: React.FC = () => {
     speak(sentence, { rate: 0.85, pitch: 1.2 })
     sfx.correct()
 
-    // The first silly sentence of each day earns a few stars — after that
-    // it's just for giggles, which is reward enough.
+    // The first sentence of each day earns a few stars — after that it is
+    // its own reward.
     if (today.made === 0) {
       const next = { date: today.date, made: 1 }
       setToday(next)
@@ -102,16 +102,16 @@ const SillySentences: React.FC = () => {
 
   if (picks.length < 3) {
     return (
-      <div className="silly-page">
-        <div className="silly-header">
+      <div className="sentence-page">
+        <div className="sentence-header">
           <Button variant="secondary" size="small" onClick={() => navigate('/')}>← Home</Button>
-          <h1>🃏 Silly Sentence Maker</h1>
+          <h1>✍️ Sentence Maker</h1>
         </div>
-        <p className="silly-intro">
-          The jester needs three of YOUR words to build a sentence — go and meet
-          a few more, then come back for the silliness! 🤪
+        <p className="sentence-intro">
+          It takes three of YOUR words to build a sentence — go and meet
+          a few more, then come back and build one! ✍️
         </p>
-        <div className="silly-actions">
+        <div className="sentence-actions">
           <Button variant="primary" icon="📖" onClick={() => navigate('/learn')}>
             Learn some words
           </Button>
@@ -121,32 +121,32 @@ const SillySentences: React.FC = () => {
   }
 
   return (
-    <div className="silly-page">
-      <div className="silly-header">
+    <div className="sentence-page">
+      <div className="sentence-header">
         <Button variant="secondary" size="small" onClick={() => navigate('/')}>← Home</Button>
-        <h1>🃏 Silly Sentence Maker</h1>
+        <h1>✍️ Sentence Maker</h1>
         <Button variant="secondary" size="small" onClick={() => navigate('/collection')}>🗂️ My Words</Button>
       </div>
 
-      <p className="silly-intro">
-        Three of YOUR words walk into a sentence… tap a word to swap it, then hear the madness! 🤪
+      <p className="sentence-intro">
+        Three of YOUR words, one sentence — tap a word to swap it, then hear it read aloud! ✍️
       </p>
 
-      <div className="silly-picks">
+      <div className="sentence-picks">
         {picks.map((w, i) => (
-          <button key={`${w.id}-${i}`} className="silly-chip" onClick={() => reroll(i)}>
-            <span className="silly-chip-word">{w.word}</span>
-            <span className="silly-chip-swap" aria-hidden>🔄</span>
+          <button key={`${w.id}-${i}`} className="sentence-chip" onClick={() => reroll(i)}>
+            <span className="sentence-chip-word">{w.word}</span>
+            <span className="sentence-chip-swap" aria-hidden>🔄</span>
           </button>
         ))}
       </div>
 
-      <div className="silly-stage pop-in" key={sentence}>
-        <div className="silly-jester" aria-hidden>🤡</div>
-        <p className="silly-sentence">{sentence}</p>
+      <div className="sentence-stage pop-in" key={sentence}>
+        <div className="sentence-mascot" aria-hidden>🐝</div>
+        <p className="sentence-text">{sentence}</p>
       </div>
 
-      <div className="silly-actions">
+      <div className="sentence-actions">
         <Button variant="primary" size="large" icon="🔊" onClick={readAloud}>
           Read it out loud!
         </Button>
@@ -156,10 +156,10 @@ const SillySentences: React.FC = () => {
       </div>
 
       {today.made === 0 && (
-        <p className="silly-bonus">✨ Your first silly sentence of the day earns 5 stars!</p>
+        <p className="sentence-bonus">✨ Your first sentence of the day earns 5 stars!</p>
       )}
     </div>
   )
 }
 
-export default SillySentences
+export default SentenceMaker

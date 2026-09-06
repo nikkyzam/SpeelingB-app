@@ -1,4 +1,4 @@
-.silly-page {
+.sentence-page {
   max-width: 620px;
   margin: 0 auto;
   padding: 20px 16px;
@@ -7,29 +7,29 @@
   gap: 16px;
 }
 
-.silly-header {
+.sentence-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
 }
 
-.silly-header h1 { margin: 0; font-size: 1.5rem; color: var(--text); }
+.sentence-header h1 { margin: 0; font-size: 1.5rem; color: var(--text); }
 
-.silly-intro {
+.sentence-intro {
   text-align: center;
   color: var(--text-soft);
   margin: 0;
 }
 
-.silly-picks {
+.sentence-picks {
   display: flex;
   justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
 }
 
-.silly-chip {
+.sentence-chip {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -45,10 +45,10 @@
   transition: transform 0.15s ease;
 }
 
-.silly-chip:hover { transform: scale(1.07) rotate(-1deg); }
-.silly-chip-swap { font-size: 0.85rem; opacity: 0.7; }
+.sentence-chip:hover { transform: scale(1.07) rotate(-1deg); }
+.sentence-chip-swap { font-size: 0.85rem; opacity: 0.7; }
 
-.silly-stage {
+.sentence-stage {
   background: var(--card);
   border: 3px dashed var(--accent);
   border-radius: 24px;
@@ -57,9 +57,9 @@
   box-shadow: var(--shadow-md);
 }
 
-.silly-jester { font-size: 2.6rem; animation: floaty 3s ease-in-out infinite; }
+.sentence-mascot { font-size: 2.6rem; animation: floaty 3s ease-in-out infinite; }
 
-.silly-sentence {
+.sentence-text {
   font-size: 1.35rem;
   font-weight: 800;
   color: var(--text);
@@ -67,14 +67,14 @@
   margin: 10px 0 0;
 }
 
-.silly-actions {
+.sentence-actions {
   display: flex;
   justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
 }
 
-.silly-bonus {
+.sentence-bonus {
   text-align: center;
   color: var(--accent);
   font-weight: 800;

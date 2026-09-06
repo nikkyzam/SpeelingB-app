@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import sfx from '../../games/shared/sfx'
 import './Header.css'
 
-/** Silly things the mascot says when a child keeps poking it. */
+/** What the mascot says when a child keeps poking it. */
 const POKES = [
   'Hee hee, that tickles!',
   'Boop!',

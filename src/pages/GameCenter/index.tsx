@@ -49,7 +49,7 @@ import {
   SpellTower,
   WordSort,
   ParrotParty,
-  SillyStory,
+  StoryBuilder,
   TreasureTrail,
   HomophoneHero,
   WordFamily,
@@ -85,7 +85,7 @@ type GameMode =
   | 'word-chef' | 'abc-order'
   | 'typo-detective' | 'mystery-picture' | 'secret-code' | 'ghost-word'
   | 'word-machine' | 'dragon-duel' | 'word-whack' | 'word-fishing' | 'rhyme-time'
-  | 'spell-tower' | 'word-sort' | 'parrot-party' | 'silly-story' | 'treasure-trail'
+  | 'spell-tower' | 'word-sort' | 'parrot-party' | 'story-builder' | 'treasure-trail'
   | 'homophone-hero' | 'word-family' | 'syllable-clap' | 'definition-detective'
   | 'bible-trivia' | 'bible-memorizer'
   | null
@@ -437,15 +437,15 @@ const GameCenter: React.FC = () => {
       unlocked: learningFlow.isGameUnlocked('parrot-party')
     },
     {
-      id: 'silly-story',
-      title: '📜 Silly Story',
-      description: 'Fill the blanks and make a giggly story',
+      id: 'story-builder',
+      title: '📜 Story Builder',
+      description: 'Fill the blanks and build your own story',
       icon: '📜',
       color: '#FA5252',
       duration: '4 blanks',
       category: 'think' as Category,
       isNew: true,
-      unlocked: learningFlow.isGameUnlocked('silly-story')
+      unlocked: learningFlow.isGameUnlocked('story-builder')
     },
     {
       id: 'treasure-trail',
@@ -818,7 +818,7 @@ const GameCenter: React.FC = () => {
       case 'spell-tower': return <SpellTower words={selectedWords} onComplete={handleGameComplete} />
       case 'word-sort': return <WordSort words={selectedWords} onComplete={handleGameComplete} />
       case 'parrot-party': return <ParrotParty words={selectedWords} onComplete={handleGameComplete} />
-      case 'silly-story': return <SillyStory words={selectedWords} onComplete={handleGameComplete} />
+      case 'story-builder': return <StoryBuilder words={selectedWords} onComplete={handleGameComplete} />
       case 'treasure-trail': return <TreasureTrail words={selectedWords} onComplete={handleGameComplete} />
       case 'homophone-hero': return <HomophoneHero onComplete={handleGameComplete} />
       case 'word-family': return <WordFamily onComplete={handleGameComplete} />
@@ -852,7 +852,7 @@ const GameCenter: React.FC = () => {
     <div className="game-center">
       <div className="games-header">
         <h1>🎮 Game Zone</h1>
-        <p className="subtitle">Play, giggle, and earn Heavenly Stars! ⭐</p>
+        <p className="subtitle">Play, practise, and earn Heavenly Stars! ⭐</p>
 
         <div className="stars-display">
           <div className="stars-count">

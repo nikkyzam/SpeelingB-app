@@ -3,9 +3,9 @@ import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, isPlayable } from '../shared/wordTricks'
 import sfx from '../shared/sfx'
-import './SillyStory.css'
+import './StoryBuilder.css'
 
-interface SillyStoryProps {
+interface StoryBuilderProps {
   onComplete: (score: number) => void
   words?: Word[]
 }
@@ -29,7 +29,7 @@ const TEMPLATES: Template[] = [
       ' with extra sprinkles. Everyone shouted “',
       '!” and that is why we always keep snacks in the fridge.',
     ],
-    prompts: ['Something HUGE', 'Something silly to sit on', 'A tasty treat', 'A word to shout'],
+    prompts: ['Something HUGE', 'Something to sit on', 'A tasty treat', 'A word to shout'],
   },
   {
     title: 'Space Picnic',
@@ -75,10 +75,10 @@ type Phase = 'filling' | 'story' | 'bonus' | 'done'
  * A fill-in-the-blanks story machine.
  *
  * Nothing here can be "wrong" — every choice makes a story worth reading out
- * loud. Kids who freeze at a spelling test will happily read their own silly
+ * loud. Kids who freeze at a spelling test will happily read their own
  * story five times, and each reading is five more looks at the word.
  */
-const SillyStory: React.FC<SillyStoryProps> = ({ onComplete, words: providedWords }) => {
+const StoryBuilder: React.FC<StoryBuilderProps> = ({ onComplete, words: providedWords }) => {
   const { speak } = useAudio()
 
   const template = useMemo(() => TEMPLATES[Math.floor(Math.random() * TEMPLATES.length)], [])
@@ -88,7 +88,7 @@ const SillyStory: React.FC<SillyStoryProps> = ({ onComplete, words: providedWord
     const base = providedWords && providedWords.length > 0 ? providedWords : []
     const usable = shuffle(base).filter((w) => isPlayable(w)).map((w) => w.word.toLowerCase())
     const unique = [...new Set(usable)]
-    // The story is silly because *their* words are in it.
+    // The story is theirs because *their* words are in it.
     return unique
   }, [providedWords, blanks])
 
@@ -120,7 +120,7 @@ const SillyStory: React.FC<SillyStoryProps> = ({ onComplete, words: providedWord
 
   if (pool.length === 0) {
     return (
-      <div className="silly-story">
+      <div className="story-builder">
         <p className="ss-empty">No words for the story yet — learn a few first! 📜</p>
         <button className="ss-btn" onClick={() => onComplete(0)}>Back to Games</button>
       </div>
@@ -155,9 +155,9 @@ const SillyStory: React.FC<SillyStoryProps> = ({ onComplete, words: providedWord
   }
 
   return (
-    <div className="silly-story">
+    <div className="story-builder">
       <div className="ss-header">
-        <div className="ss-title">📜 Silly Story</div>
+        <div className="ss-title">📜 Story Builder</div>
         <div className="ss-stats">
           <div className="ss-stat"><span>Blank</span><strong>{Math.min(filled.length + 1, blanks)}/{blanks}</strong></div>
           <div className="ss-stat"><span>Score</span><strong>{score}</strong></div>
@@ -234,4 +234,4 @@ const SillyStory: React.FC<SillyStoryProps> = ({ onComplete, words: providedWord
   )
 }
 
-export default SillyStory
+export default StoryBuilder
