@@ -333,3 +333,10 @@
   cursor: pointer;
 }
 .admin-users__remove-go:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.admin-users__removehint {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--error);
+}

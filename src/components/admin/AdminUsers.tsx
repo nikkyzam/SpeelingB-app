@@ -28,6 +28,17 @@ const LEVELS: { value: WordLevel; label: string }[] = [
 
 const sameLevel = (a: WordLevel, b: WordLevel) => a === b
 
+/**
+ * Does the typed confirmation match the child's name?
+ *
+ * Deliberately forgiving about capitals and stray spaces. Requiring an exact
+ * match meant a grown-up typing "ava" for a child called "Ava" got a dead
+ * button and no explanation — the confirmation is there to make you stop and
+ * think, not to test your typing.
+ */
+const confirms = (typed: string, name: string) =>
+  typed.trim().toLowerCase() === name.trim().toLowerCase()
+
 /** "yesterday", "3 days ago" — a parent doesn't want a timestamp. */
 const lastSeenLabel = (iso?: string): string => {
   if (!iso) return 'not synced yet'
@@ -383,6 +394,11 @@ const AdminUsers: React.FC = () => {
                         onChange={(e) => setTypedName(e.target.value)}
                       />
                     </label>
+                    {typedName.trim().length > 0 && !confirms(typedName, u.name) && (
+                      <p className="admin-users__removehint">
+                        That doesn&apos;t match — type <strong>{u.name}</strong> to turn the button on.
+                      </p>
+                    )}
                     <div className="admin-users__removeactions">
                       <button
                         className="admin-users__discard"
@@ -393,7 +409,7 @@ const AdminUsers: React.FC = () => {
                       </button>
                       <button
                         className="admin-users__remove-go"
-                        disabled={busy || typedName.trim() !== u.name}
+                        disabled={busy || !confirms(typedName, u.name)}
                         onClick={() => remove(u)}
                       >
                         {busy ? 'Removing…' : `Remove ${u.name} for good`}

@@ -1,4 +1,4 @@
-import { collection, getDocs, getDoc, doc, updateDoc, deleteField, arrayUnion } from 'firebase/firestore'
+import { collection, getDocs, getDoc, doc, setDoc, updateDoc, deleteField, arrayUnion } from 'firebase/firestore'
 import { db, auth } from '../../config/firebase'
 
 /** Word difficulty tier: 1 = One Bee (easiest), 2 = Two Bee, undefined = All Words. */
@@ -215,15 +215,22 @@ export async function deleteUserAccount(uid: string): Promise<void> {
   if (uid === auth.currentUser?.uid) {
     throw new Error('You cannot remove your own account from here.')
   }
-  await updateDoc(doc(db, 'users', uid), {
-    deleted: true,
-    deletedAt: new Date().toISOString(),
-    deletedBy: auth.currentUser?.email || auth.currentUser?.uid || 'a grown-up',
-    // The data itself goes. What remains is the record that it was removed.
-    progress: deleteField(),
-    userData: deleteField(),
-    rewards: deleteField(),
-    points: deleteField(),
-    adminLog: deleteField(),
-  })
+  // setDoc, not updateDoc: updateDoc throws "No document to update" when the
+  // child has never synced, and those are exactly the accounts a grown-up most
+  // wants rid of. A merge writes the tombstone either way.
+  await setDoc(
+    doc(db, 'users', uid),
+    {
+      deleted: true,
+      deletedAt: new Date().toISOString(),
+      deletedBy: auth.currentUser?.email || auth.currentUser?.uid || 'a grown-up',
+      // The data itself goes. What remains is the record that it was removed.
+      progress: deleteField(),
+      userData: deleteField(),
+      rewards: deleteField(),
+      points: deleteField(),
+      adminLog: deleteField(),
+    },
+    { merge: true }
+  )
 }

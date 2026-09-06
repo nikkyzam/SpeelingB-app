@@ -152,16 +152,26 @@ describe('the grown-up console', () => {
     await waitFor(() => expect(screen.queryByText('Maya')).not.toBeInTheDocument())
   })
 
-  it('does not accept a near-miss of the name', async () => {
+  it('accepts the name whatever the capitals, and says so when it is wrong', async () => {
     const user = userEvent.setup()
     render(<AdminUsers />)
     await screen.findByText('Maya')
 
     await user.click(screen.getByRole('button', { name: /Remove Maya…/ }))
-    await user.type(screen.getByLabelText('Type Maya to confirm removal'), 'maya')
+    const box = screen.getByLabelText('Type Maya to confirm removal')
+    const go = screen.getByRole('button', { name: /Remove Maya for good/ })
 
-    expect(screen.getByRole('button', { name: /Remove Maya for good/ })).toBeDisabled()
-    expect(deleteUserAccount).not.toHaveBeenCalled()
+    // A different name is still refused, and explains itself rather than
+    // leaving a dead button.
+    await user.type(box, 'Noah')
+    expect(go).toBeDisabled()
+    expect(screen.getByText(/That doesn't match/)).toBeInTheDocument()
+
+    // Capitals and stray spaces are not the point of the confirmation.
+    await user.clear(box)
+    await user.type(box, '  maya ')
+    expect(go).toBeEnabled()
+    expect(screen.queryByText(/That doesn't match/)).not.toBeInTheDocument()
   })
 
   it('offers a copy of the data before it goes', async () => {
