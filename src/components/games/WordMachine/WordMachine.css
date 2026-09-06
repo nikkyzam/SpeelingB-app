@@ -1,0 +1,162 @@
+.word-machine {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  transition: box-shadow 0.25s;
+}
+.word-machine.flash-good { box-shadow: 0 0 0 4px var(--success); }
+.word-machine.flash-bad { box-shadow: 0 0 0 4px var(--error); }
+
+.wm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+.wm-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.wm-stats { display: flex; gap: var(--spacing-sm); }
+.wm-stat {
+  display: flex; flex-direction: column; align-items: center;
+  background: var(--card-soft); border-radius: var(--radius-md); padding: 4px 10px; min-width: 3.5rem;
+}
+.wm-stat span { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-soft); }
+.wm-stat strong { font-family: var(--font-primary); font-size: 1rem; color: var(--text); }
+
+/* --- The machine ---------------------------------------------------------
+   Hopper on the left, gears in the middle, output on the right. A single
+   grid so the three read as one contraption, not three cards. */
+.wm-machine {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: calc(var(--spacing-md) + 1.4rem) var(--spacing-md) var(--spacing-md);
+  background: linear-gradient(180deg, var(--card-soft), var(--card));
+  border: 3px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.wm-dial {
+  position: absolute;
+  top: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: #fff;
+  border-radius: var(--radius-round);
+  padding: 2px 12px;
+  font-family: var(--font-primary);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.wm-hopper,
+.wm-output {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 5.5rem;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  border: 2px solid var(--border);
+}
+.wm-hopper { cursor: pointer; font: inherit; color: inherit; }
+.wm-hopper:active { transform: scale(0.98); }
+.wm-hopper-tag,
+.wm-output-tag {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-soft);
+}
+.wm-hopper-word,
+.wm-output-word {
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: clamp(1.2rem, 5vw, 1.8rem);
+  color: var(--text);
+  word-break: break-word;
+}
+.wm-hopper-speak { font-size: 0.9rem; }
+
+.wm-output { border-style: dashed; }
+.wm-output .wm-output-word { color: var(--text-soft); }
+.wm-output.filled { border-style: solid; border-color: var(--primary); }
+.wm-output.filled .wm-output-word { color: var(--primary-2); animation: wm-pop 0.35s ease-out; }
+
+/* Gears idle gently; they whirr when a word goes through. */
+.wm-gears { display: flex; flex-direction: column; gap: 0; font-size: 1.6rem; line-height: 1; }
+.wm-gear { display: inline-block; animation: wm-idle 6s linear infinite; }
+.wm-gear.g2 { animation-direction: reverse; margin-left: 0.6rem; }
+.wm-machine.running .wm-gear { animation: wm-spin 0.6s linear infinite; }
+.wm-machine.running .wm-gear.g2 { animation-direction: reverse; }
+
+@keyframes wm-idle { to { transform: rotate(360deg); } }
+@keyframes wm-spin { to { transform: rotate(360deg); } }
+@keyframes wm-pop { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.wm-prompt { margin: 0; color: var(--text-soft); font-weight: 700; }
+
+/* --- Choices --------------------------------------------------------------- */
+.wm-choices { display: flex; flex-direction: column; gap: var(--spacing-sm); }
+.wm-choice {
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.25rem;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-round);
+  border: 3px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 0.1s, border-color 0.2s, background 0.2s;
+}
+.wm-choice:hover:not(:disabled) { border-color: var(--primary); transform: translateY(-2px); }
+.wm-choice:disabled { cursor: default; }
+.wm-choice.right { border-color: var(--success); background: color-mix(in srgb, var(--success) 15%, var(--card)); }
+.wm-choice.wrong { border-color: var(--error); background: color-mix(in srgb, var(--error) 12%, var(--card)); }
+.wm-choice.dim { opacity: 0.45; }
+
+/* --- The rule, said out loud ---------------------------------------------- */
+.wm-lesson {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  text-align: left;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  color: var(--text);
+  background: var(--card-soft);
+  border-left: 5px solid var(--success);
+  animation: wm-pop 0.3s ease-out;
+}
+.wm-lesson.bad { border-left-color: var(--error); }
+.wm-lesson-icon { font-size: 1.2rem; }
+
+.wm-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
+.wm-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wm-gear, .wm-machine.running .wm-gear, .wm-output.filled .wm-output-word, .wm-lesson { animation: none; }
+}

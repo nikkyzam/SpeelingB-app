@@ -41,7 +41,7 @@ import {
   MysteryPicture,
   SecretCode,
   GhostWord,
-  WordSnake,
+  WordMachine,
   DragonDuel,
   WordWhack,
   WordFishing,
@@ -82,7 +82,7 @@ type GameMode =
   | 'word-search' | 'bee-catch'
   | 'word-chef' | 'abc-order'
   | 'typo-detective' | 'mystery-picture' | 'secret-code' | 'ghost-word'
-  | 'word-snake' | 'dragon-duel' | 'word-whack' | 'word-fishing' | 'rhyme-time'
+  | 'word-machine' | 'dragon-duel' | 'word-whack' | 'word-fishing' | 'rhyme-time'
   | 'spell-tower' | 'word-sort' | 'parrot-party' | 'silly-story' | 'treasure-trail'
   | 'homophone-hero' | 'word-family' | 'syllable-clap' | 'definition-detective'
   | 'bible-trivia' | 'bible-memorizer'
@@ -342,15 +342,15 @@ const GameCenter: React.FC = () => {
       unlocked: learningFlow.isGameUnlocked('ghost-word')
     },
     {
-      id: 'word-snake',
-      title: '🐍 Word Snake',
-      description: 'Slither around and eat the letters in order',
-      icon: '🐍',
+      id: 'word-machine',
+      title: '⚙️ Word Machine',
+      description: 'Feed in one word — out come boxes, babies, mice!',
+      icon: '⚙️',
       color: '#3AB795',
-      duration: '90s',
-      category: 'arcade' as Category,
+      duration: '6 words',
+      category: 'spelling' as Category,
       isNew: true,
-      unlocked: learningFlow.isGameUnlocked('word-snake')
+      unlocked: learningFlow.isGameUnlocked('word-machine')
     },
     {
       id: 'dragon-duel',
@@ -779,7 +779,7 @@ const GameCenter: React.FC = () => {
       case 'mystery-picture': return <MysteryPicture words={selectedWords} onComplete={handleGameComplete} />
       case 'secret-code': return <SecretCode words={selectedWords} onComplete={handleGameComplete} />
       case 'ghost-word': return <GhostWord words={selectedWords} onComplete={handleGameComplete} />
-      case 'word-snake': return <WordSnake words={selectedWords} onComplete={handleGameComplete} />
+      case 'word-machine': return <WordMachine words={selectedWords} onComplete={handleGameComplete} />
       case 'dragon-duel': return <DragonDuel words={selectedWords} onComplete={handleGameComplete} />
       case 'word-whack': return <WordWhack words={selectedWords} onComplete={handleGameComplete} />
       case 'word-fishing': return <WordFishing words={selectedWords} onComplete={handleGameComplete} />
