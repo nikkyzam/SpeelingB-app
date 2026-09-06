@@ -53,7 +53,7 @@ and reports a score so it can be beaten next time.
 
 | Game | What you do | Skill it builds |
 | --- | --- | --- |
-| 🐍 **Word Snake** | Steer a snake to eat the letters of a word in order. Walls wrap, the snake never bites itself, and a wrong letter costs one segment. | Letter sequence, spelling under light pressure |
+| ⚙️ **Word Machine** | Feed in one of your words and pick what comes out when there are two: boxes not boxs, babies not babys, mice not mouses. The wrong answers are the other rules applied, and the rule is spelled out after every answer. Words the rules can't handle safely are left out rather than taught wrong. | Plural spelling rules: +s, +es, y→ies, f→ves, irregulars |
 | 🐉 **Dragon Duel** | Turn-based boss fight: spell to strike, miss and the dragon breathes fire. Three in a row lands a critical hit. A potion reveals the first letter. | Listening then spelling from memory |
 | 🔨 **Word Whack** | Whack-a-mole where bugs carry misspelled words and bees carry correct ones. Bonk the bugs only. | Proofreading at speed |
 | 🎣 **Word Fishing** | The end of the word swam off — hook the fish carrying the piece that completes it. | Word chunks, listening |
