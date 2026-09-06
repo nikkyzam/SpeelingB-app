@@ -9,6 +9,7 @@ import {
 import { auth } from '../../config/firebase';
 import { useUserStore } from '../../stores/userStore';
 import FirebaseSync from '../persistence/FirebaseSync';
+import { clearUserData, forgetDeviceUser } from '../persistence/userKeys';
 
 /**
  * A friendly first name from an email address, for accounts that never set a
@@ -120,20 +121,12 @@ export class AuthService {
       await signOut(auth);
       FirebaseSync.resetHydration();
       useUserStore.getState().logout();
-      // Clear all persistent stores and data
-      localStorage.removeItem('user');
-      localStorage.removeItem('user-storage');
-      localStorage.removeItem('progress-storage');
-      localStorage.removeItem('reward-storage');
-      localStorage.removeItem('learningProgress');
-      localStorage.removeItem('kids_spelling_points');
-      localStorage.removeItem('kids_spelling_purchase_history');
-      localStorage.removeItem('kids_spelling_streak');
-      localStorage.removeItem('streak');
-      localStorage.removeItem('streak-storage');
-      localStorage.removeItem('lastDailyReset');
-      localStorage.removeItem('theme');
-      
+      // Everything that was this child's leaves with them. The list lives in
+      // one place (userKeys.ts) so a new feature cannot be forgotten here —
+      // that is how the buddy came to greet the next child to sign in.
+      clearUserData();
+      forgetDeviceUser();
+
       // Force reload to reset all providers and states
       window.location.href = '/';
     } catch (error) {

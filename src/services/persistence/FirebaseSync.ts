@@ -2,6 +2,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
 import { db, auth } from '../../config/firebase';
 import { withoutAdminClaim, withAdminClaimDenied } from '../auth/adminClaim';
+import { BUNDLED_SYNC_KEYS, prepareDeviceFor } from './userKeys';
 
 const SYNC_FLAG_PREFIX = 'fb-synced:';
 
@@ -19,6 +20,26 @@ let hydratedUid: string | null = null;
  * copy back and resurrect the child.
  */
 let removedUid: string | null = null;
+
+let syncTimer: number | null = null;
+
+/** Per-child state that changes outside a progress save. */
+const CHANGE_EVENTS = [
+  'buddyUpdated',
+  'wordMasteryUpdated',
+  'reviewScheduleUpdated',
+  'mysteryBoxUpdated',
+  'gameStatsUpdated',
+  'pointsEarned',
+  'badgeUnlocked',
+  'rewardPurchased',
+  'streakUpdated',
+];
+if (typeof window !== 'undefined') {
+  for (const name of CHANGE_EVENTS) {
+    window.addEventListener(name, () => FirebaseSync.syncSoon());
+  }
+}
 
 export class FirebaseSync {
   /** Forget hydration + per-session sync flags (called on logout). */
@@ -86,6 +107,13 @@ export class FirebaseSync {
       return;
     }
 
+    // If a different account used this device last, everything of theirs goes
+    // before this child's data is pulled down. This is what stops one child's
+    // buddy, stars and world from greeting the next child to sign in.
+    if (prepareDeviceFor(user.uid)) {
+      console.log('Firebase sync: different account than last time — cleared local data');
+    }
+
     try {
       const docRef = doc(db, 'users', user.uid);
       const docSnap = await getDoc(docRef);
@@ -140,6 +168,19 @@ export class FirebaseSync {
             changed = true;
           }
         }
+        // Everything else that is the child's — buddy, badges, review schedule,
+        // high scores — travels as one bundle of raw strings. The server's copy
+        // wins for any key it has; keys it lacks are left alone, because the
+        // device may simply be ahead of the last upload.
+        if (data.local && typeof data.local === 'object') {
+          for (const key of BUNDLED_SYNC_KEYS) {
+            const value = (data.local as Record<string, unknown>)[key];
+            if (typeof value === 'string' && localStorage.getItem(key) !== value) {
+              localStorage.setItem(key, value);
+              changed = true;
+            }
+          }
+        }
 
         console.log('Firebase data synced from server', changed ? '(applying)' : '(no change)');
         // Only reload when the server actually had newer data — and thanks to
@@ -175,6 +216,22 @@ export class FirebaseSync {
     window.location.href = '/';
   }
 
+  /**
+   * Upload shortly after the child's data changes.
+   *
+   * Progress saves already trigger an upload, but feeding the buddy, naming
+   * it, or unlocking a badge did not — so a buddy named on one tablet was
+   * simply missing on the next. Every per-child event now schedules one,
+   * coalesced so a burst of taps is a single write.
+   */
+  static syncSoon(delayMs = 1500) {
+    if (syncTimer !== null) window.clearTimeout(syncTimer);
+    syncTimer = window.setTimeout(() => {
+      syncTimer = null;
+      FirebaseSync.syncToServer();
+    }, delayMs);
+  }
+
   static async syncToServer() {
     const user = auth.currentUser;
     // Don't sync for anonymous/guest users or if not logged in
@@ -203,6 +260,13 @@ export class FirebaseSync {
       if (rewardStore.state) syncData.rewards = rewardStore.state;
       const points = localStorage.getItem('kids_spelling_points');
       if (points) syncData.points = JSON.parse(points);
+
+      const local: Record<string, string> = {};
+      for (const key of BUNDLED_SYNC_KEYS) {
+        const value = localStorage.getItem(key);
+        if (value !== null) local[key] = value;
+      }
+      syncData.local = local;
 
       await setDoc(doc(db, 'users', user.uid), syncData, { merge: true });
       console.log('Firebase data synced to server');

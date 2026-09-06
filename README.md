@@ -91,5 +91,10 @@ Rollback); there is no CLI flag for it.
   retired — do not import it.
 - **Worlds** (`theme/worlds.ts`) re-skin the whole app; every component styles
   itself from CSS custom properties rather than fixed colours.
+- **Anything you keep in `localStorage` must be registered** in
+  `services/persistence/userKeys.ts` — as the child's (cleared on sign-out and
+  account switch, synced to their other devices) or the device's. A test fails
+  on any unregistered key. That registry is what stops one child's buddy,
+  stars or world showing up for the next child on a shared tablet.
 
 More detail in [`documents/`](documents/).
