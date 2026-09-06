@@ -63,6 +63,10 @@ export const USER_KEYS = [
   'word_hunt_state',
   'silly_sentences_state',
 
+  // two children on one device, and what a grown-up put up for it
+  'challenge_prize',
+  'challenge_results',
+
   // daily counters
   'total_words_spelled',
   'daily_words_spelled',

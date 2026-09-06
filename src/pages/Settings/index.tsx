@@ -6,6 +6,7 @@ import Button from '../../components/common/Button'
 import WorldPicker from '../../components/theme/WorldPicker'
 import WhoIsPlaying from '../../components/profile/WhoIsPlaying'
 import AdminUsers from '../../components/admin/AdminUsers'
+import PrizeSetter from '../../components/challenge/PrizeSetter'
 import './Settings.css'
 
 const Settings: React.FC = () => {
@@ -39,6 +40,19 @@ const Settings: React.FC = () => {
         <Button variant="primary" icon="📈" onClick={() => navigate('/progress')}>
           Open progress report
         </Button>
+      </section>
+
+      {/* Any grown-up can put a prize up — it needs no admin rights, because
+          it is about this device's children, not about anyone's account. */}
+      <section className="settings-section">
+        <h2>Sibling Challenge 🏅</h2>
+        <p className="settings-sub">
+          Put something real on the line for the next head-to-head. The winner is
+          recorded here so you know who to give it to.
+        </p>
+        <div className="settings-info-card">
+          <PrizeSetter />
+        </div>
       </section>
 
       {/* Grown-up tools — only visible to admins (Firebase "admin" custom claim). */}

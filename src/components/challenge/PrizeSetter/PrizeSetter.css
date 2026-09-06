@@ -1,0 +1,41 @@
+.prize-setter { display: flex; flex-direction: column; gap: var(--spacing-sm); text-align: left; }
+.ps-none { margin: 0; color: var(--text-soft); font-size: 0.9rem; }
+.ps-current {
+  display: flex; align-items: center; gap: var(--spacing-sm);
+  background: color-mix(in srgb, var(--warning, #F6C445) 18%, var(--card));
+  border: 2px solid var(--warning, #F6C445);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+}
+.ps-current-icon { font-size: 1.8rem; }
+.ps-current div { display: flex; flex-direction: column; flex: 1; }
+.ps-current span { font-size: 0.78rem; color: var(--text-soft); }
+.ps-clear { border: none; background: none; color: var(--error); font-weight: 700; cursor: pointer; text-decoration: underline; font-size: 0.8rem; }
+
+.ps-presets { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+.ps-preset {
+  display: flex; align-items: center; gap: 0.3rem;
+  padding: 0.35rem 0.7rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-round);
+  background: var(--card);
+  color: var(--text);
+  font: inherit; font-size: 0.82rem; font-weight: 700;
+  cursor: pointer;
+}
+.ps-preset.on { border-color: var(--warning, #F6C445); background: color-mix(in srgb, var(--warning, #F6C445) 16%, var(--card)); }
+
+.ps-custom { display: flex; gap: 0.4rem; }
+.ps-custom input {
+  flex: 1; min-width: 0;
+  padding: 0.45rem 0.8rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-round);
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+}
+.ps-history { margin-top: 0.3rem; }
+.ps-history h4 { margin: 0 0 0.2rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-soft); }
+.ps-history p { margin: 0; font-size: 0.8rem; color: var(--text); }
+.ps-history span { color: var(--text-soft); }
