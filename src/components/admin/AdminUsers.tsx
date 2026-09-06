@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import {
   listUsers,
   setUserDailyGoal,
-  setUserLevel,
+  setUserLevels,
+  describeLevels,
   setUserStars,
   resetToday,
   setGamesUnlockedToday,
@@ -14,19 +15,24 @@ import {
   AdminLogEntry,
   WordLevel,
 } from '../../services/admin/AdminService'
+import { wordBank } from '../../services/wordBank'
 import './AdminUsers.css'
 
 const MIN_GOAL = 3
 const MAX_GOAL = 20
 const MAX_STARS = 99999
 
-const LEVELS: { value: WordLevel; label: string }[] = [
-  { value: 1, label: '🐝 One Bee' },
-  { value: 2, label: '🐝🐝 Two Bee' },
-  { value: undefined, label: '🌟 All Words' },
+const LEVELS: { value: WordLevel; label: string; short: string }[] = [
+  { value: 1, label: '🐝 One Bee', short: 'One' },
+  { value: 2, label: '🐝🐝 Two Bee', short: 'Two' },
+  { value: 3, label: '🐝🐝🐝 Three Bee', short: 'Three' },
 ]
 
-const sameLevel = (a: WordLevel, b: WordLevel) => a === b
+/** How many words each level actually has — Three Bee ships empty. */
+const LEVEL_COUNTS = new Map(wordBank.availableLevels().map((l) => [l.level, l.count]))
+
+const sameLevels = (a: readonly WordLevel[], b: readonly WordLevel[]) =>
+  a.length === b.length && [...a].sort().every((v, i) => v === [...b].sort()[i])
 
 /**
  * Does the typed confirmation match the child's name?
@@ -99,7 +105,7 @@ const AdminUsers: React.FC = () => {
     return (
       !o ||
       o.dailyGoal !== u.dailyGoal ||
-      !sameLevel(o.level, u.level) ||
+      !sameLevels(o.levels, u.levels) ||
       o.stats.stars !== u.stats.stars
     )
   }
@@ -111,7 +117,20 @@ const AdminUsers: React.FC = () => {
   }
   const editGoal = (uid: string, next: number) =>
     edit(uid, { dailyGoal: Math.min(MAX_GOAL, Math.max(MIN_GOAL, next)) })
-  const editLevel = (uid: string, level: WordLevel) => edit(uid, { level })
+  /** Toggle one level on or off; never leave a child with nothing to learn. */
+  const toggleLevel = (uid: string, level: WordLevel) => {
+    const u = draft.find((x) => x.uid === uid)
+    if (!u) return
+    const has = u.levels.includes(level)
+    const next = has ? u.levels.filter((l) => l !== level) : [...u.levels, level].sort()
+    // All three selected is the same as "all levels"; store it as the empty set
+    // so a level added to the app later is picked up automatically.
+    edit(uid, { levels: next.length === LEVELS.length ? [] : next })
+  }
+
+  /** Is this level part of what the child learns from? Empty means all. */
+  const usesLevel = (u: AdminUser, level: WordLevel) =>
+    u.levels.length === 0 || u.levels.includes(level)
   const editStars = (uid: string, next: number) => {
     const u = draft.find((x) => x.uid === uid)
     if (!u) return
@@ -132,7 +151,7 @@ const AdminUsers: React.FC = () => {
       for (const u of draft.filter(isDirty)) {
         const o = orig(u.uid)
         if (!o || o.dailyGoal !== u.dailyGoal) await setUserDailyGoal(u.uid, u.dailyGoal)
-        if (!o || !sameLevel(o.level, u.level)) await setUserLevel(u.uid, u.level)
+        if (!o || !sameLevels(o.levels, u.levels)) await setUserLevels(u.uid, u.levels)
         if (!o || o.stats.stars !== u.stats.stars) {
           const from = o ? o.stats.stars : 0
           const dir = u.stats.stars >= from ? 'added' : 'removed'
@@ -290,23 +309,38 @@ const AdminUsers: React.FC = () => {
               </div>
 
               <div className="admin-users__controls">
-                <label className="admin-users__field">
-                  <span className="admin-users__label">level</span>
-                  <select
-                    className="admin-users__select"
-                    value={u.level === undefined ? 'all' : String(u.level)}
-                    disabled={saving || busy}
-                    onChange={(e) =>
-                      editLevel(u.uid, e.target.value === 'all' ? undefined : (Number(e.target.value) as WordLevel))
-                    }
-                  >
-                    {LEVELS.map((l) => (
-                      <option key={l.label} value={l.value === undefined ? 'all' : String(l.value)}>
-                        {l.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                <div className="admin-users__field admin-users__levels">
+                  <span className="admin-users__label">
+                    words from {describeLevels(u.levels)}
+                  </span>
+                  <div className="admin-users__leveltoggles" role="group" aria-label={`Word levels for ${u.name}`}>
+                    {LEVELS.map((l) => {
+                      const count = LEVEL_COUNTS.get(l.value) ?? 0
+                      const empty = count === 0
+                      const on = usesLevel(u, l.value)
+                      return (
+                        <button
+                          key={l.value}
+                          type="button"
+                          className={`admin-users__level ${on && !empty ? 'is-on' : ''} ${empty ? 'is-empty' : ''}`}
+                          disabled={saving || busy || empty}
+                          aria-pressed={on && !empty}
+                          title={
+                            empty
+                              ? `No ${l.label.replace(/[^A-Za-z ]/g, '').trim()} words are loaded yet`
+                              : `${count.toLocaleString()} words`
+                          }
+                          onClick={() => toggleLevel(u.uid, l.value)}
+                        >
+                          <span className="admin-users__levelname">{l.short}</span>
+                          <span className="admin-users__levelcount">
+                            {empty ? 'none yet' : count.toLocaleString()}
+                          </span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
 
                 <div className="admin-users__field">
                   <span className="admin-users__label">daily words</span>

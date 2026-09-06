@@ -18,6 +18,7 @@ vi.mock('@/services/wordBank', () => ({
   wordBank: {
     getRandomWords: vi.fn(() => [{ id: '1', word: 'apple', meaning: 'a fruit' }]),
     getAllWords: vi.fn(() => [{ id: '1', word: 'apple', meaning: 'a fruit' }]),
+    getWordsForLevels: vi.fn(() => [{ id: '1', word: 'apple', meaning: 'a fruit' }]),
     getWordsByDifficulty: vi.fn((difficulty) =>
       difficulty === 1 ? [{ id: '1', word: 'apple', meaning: 'a fruit' }] : []
     ),
@@ -66,6 +67,8 @@ const createMockLearningFlow = (overrides: Partial<LearningFlowController>) => (
   unlockGames: vi.fn(),
   advanceToNextGroup: vi.fn(),
   getDifficulty: () => 1,
+  getWordLevels: () => [1],
+  setWordLevels: vi.fn(),
   getSelectedGroup: () => 0,
   getMissedDays: () => [],
   ...overrides,

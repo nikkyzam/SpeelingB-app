@@ -18,6 +18,9 @@ export interface LearningProgress {
   currentStreak: number
   selectedGroup: number
   difficulty: 1 | 2 | 3 | undefined
+  /** Which Bee levels today's words are drawn from. Empty or absent means all
+   *  of them. More than one means the levels are blended. */
+  wordLevels?: (1 | 2 | 3)[]
   missedDays: string[] // Array of date strings "YYYY-MM-DD"
   lastGoalCheck: string | null // Last date goals were checked/reset
   lastReviewDate: string | null // Last date the "Review Time!" quiz was completed
@@ -136,6 +139,36 @@ export class LearningFlowController {
 
   setDifficulty(difficulty: 1 | 2 | 3 | undefined): void {
     this.progress.difficulty = difficulty
+    this.saveProgress()
+  }
+
+  /**
+   * Which Bee levels this child's words come from. Empty means all of them.
+   *
+   * Older saved progress only had a single `difficulty`, so that is read as a
+   * one-level set — a child mid-way through One Bee keeps exactly the words
+   * they had.
+   */
+  getWordLevels(): (1 | 2 | 3)[] {
+    const saved = this.progress.wordLevels
+    if (Array.isArray(saved)) {
+      const clean = [...new Set(saved)].filter((l): l is 1 | 2 | 3 => l === 1 || l === 2 || l === 3)
+      if (clean.length > 0) return clean.sort()
+    }
+    const single = this.progress.difficulty
+    return single ? [single] : []
+  }
+
+  /** Set the levels today's words are drawn from; empty means all. */
+  setWordLevels(levels: (1 | 2 | 3)[]): void {
+    const clean = [...new Set(levels)].filter((l): l is 1 | 2 | 3 => l === 1 || l === 2 || l === 3).sort()
+    this.progress.wordLevels = clean
+    // Keep the old single field meaningful for anything still reading it: one
+    // level is that level, a blend is "no single difficulty".
+    this.progress.difficulty = clean.length === 1 ? clean[0] : undefined
+    // The word order changes with the mix, so a saved group number would point
+    // somewhere else entirely.
+    this.progress.selectedGroup = 0
     this.saveProgress()
   }
 

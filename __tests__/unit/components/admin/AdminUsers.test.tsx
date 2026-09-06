@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event'
 
 const listUsers = vi.fn()
 const setUserDailyGoal = vi.fn().mockResolvedValue(undefined)
-const setUserLevel = vi.fn().mockResolvedValue(undefined)
+const setUserLevels = vi.fn().mockResolvedValue(undefined)
 const setUserStars = vi.fn().mockResolvedValue(undefined)
 const resetToday = vi.fn().mockResolvedValue(undefined)
 const setGamesUnlockedToday = vi.fn().mockResolvedValue(undefined)
@@ -17,7 +17,11 @@ const currentAdminUid = vi.fn().mockReturnValue('grown-up-1')
 vi.mock('../../../../src/services/admin/AdminService', () => ({
   listUsers: (...a: any[]) => listUsers(...a),
   setUserDailyGoal: (...a: any[]) => setUserDailyGoal(...a),
-  setUserLevel: (...a: any[]) => setUserLevel(...a),
+  setUserLevels: (...a: any[]) => setUserLevels(...a),
+  describeLevels: (levels: number[]) =>
+    !levels.length || levels.length === 3
+      ? 'all levels'
+      : levels.map((l) => ({ 1: 'One Bee', 2: 'Two Bee', 3: 'Three Bee' }[l])).join(' + '),
   setUserStars: (...a: any[]) => setUserStars(...a),
   resetToday: (...a: any[]) => resetToday(...a),
   setGamesUnlockedToday: (...a: any[]) => setGamesUnlockedToday(...a),
@@ -35,7 +39,7 @@ const maya = {
   email: 'maya@example.com',
   avatar: '🦄',
   dailyGoal: 5,
-  level: 1 as const,
+  levels: [1 as const],
   isAdmin: false,
   stats: {
     wordsLearned: 42,

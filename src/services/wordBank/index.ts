@@ -150,6 +150,71 @@ export class WordBank {
     return [...this.words]
   }
 
+  /** Which Bee levels actually have words, and how many. Three Bee ships
+   *  empty, so anything offering a level picker must ask rather than assume. */
+  availableLevels(): { level: 1 | 2 | 3; count: number }[] {
+    return ([1, 2, 3] as const)
+      .map((level) => ({ level, count: this.leveledWords(level).length }))
+      .filter((l) => l.count > 0)
+  }
+
+  /**
+   * Words belonging to a Bee level.
+   *
+   * Seasonal words carry a difficulty so games and card rarity can grade them,
+   * but they are event words, not part of the Scripps One/Two/Three Bee lists —
+   * counting them here made "Three Bee" look like a real choice when all it
+   * held was eight Halloween words.
+   */
+  private leveledWords(level: 1 | 2 | 3): Word[] {
+    return this.words.filter((w) => w.difficulty === level && w.category !== 'seasonal')
+  }
+
+  /**
+   * Words drawn from a chosen set of Bee levels, blended.
+   *
+   * An empty list means "everything". With more than one level the words are
+   * interleaved in proportion to each level's size rather than concatenated —
+   * concatenating would mean a child on One Bee + Two Bee spent a year on One
+   * Bee before ever meeting a Two Bee word, which is not a mix at all.
+   *
+   * The order is deterministic, so a child's group number keeps its meaning
+   * between sessions.
+   */
+  getWordsForLevels(levels: readonly number[]): Word[] {
+    const wanted = [...new Set(levels)].filter((l) => l === 1 || l === 2 || l === 3).sort()
+    if (wanted.length === 0) return this.getAllWords()
+
+    const buckets = wanted
+      .map((level) => this.leveledWords(level as 1 | 2 | 3))
+      .filter((b) => b.length > 0)
+
+    if (buckets.length === 0) return this.getAllWords() // asked only for empty levels
+    if (buckets.length === 1) return [...buckets[0]]
+
+    // Weighted round-robin: always take from whichever level is furthest
+    // behind, measured as a fraction of its own length. A 1,455-word level and
+    // a 2,020-word level then stay mixed the whole way through.
+    const cursors = buckets.map(() => 0)
+    const out: Word[] = []
+    const total = buckets.reduce((n, b) => n + b.length, 0)
+    for (let i = 0; i < total; i++) {
+      let pick = -1
+      let lowest = Infinity
+      for (let b = 0; b < buckets.length; b++) {
+        if (cursors[b] >= buckets[b].length) continue
+        const progress = cursors[b] / buckets[b].length
+        if (progress < lowest) {
+          lowest = progress
+          pick = b
+        }
+      }
+      if (pick === -1) break
+      out.push(buckets[pick][cursors[pick]++])
+    }
+    return out
+  }
+
   getWordsByDifficulty(difficulty: 1 | 2 | 3): Word[] {
     return this.words.filter(word => word.difficulty === difficulty)
   }

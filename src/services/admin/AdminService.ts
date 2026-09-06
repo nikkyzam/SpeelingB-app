@@ -1,8 +1,8 @@
 import { collection, getDocs, getDoc, doc, setDoc, updateDoc, deleteField, arrayUnion } from 'firebase/firestore'
 import { db, auth } from '../../config/firebase'
 
-/** Word difficulty tier: 1 = One Bee (easiest), 2 = Two Bee, undefined = All Words. */
-export type WordLevel = 1 | 2 | undefined
+/** A Bee level. */
+export type WordLevel = 1 | 2 | 3
 
 /** Read-only numbers a grown-up wants at a glance before changing anything. */
 export interface AdminUserStats {
@@ -26,7 +26,8 @@ export interface AdminUser {
   email?: string
   avatar?: string
   dailyGoal: number
-  level: WordLevel
+  /** Levels their daily words are drawn from. Empty means all of them. */
+  levels: WordLevel[]
   isAdmin?: boolean
   stats: AdminUserStats
 }
@@ -74,7 +75,14 @@ export async function listUsers(): Promise<AdminUser[]> {
       const p = data.progress || {}
       const pts = data.points || {}
       const goal = ud.dailyGoal ?? p.dailyGoal ?? 5
-      const diff = p.difficulty
+      // Older documents only carry a single `difficulty`; read it as a set.
+      const saved = Array.isArray(p.wordLevels) ? p.wordLevels : null
+      const levels = (saved && saved.length > 0
+        ? saved
+        : p.difficulty
+        ? [p.difficulty]
+        : []
+      ).filter((l: unknown) => l === 1 || l === 2 || l === 3) as WordLevel[]
 
       return {
         uid: d.id,
@@ -82,7 +90,7 @@ export async function listUsers(): Promise<AdminUser[]> {
         email: ud.email,
         avatar: ud.avatar,
         dailyGoal: typeof goal === 'number' ? goal : 5,
-        level: (diff === 1 || diff === 2 ? diff : undefined) as WordLevel,
+        levels,
         isAdmin: !!ud.isAdmin,
         stats: {
           wordsLearned: count(p.wordsLearnedTotal),
@@ -119,14 +127,25 @@ export async function setUserDailyGoal(uid: string, goal: number): Promise<void>
  * Set which word level (difficulty tier) a user starts from. Changing the level
  * resets them to the first group of that level. undefined = "All Words".
  */
-export async function setUserLevel(uid: string, level: WordLevel): Promise<void> {
+export async function setUserLevels(uid: string, levels: WordLevel[]): Promise<void> {
+  const clean = [...new Set(levels)].filter((l) => l === 1 || l === 2 || l === 3).sort()
   await updateDoc(doc(db, 'users', uid), {
-    // Firestore can't store `undefined`; remove the field for "All Words".
-    'progress.difficulty': level === undefined ? deleteField() : level,
+    'progress.wordLevels': clean,
+    // Keep the single field meaningful for anything still reading it.
+    // Firestore cannot store `undefined`, so a blend removes the field.
+    'progress.difficulty': clean.length === 1 ? clean[0] : deleteField(),
+    // The blend changes the word order, so a saved group would point elsewhere.
     'progress.selectedGroup': 0,
   })
-  const name = level === 1 ? 'One Bee' : level === 2 ? 'Two Bee' : 'All Words'
-  await log(uid, 'word level', `moved to ${name} (back to the first group)`)
+  await log(uid, 'word levels', `${describeLevels(clean)} (back to the first group)`)
+}
+
+/** "One Bee", "One Bee + Two Bee", "all levels" — for the change log. */
+export const describeLevels = (levels: readonly number[]): string => {
+  const names: Record<number, string> = { 1: 'One Bee', 2: 'Two Bee', 3: 'Three Bee' }
+  const picked = [...levels].sort().map((l) => names[l]).filter(Boolean)
+  if (picked.length === 0 || picked.length === 3) return 'all levels'
+  return picked.join(' + ')
 }
 
 /**

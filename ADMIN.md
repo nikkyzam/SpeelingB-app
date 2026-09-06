@@ -52,7 +52,7 @@ through those helpers too.
 | | |
 | --- | --- |
 | At a glance | words learnt, words spelled right, day streak, today against their goal, when they last played |
-| Word level | One Bee / Two Bee / All Words — changing it restarts them at that level's first group |
+| Word levels | Which Bee levels their daily words come from — one, or a blend. Picking more than one interleaves them in proportion, so every group of five mixes rather than working through One Bee for a year first. Changing it restarts them at the first group, because the blend changes the word order. Three Bee is shown but disabled: no Three Bee words are loaded yet. |
 | Daily words | 3–20 new words a day |
 | Stars ⭐ | set the balance directly; totals stay coherent (total = left + already spent) |
 | Games | open every game for today without the quiz, or lock them again |

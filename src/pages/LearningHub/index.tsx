@@ -29,7 +29,8 @@ const LearningHub: React.FC = () => {
   const { learningFlow } = useProgress()
   const [activeMode, setActiveMode] = useState<LearningMode>(null)
   const [quizType, setQuizType] = useState<QuizType>(null)
-  const [difficulty, setDifficulty] = useState<Difficulty>(() => learningFlow.getDifficulty())
+  const [levels, setLevels] = useState<(1 | 2 | 3)[]>(() => learningFlow.getWordLevels())
+  const difficulty: Difficulty = levels.length === 1 ? levels[0] : undefined
   const [selectedGroup, setSelectedGroup] = useState(() => learningFlow.getSelectedGroup())
   const [isGroupsExpanded, setIsGroupsExpanded] = useState(false)
   // Re-read today's challenge whenever a word is learned or spelled.
@@ -74,11 +75,12 @@ const LearningHub: React.FC = () => {
 
   const filteredWords = useMemo(() => {
     if (seasonalEvent) return seasonalEvent.words
-    const base = difficulty ? wordBank.getWordsByDifficulty(difficulty) : wordBank.getAllWords()
-    // Some difficulty tiers may have no words yet — never leave the learner with
-    // an empty set (which would soft-lock on "Loading words...").
+    // A grown-up can pick one Bee level or a blend of them; getWordsForLevels
+    // interleaves a blend so every group mixes, and falls back to everything if
+    // the chosen levels turn out to be empty.
+    const base = wordBank.getWordsForLevels(levels)
     return base.length > 0 ? base : wordBank.getAllWords()
-  }, [difficulty, seasonalEvent])
+  }, [levels, seasonalEvent])
 
   const groupsCount = Math.max(1, Math.ceil(filteredWords.length / groupSize))
 
@@ -131,10 +133,10 @@ const LearningHub: React.FC = () => {
   }
 
   const handleDifficultySelect = (level: Difficulty) => {
-    setDifficulty(level)
+    const next: (1 | 2 | 3)[] = level ? [level] : []
+    setLevels(next)
     setSelectedGroup(0)
-    learningFlow.setDifficulty(level)
-    learningFlow.setSelectedGroup(0)
+    learningFlow.setWordLevels(next)
   }
 
   const handleGroupSelect = (index: number) => {
