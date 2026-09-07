@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { wordBank } from '../../../services/wordBank'
 import './SpellingAdventure.css'
+import { NO_SPELLING_HELP } from '../../common/spellingInput'
 
 interface Level {
   id: number
@@ -323,6 +324,7 @@ const SpellingAdventure: React.FC<SpellingAdventureProps> = ({ onComplete, words
 
         <div className="input-section">
           <input
+              {...NO_SPELLING_HELP}
             type="text"
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}

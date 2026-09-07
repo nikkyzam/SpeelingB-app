@@ -93,13 +93,21 @@ describe('SpellMode Component', () => {
     expect(screen.getByText('🔥 0')).toBeInTheDocument()
   })
 
-  it('provides a hint when "Show Hint" is clicked', () => {
+  it('offers no hint, and lets no device spell the word for them', () => {
     renderWithProviders(<SpellMode />)
-    
-    const hintBtn = screen.getByText('💡 Get Hint')
-    fireEvent.click(hintBtn)
-    
-    expect(screen.getByText('Hint Used')).toBeInTheDocument()
+
+    // A hint button handed a child the meaning mid-test. Gone.
+    expect(screen.queryByText(/Get Hint/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Hint Used/i)).not.toBeInTheDocument()
+
+    // And the device must not help either: on an iPad, autocorrect silently
+    // fixes a misspelling as it is typed and the predictive bar offers the
+    // finished word above the keys.
+    const input = screen.getByPlaceholderText('Type the word...')
+    expect(input).toHaveAttribute('autocorrect', 'off')
+    expect(input).toHaveAttribute('autocapitalize', 'off')
+    expect(input).toHaveAttribute('spellcheck', 'false')
+    expect(input).toHaveAttribute('autocomplete', 'off')
   })
 
   it('reveals the word when "Reveal Word" is clicked', () => {

@@ -3,6 +3,7 @@ import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle } from '../shared/wordTricks'
 import './GhostWord.css'
+import { NO_SPELLING_HELP } from '../../common/spellingInput'
 
 interface GhostWordProps {
   onComplete: (score: number) => void
@@ -127,6 +128,7 @@ const GhostWord: React.FC<GhostWordProps> = ({ onComplete, words: providedWords,
 
       <div className="gw-answer">
         <input
+              {...NO_SPELLING_HELP}
           ref={inputRef}
           className={`gw-input ${phase === 'right' ? 'ok' : phase === 'wrong' ? 'bad' : ''}`}
           value={input}

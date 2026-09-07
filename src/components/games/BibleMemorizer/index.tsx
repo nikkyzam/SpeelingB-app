@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { bibleApi, BibleVersion, POPULAR_VERSES } from '../../../services/bibleApi'
 import './BibleMemorizer.css'
+import { NO_SPELLING_HELP } from '../../common/spellingInput'
 
 interface MemorizationStage {
   level: number
@@ -231,6 +232,7 @@ const BibleMemorizer: React.FC<BibleMemorizerProps> = ({ onComplete, version = '
         return (
           <span key={index} className="word-container">
             <input
+              {...NO_SPELLING_HELP}
               type="text"
               value={userInputs[inputIndex]}
               onChange={(e) => handleInputChange(inputIndex, e.target.value)}

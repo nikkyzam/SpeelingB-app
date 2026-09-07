@@ -3,6 +3,7 @@ import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle } from '../shared/wordTricks'
 import './MysteryPicture.css'
+import { NO_SPELLING_HELP } from '../../common/spellingInput'
 
 interface MysteryPictureProps {
   onComplete: (score: number) => void
@@ -131,6 +132,7 @@ const MysteryPicture: React.FC<MysteryPictureProps> = ({ onComplete, words: prov
 
       <div className="mp-answer">
         <input
+              {...NO_SPELLING_HELP}
           className={`mp-input ${feedback ?? ''}`}
           value={input}
           onChange={(e) => setInput(e.target.value)}

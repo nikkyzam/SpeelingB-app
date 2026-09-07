@@ -3,6 +3,7 @@ import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import Button from '../../../components/common/Button'
 import sfx from '../../../components/games/shared/sfx'
+import { NO_SPELLING_HELP } from '../../../components/common/spellingInput'
 
 interface SpellTurnProps {
   who: string
@@ -59,15 +60,13 @@ const SpellTurn: React.FC<SpellTurnProps> = ({ who, word, label, onAnswer, hold 
       {word.meaning && <p className="turn-meaning">{word.meaning}</p>}
 
       <input
+              {...NO_SPELLING_HELP}
         ref={box}
         className={`turn-input ${verdict ?? ''}`}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && submit()}
         placeholder="Spell it…"
-        autoComplete="off"
-        autoCapitalize="off"
-        spellCheck={false}
         disabled={!!verdict}
         aria-label={`${who}, spell the word`}
       />

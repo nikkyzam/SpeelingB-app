@@ -5,6 +5,7 @@ import { shuffle, isPlayable } from '../shared/wordTricks'
 import ReviewSchedule from '../../../services/progress/ReviewSchedule'
 import sfx from '../shared/sfx'
 import './DragonDuel.css'
+import { NO_SPELLING_HELP } from '../../common/spellingInput'
 
 interface DragonDuelProps {
   onComplete: (score: number) => void
@@ -42,8 +43,6 @@ const DragonDuel: React.FC<DragonDuelProps> = ({ onComplete, words: providedWord
   const [input, setInput] = useState('')
   const [phase, setPhase] = useState<Phase>('ready')
   const [message, setMessage] = useState('The dragon guards your words. Spell to strike!')
-  const [potionUsed, setPotionUsed] = useState(false)
-  const [revealFirst, setRevealFirst] = useState(false)
   const [lastDamage, setLastDamage] = useState<number | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -68,7 +67,6 @@ const DragonDuel: React.FC<DragonDuelProps> = ({ onComplete, words: providedWord
   const nextTurn = () => {
     setIndex((i) => i + 1)
     setInput('')
-    setRevealFirst(false)
     setPhase('ready')
     inputRef.current?.focus()
   }
@@ -126,13 +124,6 @@ const DragonDuel: React.FC<DragonDuelProps> = ({ onComplete, words: providedWord
     }
   }
 
-  const drinkPotion = () => {
-    if (potionUsed || over) return
-    setPotionUsed(true)
-    setRevealFirst(true)
-    sfx.star()
-    setMessage('🧪 The potion shows you the first letter!')
-  }
 
   const hpPercent = (hp / dragonHp) * 100
 
@@ -171,14 +162,15 @@ const DragonDuel: React.FC<DragonDuelProps> = ({ onComplete, words: providedWord
       {!over && (
         <>
           <div className="dd-blanks">
-            {answer.split('').map((c, i) => (
-              <span key={i} className="dd-blank">{revealFirst && i === 0 ? c.toUpperCase() : '_'}</span>
+            {answer.split('').map((_c, i) => (
+              <span key={i} className="dd-blank">_</span>
             ))}
           </div>
 
           <div className="dd-controls">
             <button className="dd-btn ghost" onClick={() => speak(current.word)} aria-label="Hear the word again">🔊 Hear it</button>
             <input
+              {...NO_SPELLING_HELP}
               ref={inputRef}
               className={`dd-input ${phase === 'hit' ? 'ok' : phase === 'burned' ? 'bad' : ''}`}
               value={input}
@@ -191,9 +183,6 @@ const DragonDuel: React.FC<DragonDuelProps> = ({ onComplete, words: providedWord
             <button className="dd-btn" onClick={attack} disabled={phase !== 'ready' || !input.trim()}>⚔️ Attack!</button>
           </div>
 
-          <button className="dd-btn potion" onClick={drinkPotion} disabled={potionUsed}>
-            {potionUsed ? '🧪 Potion used' : '🧪 Use potion (show first letter)'}
-          </button>
         </>
       )}
     </div>

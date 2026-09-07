@@ -8,6 +8,7 @@ import Celebration, { CelebrationData } from '../../common/Celebration'
 import sfx from '../shared/sfx'
 import Button from '../../common/Button'
 import './SiblingShowdown.css'
+import { NO_SPELLING_HELP } from '../../common/spellingInput'
 
 type Phase = 'setup' | 'handover' | 'turn' | 'podium'
 
@@ -160,6 +161,7 @@ const SiblingShowdown: React.FC = () => {
           </p>
           {[0, 1].map((i) => (
             <input
+              {...NO_SPELLING_HELP}
               key={i}
               className="showdown-name"
               value={names[i]}
@@ -270,6 +272,7 @@ const SiblingShowdown: React.FC = () => {
         </div>
 
         <input
+              {...NO_SPELLING_HELP}
           className={`showdown-input ${feedback === 'correct' ? 'correct' : feedback === 'wrong' ? 'incorrect' : ''}`}
           value={input}
           onChange={(e) => setInput(e.target.value)}

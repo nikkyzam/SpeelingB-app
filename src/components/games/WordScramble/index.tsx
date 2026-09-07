@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { wordBank } from '../../../services/wordBank'
 import './WordScramble.css'
+import { NO_SPELLING_HELP } from '../../common/spellingInput'
 
 interface WordScrambleProps {
   onComplete: (score: number) => void
@@ -18,7 +19,6 @@ const WordScramble: React.FC<WordScrambleProps> = ({ onComplete, duration = 45, 
   const [wordsSolved, setWordsSolved] = useState(0)
   const [streak, setStreak] = useState(0)
   const [isActive, setIsActive] = useState(true)
-  const [hintUsed, setHintUsed] = useState(false)
 
   const getRandomWord = () => {
     if (providedWords && providedWords.length > 0) {
@@ -61,7 +61,6 @@ const WordScramble: React.FC<WordScrambleProps> = ({ onComplete, duration = 45, 
     setScrambledWord(scrambleWord(word))
     setUserInput('')
     setIsCorrect(null)
-    setHintUsed(false)
   }
 
   const handleSubmit = () => {
@@ -71,7 +70,7 @@ const WordScramble: React.FC<WordScrambleProps> = ({ onComplete, duration = 45, 
     setIsCorrect(correct)
 
     if (correct) {
-      const points = 10 + (streak * 2) + (hintUsed ? 0 : 5)
+      const points = 10 + (streak * 2) + 5
       setScore(prev => prev + points)
       setStreak(prev => prev + 1)
       setWordsSolved(prev => prev + 1)
@@ -84,14 +83,6 @@ const WordScramble: React.FC<WordScrambleProps> = ({ onComplete, duration = 45, 
     }
   }
 
-  const handleHint = () => {
-    if (hintUsed) return
-
-    // Reveal first and last letter
-    const hint = currentWord[0] + ' _ '.repeat(currentWord.length - 2) + currentWord[currentWord.length - 1]
-    setUserInput(hint.replace(/_/g, '').trim())
-    setHintUsed(true)
-  }
 
   const handleSkip = () => {
     setStreak(0)
@@ -157,6 +148,7 @@ const WordScramble: React.FC<WordScrambleProps> = ({ onComplete, duration = 45, 
 
         <div className="input-section">
           <input
+              {...NO_SPELLING_HELP}
             type="text"
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
@@ -168,20 +160,12 @@ const WordScramble: React.FC<WordScrambleProps> = ({ onComplete, duration = 45, 
           />
 
           <div className="input-actions">
-            <Button
-              onClick={handleHint}
-              disabled={hintUsed || !isActive}
-              variant="secondary"
-              size="small"
-            >
-              {hintUsed ? 'Hint Used' : '💡 Get Hint (-5 points)'}
-            </Button>
           </div>
         </div>
 
         {isCorrect === true && (
           <div className="feedback correct-feedback">
-            ✅ Correct! +{10 + (streak * 2) + (hintUsed ? 0 : 5)} points
+            ✅ Correct! +{10 + (streak * 2) + 5} points
           </div>
         )}
 

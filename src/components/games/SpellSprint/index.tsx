@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { wordBank } from '../../../services/wordBank'
 import './SpellSprint.css'
+import { NO_SPELLING_HELP } from '../../common/spellingInput'
 
 interface SpellSprintProps {
   onComplete: (score: number) => void
@@ -174,6 +175,7 @@ const SpellSprint: React.FC<SpellSprintProps> = ({ onComplete, duration = 60, wo
 
         <div className="input-section">
           <input
+              {...NO_SPELLING_HELP}
             ref={inputRef}
             type="text"
             value={userInput}
@@ -182,10 +184,6 @@ const SpellSprint: React.FC<SpellSprintProps> = ({ onComplete, duration = 60, wo
             className={`sprint-input ${isCorrect === true ? 'correct' : isCorrect === false ? 'incorrect' : ''}`}
             placeholder="Type the word here..."
             disabled={!isActive}
-            autoComplete="off"
-            autoCapitalize="off"
-            autoCorrect="off"
-            spellCheck="false"
           />
 
           <button

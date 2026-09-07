@@ -12,6 +12,7 @@ import { explain } from '../../../services/words/explain'
 import sfx from '../../games/shared/sfx'
 import Button from '../../common/Button'
 import './SpellMode.css'
+import { NO_SPELLING_HELP } from '../../common/spellingInput'
 
 interface SpellModeProps {
   onComplete?: (wordIds: string[]) => void
@@ -38,7 +39,6 @@ const SpellMode: React.FC<SpellModeProps> = ({
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
   const [score, setScore] = useState(0)
   const [streak, setStreak] = useState(0)
-  const [showHint, setShowHint] = useState(false)
   // What they wrote, kept after the box is cleared so the tip can name the
   // exact mistake rather than give a generic rule.
   const [lastAttempt, setLastAttempt] = useState('')
@@ -175,7 +175,6 @@ const SpellMode: React.FC<SpellModeProps> = ({
       setCurrentWord(words[prevIndex])
       setUserInput('')
       setIsCorrect(null)
-      setShowHint(false)
       speakSentence(words[prevIndex])
     }
   }
@@ -191,7 +190,6 @@ const SpellMode: React.FC<SpellModeProps> = ({
       setCurrentWord(words[nextIndex])
       setUserInput('')
       setIsCorrect(null)
-      setShowHint(false)
       speakSentence(words[nextIndex])
     } else {
       setIsCompleted(true)
@@ -221,14 +219,6 @@ const SpellMode: React.FC<SpellModeProps> = ({
     }
   }
 
-  const handleHint = () => {
-    if (currentWord && !showHint) {
-      setShowHint(true)
-      if (currentWord.hint) {
-        speak(currentWord.hint)
-      }
-    }
-  }
 
   const handleSpeakMeaning = () => {
     if (currentWord) {
@@ -346,6 +336,7 @@ const SpellMode: React.FC<SpellModeProps> = ({
         <div className="input-section">
           <div className="input-wrapper">
             <input
+              {...NO_SPELLING_HELP}
               type="text"
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
@@ -364,14 +355,6 @@ const SpellMode: React.FC<SpellModeProps> = ({
                   {mic.listening ? '🎤 Listening…' : '🎤 Say it!'}
                 </Button>
               )}
-              <Button
-                onClick={handleHint}
-                disabled={showHint}
-                variant="secondary"
-                size="small"
-              >
-                {showHint ? 'Hint Used' : '💡 Get Hint'}
-              </Button>
             </div>
           </div>
 
@@ -381,12 +364,6 @@ const SpellMode: React.FC<SpellModeProps> = ({
             </div>
           )}
 
-          {showHint && currentWord.hint && (
-            <div className="hint-display">
-              <span className="hint-icon">💡</span>
-              <span className="hint-text">{currentWord.hint}</span>
-            </div>
-          )}
 
           {isCorrect === false && (
             <div className="feedback incorrect-feedback">
