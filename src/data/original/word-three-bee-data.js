@@ -478,6 +478,294 @@ const THREE_BEE_WORDS = [
         "meaning": "People who deliberately set fire to property.",
         "sentences": ["The fire department worked with police to catch the arsonists responsible for the blaze."],
         "vocabulary_question": "Do \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 start fires on purpose, or put them out?"
+    },
+    {
+        "word": "phenomenon",
+        "meaning": "A fact or situation that is observed to exist or happen, especially one whose cause is uncertain or unclear.",
+        "sentences": ["Lightning is a natural phenomenon that has fascinated scientists for centuries."],
+        "vocabulary_question": "Is a \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 something that happens, or something that never happens?"
+    },
+    {
+        "word": "diffidence",
+        "meaning": "Shyness or a lack of confidence in oneself.",
+        "sentences": ["His diffidence kept him from raising his hand, even when he knew the answer."],
+        "vocabulary_question": "Does \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 describe feeling shy and unsure, or bold and confident?"
+    },
+    {
+        "word": "kerosene",
+        "meaning": "A thin, flammable oil used as fuel for lamps, heaters, and some engines.",
+        "sentences": ["The old lantern burned kerosene instead of electricity."],
+        "vocabulary_question": "Is \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 a type of fuel, or a type of food?"
+    },
+    {
+        "word": "persistent",
+        "meaning": "Continuing firmly despite difficulty or opposition; not giving up.",
+        "sentences": ["Her persistent practice finally paid off at the recital."],
+        "vocabulary_question": "Does \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 describe someone who gives up easily, or keeps trying?"
+    },
+    {
+        "word": "protectorate",
+        "meaning": "A state or territory that is controlled and defended by a more powerful country.",
+        "sentences": ["The small island became a protectorate under the larger nation's care."],
+        "vocabulary_question": "Is a \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 protected and controlled by another country, or fully independent?"
+    },
+    {
+        "word": "unrelenting",
+        "meaning": "Not yielding in strength, severity, or determination; relentless.",
+        "sentences": ["The unrelenting rain flooded the streets for three days straight."],
+        "vocabulary_question": "Does \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 describe something that eases up, or something that keeps going without letting up?"
+    },
+    {
+        "word": "tenuous",
+        "meaning": "Very weak or slight; barely holding together.",
+        "sentences": ["Their friendship felt tenuous after the disagreement."],
+        "vocabulary_question": "Is something \u2588\u2588\u2588\u2588\u2588\u2588\u2588 strong and solid, or weak and flimsy?"
+    },
+    {
+        "word": "Eritrea",
+        "meaning": "A country in East Africa, on the coast of the Red Sea.",
+        "sentences": ["Eritrea shares a border with Ethiopia and Sudan."],
+        "vocabulary_question": "Is \u2588\u2588\u2588\u2588\u2588\u2588\u2588 a country in Africa, or a country in South America?"
+    },
+    {
+        "word": "dachshund",
+        "meaning": "A breed of dog with a long body and short legs, originally bred to hunt badgers.",
+        "sentences": ["The dachshund's long body made it perfect for chasing animals into burrows."],
+        "vocabulary_question": "Is a \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 known for its short legs and long body, or its tall, thin frame?"
+    },
+    {
+        "word": "doberman",
+        "meaning": "A breed of large, muscular dog known for its intelligence and loyalty, often used as a guard dog.",
+        "sentences": ["The doberman stood alert at the gate, watching for strangers."],
+        "vocabulary_question": "Is a \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 a type of dog, or a type of horse?"
+    },
+    {
+        "word": "Pennsylvania",
+        "meaning": "A state in the northeastern United States, home to Philadelphia and Pittsburgh.",
+        "sentences": ["The Liberty Bell is on display in Pennsylvania."],
+        "vocabulary_question": "Is \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 a U.S. state, or a Canadian province?"
+    },
+    {
+        "word": "cul-de-sac",
+        "meaning": "A street or passage closed at one end, with only one way in or out.",
+        "sentences": ["The children rode their bikes safely in the quiet cul-de-sac."],
+        "vocabulary_question": "Does a \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 have one way in and out, or two ways through?"
+    },
+    {
+        "word": "conspicuous",
+        "meaning": "Standing out so as to be easily seen or noticed.",
+        "sentences": ["Her bright red coat made her conspicuous in the crowd."],
+        "vocabulary_question": "Does \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 describe something easy to notice, or something hidden away?"
+    },
+    {
+        "word": "arugula",
+        "meaning": "A leafy green vegetable with a peppery, slightly bitter flavor, often used in salads.",
+        "sentences": ["She added arugula to the salad for a peppery kick."],
+        "vocabulary_question": "Is \u2588\u2588\u2588\u2588\u2588\u2588\u2588 a leafy vegetable, or a type of grain?"
+    },
+    {
+        "word": "censers",
+        "meaning": "Vessels in which incense is burned, often used in religious ceremonies.",
+        "sentences": ["The priests swung the censers, filling the chapel with fragrant smoke."],
+        "vocabulary_question": "Are \u2588\u2588\u2588\u2588\u2588\u2588\u2588 used to burn incense, or to hold water?"
+    },
+    {
+        "word": "unconscious",
+        "meaning": "Not awake or aware; lacking conscious control or perception.",
+        "sentences": ["He was unconscious for several minutes after the fall."],
+        "vocabulary_question": "Is someone who is \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 awake and alert, or not aware of their surroundings?"
+    },
+    {
+        "word": "acolyte",
+        "meaning": "A person who assists a member of the clergy in a religious service; a devoted follower or assistant.",
+        "sentences": ["The acolyte carried the candle down the aisle during the service."],
+        "vocabulary_question": "Is an \u2588\u2588\u2588\u2588\u2588\u2588\u2588 a helper or follower, or a leader who acts alone?"
+    },
+    {
+        "word": "thermotaxis",
+        "meaning": "The movement of an organism in response to changes in temperature.",
+        "sentences": ["Thermotaxis helps some insects find warmer spots to survive the cold."],
+        "vocabulary_question": "Does \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 describe movement toward light, or movement in response to temperature?"
+    },
+    {
+        "word": "bogong moth",
+        "meaning": "A species of moth native to Australia, known for its long-distance migration to cool mountain caves.",
+        "sentences": ["Each summer, the bogong moth migrates to the cool caves of the Australian Alps."],
+        "vocabulary_question": "Is a \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 known for migrating to cool caves, or for spinning silk?"
+    },
+    {
+        "word": "propeller",
+        "meaning": "A device with rotating blades used to move a boat, plane, or other vehicle through air or water.",
+        "sentences": ["The boat's propeller churned the water as it sped away from the dock."],
+        "vocabulary_question": "Does a \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 spin to move a vehicle, or sit still to steer it?"
+    },
+    {
+        "word": "eponymous",
+        "meaning": "Giving one's name to something, such as a book, product, or era.",
+        "sentences": ["The band's eponymous album shared its title with the group's own name."],
+        "vocabulary_question": "Does \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 describe something named after itself, or named after something unrelated?"
+    },
+    {
+        "word": "trimmings",
+        "meaning": "Small pieces cut off in trimming something; also, extra decorations or accompaniments to a meal.",
+        "sentences": ["Grandma served turkey with all the trimmings for the holiday dinner."],
+        "vocabulary_question": "Are \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 the small extras that go with something, or the main dish itself?"
+    },
+    {
+        "word": "vibrometer",
+        "meaning": "An instrument used to measure the frequency or intensity of vibrations.",
+        "sentences": ["Engineers used a vibrometer to check whether the bridge was vibrating too much."],
+        "vocabulary_question": "Does a \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 measure vibrations, or measure temperature?"
+    },
+    {
+        "word": "ototoxic",
+        "meaning": "Harmful to the ear or to the nerves involved in hearing and balance.",
+        "sentences": ["Some medications are ototoxic and can damage a patient's hearing."],
+        "vocabulary_question": "Is something \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 harmful to the ears, or harmful to the eyes?"
+    },
+    {
+        "word": "alabaster",
+        "meaning": "A soft, usually white, translucent stone often carved into sculptures and ornaments.",
+        "sentences": ["The sculptor carved a delicate vase out of alabaster."],
+        "vocabulary_question": "Is \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 a type of stone, or a type of wood?"
+    },
+    {
+        "word": "glycerin",
+        "meaning": "A thick, sweet, colorless liquid used in soaps, lotions, and medicines to keep them moist.",
+        "sentences": ["The lotion contained glycerin to keep her skin soft."],
+        "vocabulary_question": "Is \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 a liquid used to keep things moist, or a gas used to inflate balloons?"
+    },
+    {
+        "word": "perpendicular",
+        "meaning": "At an angle of ninety degrees to a given line, plane, or surface; upright.",
+        "sentences": ["The two walls met at a perpendicular angle in the corner of the room."],
+        "vocabulary_question": "Do \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 lines meet at a right angle, or run side by side without meeting?"
+    },
+    {
+        "word": "generosity",
+        "meaning": "The quality of being kind and giving, especially with money, time, or gifts.",
+        "sentences": ["Her generosity was clear when she gave her lunch to a classmate who forgot theirs."],
+        "vocabulary_question": "Does \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 describe someone who shares freely, or someone who keeps everything to themselves?"
+    },
+    {
+        "word": "pulmonary",
+        "meaning": "Relating to the lungs.",
+        "sentences": ["The doctor listened to the patient's pulmonary sounds through a stethoscope."],
+        "vocabulary_question": "Does \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 relate to the lungs, or to the stomach?"
+    },
+    {
+        "word": "preconception",
+        "meaning": "An idea or opinion formed before having enough information or experience.",
+        "sentences": ["Her preconception about the new student changed once she got to know him."],
+        "vocabulary_question": "Is a \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 formed before you know all the facts, or after careful research?"
+    },
+    {
+        "word": "forsythia",
+        "meaning": "A shrub with bright yellow flowers that bloom early in spring.",
+        "sentences": ["The forsythia bushes burst into yellow bloom as soon as the snow melted."],
+        "vocabulary_question": "Does \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 bloom with yellow flowers in spring, or red flowers in fall?"
+    },
+    {
+        "word": "conflagration",
+        "meaning": "A large, destructive fire.",
+        "sentences": ["The conflagration destroyed several city blocks before firefighters could stop it."],
+        "vocabulary_question": "Is a \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 a small spark, or a large, destructive fire?"
+    },
+    {
+        "word": "miscibility",
+        "meaning": "The ability of two or more liquids to mix together completely and form a single solution.",
+        "sentences": ["Oil and water have poor miscibility, so they separate instead of blending."],
+        "vocabulary_question": "Does \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 describe how well liquids mix together, or how bright they are?"
+    },
+    {
+        "word": "mortar",
+        "meaning": "A mixture of cement, sand, and water used to bind bricks or stones together; also, a bowl used for grinding.",
+        "sentences": ["The bricklayer spread mortar between each brick to hold the wall together."],
+        "vocabulary_question": "Is \u2588\u2588\u2588\u2588\u2588\u2588 used to bind bricks together, or to paint a wall?"
+    },
+    {
+        "word": "Krio",
+        "meaning": "A creole language spoken in Sierra Leone, blending English with African and other influences.",
+        "sentences": ["Krio is widely spoken as a common language across Sierra Leone."],
+        "vocabulary_question": "Is \u2588\u2588\u2588\u2588 a language, or a type of currency?"
+    },
+    {
+        "word": "annelids",
+        "meaning": "A group of worms with segmented bodies, including earthworms and leeches.",
+        "sentences": ["Earthworms are a familiar example of annelids found in garden soil."],
+        "vocabulary_question": "Do \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 have segmented bodies, or hard shells?"
+    },
+    {
+        "word": "Presbyterian",
+        "meaning": "A member or follower of a Protestant church governed by elders, tracing its roots to the teachings of John Calvin.",
+        "sentences": ["Her family has attended the same Presbyterian church for three generations."],
+        "vocabulary_question": "Is \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 a term for a type of church, or a type of government?"
+    },
+    {
+        "word": "thrummed",
+        "meaning": "Made a continuous rhythmic humming or drumming sound.",
+        "sentences": ["The engine thrummed steadily as the boat crossed the lake."],
+        "vocabulary_question": "Did the engine make a sudden crash, or a steady, rhythmic sound as it \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588?"
+    },
+    {
+        "word": "subscription",
+        "meaning": "An arrangement to receive something regularly, such as a magazine or service, usually by paying in advance.",
+        "sentences": ["He renewed his subscription so the magazine would keep arriving each month."],
+        "vocabulary_question": "Does a \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 let you receive something regularly, or only once?"
+    },
+    {
+        "word": "foliage",
+        "meaning": "The leaves of plants and trees, collectively.",
+        "sentences": ["The mountains were covered in colorful autumn foliage."],
+        "vocabulary_question": "Is \u2588\u2588\u2588\u2588\u2588\u2588\u2588 the leaves of plants, or the roots of plants?"
+    },
+    {
+        "word": "endothermy",
+        "meaning": "The ability of an animal to generate and maintain its own body heat internally.",
+        "sentences": ["Endothermy allows mammals to stay active even in cold weather."],
+        "vocabulary_question": "Does \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 let an animal make its own body heat, or rely only on the sun for warmth?"
+    },
+    {
+        "word": "procession",
+        "meaning": "A group of people or vehicles moving forward in an orderly line, often as part of a ceremony.",
+        "sentences": ["The wedding procession moved slowly down the aisle."],
+        "vocabulary_question": "Does a \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 move in an orderly line, or scatter in every direction?"
+    },
+    {
+        "word": "torrential",
+        "meaning": "Describing rain that falls very heavily and rapidly.",
+        "sentences": ["The torrential downpour flooded the streets within minutes."],
+        "vocabulary_question": "Does \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 rain fall lightly and slowly, or heavily and fast?"
+    },
+    {
+        "word": "irrelevant",
+        "meaning": "Not connected with or important to the matter at hand.",
+        "sentences": ["His comment about the weather was irrelevant to the science discussion."],
+        "vocabulary_question": "Is something \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 important to the topic, or unrelated to it?"
+    },
+    {
+        "word": "burnished",
+        "meaning": "Made shiny by rubbing or polishing.",
+        "sentences": ["The knight's burnished armor gleamed in the sunlight."],
+        "vocabulary_question": "Does something \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 look dull and rusty, or shiny and polished?"
+    },
+    {
+        "word": "juniper",
+        "meaning": "An evergreen shrub or tree with small, cone-like berries, often used for flavoring or in landscaping.",
+        "sentences": ["The juniper bush's blue berries gave off a sharp, piney scent."],
+        "vocabulary_question": "Is a \u2588\u2588\u2588\u2588\u2588\u2588\u2588 a type of evergreen plant, or a type of flower that blooms once a year?"
+    },
+    {
+        "word": "Delaware",
+        "meaning": "A small state on the East Coast of the United States, the first to ratify the U.S. Constitution.",
+        "sentences": ["Delaware was the first state to join the United States."],
+        "vocabulary_question": "Is \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 a U.S. state, or a river in Europe?"
+    },
+    {
+        "word": "reluctance",
+        "meaning": "Unwillingness or hesitation to do something.",
+        "sentences": ["She agreed to help, though with some reluctance."],
+        "vocabulary_question": "Does \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 describe eagerness to do something, or hesitation about doing it?"
     }
 ];
 

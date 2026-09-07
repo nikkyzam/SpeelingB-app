@@ -245,7 +245,7 @@ describe('the grown-up console', () => {
     render(<AdminUsers />)
     await screen.findByText('Maya')
 
-    expect(screen.getByText(/3\/3,551 words/)).toBeInTheDocument()
+    expect(screen.getByText(/3\/3,598 words/)).toBeInTheDocument()
   })
 
   it('opens the full progress, and names the word to practise together', async () => {
@@ -255,8 +255,8 @@ describe('the grown-up console', () => {
 
     await user.click(screen.getByRole('button', { name: /Full progress/ }))
 
-    expect(screen.getByText(/of 3,551 words met/)).toHaveTextContent(
-      '3 of 3,551 words met (<1%) · 1 spelled right · 1 mastered'
+    expect(screen.getByText(/of 3,598 words met/)).toHaveTextContent(
+      '3 of 3,598 words met (<1%) · 1 spelled right · 1 mastered'
     )
     // 'concise-all-bee-1' is "send", got wrong five times. It is also one of
     // the recently-met words, so look for it in the section that matters.
