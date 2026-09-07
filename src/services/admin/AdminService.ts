@@ -1,5 +1,6 @@
 import { collection, getDocs, getDoc, doc, setDoc, updateDoc, deleteField, arrayUnion } from 'firebase/firestore'
 import { db, auth } from '../../config/firebase'
+import type { RawUserDoc } from './AdminProgress'
 
 /** A Bee level. */
 export type WordLevel = 1 | 2 | 3
@@ -30,6 +31,12 @@ export interface AdminUser {
   levels: WordLevel[]
   isAdmin?: boolean
   stats: AdminUserStats
+  /**
+   * The child's whole stored document, kept from the listing so the progress
+   * panel can be opened without a second read. `AdminProgress.deriveProgress`
+   * is what turns it into something a grown-up can read.
+   */
+  raw: RawUserDoc
 }
 
 /** One line in the grown-up-visible audit trail kept on each child's document. */
@@ -86,6 +93,7 @@ export async function listUsers(): Promise<AdminUser[]> {
 
       return {
         uid: d.id,
+        raw: data as RawUserDoc,
         name: ud.name || 'Explorer',
         email: ud.email,
         avatar: ud.avatar,

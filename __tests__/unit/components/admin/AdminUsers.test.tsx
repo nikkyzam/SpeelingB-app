@@ -1,6 +1,6 @@
 import React from 'react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 const listUsers = vi.fn()
@@ -51,6 +51,19 @@ const maya = {
     starsSpent: 50,
     gamesUnlockedToday: false,
     lastSeen: new Date().toISOString(),
+  },
+  raw: {
+    progress: {
+      wordsLearnedTotal: ['concise-all-bee-0', 'concise-all-bee-1', 'concise-all-bee-2'],
+      wordsSpelledTotal: ['concise-all-bee-0'],
+    },
+    local: {
+      word_correct_counts: JSON.stringify({ 'concise-all-bee-0': 3 }),
+      word_review_schedule: JSON.stringify({
+        'concise-all-bee-1': { box: 1, due: '2020-01-01', right: 0, wrong: 5 },
+      }),
+      game_play_counts: JSON.stringify({ 'word-scramble': 2 }),
+    },
   },
 }
 
@@ -205,5 +218,75 @@ describe('the grown-up console', () => {
     await screen.findByText('Maya')
 
     expect(screen.getByRole('button', { name: /Remove Maya…/ })).toBeDisabled()
+  })
+
+  // --- Seeing the whole picture, not just four numbers ---------------------
+
+  it('sums up the household before you look at any one child', async () => {
+    listUsers.mockResolvedValue([
+      { ...maya, stats: { ...maya.stats } },
+      {
+        ...maya,
+        uid: 'kid-2',
+        name: 'Sam',
+        stats: { ...maya.stats, spelledToday: 5, lastSeen: new Date(Date.now() - 20 * 86400000).toISOString() },
+      },
+    ])
+    render(<AdminUsers />)
+    await screen.findByText('Maya')
+
+    // Sam met the goal of 5 today; Maya (2 of 5) has not.
+    expect(screen.getByText(/1 done today/)).toBeInTheDocument()
+    // Sam has not opened the app in three weeks — the thing a parent wants told.
+    expect(screen.getByText(/1 not played this week/)).toBeInTheDocument()
+  })
+
+  it('shows how far through the whole word list each child has come', async () => {
+    render(<AdminUsers />)
+    await screen.findByText('Maya')
+
+    expect(screen.getByText(/3\/3,475 words/)).toBeInTheDocument()
+  })
+
+  it('opens the full progress, and names the word to practise together', async () => {
+    const user = userEvent.setup()
+    render(<AdminUsers />)
+    await screen.findByText('Maya')
+
+    await user.click(screen.getByRole('button', { name: /Full progress/ }))
+
+    expect(screen.getByText(/of 3,475 words met/)).toHaveTextContent(
+      '3 of 3,475 words met (<1%) · 1 spelled right · 1 mastered'
+    )
+    // 'concise-all-bee-1' is "send", got wrong five times. It is also one of
+    // the recently-met words, so look for it in the section that matters.
+    const practise = screen.getByText('Words to practise together').closest('section')!
+    expect(within(practise).getByText('send')).toBeInTheDocument()
+    expect(within(practise).getByText('✗ 5')).toBeInTheDocument()
+    // Overdue since 2020 — a parent should see it is waiting.
+    expect(within(practise).getByText('1 due today')).toBeInTheDocument()
+  })
+
+  it('closes the progress again', async () => {
+    const user = userEvent.setup()
+    render(<AdminUsers />)
+    await screen.findByText('Maya')
+
+    await user.click(screen.getByRole('button', { name: /Full progress/ }))
+    expect(screen.getByText('Words to practise together')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: /Hide progress/ }))
+    expect(screen.queryByText('Words to practise together')).not.toBeInTheDocument()
+  })
+
+  it('says plainly when a child has not synced anything yet', async () => {
+    const user = userEvent.setup()
+    listUsers.mockResolvedValue([{ ...maya, raw: {}, stats: { ...maya.stats } }])
+    render(<AdminUsers />)
+    await screen.findByText('Maya')
+
+    await user.click(screen.getByRole('button', { name: /Full progress/ }))
+    // An empty document is a real state — a child who signed up and stopped.
+    expect(screen.getByText(/hasn.t practised any words yet/)).toBeInTheDocument()
   })
 })

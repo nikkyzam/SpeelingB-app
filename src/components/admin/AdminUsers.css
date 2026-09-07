@@ -374,3 +374,51 @@
   text-transform: uppercase;
   font-variant-numeric: tabular-nums;
 }
+
+/* --- The household at a glance, and each child's place in the whole list --- */
+
+.admin-users__household { min-width: 0; }
+.admin-users__quiet { color: var(--warning); font-weight: 700; }
+
+.admin-users__journey {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+.admin-users__journeybar {
+  display: block;
+  height: 0.5rem;
+  width: 100%;
+  border-radius: var(--radius-round);
+  background: var(--card);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.admin-users__journeyfill {
+  display: block;
+  height: 100%;
+  background: var(--primary);
+  border-radius: var(--radius-round);
+  transition: width var(--transition-normal);
+}
+
+.admin-users__journeytext {
+  font-size: 0.7rem;
+  color: var(--text-soft);
+  font-variant-numeric: tabular-nums;
+}
+.admin-users__duetag { color: var(--warning); font-weight: 700; }
+.admin-users__trickytag { color: var(--error); font-weight: 700; }
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-users__journeyfill { transition: none; }
+}

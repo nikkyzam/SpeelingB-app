@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   listUsers,
   setUserDailyGoal,
@@ -15,6 +15,8 @@ import {
   AdminLogEntry,
   WordLevel,
 } from '../../services/admin/AdminService'
+import { deriveProgress, AdminUserProgress } from '../../services/admin/AdminProgress'
+import AdminProgress from './AdminProgress'
 import { wordBank } from '../../services/wordBank'
 import './AdminUsers.css'
 
@@ -76,6 +78,7 @@ const AdminUsers: React.FC = () => {
   const [busyUid, setBusyUid] = useState('') // a day action is running
   const [confirmReset, setConfirmReset] = useState('')
   const [openLog, setOpenLog] = useState('')
+  const [openProgress, setOpenProgress] = useState('') // uid whose full progress is open
   const [removing, setRemoving] = useState('') // uid whose removal panel is open
   const [typedName, setTypedName] = useState('')
   const [log, setLog] = useState<AdminLogEntry[]>([])
@@ -88,6 +91,8 @@ const AdminUsers: React.FC = () => {
       const list = await listUsers()
       setOriginal(list)
       setDraft(list.map((u) => ({ ...u })))
+      // A panel left open would be showing a child who may no longer be listed.
+      setOpenProgress((uid) => (list.some((u) => u.uid === uid) ? uid : ''))
     } catch (e: any) {
       setError(e?.message || 'Could not load users.')
     } finally {
@@ -98,6 +103,42 @@ const AdminUsers: React.FC = () => {
   useEffect(() => {
     load()
   }, [])
+
+  /**
+   * Every child's full progress, worked out once from what the server last
+   * gave us. Keyed off `original` rather than `draft` so that typing in a star
+   * box does not re-derive thousands of word ids on every keystroke — and so
+   * the numbers always describe saved reality, not an unsaved edit.
+   */
+  const progressByUid = useMemo(() => {
+    const map = new Map<string, AdminUserProgress>()
+    for (const u of original) {
+      try {
+        map.set(u.uid, deriveProgress(u.raw || {}))
+      } catch {
+        /* one unreadable document must not take the whole console down */
+      }
+    }
+    return map
+  }, [original])
+
+  /** The household at a glance: who is on track, and who has gone quiet. */
+  const household = useMemo(() => {
+    const list = original
+    const totals = list.reduce(
+      (acc, u) => {
+        const p = progressByUid.get(u.uid)
+        acc.met += p ? p.met : u.stats.wordsLearned
+        acc.dueToday += p ? p.dueToday : 0
+        if (u.stats.spelledToday >= u.dailyGoal) acc.doneToday += 1
+        const seen = u.stats.lastSeen ? Date.parse(u.stats.lastSeen) : NaN
+        if (Number.isNaN(seen) || Date.now() - seen > 7 * 86400000) acc.quiet += 1
+        return acc
+      },
+      { met: 0, dueToday: 0, doneToday: 0, quiet: 0 }
+    )
+    return { ...totals, children: list.length }
+  }, [original, progressByUid])
 
   const orig = (uid: string) => original.find((u) => u.uid === uid)
   const isDirty = (u: AdminUser) => {
@@ -216,6 +257,7 @@ const AdminUsers: React.FC = () => {
       await deleteUserAccount(u.uid)
       setDraft((list) => list.filter((x) => x.uid !== u.uid))
       setOriginal((list) => list.filter((x) => x.uid !== u.uid))
+      if (openProgress === u.uid) setOpenProgress('')
       setRemoving('')
       setTypedName('')
     } catch (e: any) {
@@ -262,7 +304,15 @@ const AdminUsers: React.FC = () => {
   return (
     <div className="admin-users">
       <div className="admin-users__head">
-        <span>{draft.length} {draft.length === 1 ? 'child' : 'children'}</span>
+        <span className="admin-users__household">
+          <strong>{household.children} {household.children === 1 ? 'child' : 'children'}</strong>
+          {' · '}{household.doneToday} done today
+          {household.dueToday > 0 && <> · {household.dueToday} words due</>}
+          {household.quiet > 0 && (
+            <span className="admin-users__quiet"> · {household.quiet} not played this week</span>
+          )}
+          {household.met > 0 && <> · {household.met.toLocaleString()} words learnt between them</>}
+        </span>
         <button className="admin-users__refresh" onClick={load} disabled={saving || !!busyUid}>↻ Refresh</button>
       </div>
 
@@ -271,6 +321,7 @@ const AdminUsers: React.FC = () => {
           const dirty = isDirty(u)
           const busy = busyUid === u.uid
           const s = u.stats
+          const prog = progressByUid.get(u.uid)
           const goalMet = s.spelledToday >= u.dailyGoal
 
           return (
@@ -307,6 +358,31 @@ const AdminUsers: React.FC = () => {
                   <span className="admin-users__statlabel">today</span>
                 </div>
               </div>
+
+              {/* How far through the whole word list this child has come. */}
+              {prog && (
+                <button
+                  type="button"
+                  className="admin-users__journey"
+                  aria-expanded={openProgress === u.uid}
+                  onClick={() => setOpenProgress(openProgress === u.uid ? '' : u.uid)}
+                  title={`${prog.met.toLocaleString()} of ${prog.bankTotal.toLocaleString()} words met`}
+                >
+                  <span className="admin-users__journeybar">
+                    <span
+                      className="admin-users__journeyfill"
+                      style={{ width: `${Math.min(100, (prog.met / Math.max(1, prog.bankTotal)) * 100)}%` }}
+                    />
+                  </span>
+                  <span className="admin-users__journeytext">
+                    {prog.met.toLocaleString()}/{prog.bankTotal.toLocaleString()} words
+                    {prog.dueToday > 0 && <span className="admin-users__duetag"> · {prog.dueToday} due</span>}
+                    {prog.tricky.length > 0 && (
+                      <span className="admin-users__trickytag"> · {prog.tricky.length} tricky</span>
+                    )}
+                  </span>
+                </button>
+              )}
 
               <div className="admin-users__controls">
                 <div className="admin-users__field admin-users__levels">
@@ -401,6 +477,14 @@ const AdminUsers: React.FC = () => {
                   {confirmReset === u.uid ? `Reset ${u.name}'s day — tap to confirm` : '↺ Start today again'}
                 </button>
 
+                <button
+                  className="admin-users__link"
+                  aria-expanded={openProgress === u.uid}
+                  onClick={() => setOpenProgress(openProgress === u.uid ? '' : u.uid)}
+                >
+                  {openProgress === u.uid ? 'Hide progress' : '📊 Full progress'}
+                </button>
+
                 <button className="admin-users__link" onClick={() => toggleLog(u.uid)}>
                   {openLog === u.uid ? 'Hide changes' : 'Recent changes'}
                 </button>
@@ -461,6 +545,16 @@ const AdminUsers: React.FC = () => {
                   </button>
                 )}
               </div>
+
+              {openProgress === u.uid && (
+                prog ? (
+                  <AdminProgress name={u.name} progress={prog} />
+                ) : (
+                  <p className="admin-users__logempty">
+                    {u.name} hasn&apos;t synced anything yet, so there is no progress to show.
+                  </p>
+                )
+              )}
 
               {openLog === u.uid && (
                 <div className="admin-users__log">

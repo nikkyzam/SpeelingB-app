@@ -1,0 +1,160 @@
+/* One child's full picture, inside their row in the grown-up console. */
+
+.admin-prog {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin-top: 0.6rem;
+  padding: 0.85rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  text-align: left;
+}
+
+.admin-prog__section { display: flex; flex-direction: column; gap: 0.45rem; }
+
+.admin-prog__h {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-soft);
+}
+
+.admin-prog__muted { color: var(--text-soft); font-weight: 500; font-size: 0.78rem; }
+.admin-prog__empty { margin: 0; font-size: 0.82rem; color: var(--text-soft); }
+.admin-prog__note {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+/* --- the journey ---------------------------------------------------------- */
+
+.admin-prog__journey { display: flex; flex-direction: column; gap: 0.35rem; }
+
+.admin-prog__bar {
+  position: relative;
+  display: block;
+  height: 0.85rem;
+  width: 100%;
+  border-radius: var(--radius-round);
+  background: var(--card-soft);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.admin-prog__bar.small { height: 0.5rem; flex: 1; }
+
+/* Three bars stacked front-to-back: met is widest, mastered narrowest, so the
+   deeper shade always reads as a subset of the lighter one. */
+.admin-prog__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: var(--radius-round);
+  transition: width var(--transition-normal);
+}
+.admin-prog__fill.is-met { background: var(--primary); opacity: 0.35; }
+.admin-prog__fill.is-spelled { background: var(--primary); opacity: 0.7; }
+.admin-prog__fill.is-mastered { background: var(--success); }
+
+.admin-prog__journeytext { margin: 0; font-size: 0.82rem; color: var(--text); }
+.admin-prog__rank { margin: 0; font-size: 0.8rem; color: var(--text); font-weight: 700; }
+
+.admin-prog__levels { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.3rem; }
+.admin-prog__levels li { display: flex; align-items: center; gap: 0.5rem; font-size: 0.76rem; }
+.admin-prog__levelname { width: 4.6rem; flex: none; color: var(--text-soft); }
+.admin-prog__levelnum { width: 5.6rem; flex: none; text-align: right; font-variant-numeric: tabular-nums; color: var(--text); }
+
+/* --- the fortnight -------------------------------------------------------- */
+
+.admin-prog__days {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.2rem;
+  height: 3.4rem;
+}
+.admin-prog__days li {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  gap: 2px;
+  min-width: 0;
+}
+.admin-prog__daybar {
+  width: 100%;
+  border-radius: 3px 3px 0 0;
+  background: var(--border);
+}
+.admin-prog__days li.is-on .admin-prog__daybar { background: var(--primary); }
+.admin-prog__daylabel { font-size: 0.6rem; color: var(--text-soft); }
+
+/* --- words that fight back ------------------------------------------------ */
+
+.admin-prog__due {
+  margin-left: 0.4rem;
+  padding: 1px 8px;
+  border-radius: var(--radius-round);
+  background: var(--warning);
+  color: var(--on-primary, #fff);
+  font-size: 0.66rem;
+  font-weight: 800;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.admin-prog__tricky { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.2rem; }
+.admin-prog__tricky li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: var(--radius-sm);
+  background: var(--card-soft);
+}
+.admin-prog__word { font-weight: 800; color: var(--text); flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.admin-prog__wrong { color: var(--error); font-weight: 800; font-variant-numeric: tabular-nums; }
+
+.admin-prog__boxes { display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap; margin-top: 0.2rem; }
+.admin-prog__box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 2.1rem;
+  padding: 0.15rem 0.3rem;
+  border-radius: var(--radius-sm);
+  background: var(--card-soft);
+  border: 1px solid var(--border);
+  opacity: 0.55;
+}
+.admin-prog__box.is-on { opacity: 1; }
+.admin-prog__boxnum { font-weight: 800; font-size: 0.82rem; font-variant-numeric: tabular-nums; }
+.admin-prog__boxlabel { font-size: 0.58rem; color: var(--text-soft); }
+
+/* --- lately, and play ----------------------------------------------------- */
+
+.admin-prog__recent { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.admin-prog__recent li {
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-round);
+  background: var(--card-soft);
+  border: 1px solid var(--border);
+  font-size: 0.78rem;
+}
+
+.admin-prog__games { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.15rem; }
+.admin-prog__games li { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.8rem; }
+.admin-prog__gamename { min-width: 0; overflow-wrap: anywhere; }
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-prog__fill { transition: none; }
+}
