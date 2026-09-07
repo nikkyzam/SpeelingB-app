@@ -37,6 +37,12 @@ const renderWithProviders = (ui: React.ReactElement) => {
   )
 }
 
+/** The words a child is studying. SpellMode is never used without them. */
+const WORDS = [
+  { id: '1', word: 'apple', meaning: 'a red fruit', sentence: 'I eat an apple.', difficulty: 1 as const, category: 'food' },
+  { id: '2', word: 'banana', meaning: 'a yellow fruit', sentence: 'I eat a banana.', difficulty: 1 as const, category: 'food' },
+]
+
 describe('SpellMode Component', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -49,14 +55,14 @@ describe('SpellMode Component', () => {
   })
 
   it('renders correctly and prompts for spelling', () => {
-    renderWithProviders(<SpellMode />)
+    renderWithProviders(<SpellMode words={WORDS} />)
     
     expect(screen.getByPlaceholderText('Type the word...')).toBeInTheDocument()
     expect(screen.getByText('I eat an _______.')).toBeInTheDocument()
   })
 
   it('handles correct spelling correctly', async () => {
-    renderWithProviders(<SpellMode />)
+    renderWithProviders(<SpellMode words={WORDS} />)
     
     const input = screen.getByPlaceholderText('Type the word...')
     // Use getByRole for button to be more specific and handle text content better
@@ -78,7 +84,7 @@ describe('SpellMode Component', () => {
   })
 
   it('handles incorrect spelling correctly', () => {
-    renderWithProviders(<SpellMode />)
+    renderWithProviders(<SpellMode words={WORDS} />)
     
     const input = screen.getByPlaceholderText('Type the word...')
     const submitBtn = screen.getByRole('button', { name: /Check it/i })
@@ -94,7 +100,7 @@ describe('SpellMode Component', () => {
   })
 
   it('offers no hint, and lets no device spell the word for them', () => {
-    renderWithProviders(<SpellMode />)
+    renderWithProviders(<SpellMode words={WORDS} />)
 
     // A hint button handed a child the meaning mid-test. Gone.
     expect(screen.queryByText(/Get Hint/i)).not.toBeInTheDocument()
@@ -111,7 +117,7 @@ describe('SpellMode Component', () => {
   })
 
   it('reveals the word when "Reveal Word" is clicked', () => {
-    renderWithProviders(<SpellMode />)
+    renderWithProviders(<SpellMode words={WORDS} />)
     
     const revealBtn = screen.getByText('Reveal Answer')
     fireEvent.click(revealBtn)
@@ -121,7 +127,7 @@ describe('SpellMode Component', () => {
   })
 
   it('scores a word once, and cannot be made to score it twice', () => {
-    renderWithProviders(<SpellMode />)
+    renderWithProviders(<SpellMode words={WORDS} />)
 
     const input = screen.getByPlaceholderText('Type the word...')
     fireEvent.change(input, { target: { value: 'apple' } })
@@ -141,7 +147,7 @@ describe('SpellMode Component', () => {
   })
 
   it('lets a child move on after getting a word wrong', () => {
-    renderWithProviders(<SpellMode />)
+    renderWithProviders(<SpellMode words={WORDS} />)
 
     const input = screen.getByPlaceholderText('Type the word...')
     fireEvent.change(input, { target: { value: 'zzzzz' } })
@@ -160,7 +166,7 @@ describe('SpellMode Component', () => {
   })
 
   it('a correct answer still only advances once', () => {
-    renderWithProviders(<SpellMode />)
+    renderWithProviders(<SpellMode words={WORDS} />)
 
     const input = screen.getByPlaceholderText('Type the word...')
     fireEvent.change(input, { target: { value: 'apple' } })

@@ -36,6 +36,46 @@ const playPages = fs
   // chosen in the first place, and Review/DailyQuiz work off the same list.
   .filter((p) => !['LearningHub', 'Review', 'DailyQuiz', 'GameCenter'].includes(p.name))
 
+/**
+ * The learn/quiz components are where the day's words are actually taught, and
+ * they were outside this guard entirely. QuizMode fell back to the whole bank
+ * whenever it was handed no words — which, because of a collapsed panel, was
+ * the default — so a child was tested on words nobody had taught them.
+ */
+const LEARNING_DIR = path.join(SRC, 'components/learning')
+const learningFiles = fs
+  .readdirSync(LEARNING_DIR, { withFileTypes: true })
+  .filter((d) => d.isDirectory())
+  .map((d) => ({ name: d.name, file: path.join(LEARNING_DIR, d.name, 'index.tsx') }))
+  .filter((p) => fs.existsSync(p.file))
+  // The whole point of a word of the day is that it is a word they have not
+  // met — it is offered to be learned, never used to test them.
+  .filter((p) => p.name !== 'WordOfTheDay')
+
+describe('the learning flow only uses the words a child is learning', () => {
+  it('finds the learning components to check', () => {
+    expect(learningFiles.length).toBeGreaterThan(2)
+  })
+
+  it.each(learningFiles.map((f) => f.name))(
+    '%s never draws its own words from the whole bank',
+    (name) => {
+      const file = learningFiles.find((f) => f.name === name)!.file
+      const src = fs.readFileSync(file, 'utf-8')
+      // Reading every *meaning* to build wrong answers is fine — a distractor
+      // is not a word the child is asked to spell.
+      const offending = [...src.matchAll(/wordBank\.(getRandomWords|getAllWords|getWordsByDifficulty)\(\)?/g)]
+        .filter((m) => !src.slice(m.index, m.index + 90).includes('.meaning'))
+        .map((m) => m[0])
+      expect(
+        offending,
+        `${name} picks words out of the bank. The words a child is tested on ` +
+          `must be the ones they were given to learn.`
+      ).toEqual([])
+    }
+  )
+})
+
 describe('games only use the words a child is learning', () => {
   it('finds the games to check', () => {
     expect(gameFiles.length).toBeGreaterThan(20)

@@ -84,16 +84,11 @@ const LearnMode: React.FC<LearnModeProps> = ({
       setPhase('reading')
       return
     }
-    const goal = learningFlow.getDailyGoal('learn')
-    // Get unique words from the word bank up to the goal count
-    const wordList = difficulty ? wordBank.getWordsByDifficulty(difficulty) : wordBank.getAllWords()
-    const shuffled = [...wordList].sort(() => 0.5 - Math.random())
-    const selectedWords = shuffled.slice(0, goal)
-
-    setWords(selectedWords)
-    if (selectedWords.length > 0) {
-      setCurrentWord(selectedWords[0])
-    }
+    // No fallback to the word bank. Every caller passes the words this child
+    // is studying; inventing words here would put ones nobody taught them in
+    // front of them, and the flow then records them as learned.
+    setWords([])
+    setCurrentWord(null)
     setCurrentIndex(0)
     setIsCompleted(false)
     setPhase('reading')
@@ -194,7 +189,15 @@ const LearnMode: React.FC<LearnModeProps> = ({
   }
 
   if (!currentWord) {
-    return <div className="learn-mode">Loading words...</div>
+    // Not "loading" — there is nothing on the way. Either this group is empty
+    // or the child's chosen level has no words in it, and saying so is the
+    // only thing that tells them what to do about it.
+    return (
+      <div className="learn-mode">
+        <p>No words to practise here yet — pick a different group, or ask a
+        grown-up to change your word level in Settings.</p>
+      </div>
+    )
   }
 
   if (showGoalPrompt) {

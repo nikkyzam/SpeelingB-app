@@ -142,7 +142,6 @@ const LearningHub: React.FC = () => {
   const handleGroupSelect = (index: number) => {
     setSelectedGroup(index)
     learningFlow.setSelectedGroup(index)
-    setIsGroupsExpanded(true) // Ensure we use groupWords when explicitly selected
   }
 
   const renderCommonSelectors = () => (
@@ -310,7 +309,10 @@ const LearningHub: React.FC = () => {
           {renderCommonSelectors()}
         </div>
         <QuizMode
-          words={isGroupsExpanded ? groupWords : undefined}
+          // Which words a child is tested on must not depend on whether a
+          // panel happens to be open. Collapsed — the default — this handed
+          // QuizMode nothing, and it made a quiz out of the whole word bank.
+          words={groupWords}
           type={quizType}
           difficulty={difficulty}
           onComplete={handleQuizComplete}

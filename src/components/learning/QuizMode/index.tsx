@@ -55,12 +55,11 @@ const QuizMode: React.FC<QuizModeProps> = ({
 
   const generateQuiz = () => {
     const goal = learningFlow.getDailyGoal(type)
-    const wordList = difficulty ? wordBank.getWordsByDifficulty(difficulty) : wordBank.getAllWords()
-    const shuffled = [...wordList].sort(() => 0.5 - Math.random())
 
-    let words = providedWords && providedWords.length > 0
-      ? [...providedWords].sort(() => 0.5 - Math.random()).slice(0, goal)
-      : shuffled.slice(0, goal)
+    // Only the words this child is actually studying. Falling back to the word
+    // bank made a quiz out of words nobody had taught them — and then wrote
+    // those words into their learned list as though they had.
+    const words = [...(providedWords || [])].sort(() => 0.5 - Math.random()).slice(0, goal)
     
     const quizQuestions: QuizQuestion[] = words.map(word => {
       if (type === 'spell') {

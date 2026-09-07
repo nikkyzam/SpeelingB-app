@@ -43,13 +43,11 @@ const TestAll: React.FC<TestAllProps> = ({
   }, [testStarted, timeLeft, testCompleted])
 
   const startTest = () => {
-    let testWords: Word[] = []
-    if (providedWords && providedWords.length > 0) {
-      testWords = [...providedWords].sort(() => 0.5 - Math.random()).slice(0, 50)
-    } else {
-      const allWords = difficulty ? wordBank.getWordsByDifficulty(difficulty) : wordBank.getAllWords()
-      testWords = allWords.sort(() => 0.5 - Math.random()).slice(0, Math.min(50, allWords.length))
-    }
+    // Only the child's own words — a test of words nobody taught them is not a
+    // test, and the flow records whatever it asks as learned.
+    const testWords: Word[] = [...(providedWords || [])]
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 50)
     setWords(testWords)
     setTestStarted(true)
     setTimeLeft(timePerWord)

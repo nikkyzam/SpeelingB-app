@@ -82,14 +82,11 @@ const SpellMode: React.FC<SpellModeProps> = ({
       speakSentence(providedWords[startIndex])
       return
     }
-    const wordList = difficulty ? wordBank.getWordsByDifficulty(difficulty) : wordBank.getAllWords()
-    const goal = isQuiz ? learningFlow.getDailyGoal('spell') : 5
-    const randomWords = wordBank.getRandomWords(goal, difficulty)
-    setWords(randomWords)
-    if (randomWords.length > 0) {
-      setCurrentWord(randomWords[0])
-      speakSentence(randomWords[0])
-    }
+    // No fallback to the word bank. Every caller passes the words this child
+    // is studying; inventing words here would put ones nobody taught them in
+    // front of them, and the flow then records them as learned.
+    setWords([])
+    setCurrentWord(null)
     setCurrentIndex(0)
     setIsCompleted(false)
   }
@@ -238,7 +235,15 @@ const SpellMode: React.FC<SpellModeProps> = ({
   }
 
   if (!currentWord) {
-    return <div className="spell-mode">Loading words...</div>
+    // Not "loading" — there is nothing on the way. Either this group is empty
+    // or the child's chosen level has no words in it, and saying so is the
+    // only thing that tells them what to do about it.
+    return (
+      <div className="spell-mode">
+        <p>No words to practise here yet — pick a different group, or ask a
+        grown-up to change your word level in Settings.</p>
+      </div>
+    )
   }
 
   if (isCompleted) {

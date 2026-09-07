@@ -179,7 +179,7 @@ describe('LearnMode Component', () => {
     })
 
     await act(async () => {
-      renderWithProviders(<LearnMode onMoveToPractice={onMoveToPractice} />)
+      renderWithProviders(<LearnMode words={TWO_WORDS} onMoveToPractice={onMoveToPractice} />)
     })
 
     // Completing this word crosses the daily goal → celebration prompt appears.
