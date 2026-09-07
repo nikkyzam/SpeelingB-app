@@ -245,7 +245,7 @@ describe('the grown-up console', () => {
     render(<AdminUsers />)
     await screen.findByText('Maya')
 
-    expect(screen.getByText(/3\/3,475 words/)).toBeInTheDocument()
+    expect(screen.getByText(/3\/3,551 words/)).toBeInTheDocument()
   })
 
   it('opens the full progress, and names the word to practise together', async () => {
@@ -255,8 +255,8 @@ describe('the grown-up console', () => {
 
     await user.click(screen.getByRole('button', { name: /Full progress/ }))
 
-    expect(screen.getByText(/of 3,475 words met/)).toHaveTextContent(
-      '3 of 3,475 words met (<1%) · 1 spelled right · 1 mastered'
+    expect(screen.getByText(/of 3,551 words met/)).toHaveTextContent(
+      '3 of 3,551 words met (<1%) · 1 spelled right · 1 mastered'
     )
     // 'concise-all-bee-1' is "send", got wrong five times. It is also one of
     // the recently-met words, so look for it in the section that matters.
@@ -301,12 +301,13 @@ describe('the grown-up console', () => {
 
     await user.click(screen.getByRole('button', { name: /Two/ }))
 
-    // Tapping the lit "Two" must take Two Bee away — not switch every other
-    // level off and leave Two Bee as the only one, which is what it used to do.
-    expect(screen.getByText(/words from One Bee$/)).toBeInTheDocument()
+    // Tapping the lit "Two" must take Two Bee away and leave the other two
+    // levels on — not switch every other level off and leave Two Bee as the
+    // only one, which is what it used to do.
+    expect(screen.getByText(/words from One Bee \+ Three Bee$/)).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'Save changes' }))
-    await waitFor(() => expect(setUserLevels).toHaveBeenCalledWith('kid-1', [1]))
+    await waitFor(() => expect(setUserLevels).toHaveBeenCalledWith('kid-1', [1, 3]))
   })
 
   it('will not leave a child with no words at all', async () => {

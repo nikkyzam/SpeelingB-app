@@ -18,10 +18,7 @@ const levelSize = (level: number) =>
 describe('choosing which Bee levels a child learns from', () => {
   it('reports only the levels that actually have words', () => {
     const available = wordBank.availableLevels()
-    expect(available.map((l) => l.level)).toEqual([1, 2])
-    // Three Bee ships empty, so nothing should offer it as a real choice —
-    // not even the eight seasonal words that happen to be graded as hard.
-    expect(available.find((l) => l.level === 3)).toBeUndefined()
+    expect(available.map((l) => l.level)).toEqual([1, 2, 3])
     available.forEach((l) => expect(l.count).toBeGreaterThan(0))
   })
 
@@ -62,9 +59,10 @@ describe('choosing which Bee levels a child learns from', () => {
     expect(a).toEqual(b) // order of the request must not matter
   })
 
-  it('falls back to everything rather than leaving a child with nothing', () => {
-    // Three Bee has no Bee words at all; a child must never get an empty set.
-    expect(wordBank.getWordsForLevels([3]).length).toBe(wordBank.getAllWords().length)
+  it('a level with words in it returns just that level', () => {
+    const three = wordBank.getWordsForLevels([3])
+    expect(three.length).toBeGreaterThan(0)
+    expect(three.length).toBeLessThan(wordBank.getAllWords().length)
   })
 
   it('ignores nonsense levels', () => {

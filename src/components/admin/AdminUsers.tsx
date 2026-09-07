@@ -30,7 +30,7 @@ const LEVELS: { value: WordLevel; label: string; short: string }[] = [
   { value: 3, label: '🐝🐝🐝 Three Bee', short: 'Three' },
 ]
 
-/** How many words each level actually has — Three Bee ships empty. */
+/** How many words each level actually has. */
 const LEVEL_COUNTS = new Map(wordBank.availableLevels().map((l) => [l.level, l.count]))
 
 const sameLevels = (a: readonly WordLevel[], b: readonly WordLevel[]) =>
