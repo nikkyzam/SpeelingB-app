@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
   listUsers,
   setUserDailyGoal,
@@ -83,6 +83,8 @@ const AdminUsers: React.FC = () => {
   const [typedName, setTypedName] = useState('')
   const [log, setLog] = useState<AdminLogEntry[]>([])
   const [logLoading, setLogLoading] = useState(false)
+  const [downloaded, setDownloaded] = useState('') // uid whose copy has been taken
+  const logRequest = useRef('') // whose audit trail we are waiting for
 
   const load = async () => {
     setLoading(true)
@@ -158,15 +160,32 @@ const AdminUsers: React.FC = () => {
   }
   const editGoal = (uid: string, next: number) =>
     edit(uid, { dailyGoal: Math.min(MAX_GOAL, Math.max(MIN_GOAL, next)) })
-  /** Toggle one level on or off; never leave a child with nothing to learn. */
+  /** The levels that actually have words in them — the only ones worth picking. */
+  const stocked = LEVELS.filter((l) => (LEVEL_COUNTS.get(l.value) ?? 0) > 0).map((l) => l.value)
+
+  /**
+   * Toggle one level on or off; never leave a child with nothing to learn.
+   *
+   * The empty set means "all levels", and the buttons render it as all three
+   * ON — so the toggle has to read it the same way. It did not: it read the
+   * raw list, found the level absent, and turned it *on*, which switched every
+   * other level off. Tapping a lit button lit it harder and darkened its
+   * neighbours.
+   */
   const toggleLevel = (uid: string, level: WordLevel) => {
     const u = draft.find((x) => x.uid === uid)
     if (!u) return
-    const has = u.levels.includes(level)
-    const next = has ? u.levels.filter((l) => l !== level) : [...u.levels, level].sort()
-    // All three selected is the same as "all levels"; store it as the empty set
-    // so a level added to the app later is picked up automatically.
-    edit(uid, { levels: next.length === LEVELS.length ? [] : next })
+    const current = u.levels.length === 0 ? stocked : u.levels
+    const next = current.includes(level)
+      ? current.filter((l) => l !== level)
+      : [...current, level].sort()
+    // Turning the last one off would leave nothing to learn from, so it is not
+    // a thing the button can do.
+    if (next.length === 0) return
+    // Everything selected is the same as "all levels"; store it as the empty
+    // set so a level added to the app later is picked up automatically.
+    const isAll = stocked.every((l) => next.includes(l)) && next.length >= stocked.length
+    edit(uid, { levels: isAll ? [] : next })
   }
 
   /** Is this level part of what the child learns from? Empty means all. */
@@ -243,8 +262,16 @@ const AdminUsers: React.FC = () => {
       const a = document.createElement('a')
       a.href = url
       a.download = `${u.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-spelling-bee.json`
+      // An anchor that was never in the document, with its URL revoked in the
+      // same tick, is a download some browsers simply drop. This is the last
+      // copy of a child's work before it is erased for good, so it is attached,
+      // clicked, and only let go of once the browser has had it.
+      a.style.display = 'none'
+      document.body.appendChild(a)
       a.click()
-      URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+      window.setTimeout(() => URL.revokeObjectURL(url), 30000)
+      setDownloaded(u.uid)
     } catch (e: any) {
       setError(e?.message || 'Could not download a copy.')
     }
@@ -275,12 +302,18 @@ const AdminUsers: React.FC = () => {
     setOpenLog(uid)
     setLog([])
     setLogLoading(true)
+    // Whose log we are waiting for. A slower request for the child opened
+    // first would otherwise resolve last and show one child's audit trail
+    // under another child's name.
+    logRequest.current = uid
     try {
-      setLog(await getAdminLog(uid))
+      const entries = await getAdminLog(uid)
+      if (logRequest.current !== uid) return
+      setLog(entries)
     } catch {
-      setLog([])
+      if (logRequest.current === uid) setLog([])
     } finally {
-      setLogLoading(false)
+      if (logRequest.current === uid) setLogLoading(false)
     }
   }
 
@@ -499,7 +532,7 @@ const AdminUsers: React.FC = () => {
                       <strong> It cannot be undone.</strong>
                     </p>
                     <button className="admin-users__action" onClick={() => download(u)} disabled={busy}>
-                      ⬇ Download a copy first
+                      {downloaded === u.uid ? '✓ Copy saved — download again' : '⬇ Download a copy first'}
                     </button>
                     <label className="admin-users__field">
                       <span className="admin-users__label">type “{u.name}” to confirm</span>
@@ -539,7 +572,7 @@ const AdminUsers: React.FC = () => {
                     className="admin-users__link admin-users__link--danger"
                     disabled={saving || busy || u.uid === currentAdminUid()}
                     title={u.uid === currentAdminUid() ? 'You cannot remove your own account here' : undefined}
-                    onClick={() => { setRemoving(u.uid); setTypedName('') }}
+                    onClick={() => { setRemoving(u.uid); setTypedName(''); setDownloaded('') }}
                   >
                     Remove {u.name}…
                   </button>

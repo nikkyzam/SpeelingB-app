@@ -13,6 +13,15 @@ interface SpellTurnProps {
   onAnswer: (correct: boolean) => void
   /** ms to show the verdict before moving on */
   hold?: number
+  /**
+   * Whether a missed word is shown and read out.
+   *
+   * Normally it is — a child who never sees the word they missed has learned
+   * nothing from missing it. But when the same word is about to be passed to
+   * their sibling to steal, revealing it hands the sibling the answer, and the
+   * steal stops being worth anything.
+   */
+  reveal?: boolean
 }
 
 /**
@@ -23,11 +32,19 @@ interface SpellTurnProps {
  * it is always revealed after an answer, because a child who never sees the
  * word they missed has not learned anything from missing it.
  */
-const SpellTurn: React.FC<SpellTurnProps> = ({ who, word, label, onAnswer, hold = 1500 }) => {
+const SpellTurn: React.FC<SpellTurnProps> = ({ who, word, label, onAnswer, hold = 1500, reveal = true }) => {
   const { speak } = useAudio()
   const [value, setValue] = useState('')
   const [verdict, setVerdict] = useState<'right' | 'wrong' | null>(null)
   const box = useRef<HTMLInputElement>(null)
+  const verdictTimer = useRef<number | null>(null)
+
+  // A match abandoned while the verdict is showing must not finish itself —
+  // that would award stars, name a winner and spend the grown-up's prize after
+  // the children have walked away.
+  useEffect(() => () => {
+    if (verdictTimer.current !== null) window.clearTimeout(verdictTimer.current)
+  }, [])
 
   useEffect(() => {
     setValue('')
@@ -46,9 +63,9 @@ const SpellTurn: React.FC<SpellTurnProps> = ({ who, word, label, onAnswer, hold 
       sfx.correct()
     } else {
       sfx.wrong()
-      speak(`It was. ${word.word}.`)
+      if (reveal) speak(`It was. ${word.word}.`)
     }
-    window.setTimeout(() => onAnswer(correct), hold)
+    verdictTimer.current = window.setTimeout(() => onAnswer(correct), hold)
   }
 
   return (
@@ -72,7 +89,11 @@ const SpellTurn: React.FC<SpellTurnProps> = ({ who, word, label, onAnswer, hold 
 
       {verdict ? (
         <div className={`turn-verdict ${verdict}`}>
-          {verdict === 'right' ? '✅ Yes!' : `It was “${word.word}”`}
+          {verdict === 'right'
+            ? '✅ Yes!'
+            : reveal
+            ? `It was “${word.word}”`
+            : 'Not quite — over to your rival!'}
         </div>
       ) : (
         <Button variant="primary" size="large" disabled={!value.trim()} onClick={submit}>

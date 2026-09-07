@@ -226,7 +226,11 @@ const BibleMemorizer: React.FC<BibleMemorizerProps> = ({ onComplete, version = '
         const inputIndex = blankIndex
         blankIndex++
 
-        const isCorrect = stageComplete && userInputs[inputIndex].toLowerCase() === word.toLowerCase()
+        // Scoring already ignores the verse's punctuation, so the styling must
+        // too — otherwise typing "world" for "world," is marked right and shown
+        // in red.
+        const tidy = (v: string) => v.toLowerCase().replace(/[.,;!?]/g, '').trim()
+        const isCorrect = stageComplete && tidy(userInputs[inputIndex]) === tidy(word)
         const isIncorrect = stageComplete && userInputs[inputIndex] && !isCorrect
 
         return (
@@ -235,6 +239,7 @@ const BibleMemorizer: React.FC<BibleMemorizerProps> = ({ onComplete, version = '
               type="text"
               value={userInputs[inputIndex]}
               onChange={(e) => handleInputChange(inputIndex, e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && checkAnswers(userInputs)}
               className={`verse-input ${isCorrect ? 'correct' : isIncorrect ? 'incorrect' : ''}`}
               disabled={stageComplete}
               style={{ width: `${Math.max(60, word.length * 10)}px` }}

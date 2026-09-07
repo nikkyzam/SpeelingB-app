@@ -58,10 +58,17 @@ const StealDuel: React.FC<MatchProps> = ({ names, words, onFinish }) => {
       <div className="steal-score">{names[0]} {scores[0]} — {scores[1]} {names[1]}</div>
       {stealer !== null && <div className="steal-flag">🥷 {names[stealer]} is stealing {names[owner]}&apos;s word!</div>}
       <SpellTurn
+        // A fresh turn every time, so a stolen word cannot arrive still
+        // holding the last answer — two children given the same name would
+        // otherwise leave the box disabled and the match stuck.
+        key={`${turn}-${stealer ?? 'own'}`}
         who={names[active]}
         word={word}
         label={`Round ${round + 1} of ${ROUNDS_EACH}`}
         onAnswer={answer}
+        // While a steal is still to come, the word stays secret: showing it
+        // would hand the thief the spelling and make the steal a free point.
+        reveal={stealer !== null}
       />
     </div>
   )

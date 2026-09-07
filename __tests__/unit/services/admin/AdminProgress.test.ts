@@ -25,8 +25,12 @@ vi.mock('@/services/wordBank', () => ({
 
 import { deriveProgress, RawUserDoc } from '@/services/admin/AdminProgress'
 
-/** Today, fixed, so "due today" and the fortnight can be asserted. */
-const NOW = new Date(2026, 8, 7, 10) // Monday 7 September 2026
+/**
+ * Today, fixed. Built in UTC on purpose: the app stores its day keys with
+ * `toISOString()`, so a test pinned to local midnight would pass or fail
+ * depending on which timezone it ran in.
+ */
+const NOW = new Date(Date.UTC(2026, 8, 7, 12)) // Monday 7 September 2026
 
 /** The bundle travels as raw localStorage strings — build one the same way. */
 const bundle = (obj: Record<string, unknown>): Record<string, string> =>

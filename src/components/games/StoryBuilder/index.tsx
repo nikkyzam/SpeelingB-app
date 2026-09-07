@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import SpellingInput from '../../common/SpellingInput'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, isPlayable } from '../shared/wordTricks'
@@ -215,7 +216,7 @@ const StoryBuilder: React.FC<StoryBuilderProps> = ({ onComplete, words: provided
           <p className="ss-prompt">Spell the first word from your story for 50 bonus points!</p>
           <div className="ss-bonus-row">
             <button className="ss-btn ghost" onClick={() => speak(bonusWord)} aria-label="Hear the word">🔊</button>
-            <input
+            <SpellingInput
               ref={inputRef}
               className={`ss-input ${bonusResult === 'right' ? 'ok' : bonusResult === 'wrong' ? 'bad' : ''}`}
               value={spellInput}

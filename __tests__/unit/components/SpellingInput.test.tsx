@@ -44,8 +44,44 @@ describe('the spelling box on a tablet', () => {
     for (const ch of 'abcdefghijklmnopqrstuvwxyz') expect(key(ch)).toBeInTheDocument()
     expect(key('Delete a letter')).toBeInTheDocument()
     expect(key('Check my spelling')).toBeInTheDocument()
-    // 26 letters + 2 controls. No word suggestions, no hints.
-    expect(screen.getAllByRole('button')).toHaveLength(28)
+    // No word suggestions and no hints — nothing here spells anything for them.
+    for (const label of ['a', 'z', 'space', 'hyphen']) expect(key(label)).toBeInTheDocument()
+  })
+
+  it('can type the words the app actually contains', () => {
+    // Suppressing the system keyboard makes this keypad the only way to type,
+    // so a word it cannot spell cannot be answered at all. The bundled list has
+    // 72 of them: "lo mein", "boll weevil", "maître d'", "protégé".
+    render(<Page onSubmit={() => {}} />)
+    fireEvent.click(key('l'))
+    fireEvent.click(key('o'))
+    fireEvent.click(key('space'))
+    fireEvent.click(key('m'))
+    fireEvent.click(key('e'))
+    fireEvent.click(key('i'))
+    fireEvent.click(key('n'))
+    expect(screen.getByLabelText('Spell the word')).toHaveValue('lo mein')
+  })
+
+  it('reaches the accents behind a second layer, so plain words stay simple', () => {
+    render(<Page onSubmit={() => {}} />)
+    // Nothing on the main layer hints that this word has an accent in it.
+    expect(screen.queryByRole('button', { name: 'é' })).not.toBeInTheDocument()
+
+    fireEvent.click(key('Accented letters'))
+    fireEvent.click(key('é'))
+    fireEvent.click(key('Back to letters'))
+    fireEvent.click(key('a'))
+    expect(screen.getByLabelText('Spell the word')).toHaveValue('éa')
+  })
+
+  it('can be put away, so the navigation underneath is reachable', () => {
+    render(<Page onSubmit={() => {}} />)
+    fireEvent.click(key('Put the keys away'))
+    expect(screen.queryByRole('group', { name: 'Letter keys' })).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: /Show the keys/ }))
+    expect(screen.getByRole('group', { name: 'Letter keys' })).toBeInTheDocument()
   })
 
   it('types through the page’s own onChange, so nothing else has to change', () => {

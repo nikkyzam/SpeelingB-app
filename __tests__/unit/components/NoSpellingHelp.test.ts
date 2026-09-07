@@ -34,7 +34,34 @@ const SPELLING_FILES = [
   'components/games/SpellTower/index.tsx',
   'components/games/DragonDuel/index.tsx',
   'components/games/SpellingAdventure/index.tsx',
+  'components/games/StoryBuilder/index.tsx',
+  'components/learning/TestAll/index.tsx',
 ]
+
+/**
+ * Every other text box in the app, and why it is not a spelling test.
+ *
+ * The list above is the wrong shape on its own: it only protects boxes someone
+ * remembered to add. Two real spelling tests — the Test All Words round and
+ * Story Builder's bonus word — sat unprotected for exactly that reason. So the
+ * rule below is inverted: EVERY text input must be either a SpellingInput or
+ * named here. Capitalising a name or a search is a kindness, not cheating.
+ */
+const NOT_SPELLING: Record<string, string> = {
+  'components/auth/AuthModal.tsx': 'signing in — name, email, password',
+  'components/profile/WhoIsPlaying/index.tsx': "the child's own name",
+  'components/buddy/BuddyCard/index.tsx': 'naming the buddy',
+  'components/admin/AdminUsers.tsx': "a grown-up's controls",
+  'components/challenge/PrizeSetter/index.tsx': 'a grown-up types the prize',
+  'components/reading/BookShelf.tsx': 'searching books',
+  'components/bible/BibleApiDashboard/index.tsx': 'searching verses',
+  'components/games/SiblingShowdown/index.tsx': 'player names (its spelling box is a SpellingInput)',
+  'pages/SiblingChallenge/index.tsx': 'player names',
+  'pages/WordCollection/index.tsx': 'searching their own words',
+}
+
+/** Inputs that cannot carry a word at all. */
+const NOT_TEXT = /type="(range|number|checkbox|radio|file|color|date|email|password|submit|hidden)"/
 
 describe('no device may spell the word for a child', () => {
   it.each(SPELLING_FILES)('%s spells into a SpellingInput, not a bare <input>', (rel) => {
@@ -46,6 +73,26 @@ describe('no device may spell the word for a child', () => {
     ).toBe(true)
     // A bare input with the attributes hand-spread is the old, weaker fix.
     expect(src, `${rel} still spreads NO_SPELLING_HELP by hand`).not.toContain('NO_SPELLING_HELP')
+  })
+
+  it('no text box anywhere is a spelling test in disguise', () => {
+    const offenders: string[] = []
+    for (const file of sourceFiles(SRC)) {
+      const rel = path.relative(SRC, file).split(path.sep).join('/')
+      if (rel.startsWith('components/common/SpellingInput/')) continue // the box itself
+      if (NOT_SPELLING[rel]) continue
+      const src = fs.readFileSync(file, 'utf-8')
+      for (const match of src.matchAll(/<input\b/g)) {
+        const props = src.slice(match.index, match.index + 420)
+        if (NOT_TEXT.test(props)) continue
+        offenders.push(`${rel} (line ${src.slice(0, match.index).split('\n').length})`)
+      }
+    }
+    expect(
+      offenders,
+      'A raw <input> a child could be asked to spell into. Use SpellingInput, ' +
+        'or add the file to NOT_SPELLING saying what the box is really for.'
+    ).toEqual([])
   })
 
   it('every listed file actually exists, so the list cannot rot silently', () => {

@@ -64,6 +64,26 @@ const getActive = () => active
 
 const ROWS = ['abcdefg', 'hijklmn', 'opqrstu', 'vwxyz'] as const
 
+/**
+ * The keys a word needs beyond a–z.
+ *
+ * Suppressing the system keyboard means the keypad is the ONLY way to type, so
+ * anything it lacks becomes unspellable. The bundled word list contains 72 such
+ * words — "lo mein", "boll weevil", "maître d'", "au revoir", "protégé" — and
+ * the Bible verses carry punctuation of their own. These are every non-letter
+ * character in the list, plus the accents that go with them.
+ *
+ * They live on a second layer rather than the main one: a child spelling "cat"
+ * should not have to look past an accent key, and a layer that is always there
+ * gives away nothing about the answer.
+ */
+const EXTRA_ROWS = ['àáâäãå', 'èéêë', 'ìíîï', 'òóôöõ', 'ùúûü', 'çñß'] as const
+const PUNCTUATION: { ch: string; label: string; name: string }[] = [
+  { ch: '-', label: '-', name: 'hyphen' },
+  { ch: "'", label: '’', name: 'apostrophe' },
+  { ch: ' ', label: 'space', name: 'space' },
+]
+
 /** Write to a React-controlled input as though the child had typed. */
 const typeInto = (el: HTMLInputElement, next: string) => {
   const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set
@@ -100,6 +120,16 @@ const SpellingInput = forwardRef<HTMLInputElement, SpellingInputProps>(function 
   const id = useId()
   const inner = useRef<HTMLInputElement | null>(null)
   const [touch] = useState(isTouchDevice)
+  const [accents, setAccents] = useState(false)
+  /**
+   * A child can put the keys away.
+   *
+   * The keypad sits over the bottom navigation, exactly as the system keyboard
+   * would — but the system keyboard can be dismissed and this could not, so the
+   * nav bar was unreachable for as long as a spelling box was on screen.
+   * Tapping the box brings the keys back.
+   */
+  const [away, setAway] = useState(false)
   const current = useSyncExternalStore(subscribe, getActive, getActive)
 
   const setRef = (el: HTMLInputElement | null) => {
@@ -121,7 +151,8 @@ const SpellingInput = forwardRef<HTMLInputElement, SpellingInputProps>(function 
     }
   }, [id])
 
-  const showKeypad = touch && !disabled && current === id
+  const mine = touch && !disabled && current === id
+  const showKeypad = mine && !away
   useEffect(() => {
     if (!showKeypad) return
     document.body.classList.add('has-spelling-keypad')
@@ -161,13 +192,28 @@ const SpellingInput = forwardRef<HTMLInputElement, SpellingInputProps>(function 
         data-spelling-keypad={touch ? 'true' : undefined}
         onFocus={(e) => {
           claim(id)
+          setAway(false)
           onFocus?.(e)
         }}
       />
       {showKeypad &&
         createPortal(
           <div className="spelling-keypad" role="group" aria-label="Letter keys">
-            {ROWS.map((row) => (
+            <button
+              type="button"
+              className="spelling-keypad-hide"
+              onPointerDown={keepFocus}
+              onMouseDown={keepFocus}
+              onClick={(e) => {
+                e.preventDefault()
+                sfx.tap()
+                setAway(true)
+              }}
+              aria-label="Put the keys away"
+            >
+              ⌄
+            </button>
+            {(accents ? EXTRA_ROWS : ROWS).map((row) => (
               <div key={row} className="spelling-keypad-row">
                 {row.split('').map((ch) => (
                   <button
@@ -182,33 +228,75 @@ const SpellingInput = forwardRef<HTMLInputElement, SpellingInputProps>(function 
                     {ch}
                   </button>
                 ))}
-                {row === 'vwxyz' && (
-                  <>
-                    <button
-                      type="button"
-                      className="spelling-key wide"
-                      onPointerDown={keepFocus}
-                      onMouseDown={keepFocus}
-                      onClick={backspace}
-                      aria-label="Delete a letter"
-                    >
-                      ⌫
-                    </button>
-                    <button
-                      type="button"
-                      className="spelling-key wide go"
-                      onPointerDown={keepFocus}
-                      onMouseDown={keepFocus}
-                      onClick={enter}
-                      aria-label="Check my spelling"
-                    >
-                      ✓
-                    </button>
-                  </>
-                )}
               </div>
             ))}
+
+            <div className="spelling-keypad-row">
+              <button
+                type="button"
+                className={`spelling-key wide ${accents ? 'on' : ''}`}
+                onPointerDown={keepFocus}
+                onMouseDown={keepFocus}
+                onClick={(e) => {
+                  e.preventDefault()
+                  sfx.tap()
+                  setAccents((on) => !on)
+                }}
+                aria-pressed={accents}
+                aria-label={accents ? 'Back to letters' : 'Accented letters'}
+              >
+                {accents ? 'abc' : 'àé'}
+              </button>
+              {PUNCTUATION.map((k) => (
+                <button
+                  key={k.ch}
+                  type="button"
+                  className={`spelling-key ${k.ch === ' ' ? 'wide' : ''}`}
+                  onPointerDown={keepFocus}
+                  onMouseDown={keepFocus}
+                  onClick={letter(k.ch)}
+                  aria-label={k.name}
+                >
+                  {k.label}
+                </button>
+              ))}
+              <button
+                type="button"
+                className="spelling-key wide"
+                onPointerDown={keepFocus}
+                onMouseDown={keepFocus}
+                onClick={backspace}
+                aria-label="Delete a letter"
+              >
+                ⌫
+              </button>
+              <button
+                type="button"
+                className="spelling-key wide go"
+                onPointerDown={keepFocus}
+                onMouseDown={keepFocus}
+                onClick={enter}
+                aria-label="Check my spelling"
+              >
+                ✓
+              </button>
+            </div>
           </div>,
+          document.body
+        )}
+      {mine && away &&
+        createPortal(
+          <button
+            type="button"
+            className="spelling-keypad-show"
+            onClick={() => {
+              sfx.tap()
+              setAway(false)
+              inner.current?.focus()
+            }}
+          >
+            ⌨ Show the keys
+          </button>,
           document.body
         )}
     </>

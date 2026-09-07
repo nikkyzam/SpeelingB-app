@@ -85,10 +85,12 @@ const BuzzerRace: React.FC<MatchProps> = ({ names, words, onFinish }) => {
       <div className="buzz-score">{names[0]} {scores[0]} — {scores[1]} {names[1]}</div>
       {stealer !== null && <div className="buzz-steal">🥷 {names[stealer]} is stealing!</div>}
       <SpellTurn
+        key={`${round}-${stealer ?? buzzed}`}
         who={names[stealer ?? buzzed]}
         word={word}
         label={`Round ${round + 1} of ${ROUNDS}`}
         onAnswer={answer}
+        reveal={stealer !== null}
       />
     </div>
   )

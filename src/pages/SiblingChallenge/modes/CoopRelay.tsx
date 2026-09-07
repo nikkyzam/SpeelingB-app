@@ -62,6 +62,7 @@ const CoopRelay: React.FC<MatchProps> = ({ names, words, onFinish }) => {
         {names[0]} {each[0]} · {names[1]} {each[1]} — you win or lose together.
       </p>
       <SpellTurn
+        key={turn}
         who={names[player]}
         word={word}
         label={`Best streak so far: ${best}`}

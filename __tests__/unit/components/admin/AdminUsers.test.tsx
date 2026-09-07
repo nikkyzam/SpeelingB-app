@@ -289,4 +289,36 @@ describe('the grown-up console', () => {
     // An empty document is a real state — a child who signed up and stopped.
     expect(screen.getByText(/hasn.t practised any words yet/)).toBeInTheDocument()
   })
+
+  // --- The level buttons say what they do ---------------------------------
+
+  it('turns a level off when a grown-up taps the lit button', async () => {
+    const user = userEvent.setup()
+    // No levels stored means "all levels", and all the buttons render lit.
+    listUsers.mockResolvedValue([{ ...maya, levels: [], stats: { ...maya.stats } }])
+    render(<AdminUsers />)
+    await screen.findByText('Maya')
+
+    await user.click(screen.getByRole('button', { name: /Two/ }))
+
+    // Tapping the lit "Two" must take Two Bee away — not switch every other
+    // level off and leave Two Bee as the only one, which is what it used to do.
+    expect(screen.getByText(/words from One Bee$/)).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Save changes' }))
+    await waitFor(() => expect(setUserLevels).toHaveBeenCalledWith('kid-1', [1]))
+  })
+
+  it('will not leave a child with no words at all', async () => {
+    const user = userEvent.setup()
+    listUsers.mockResolvedValue([{ ...maya, levels: [1], stats: { ...maya.stats } }])
+    render(<AdminUsers />)
+    await screen.findByText('Maya')
+
+    // One Bee is their only level; turning it off would leave nothing to learn.
+    await user.click(screen.getByRole('button', { name: /One/ }))
+
+    expect(screen.getByText(/words from One Bee$/)).toBeInTheDocument()
+    expect(screen.getByText('No changes to save')).toBeInTheDocument()
+  })
 })

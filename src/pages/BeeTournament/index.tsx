@@ -82,7 +82,20 @@ const BeeTournament: React.FC = () => {
     }
   }
 
-  const enough = bracket.some((r) => r.length > 0)
+  /**
+   * The rounds that actually have words in them.
+   *
+   * The bracket returns a short Bee rather than one padded with strangers, so
+   * rounds can be empty — and for a child who has just signed up, the *early*
+   * rounds are the empty ones: there is nothing they have spelled yet, and only
+   * the stretch rounds can be filled from the bank. Starting at round 0
+   * regardless left them looking at a blank stage with no way forward.
+   */
+  const playable = useMemo(
+    () => bracket.map((round, i) => (round.length > 0 ? i : -1)).filter((i) => i >= 0),
+    [bracket]
+  )
+  const enough = playable.length > 0
 
   const announce = (index: number) => {
     setRoundIndex(index)
@@ -104,10 +117,10 @@ const BeeTournament: React.FC = () => {
   const start = () => {
     setWings(WINGS)
     setSpelled(0)
-    announce(0)
+    announce(playable[0])
   }
 
-  const finish = (won: boolean, reached: number) => {
+  const finish = (won: boolean, reached: number, spelledNow = spelled) => {
     setPhase('over')
     recordBest(reached)
 
@@ -115,7 +128,7 @@ const BeeTournament: React.FC = () => {
     const cup = won ? 'cup-gold' : reached >= 4 ? 'cup-silver' : reached >= 3 ? 'cup-bronze' : null
     if (cup) TrophyService.award(cup)
 
-    const stars = spelled * 3 + (won ? 40 : 0)
+    const stars = spelledNow * 3 + (won ? 40 : 0)
     addStars(stars)
     if (won) {
       sfx.fanfare()
@@ -126,7 +139,7 @@ const BeeTournament: React.FC = () => {
     }
 
     setCelebration({
-      title: won ? '🏆 Champion of the Bee!' : `You spelled ${spelled} words!`,
+      title: won ? '🏆 Champion of the Bee!' : `You spelled ${spelledNow} words!`,
       message: won
         ? 'You went all the way to the Championship word. The Golden Cup is yours — it is in your Trophy Room.'
         : cup
@@ -143,6 +156,7 @@ const BeeTournament: React.FC = () => {
     setPhase('judging')
     ReviewSchedule.record(word.id, correct)
 
+    const spelledNow = spelled + (correct ? 1 : 0)
     if (correct) {
       setSpelled((n) => n + 1)
       sfx.correct()
@@ -157,7 +171,7 @@ const BeeTournament: React.FC = () => {
 
     later(() => {
       if (wingsLeft <= 0) {
-        finish(false, roundIndex + 1)
+        finish(false, roundIndex + 1, spelledNow)
         return
       }
       const nextWord = wordIndex + 1
@@ -170,11 +184,14 @@ const BeeTournament: React.FC = () => {
         speak(`Your word is. ${roundWords[nextWord].word}.`)
         return
       }
-      const nextRound = roundIndex + 1
-      if (nextRound < ROUNDS.length && (bracket[nextRound]?.length ?? 0) > 0) {
+      const nextRound = playable[playable.indexOf(roundIndex) + 1]
+      if (nextRound !== undefined) {
         announce(nextRound)
       } else {
-        finish(true, ROUNDS.length)
+        // Champion means the Championship word, not merely "no rounds left".
+        // A child with eight words used to be crowned — Golden Cup, winner's
+        // bonus and all — for finishing a Bee that stopped at the Qualifier.
+        finish(roundIndex === ROUNDS.length - 1, roundIndex + 1, spelledNow)
       }
     }, correct ? 1400 : 2600)
   }
@@ -216,9 +233,12 @@ const BeeTournament: React.FC = () => {
             miss a word and you lose one, but you keep going.
           </p>
           <ol className="bee-rounds">
-            {ROUNDS.map((r, i) => (
-              <li key={r.name} className={best >= i + 1 ? 'reached' : ''}>
-                <strong>{r.name}</strong> <span>{bracket[i]?.length ?? 0} {(bracket[i]?.length ?? 0) === 1 ? 'word' : 'words'}</span>
+            {/* Only the rounds this child will actually be asked — listing a
+                round with no words in it promises a stage that never opens. */}
+            {playable.map((i) => (
+              <li key={ROUNDS[i].name} className={best >= i + 1 ? 'reached' : ''}>
+                <strong>{ROUNDS[i].name}</strong>{' '}
+                <span>{bracket[i].length} {bracket[i].length === 1 ? 'word' : 'words'}</span>
               </li>
             ))}
           </ol>

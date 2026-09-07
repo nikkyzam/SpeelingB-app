@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import SpellingInput from '../../common/SpellingInput'
 import { useAudio } from '../../../contexts/AudioContext'
 import { wordBank, Word } from '../../../services/wordBank'
 import Button from '../../common/Button'
@@ -333,7 +334,7 @@ const TestAll: React.FC<TestAllProps> = ({
         </div>
 
         <div className="input-section">
-          <input
+          <SpellingInput
             type="text"
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}

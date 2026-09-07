@@ -257,6 +257,12 @@ export async function deleteUserAccount(uid: string): Promise<void> {
       rewards: deleteField(),
       points: deleteField(),
       adminLog: deleteField(),
+      // `local` is the biggest half of a child: their buddy, badges, streak,
+      // trophies, review schedule, game scores, purchases. It was left behind,
+      // so a child a parent had removed lived on in the database — invisible in
+      // the console, unexportable, and flatly contrary to what the removal
+      // panel promises ("this erases everything").
+      local: deleteField(),
     },
     { merge: true }
   )

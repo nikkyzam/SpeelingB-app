@@ -73,6 +73,7 @@ const TugOfWar: React.FC<MatchProps> = ({ names, words, onFinish }) => {
       </div>
 
       <SpellTurn
+        key={turn}
         who={names[player]}
         word={word}
         label={`Pull the rope! ${Math.abs(rope).toFixed(1)} of ${TO_WIN}`}

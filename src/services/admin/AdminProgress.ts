@@ -134,8 +134,18 @@ const bundled = <T>(raw: RawUserDoc, key: string, fallback: T): T => {
   }
 }
 
-const dayKey = (d: Date): string =>
-  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+/**
+ * A day key, formed exactly the way the app forms the ones it stores.
+ *
+ * `WordMastery` and `ReviewSchedule` both key their data with
+ * `toISOString().slice(0, 10)` — a UTC date. Reading those keys back with a
+ * *local* date silently disagrees for part of every day outside UTC: an
+ * evening in New York is already tomorrow in UTC, so a word practised then is
+ * filed under a day this chart would not be looking at, and "due today" counts
+ * the wrong set. Whatever one thinks of storing UTC, the reader must match the
+ * writer.
+ */
+const dayKey = (d: Date): string => d.toISOString().slice(0, 10)
 
 /** "word-scramble" -> "Word Scramble". Keeps this file free of a games registry. */
 const gameName = (id: string): string =>
@@ -183,7 +193,7 @@ export const deriveProgress = (raw: RawUserDoc, now: Date = new Date()): AdminUs
   const history = bundled<Record<string, number>>(raw, 'learn_history', {})
   const days: DayCount[] = []
   for (let i = HISTORY_DAYS - 1; i >= 0; i--) {
-    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i)
+    const d = new Date(now.getTime() - i * 86400000)
     days.push({
       date: dayKey(d),
       label: d.toLocaleDateString(undefined, { weekday: 'narrow' }),
