@@ -10,7 +10,7 @@ import { wordBank, Word } from '../../services/wordBank'
 import Button from '../../components/common/Button'
 import Celebration, { CelebrationData } from '../../components/common/Celebration'
 import './DailyQuiz.css'
-import { NO_SPELLING_HELP } from '../../components/common/spellingInput'
+import SpellingInput from '../../components/common/SpellingInput'
 
 /**
  * The daily gate for games: spell EVERY word learned so far, in random order.
@@ -171,8 +171,7 @@ const DailyQuiz: React.FC = () => {
             <button className="dq-hear ghost" onClick={() => speak(current.meaning)}>📖 Hear meaning</button>
           </div>
 
-          <input
-              {...NO_SPELLING_HELP}
+          <SpellingInput
             ref={inputRef}
             className={`dq-input ${result ?? ''}`}
             value={input}

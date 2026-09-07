@@ -12,7 +12,7 @@ import Celebration, { CelebrationData } from '../../components/common/Celebratio
 import sfx from '../../components/games/shared/sfx'
 import Button from '../../components/common/Button'
 import './BeeTournament.css'
-import { NO_SPELLING_HELP } from '../../components/common/spellingInput'
+import SpellingInput from '../../components/common/SpellingInput'
 
 const WINGS = 2
 const BEST_KEY = 'bee_tournament_best'
@@ -248,8 +248,7 @@ const BeeTournament: React.FC = () => {
           <Button variant="secondary" icon="🔊" onClick={() => speak(word.word)}>Hear it again</Button>
           {word.meaning && <p className="bee-meaning">{word.meaning}</p>}
 
-          <input
-              {...NO_SPELLING_HELP}
+          <SpellingInput
             ref={inputRef}
             className={`bee-input ${verdict ?? ''}`}
             value={input}

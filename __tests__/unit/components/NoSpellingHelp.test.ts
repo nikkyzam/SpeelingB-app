@@ -37,14 +37,15 @@ const SPELLING_FILES = [
 ]
 
 describe('no device may spell the word for a child', () => {
-  it.each(SPELLING_FILES)('%s uses NO_SPELLING_HELP on its input', (rel) => {
+  it.each(SPELLING_FILES)('%s spells into a SpellingInput, not a bare <input>', (rel) => {
     const src = fs.readFileSync(path.join(SRC, rel), 'utf-8')
-    expect(src, `${rel} has an input a child spells into`).toContain('<input')
     expect(
-      src.includes('NO_SPELLING_HELP'),
-      `${rel} does not spread NO_SPELLING_HELP onto its input. Without it an ` +
-        `iPad will autocorrect the child's answer and suggest the whole word.`
+      src.includes('<SpellingInput'),
+      `${rel} does not use SpellingInput. Without it an iPad will autocorrect the ` +
+        `child's answer and its predictive bar will offer the whole word.`
     ).toBe(true)
+    // A bare input with the attributes hand-spread is the old, weaker fix.
+    expect(src, `${rel} still spreads NO_SPELLING_HELP by hand`).not.toContain('NO_SPELLING_HELP')
   })
 
   it('every listed file actually exists, so the list cannot rot silently', () => {
@@ -53,12 +54,16 @@ describe('no device may spell the word for a child', () => {
     }
   })
 
-  it('the shared attributes cover what an iPad actually does', () => {
-    const src = fs.readFileSync(path.join(SRC, 'components/common/spellingInput.ts'), 'utf-8')
+  it('the shared box covers what an iPad actually does', () => {
+    const src = fs.readFileSync(path.join(SRC, 'components/common/SpellingInput/index.tsx'), 'utf-8')
     // autoCorrect is the Safari-specific one and the one most often forgotten.
     for (const attr of ['autoComplete', 'autoCorrect', 'autoCapitalize', 'spellCheck']) {
       expect(src, `NO_SPELLING_HELP is missing ${attr}`).toContain(attr)
     }
+    // No web page can remove the predictive bar, so on touch the system
+    // keyboard is never opened and the child spells on our own keypad.
+    expect(src).toContain("inputMode={touch ? 'none'")
+    expect(src).toContain('spelling-keypad')
   })
 
   it('no game hands a child the answer before they answer', () => {

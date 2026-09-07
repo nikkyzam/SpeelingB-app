@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { wordBank } from '../../../services/wordBank'
 import './WordScramble.css'
-import { NO_SPELLING_HELP } from '../../common/spellingInput'
+import SpellingInput from '../../common/SpellingInput'
 
 interface WordScrambleProps {
   onComplete: (score: number) => void
@@ -147,8 +147,7 @@ const WordScramble: React.FC<WordScrambleProps> = ({ onComplete, duration = 45, 
         </div>
 
         <div className="input-section">
-          <input
-              {...NO_SPELLING_HELP}
+          <SpellingInput
             type="text"
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}

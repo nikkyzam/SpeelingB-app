@@ -12,7 +12,7 @@ import { explain } from '../../../services/words/explain'
 import sfx from '../../games/shared/sfx'
 import Button from '../../common/Button'
 import './SpellMode.css'
-import { NO_SPELLING_HELP } from '../../common/spellingInput'
+import SpellingInput from '../../common/SpellingInput'
 
 interface SpellModeProps {
   onComplete?: (wordIds: string[]) => void
@@ -335,8 +335,7 @@ const SpellMode: React.FC<SpellModeProps> = ({
 
         <div className="input-section">
           <div className="input-wrapper">
-            <input
-              {...NO_SPELLING_HELP}
+            <SpellingInput
               type="text"
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}

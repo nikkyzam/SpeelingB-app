@@ -5,7 +5,7 @@ import { shuffle, isPlayable } from '../shared/wordTricks'
 import ReviewSchedule from '../../../services/progress/ReviewSchedule'
 import sfx from '../shared/sfx'
 import './SpellTower.css'
-import { NO_SPELLING_HELP } from '../../common/spellingInput'
+import SpellingInput from '../../common/SpellingInput'
 
 interface SpellTowerProps {
   onComplete: (score: number) => void
@@ -163,8 +163,7 @@ const SpellTower: React.FC<SpellTowerProps> = ({ onComplete, words: providedWord
       {state !== 'done' && (
         <div className="st-controls">
           <button className="st-btn ghost" onClick={() => speak(current.word)} aria-label="Hear the word again">🔊 Hear it</button>
-          <input
-              {...NO_SPELLING_HELP}
+          <SpellingInput
             ref={inputRef}
             className={`st-input ${state === 'good' ? 'ok' : state === 'bad' ? 'bad' : ''}`}
             value={input}

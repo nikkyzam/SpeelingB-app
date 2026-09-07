@@ -1,0 +1,69 @@
+/* The letter keypad: sits where the iPad's keyboard would, and replaces it. */
+.spelling-keypad {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1500; /* over the buddy (900), under the celebration (2000) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom, 0px));
+  background: var(--card);
+  border-top: 3px solid var(--border);
+  box-shadow: var(--shadow-lg);
+}
+
+.spelling-keypad-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  max-width: 30rem;
+}
+
+.spelling-key {
+  flex: 1 1 0;
+  min-width: 2.2rem;
+  max-width: 3.6rem;
+  height: 3.1rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card-soft);
+  color: var(--text);
+  font-family: var(--font-primary);
+  font-size: 1.4rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+.spelling-key:active {
+  transform: scale(0.92);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.spelling-key.wide {
+  flex-basis: 5rem;
+  max-width: 5.4rem;
+}
+.spelling-key.go {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-color: transparent;
+}
+
+/* Let the page scroll up from under the keypad, as it would from a keyboard. */
+body.has-spelling-keypad {
+  padding-bottom: 16rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spelling-key { transition: none; }
+  .spelling-key:active { transform: none; }
+}

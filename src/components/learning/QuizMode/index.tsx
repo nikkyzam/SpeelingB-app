@@ -6,7 +6,7 @@ import ReviewSchedule from '../../../services/progress/ReviewSchedule'
 import { AchievementsService } from '../../../services/rewards/AchievementsService'
 import Button from '../../common/Button'
 import './QuizMode.css'
-import { NO_SPELLING_HELP } from '../../common/spellingInput'
+import SpellingInput from '../../common/SpellingInput'
 
 interface QuizModeProps {
   type: 'spell' | 'vocab'
@@ -416,8 +416,7 @@ const QuizMode: React.FC<QuizModeProps> = ({
 
         {type === 'spell' && (
           <div className="spell-input-section">
-            <input
-              {...NO_SPELLING_HELP}
+            <SpellingInput
               type="text"
               value={selectedOption || ''}
               onChange={(e) => setSelectedOption(e.target.value)}

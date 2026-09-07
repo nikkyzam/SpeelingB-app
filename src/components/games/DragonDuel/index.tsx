@@ -5,7 +5,7 @@ import { shuffle, isPlayable } from '../shared/wordTricks'
 import ReviewSchedule from '../../../services/progress/ReviewSchedule'
 import sfx from '../shared/sfx'
 import './DragonDuel.css'
-import { NO_SPELLING_HELP } from '../../common/spellingInput'
+import SpellingInput from '../../common/SpellingInput'
 
 interface DragonDuelProps {
   onComplete: (score: number) => void
@@ -169,8 +169,7 @@ const DragonDuel: React.FC<DragonDuelProps> = ({ onComplete, words: providedWord
 
           <div className="dd-controls">
             <button className="dd-btn ghost" onClick={() => speak(current.word)} aria-label="Hear the word again">🔊 Hear it</button>
-            <input
-              {...NO_SPELLING_HELP}
+            <SpellingInput
               ref={inputRef}
               className={`dd-input ${phase === 'hit' ? 'ok' : phase === 'burned' ? 'bad' : ''}`}
               value={input}

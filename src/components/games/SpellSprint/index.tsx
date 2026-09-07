@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { wordBank } from '../../../services/wordBank'
 import './SpellSprint.css'
-import { NO_SPELLING_HELP } from '../../common/spellingInput'
+import SpellingInput from '../../common/SpellingInput'
 
 interface SpellSprintProps {
   onComplete: (score: number) => void
@@ -174,8 +174,7 @@ const SpellSprint: React.FC<SpellSprintProps> = ({ onComplete, duration = 60, wo
         </div>
 
         <div className="input-section">
-          <input
-              {...NO_SPELLING_HELP}
+          <SpellingInput
             ref={inputRef}
             type="text"
             value={userInput}
