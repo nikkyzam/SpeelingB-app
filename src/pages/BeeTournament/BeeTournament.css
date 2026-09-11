@@ -14,7 +14,7 @@
   gap: var(--spacing-sm);
   flex-wrap: wrap;
 }
-.bee-header h1 { margin: 0; font-family: var(--font-primary); font-size: 1.4rem; color: var(--primary-2); }
+.bee-header h1 { margin: 0; font-family: var(--font-primary); font-size: 1.7rem; color: var(--primary-2); text-shadow: 0 2px 0 rgba(255,255,255,0.6); }
 .bee-wings { font-size: 1.2rem; letter-spacing: 0.1rem; }
 .bee-empty { color: var(--text-soft); }
 
@@ -30,10 +30,28 @@
   align-items: center;
   gap: var(--spacing-sm);
   background: var(--card);
+  border: 2px solid color-mix(in srgb, var(--border) 55%, transparent);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg) var(--spacing-md);
   overflow: hidden;
+  box-shadow: var(--shadow-md), var(--shadow-pop);
 }
+/* Bunting strip across the top of the lobby — instant party. */
+.bee-lobby::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 14px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--primary) 0 18px,
+    var(--secondary) 18px 36px,
+    var(--accent) 36px 54px,
+    var(--warning) 54px 72px
+  );
+  opacity: 0.85;
+}
+.bee-lobby > * { position: relative; }
 .bee-spotlight {
   position: absolute;
   top: -40%;
@@ -68,13 +86,27 @@
 .bee-rounds { list-style: none; margin: 0; padding: 0; width: 100%; display: flex; flex-direction: column; gap: 0.3rem; }
 .bee-rounds li {
   display: flex; justify-content: space-between; gap: var(--spacing-sm);
-  padding: 0.35rem 0.7rem;
+  padding: 0.45rem 0.8rem;
   border-radius: var(--radius-md);
   background: var(--card-soft);
   font-size: 0.85rem;
+  font-family: var(--font-primary);
+  font-weight: 700;
+  align-items: center;
 }
-.bee-rounds li.reached { border-left: 4px solid var(--success); }
-.bee-rounds span { color: var(--text-soft); }
+/* Each round gets its medal, from first steps to the crown. */
+.bee-rounds li::before { margin-right: 0.4rem; }
+.bee-rounds li:nth-child(1)::before { content: '🐣'; }
+.bee-rounds li:nth-child(2)::before { content: '⭐'; }
+.bee-rounds li:nth-child(3)::before { content: '🥉'; }
+.bee-rounds li:nth-child(4)::before { content: '🥈'; }
+.bee-rounds li:nth-child(5)::before { content: '🥇'; }
+.bee-rounds li:nth-child(6)::before { content: '👑'; }
+.bee-rounds li.reached {
+  border-left: 4px solid var(--success);
+  background: color-mix(in srgb, var(--success) 14%, var(--card));
+}
+.bee-rounds span { color: var(--text-soft); font-family: var(--font-secondary); font-weight: 700; }
 .bee-best { margin: 0; font-size: 0.85rem; color: var(--text-soft); }
 
 .bee-round-tag {

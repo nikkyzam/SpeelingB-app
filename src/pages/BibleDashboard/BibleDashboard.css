@@ -1,29 +1,35 @@
-/* BibleApiDashboard.css */
+/* BibleApiDashboard.css — re-themed to match the app's warm, kid-friendly
+   world. Variables are scoped to the dashboard (they used to sit on :root and
+   leak everywhere). */
 
-:root {
-  --primary-color: #2c3e50;
-  --secondary-color: #3498db;
-  --accent-color: #e74c3c;
-  --success-color: #2ecc71;
-  --warning-color: #f39c12;
+.bible-api-dashboard {
+  --primary-color: #b25e09;            /* warm honey-brown instead of navy */
+  --secondary-color: #3ab795;          /* app secondary teal */
+  --accent-color: #ef476f;             /* playful pink instead of harsh red */
+  --success-color: #2fbf71;
+  --warning-color: #ffb020;
   --light-bg: #f8f9fa;
   --dark-bg: #1a252f;
-  --text-primary: #2c3e50;
-  --text-secondary: #7f8c8d;
-  --text-light: #ecf0f1;
+  --text-primary: #4a3200;             /* app text brown */
+  --text-secondary: #8a6d2f;
+  --text-light: #fff8e1;
   --card-bg: #ffffff;
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.15);
-  --border-radius: 12px;
+  --border-radius: 18px;
   --transition: all 0.3s ease;
-}
 
-.bible-api-dashboard {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: var(--card-soft);
+  font-family: var(--font-secondary, 'Nunito', sans-serif);
+  background: transparent;
   min-height: 100vh;
   padding: 20px;
   color: var(--text-primary);
+}
+
+.bible-api-dashboard h1,
+.bible-api-dashboard h2,
+.bible-api-dashboard h3 {
+  font-family: var(--font-primary, 'Baloo 2', cursive);
 }
 
 /* Dashboard Header */
@@ -31,12 +37,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, var(--primary-color), #34495e);
+  background: linear-gradient(135deg, var(--primary, #f5a623), var(--primary-2, #ff7a00));
   color: white;
   padding: 24px 32px;
   border-radius: var(--border-radius);
   margin-bottom: 30px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow), 0 6px 0 rgba(0, 0, 0, 0.1);
 }
 
 .header-title h1 {
@@ -98,9 +104,10 @@
   color: white;
   border: none;
   padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: 999px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: var(--font-primary, inherit);
   transition: var(--transition);
   display: flex;
   align-items: center;
@@ -108,7 +115,7 @@
 }
 
 .clear-cache-btn:hover {
-  background: #c0392b;
+  background: #d63a5f;
   transform: translateY(-2px);
   box-shadow: var(--shadow-hover);
 }
@@ -294,7 +301,7 @@
 .search-input:focus {
   outline: none;
   border-color: var(--secondary-color);
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  box-shadow: 0 0 0 3px rgba(58, 183, 149, 0.18);
 }
 
 .search-btn {
@@ -302,15 +309,16 @@
   color: white;
   border: none;
   padding: 14px 28px;
-  border-radius: 10px;
+  border-radius: 999px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: var(--font-primary, inherit);
   transition: var(--transition);
   white-space: nowrap;
 }
 
 .search-btn:hover:not(:disabled) {
-  background: #2980b9;
+  background: #2d9678;
   transform: translateY(-2px);
 }
 

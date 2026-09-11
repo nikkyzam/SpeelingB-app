@@ -17,8 +17,9 @@
 .tr-header h1 {
   margin: 0;
   font-family: var(--font-primary);
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   color: var(--primary-2);
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.6);
 }
 .tr-count {
   font-family: var(--font-primary);
@@ -45,6 +46,9 @@
   flex-direction: column;
   align-items: center;
   line-height: 1;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  background: radial-gradient(ellipse at 50% 80%, color-mix(in srgb, var(--secondary) 22%, transparent), transparent 70%);
 }
 .tr-buddy-creature { font-size: 3rem; animation: tr-bob 3.5s ease-in-out infinite; }
 .tr-buddy-hat { font-size: 1.5rem; margin-bottom: -0.6rem; z-index: 1; }
@@ -58,15 +62,24 @@
 @keyframes tr-bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-6px) } }
 
 /* --- Shelves --------------------------------------------------------------
-   A plank under each row does the work of looking like a shelf; the trophies
-   sit on it rather than floating in a grid. */
-.tr-shelf { display: flex; flex-direction: column; gap: 0.4rem; }
+   Each shelf is a bright card with a wooden plank under the trophies, so the
+   room reads as furniture rather than a list. */
+.tr-shelf {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  background: var(--card);
+  border: 2px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md) var(--spacing-md) var(--spacing-sm);
+  box-shadow: var(--shadow-md), var(--shadow-pop);
+}
 .tr-shelf-label { display: flex; align-items: baseline; gap: var(--spacing-sm); flex-wrap: wrap; }
 .tr-shelf-label h2 {
   margin: 0;
   font-family: var(--font-primary);
-  font-size: 1rem;
-  color: var(--text);
+  font-size: 1.1rem;
+  color: var(--primary-2);
 }
 .tr-shelf-label span { font-size: 0.78rem; color: var(--text-soft); }
 
@@ -78,17 +91,17 @@
   padding: var(--spacing-sm) var(--spacing-sm) 0;
 }
 .tr-shelf-plank {
-  height: 10px;
+  height: 12px;
   border-radius: var(--radius-round);
-  background: linear-gradient(180deg, color-mix(in srgb, var(--primary) 45%, var(--card)), var(--card-soft));
-  box-shadow: 0 3px 8px -4px rgba(0, 0, 0, 0.35);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--primary) 55%, var(--card)), color-mix(in srgb, var(--primary) 30%, var(--card-soft)));
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.35), inset 0 2px 0 rgba(255, 255, 255, 0.35);
 }
 
 .tr-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
   min-width: 4.5rem;
   padding: var(--spacing-sm) 0.4rem;
   border: none;
@@ -97,9 +110,22 @@
   color: inherit;
   cursor: pointer;
   border-radius: var(--radius-md);
+  transition: transform var(--transition-normal);
 }
-.tr-item:hover { background: var(--card-soft); }
-.tr-item-icon { font-size: 2.2rem; line-height: 1; }
+.tr-item:hover { background: var(--card-soft); transform: translateY(-3px) scale(1.04); }
+/* Every trophy — won or not — stands on a little pedestal circle. */
+.tr-item-icon {
+  font-size: 2.2rem;
+  line-height: 1;
+  width: 3.6rem;
+  height: 3.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffffff, var(--card-soft));
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.06), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
 .tr-item-name {
   font-family: var(--font-primary);
   font-size: 0.7rem;
@@ -107,10 +133,22 @@
   color: var(--text);
   text-align: center;
 }
-/* Unearned: a shape, not a blank. Enough to be curious about. */
-.tr-item.empty .tr-item-icon { opacity: 0.35; filter: grayscale(1); }
+/* Unearned: a dashed silhouette pedestal — a mystery to be curious about. */
+.tr-item.empty .tr-item-icon {
+  opacity: 0.55;
+  filter: grayscale(1);
+  background: transparent;
+  border: 2.5px dashed color-mix(in srgb, var(--text-soft) 55%, transparent);
+  box-shadow: none;
+}
 .tr-item.empty .tr-item-name { color: var(--text-soft); }
-.tr-item.won .tr-item-icon { animation: tr-shine 4s ease-in-out infinite; }
+/* Won: a golden halo so the ones they earned sparkle from across the room. */
+.tr-item.won .tr-item-icon {
+  background: radial-gradient(circle at 35% 30%, #fffbe8, color-mix(in srgb, var(--primary) 35%, #ffffff));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 45%, transparent),
+              0 0 18px color-mix(in srgb, var(--primary) 55%, transparent);
+  animation: tr-shine 4s ease-in-out infinite;
+}
 @keyframes tr-shine {
   0%, 92%, 100% { transform: rotate(0) scale(1) }
   95% { transform: rotate(-6deg) scale(1.08) }
