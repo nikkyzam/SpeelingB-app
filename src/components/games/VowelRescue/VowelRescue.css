@@ -1,0 +1,137 @@
+.vowel-rescue {
+  max-width: 660px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  text-align: center;
+}
+
+.vr-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  border-bottom: 2px dashed var(--border);
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  text-align: left;
+}
+.vr-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.vr-stats { display: flex; gap: var(--spacing-lg); }
+.vr-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
+.vr-stat strong { font-size: 1.15rem; color: var(--text); }
+
+.vr-meaning {
+  margin: var(--spacing-sm) 0 0;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+/* --- the word, with its vowels gone ------------------------------------- */
+
+.vr-word {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: var(--spacing-md) 0 var(--spacing-sm);
+}
+.vr-word.shake { animation: vr-shake 0.4s ease; }
+@keyframes vr-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+.vr-letter {
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 7vw, 2.4rem);
+  line-height: 1.2;
+  min-width: 1.1em;
+  color: var(--text);
+}
+
+/* A blank is a slot waiting for a vowel; the glowing one is next up. */
+.vr-letter.blank,
+.vr-letter.filled {
+  border-bottom: 4px solid var(--border);
+  border-radius: 3px;
+}
+.vr-letter.filled { color: var(--primary); border-bottom-color: var(--primary); }
+.vr-letter.blank[data-active='true'] {
+  border-bottom-color: var(--warning);
+  background: color-mix(in srgb, var(--warning) 18%, transparent);
+  animation: vr-glow 1.2s ease-in-out infinite;
+}
+@keyframes vr-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+.vr-word.done .vr-letter.filled { color: var(--success); border-bottom-color: var(--success); }
+
+.vr-hint { margin: 0 0 var(--spacing-md); font-size: 0.85rem; color: var(--text-soft); min-height: 1.2em; }
+
+/* --- the vowel pad -------------------------------------------------------- */
+
+.vr-pad {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.vr-key {
+  width: 3.2rem;
+  height: 3.2rem;
+  border: 3px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card-soft);
+  color: var(--text);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.5rem;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+.vr-key:active:not(:disabled) { transform: scale(0.92); background: var(--primary); color: var(--on-primary); }
+.vr-key:disabled { opacity: 0.45; cursor: default; }
+
+.vr-lives { margin-top: var(--spacing-md); font-size: 1.1rem; letter-spacing: 0.2rem; }
+.vr-lives .off { opacity: 0.25; filter: grayscale(1); }
+
+.vr-btn {
+  border: none;
+  border-radius: var(--radius-round);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  padding: 0.5rem 1.1rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.vr-btn.hear { background: var(--card-soft); color: var(--text); border: 2px solid var(--border); }
+
+.vr-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
+
+.vr-flash {
+  margin-top: var(--spacing-md);
+  font-family: var(--font-primary);
+  font-weight: 800;
+}
+.vr-flash.ok { color: var(--success); }
+.vr-flash.bad { color: var(--error); }
+
+@media (prefers-reduced-motion: reduce) {
+  .vr-word.shake,
+  .vr-letter.blank[data-active='true'] { animation: none; }
+  .vr-key { transition: none; }
+}

@@ -55,6 +55,9 @@ import {
   WordFamily,
   SyllableClap,
   DefinitionDetective,
+  VowelRescue,
+  DoubleTrouble,
+  OnStage,
   PrizeWheel,
   BibleTriviaEnhanced,
   BibleMemorizer
@@ -87,6 +90,7 @@ type GameMode =
   | 'word-machine' | 'dragon-duel' | 'word-whack' | 'word-fishing' | 'rhyme-time'
   | 'spell-tower' | 'word-sort' | 'parrot-party' | 'story-builder' | 'treasure-trail'
   | 'homophone-hero' | 'word-family' | 'syllable-clap' | 'definition-detective'
+  | 'vowel-rescue' | 'double-trouble' | 'on-stage'
   | 'bible-trivia' | 'bible-memorizer'
   | null
 
@@ -503,6 +507,39 @@ const GameCenter: React.FC = () => {
       unlocked: learningFlow.isGameUnlocked('definition-detective')
     },
     {
+      id: 'vowel-rescue',
+      title: '🅰️ Vowel Rescue',
+      description: 'Every vowel floated away — put them back!',
+      icon: '🅰️',
+      color: '#F76707',
+      duration: '6 words',
+      category: 'spelling' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('vowel-rescue')
+    },
+    {
+      id: 'double-trouble',
+      title: '👯 Double Trouble',
+      description: 'Find the letter that comes twice in a row',
+      icon: '👯',
+      color: '#0CA678',
+      duration: '8 words',
+      category: 'think' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('double-trouble')
+    },
+    {
+      id: 'on-stage',
+      title: '🎤 On Stage',
+      description: 'Spell it out loud — one letter, no going back!',
+      icon: '🎤',
+      color: '#D6336C',
+      duration: '5 words',
+      category: 'spelling' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('on-stage')
+    },
+    {
       id: 'balloon-pop',
       title: '🎈 Balloon Pop',
       description: 'Pop balloons in order to spell words',
@@ -660,7 +697,7 @@ const GameCenter: React.FC = () => {
       color: '#FFD700',
       duration: 'Unlimited',
       category: 'bible' as Category,
-      unlocked: learningFlow.isGameUnlocked('word-scramble')
+      unlocked: learningFlow.isGameUnlocked('bible-trivia')
     },
     {
       id: 'bible-memorizer',
@@ -824,6 +861,9 @@ const GameCenter: React.FC = () => {
       case 'word-family': return <WordFamily onComplete={handleGameComplete} />
       case 'syllable-clap': return <SyllableClap words={selectedWords} onComplete={handleGameComplete} />
       case 'definition-detective': return <DefinitionDetective words={selectedWords} onComplete={handleGameComplete} />
+      case 'vowel-rescue': return <VowelRescue words={selectedWords} onComplete={handleGameComplete} />
+      case 'double-trouble': return <DoubleTrouble words={selectedWords} onComplete={handleGameComplete} />
+      case 'on-stage': return <OnStage words={selectedWords} onComplete={handleGameComplete} />
       case 'bible-trivia': return <BibleTriviaEnhanced onComplete={handleGameComplete} />
       case 'bible-memorizer': return <BibleMemorizer onComplete={handleGameComplete} />
       default: return null
