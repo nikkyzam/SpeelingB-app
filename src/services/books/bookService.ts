@@ -44,7 +44,11 @@ export class BookService {
 
   // Fetch full content for a book if needed
   static async fetchFullBookContent(bookId: string): Promise<ChristianBook | undefined> {
-    const book = this.getBookById(bookId);
+    let book = this.getBookById(bookId);
+    if (!book) {
+      book = await BookApiService.fetchBookById(bookId);
+      if (book) this.onlineBooks.push(book);
+    }
     if (!book) return undefined;
 
     // If it's an Open Library book, try to get full description

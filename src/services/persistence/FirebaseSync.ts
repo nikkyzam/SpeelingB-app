@@ -1,8 +1,10 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, runTransaction } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
 import { db, auth } from '../../config/firebase';
 import { withoutAdminClaim, withAdminClaimDenied } from '../auth/adminClaim';
 import { BUNDLED_SYNC_KEYS, prepareDeviceFor } from './userKeys';
+
+import { equalSyncData, mergeSync } from './mergeSync';
 
 const SYNC_FLAG_PREFIX = 'fb-synced:';
 
@@ -22,6 +24,62 @@ let hydratedUid: string | null = null;
 let removedUid: string | null = null;
 
 let syncTimer: number | null = null;
+let baseline: Record<string, any> = {};
+let uploadQueue: Promise<void> = Promise.resolve();
+
+const syncFields = (data: Record<string, any>) => {
+  const out: Record<string, any> = {};
+  for (const key of ['progress', 'userData', 'points', 'rewards', 'local']) {
+    if (data[key] !== undefined) out[key] = data[key];
+  }
+  return out;
+};
+const localSnapshot = (): Record<string, any> => {
+  const out: Record<string, any> = {};
+  const read = (key: string) => JSON.parse(localStorage.getItem(key) || 'null');
+  const progress = read('learningProgress');
+  const user = read('user-storage')?.state?.user;
+  const rewards = read('reward-storage')?.state;
+  const points = read('kids_spelling_points');
+  if (progress) out.progress = progress;
+  if (user) out.userData = withoutAdminClaim(user);
+  if (rewards) out.rewards = rewards;
+  if (points) out.points = points;
+  out.local = {};
+  for (const key of BUNDLED_SYNC_KEYS) {
+    const value = localStorage.getItem(key);
+    if (value !== null) out.local[key] = value;
+  }
+  return out;
+};
+
+/** Apply server changes before reloading providers that cache local storage. */
+const applySnapshot = (data: Record<string, any>): boolean => {
+  let changed = false;
+  const put = (key: string, value: string) => {
+    if (localStorage.getItem(key) !== value) {
+      localStorage.setItem(key, value);
+      changed = true;
+    }
+  };
+  if (data.progress) put('learningProgress', JSON.stringify(data.progress));
+  if (data.userData) {
+    const saved = JSON.parse(localStorage.getItem('user-storage') || '{"state":{}}');
+    saved.state = { ...saved.state, user: withAdminClaimDenied(data.userData) };
+    put('user-storage', JSON.stringify(saved));
+  }
+  if (data.points) put('kids_spelling_points', JSON.stringify(data.points));
+  if (data.rewards) put('reward-storage', JSON.stringify({ state: data.rewards, version: 0 }));
+  for (const key of BUNDLED_SYNC_KEYS) {
+    if (typeof data.local?.[key] === 'string') put(key, data.local[key]);
+    else if (localStorage.getItem(key) !== null) { localStorage.removeItem(key); changed = true; }
+  }
+  return changed;
+};
+const remember = (uid: string, data: Record<string, any>) => {
+  baseline = data;
+  sessionStorage.setItem(`${SYNC_FLAG_PREFIX}${uid}`, JSON.stringify(data));
+};
 
 /** Per-child state that changes outside a progress save. */
 const CHANGE_EVENTS = [
@@ -46,6 +104,9 @@ export class FirebaseSync {
   static resetHydration() {
     hydratedUid = null;
     removedUid = null;
+    baseline = {};
+    if (syncTimer !== null) window.clearTimeout(syncTimer);
+    syncTimer = null;
     Object.keys(sessionStorage)
       .filter((k) => k.startsWith(SYNC_FLAG_PREFIX))
       .forEach((k) => sessionStorage.removeItem(k));
@@ -96,104 +157,36 @@ export class FirebaseSync {
     // Don't sync for anonymous/guest users or if not logged in
     if (!user || user.isAnonymous) return;
 
-    // Guard against an infinite reload loop: syncing applies data by reloading
-    // the page, which re-fires the auth listener. Only run once per session per
-    // user so the reload can't chain forever.
+    // Always check the server, including after refresh. The saved snapshot
+    // distinguishes a reload from a new remote edit without suppressing reads.
     const flag = `${SYNC_FLAG_PREFIX}${user.uid}`;
-    if (sessionStorage.getItem(flag)) {
-      // Already pulled earlier in this session (e.g. before a reload) — the
-      // local copy is authoritative, so allow uploads again.
-      hydratedUid = user.uid;
-      return;
-    }
-
-    // If a different account used this device last, everything of theirs goes
-    // before this child's data is pulled down. This is what stops one child's
-    // buddy, stars and world from greeting the next child to sign in.
-    if (prepareDeviceFor(user.uid)) {
-      console.log('Firebase sync: different account than last time — cleared local data');
-    }
-
+    const switched = prepareDeviceFor(user.uid);
+    let previous: Record<string, any> | undefined;
     try {
-      const docRef = doc(db, 'users', user.uid);
-      const docSnap = await getDoc(docRef);
-      sessionStorage.setItem(flag, '1'); // mark before any reload
-      hydratedUid = user.uid; // safe to upload from here on
-
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-
-        // A grown-up removed this child. Take the data off this device and sign
-        // them out — otherwise the next upload would put it all back.
-        if (data.deleted) {
-          removedUid = user.uid;
-          await FirebaseSync.wipeDevice();
-          return;
-        }
-
-        let changed = false;
-
-        if (data.progress) {
-          const next = JSON.stringify(data.progress);
-          if (localStorage.getItem('learningProgress') !== next) {
-            localStorage.setItem('learningProgress', next);
-            changed = true;
-          }
-        }
-        if (data.userData) {
-          const userStore = JSON.parse(localStorage.getItem('user-storage') || '{"state":{}}');
-          // Anyone may write their own user document, so a saved `isAdmin` is
-          // self-declared. AuthService puts the real claim back from the token.
-          const incoming = withAdminClaimDenied(data.userData);
-          if (JSON.stringify(userStore.state?.user) !== JSON.stringify(incoming)) {
-            userStore.state = userStore.state || {};
-            userStore.state.user = incoming;
-            localStorage.setItem('user-storage', JSON.stringify(userStore));
-            changed = true;
-          }
-        }
-        if (data.points) {
-          // Stars buy real-world rewards, so a grown-up may correct the balance
-          // from the admin console — the server's copy wins on the way in.
-          const next = JSON.stringify(data.points);
-          if (localStorage.getItem('kids_spelling_points') !== next) {
-            localStorage.setItem('kids_spelling_points', next);
-            changed = true;
-          }
-        }
-        if (data.rewards) {
-          const next = JSON.stringify({ state: data.rewards, version: 0 });
-          if (localStorage.getItem('reward-storage') !== next) {
-            localStorage.setItem('reward-storage', next);
-            changed = true;
-          }
-        }
-        // Everything else that is the child's — buddy, badges, review schedule,
-        // high scores — travels as one bundle of raw strings. The server's copy
-        // wins for any key it has; keys it lacks are left alone, because the
-        // device may simply be ahead of the last upload.
-        if (data.local && typeof data.local === 'object') {
-          for (const key of BUNDLED_SYNC_KEYS) {
-            const value = (data.local as Record<string, unknown>)[key];
-            if (typeof value === 'string' && localStorage.getItem(key) !== value) {
-              localStorage.setItem(key, value);
-              changed = true;
-            }
-          }
-        }
-
-        console.log('Firebase data synced from server', changed ? '(applying)' : '(no change)');
-        // Only reload when the server actually had newer data — and thanks to
-        // the session flag above, at most once.
-        if (changed) {
-          window.dispatchEvent(new Event('learningProgressUpdated'));
-          window.location.reload();
-        }
-      } else {
-        // First time we have seen this account: give them a document so a
-        // grown-up can find them before they have learned anything.
-        await FirebaseSync.ensureUserDocument();
+      const saved = sessionStorage.getItem(flag);
+      if (!switched && saved && saved !== '1') previous = JSON.parse(saved);
+    } catch { /* an older session has no usable baseline */ }
+    try {
+      const snap = await getDoc(doc(db, 'users', user.uid));
+      if (auth.currentUser?.uid !== user.uid) return;
+      const data = snap.data() || {};
+      if (data.deleted) {
+        removedUid = user.uid;
+        await FirebaseSync.wipeDevice();
+        return;
       }
+      const remote = syncFields(data);
+      const local = localSnapshot();
+      const incoming = previous ? mergeSync(previous, local, remote)
+        : { ...local, ...remote, local: { ...local.local, ...remote.local } };
+      remember(user.uid, remote);
+      hydratedUid = user.uid;
+      const changed = !equalSyncData(local, incoming) && applySnapshot(incoming);
+      if (switched || changed) {
+        window.dispatchEvent(new Event('learningProgressUpdated'));
+        window.location.reload();
+      }
+      if (!snap.exists()) await FirebaseSync.ensureUserDocument();
     } catch (error) {
       console.error('Error syncing from Firebase:', error);
     }
@@ -232,44 +225,48 @@ export class FirebaseSync {
     }, delayMs);
   }
 
-  static async syncToServer() {
+  static syncToServer(): Promise<void> {
+    const uid = auth.currentUser?.uid;
+    // Serialize saves so each transaction uses the previous save's baseline.
+    const next = uploadQueue.then(() => FirebaseSync.upload(uid));
+    uploadQueue = next.catch(() => {});
+    return next;
+  }
+
+  private static async upload(uid: string | undefined): Promise<void> {
     const user = auth.currentUser;
-    // Don't sync for anonymous/guest users or if not logged in
-    if (!user || user.isAnonymous) return;
-
-    // Never upload before we've pulled this user's saved data down, or we would
-    // overwrite their studied words with a blank local state after a logout.
-    if (hydratedUid !== user.uid) return;
-
-    // A removed account must never write anything back.
-    if (removedUid === user.uid) return;
-
+    if (!user || user.isAnonymous || user.uid !== uid || hydratedUid !== uid || removedUid === uid) return;
     try {
-      const progress = localStorage.getItem('learningProgress');
-      const userStore = JSON.parse(localStorage.getItem('user-storage') || '{}');
-      const rewardStore = JSON.parse(localStorage.getItem('reward-storage') || '{}');
-      
-      const syncData: any = {
-        lastUpdated: new Date().toISOString()
-      };
-
-      if (progress) syncData.progress = JSON.parse(progress);
-      // Strip the admin claim on the way up: uploading it would let a forged
-      // flag persist to the server and come back on the next device.
-      if (userStore.state?.user) syncData.userData = withoutAdminClaim(userStore.state.user);
-      if (rewardStore.state) syncData.rewards = rewardStore.state;
-      const points = localStorage.getItem('kids_spelling_points');
-      if (points) syncData.points = JSON.parse(points);
-
-      const local: Record<string, string> = {};
-      for (const key of BUNDLED_SYNC_KEYS) {
-        const value = localStorage.getItem(key);
-        if (value !== null) local[key] = value;
+      const local = localSnapshot();
+      const base = baseline;
+      const ref = doc(db, 'users', user.uid);
+      const result = await runTransaction(db, async transaction => {
+        const snap = await transaction.get(ref);
+        const data = snap.data() || {};
+        if (data.deleted) return null;
+        if (auth.currentUser?.uid !== uid) throw new Error('Account changed during sync');
+        const remote = syncFields(data);
+        const merged = mergeSync(base, local, remote);
+        const payload = { ...merged, lastUpdated: new Date().toISOString() };
+        // Replace only these top-level maps, retaining admin metadata. Missing
+        // entries inside a map must not survive as stale merged fields.
+        transaction.set(ref, payload, { mergeFields: Object.keys(payload) });
+        return merged;
+      });
+      if (auth.currentUser?.uid !== uid) return;
+      if (result === null) {
+        removedUid = user.uid;
+        await FirebaseSync.wipeDevice();
+        return;
       }
-      syncData.local = local;
-
-      await setDoc(doc(db, 'users', user.uid), syncData, { merge: true });
-      console.log('Firebase data synced to server');
+      remember(user.uid, result);
+      // Preserve activity that happened while the request was in flight.
+      const current = localSnapshot();
+      const reconciled = mergeSync(local, current, result);
+      if (!equalSyncData(current, reconciled) && applySnapshot(reconciled)) {
+        window.dispatchEvent(new Event('learningProgressUpdated'));
+        window.location.reload();
+      }
     } catch (error) {
       console.error('Error syncing to Firebase:', error);
     }

@@ -21,33 +21,23 @@ const BookReader: React.FC<BookReaderProps> = ({ bookId: propBookId }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    loadBook();
-  }, [bookId]);
-
-  const loadBook = async () => {
-    if (!bookId) return;
-    
+    let cancelled = false;
+    setBook(null);
+    setCurrentPage(0);
     setIsLoading(true);
-    try {
-      // First get basic book info
-      const fetchedBook = BookService.getBookById(bookId);
-      if (fetchedBook) {
-        setBook(fetchedBook);
-        
-        // If it's an online book and doesn't have full content yet, fetch it
-        if (bookId.startsWith('api-') || bookId.startsWith('guten-')) {
-          const fullBook = await BookService.fetchFullBookContent(bookId);
-          if (fullBook) {
-            setBook({ ...fullBook });
-          }
-        }
+    const load = async () => {
+      try {
+        const loaded = await BookService.fetchFullBookContent(bookId);
+        if (!cancelled) setBook(loaded || null);
+      } catch (error) {
+        console.error('Error loading book:', error);
+      } finally {
+        if (!cancelled) setIsLoading(false);
       }
-    } catch (error) {
-      console.error('Error loading book:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    };
+    void load();
+    return () => { cancelled = true; };
+  }, [bookId]);
 
   if (isLoading && !book) {
     return (

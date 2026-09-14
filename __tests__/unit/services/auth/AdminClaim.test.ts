@@ -22,6 +22,16 @@ describe('the admin claim never becomes stored data', () => {
     expect(stored.name).toBe('Maya')
   })
 
+  it('preserves a chosen daily goal through login and profile updates', () => {
+    const profile = { ...child, dailyGoal: 12 }
+    useUserStore.getState().setUser(profile)
+    useUserStore.getState().setUser({ ...useUserStore.getState().user!, name: 'Maya Bee' })
+    expect(useUserStore.getState().user?.dailyGoal).toBe(12)
+    expect(profile.dailyGoal).toBe(12)
+    useUserStore.persist.rehydrate()
+    expect(useUserStore.getState().user?.dailyGoal).toBe(12)
+  })
+
   it('refuses a claim arriving from storage or the server', () => {
     expect(withAdminClaimDenied({ ...child, isAdmin: true }).isAdmin).toBe(false)
   })

@@ -162,6 +162,19 @@ describe('Game unlocking via the daily quiz', () => {
 })
 
 describe('the weekly quiz', () => {
+  it('retains recent undated history when the first new word is learned', () => {
+    localStorage.clear()
+    const old = Array.from({ length: 40 }, (_, i) => `old-${i}`)
+    localStorage.setItem('learningProgress', JSON.stringify({ wordsLearnedTotal: old, dailyGoal: 5 }))
+    const flow = new LearningFlowController()
+    expect(flow.getWeeklyQuizWordIds()).toHaveLength(35)
+    flow.completeWord('new')
+    const weekly = flow.getWeeklyQuizWordIds()
+    expect(weekly).toHaveLength(35)
+    expect(weekly).toContain('new')
+    expect(weekly).toContain('old-39')
+    expect(weekly).not.toContain('old-0')
+  })
   it('asks every word learned in the last seven days, and not older ones', async () => {
     const { LearningFlowController, weekOf } = await import('@/services/progress/LearningFlow')
     localStorage.clear()

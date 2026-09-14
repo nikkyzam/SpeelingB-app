@@ -22,7 +22,15 @@ service cloud.firestore {
       // A user may read & write only their OWN document.
       // Admins (grown-ups) may read & write ANY user's document — e.g. to set a
       // child's daily goal.
-      allow read, write: if isAdmin() || (isSignedIn() && request.auth.uid == uid);
+      allow read: if isAdmin() || (isSignedIn() && request.auth.uid == uid);
+      allow write: if isAdmin();
+      // A stale device must not restore a removed account or edit the tombstone.
+      allow create: if isSignedIn() && request.auth.uid == uid
+        && !request.resource.data.keys().hasAny(['deleted', 'deletedAt', 'deletedBy']);
+      allow update: if isSignedIn() && request.auth.uid == uid
+        && resource.data.get('deleted', false) != true
+        && !request.resource.data.diff(resource.data).affectedKeys()
+          .hasAny(['deleted', 'deletedAt', 'deletedBy']);
     }
 
     // Deny everything else by default.

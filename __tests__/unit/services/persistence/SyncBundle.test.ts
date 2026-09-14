@@ -10,7 +10,10 @@ const h = vi.hoisted(() => ({
 }))
 const { getDoc, setDoc, auth, reload } = h
 
-vi.mock('firebase/firestore', () => ({ doc: h.doc, getDoc: h.getDoc, setDoc: h.setDoc }))
+vi.mock('firebase/firestore', () => ({
+  doc: h.doc, getDoc: h.getDoc, setDoc: h.setDoc,
+  runTransaction: vi.fn(async (_db, callback) => callback({ get: h.getDoc, set: h.setDoc })),
+}))
 vi.mock('firebase/auth', () => ({ signOut: vi.fn().mockResolvedValue(undefined) }))
 vi.mock('@/config/firebase', () => ({ db: {}, auth: h.auth }))
 
@@ -134,5 +137,65 @@ describe('the buddy follows the child, not the tablet', () => {
     } finally {
       vi.useRealTimers()
     }
+  })
+})
+
+
+describe('concurrent server changes', () => {
+  beforeEach(() => {
+    vi.clearAllMocks(); localStorage.clear(); sessionStorage.clear(); FirebaseSync.resetHydration()
+    auth.currentUser = kid('ava')
+    setDoc.mockResolvedValue(undefined)
+    Object.defineProperty(window, 'location', { configurable: true, value: { reload, href: '/' } })
+  })
+
+  it('checks deletion on every upload and never writes a removed document', async () => {
+    getDoc.mockResolvedValue(snap({}))
+    await FirebaseSync.syncFromServer()
+    localStorage.setItem('learningProgress', '{"wordsLearnedTotal":["cat"]}')
+    getDoc.mockResolvedValue(snap({ deleted: true }))
+    await FirebaseSync.syncToServer()
+    expect(setDoc).not.toHaveBeenCalled()
+    expect(localStorage.getItem('learningProgress')).toBeNull()
+    expect(window.location.href).toBe('/')
+  })
+
+  it('preserves an admin balance correction and merges words from both devices', async () => {
+    getDoc.mockResolvedValue(snap({ progress: { wordsLearnedTotal: ['cat'], dailyGoal: 5 }, points: { availablePoints: 100 } }))
+    await FirebaseSync.syncFromServer()
+    localStorage.setItem('learningProgress', JSON.stringify({ wordsLearnedTotal: ['cat', 'dog'], dailyGoal: 5 }))
+    localStorage.setItem('kids_spelling_points', '{"availablePoints":110}')
+    getDoc.mockResolvedValue(snap({ progress: { wordsLearnedTotal: ['cat', 'bee'], dailyGoal: 12 }, points: { availablePoints: 10 } }))
+    await FirebaseSync.syncToServer()
+    const data = setDoc.mock.calls[0][1]
+    expect(data.points.availablePoints).toBe(10)
+    expect(data.progress.dailyGoal).toBe(12)
+    expect(data.progress.wordsLearnedTotal).toEqual(['cat', 'bee', 'dog'])
+    expect(JSON.parse(localStorage.getItem('learningProgress')!).dailyGoal).toBe(12)
+  })
+
+  it('reads fresh data after a refresh without entering a reload loop', async () => {
+    getDoc.mockResolvedValue(snap({ points: { availablePoints: 100 } }))
+    await FirebaseSync.syncFromServer()
+    reload.mockClear()
+    await FirebaseSync.syncFromServer()
+    expect(reload).not.toHaveBeenCalled()
+    getDoc.mockResolvedValue(snap({ points: { availablePoints: 10 } }))
+    await FirebaseSync.syncFromServer()
+    expect(getDoc).toHaveBeenCalledTimes(3)
+    expect(JSON.parse(localStorage.getItem('kids_spelling_points')!).availablePoints).toBe(10)
+    expect(reload).toHaveBeenCalledTimes(1)
+  })
+
+  it('retains a word learned while an upload is in flight', async () => {
+    getDoc.mockResolvedValue(snap({ progress: { wordsLearnedTotal: ['cat'] } }))
+    await FirebaseSync.syncFromServer()
+    localStorage.setItem('learningProgress', '{"wordsLearnedTotal":["cat","dog"]}')
+    getDoc.mockImplementationOnce(async () => {
+      localStorage.setItem('learningProgress', '{"wordsLearnedTotal":["cat","dog","owl"]}')
+      return snap({ progress: { wordsLearnedTotal: ['cat', 'bee'] } })
+    })
+    await FirebaseSync.syncToServer()
+    expect(JSON.parse(localStorage.getItem('learningProgress')!).wordsLearnedTotal).toEqual(['cat', 'bee', 'dog', 'owl'])
   })
 })

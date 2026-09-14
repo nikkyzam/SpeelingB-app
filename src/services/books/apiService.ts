@@ -22,6 +22,26 @@ export class BookApiService {
   private static readonly OPEN_LIBRARY_URL = 'https://openlibrary.org';
   private static readonly GUTENBERG_URL = 'https://gutendex.com';
 
+  static async fetchBookById(bookId: string): Promise<ChristianBook | undefined> {
+    if (/^api-OL\d+W$/.test(bookId)) {
+      const key = bookId.slice(4);
+      const response = await fetch(`${this.OPEN_LIBRARY_URL}/works/${key}.json`);
+      if (!response.ok) return undefined;
+      const work = await response.json();
+      if (!work.title) return undefined;
+      return this.convertToChristianBook({ key: `/works/${key}`, title: work.title,
+        cover_i: work.covers?.[0], subject: work.subjects }, 'online');
+    }
+    if (/^guten-\d+$/.test(bookId)) {
+      const response = await fetch(`${this.GUTENBERG_URL}/books/${bookId.slice(6)}`);
+      if (!response.ok) return undefined;
+      const book = await response.json();
+      if (!book.id || !book.title || !book.formats || !Array.isArray(book.authors)) return undefined;
+      return this.convertGutenbergToChristianBook(book);
+    }
+    return undefined;
+  }
+
   // Fetch Christian-themed books from Open Library
   static async fetchChristianBooks(limit: number = 20): Promise<any[]> {
     try {

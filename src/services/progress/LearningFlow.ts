@@ -331,10 +331,12 @@ export class LearningFlowController {
     const since = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6)
     const sinceKey = localDay(since)
     let ids = this.progress.wordsLearnedTotal.filter((id) => dates[id] && dates[id] >= sinceKey)
-    if (ids.length === 0 && Object.keys(dates).length === 0) {
-      const goal = Math.max(1, this.progress.dailyGoal || 5)
-      ids = this.progress.wordsLearnedTotal.slice(-goal * 7)
-    }
+    // Keep the legacy fallback even after the first dated word is learned.
+    // Use the most recent week's-worth of history as the migration window;
+    // dated additions gradually displace undated words from that window.
+    const goal = Math.max(1, this.progress.dailyGoal || 5)
+    const legacy = this.progress.wordsLearnedTotal.slice(-goal * 7).filter(id => !dates[id])
+    ids = [...new Set([...ids, ...legacy])]
     ids = [...ids]
     for (let i = ids.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))

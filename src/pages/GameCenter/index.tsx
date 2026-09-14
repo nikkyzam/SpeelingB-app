@@ -174,12 +174,6 @@ const GameCenter: React.FC = () => {
     // activeGame in deps → a fresh shuffle each time a game is opened.
   }, [learningFlow, activeGame])
 
-  useEffect(() => {
-    if (location.state && (location.state as any).startGame) {
-      setActiveGame((location.state as any).startGame)
-    }
-  }, [location.state])
-
   const quizPassed = learningFlow.isDailyQuizPassed()
   const weeklyCount = learningFlow.getWeeklyQuizWordIds().filter((id) => !!wordBank.getWordById(id)).length
   // Count words the quiz can actually ASK. Word ids are positional, so a saved
@@ -727,6 +721,18 @@ const GameCenter: React.FC = () => {
     wordlessGames.has(g.id) ? g : { ...g, unlocked: g.unlocked && enoughWords }
   )
 
+  const requestedGame = (location.state as { startGame?: string } | null)?.startGame
+  const requestedAllowed = games.some(g => g.id === requestedGame && g.unlocked && !HIDDEN_GAMES.has(g.id))
+  useEffect(() => {
+    if (!requestedGame) return
+    if (requestedAllowed) {
+      GameStats.markSeen(requestedGame)
+      setActiveGame(requestedGame as GameMode)
+    }
+    // Consume the shortcut so returning here cannot restart it or bypass a lock.
+    navigate(location.pathname, { replace: true, state: null })
+  }, [requestedGame, requestedAllowed, location.pathname, navigate])
+
   const handleGameComplete = (score: number) => {
     const finishedId = activeGame
 
@@ -770,6 +776,7 @@ const GameCenter: React.FC = () => {
   }
 
   const openGame = (id: string) => {
+    if (!games.some(g => g.id === id && g.unlocked && !HIDDEN_GAMES.has(g.id))) return
     GameStats.markSeen(id)
     setActiveGame(id as GameMode)
   }

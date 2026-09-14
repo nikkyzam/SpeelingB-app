@@ -40,7 +40,8 @@ export const useUserStore = create<UserState>()(
       },
       setUser: (user) => {
         if (user) {
-          user.dailyGoal = calculateDailyGoal(user.name, user.email)
+          user = { ...user, dailyGoal: Number.isInteger(user.dailyGoal) && user.dailyGoal > 0 && user.dailyGoal <= 20
+            ? user.dailyGoal : calculateDailyGoal(user.name, user.email) }
         }
         set({ user })
       },

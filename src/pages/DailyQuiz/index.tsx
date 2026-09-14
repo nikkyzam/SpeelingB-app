@@ -35,7 +35,7 @@ const DailyQuiz: React.FC<QuizProps> = ({ mode = 'daily' }) => {
       (weekly ? learningFlow.getWeeklyQuizWordIds() : learningFlow.getDailyQuizWordIds())
         .map((id) => wordBank.getWordById(id))
         .filter((w): w is Word => !!w),
-    [learningFlow]
+    [learningFlow, weekly]
   )
 
   const alreadyPassed = weekly ? learningFlow.isWeeklyQuizPassed() : learningFlow.isDailyQuizPassed()
@@ -47,10 +47,18 @@ const DailyQuiz: React.FC<QuizProps> = ({ mode = 'daily' }) => {
   const [retries, setRetries] = useState(0)
   const [celebration, setCelebration] = useState<CelebrationData | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const timerRef = useRef<ReturnType<typeof setTimeout>>()
+  const checking = useRef(false)
 
   useEffect(() => {
-    setQueue(allWords)
-  }, [allWords])
+    setQueue(!weekly && learningFlow.isDailyQuizPassed() ? [] : allWords)
+    setDone([])
+    setInput('')
+    setResult(null)
+    setCelebration(null)
+    checking.current = false
+    return () => clearTimeout(timerRef.current)
+  }, [allWords, learningFlow, weekly])
 
   const current = queue[0]
   const total = allWords.length
@@ -66,13 +74,13 @@ const DailyQuiz: React.FC<QuizProps> = ({ mode = 'daily' }) => {
   if (total === 0) {
     // If ids were saved but none resolve, don't leave the child stuck behind a
     // quiz that can never run — open the games for today instead.
-    const hasUnresolvableProgress = learningFlow.getWordsLearnedTotal().length > 0
+    const hasUnresolvableProgress = !weekly && learningFlow.getWordsLearnedTotal().length > 0
     return (
       <div className="daily-quiz">
         <div className="dq-empty">
           <div className="dq-empty-icon" aria-hidden>{world.mascot}</div>
-          <h1>No words yet!</h1>
-          <p>Learn some words first, then come back and win your games.</p>
+          <h1>{weekly ? 'No words for this week yet!' : 'No words yet!'}</h1>
+          <p>{weekly ? 'Learn some new words, then come back for your weekly quiz.' : 'Learn some words first, then come back and win your games.'}</p>
           {hasUnresolvableProgress ? (
             <Button
               variant="success"
@@ -89,7 +97,7 @@ const DailyQuiz: React.FC<QuizProps> = ({ mode = 'daily' }) => {
     )
   }
 
-  if (alreadyPassed && !current && !weekly) {
+  if (alreadyPassed && !current && !weekly && !celebration) {
     return (
       <div className="daily-quiz">
         <div className="dq-empty">
@@ -103,13 +111,15 @@ const DailyQuiz: React.FC<QuizProps> = ({ mode = 'daily' }) => {
   }
 
   const check = () => {
-    if (!current || result) return
+    if (!current || result || checking.current) return
+    checking.current = true
     const ok = input.trim().toLowerCase() === current.word.toLowerCase()
 
     if (ok) {
       setResult('right')
       const nextDone = [...done, current.word]
-      setTimeout(() => {
+      timerRef.current = setTimeout(() => {
+        checking.current = false
         setResult(null)
         setInput('')
         setDone(nextDone)
@@ -129,9 +139,10 @@ const DailyQuiz: React.FC<QuizProps> = ({ mode = 'daily' }) => {
             })
           } else {
             // Today's words spelled — games are open for today.
+            const first = !learningFlow.isDailyQuizPassed()
             learningFlow.passDailyQuiz()
-            const stars = Math.max(5, total * 2)
-            addStars(stars)
+            const stars = first ? Math.max(5, total * 2) : 0
+            if (stars) addStars(stars)
             setCelebration({
               title: 'Quiz passed! 🏆',
               message: `You spelled all ${total} of today’s words! Every game is unlocked today.`,
@@ -146,7 +157,8 @@ const DailyQuiz: React.FC<QuizProps> = ({ mode = 'daily' }) => {
       setResult('wrong')
       setRetries((r) => r + 1)
       speak(`It is spelled ${current.word}`)
-      setTimeout(() => {
+      timerRef.current = setTimeout(() => {
+        checking.current = false
         setResult(null)
         setInput('')
         // Put the tricky word back at the end so the quiz stays winnable.
