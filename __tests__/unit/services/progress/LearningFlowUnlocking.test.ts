@@ -139,12 +139,24 @@ describe('Game unlocking via the daily quiz', () => {
     expect(controller.isReviewSatisfiedToday()).toBe(false)
   })
 
-  it('quizzes every learned word, in a shuffled order', () => {
-    const ids = Array.from({ length: 12 }, (_, i) => `word-${i}`)
+  it('quizzes as many words as the daily goal, not every word ever learned', () => {
+    // 52 learned on a 5-a-day goal must not become a 52-word gate.
+    const ids = Array.from({ length: 52 }, (_, i) => `word-${i}`)
     ids.forEach((id) => controller.completeWord(id))
+    controller.setDailyGoal(5)
 
     const quiz = controller.getDailyQuizWordIds()
-    expect(quiz).toHaveLength(ids.length)
-    expect([...quiz].sort()).toEqual([...ids].sort()) // same set, order may differ
+    expect(quiz).toHaveLength(5)
+    expect(new Set(quiz).size).toBe(5)
+  })
+
+  it('only asks words the child has actually learned', () => {
+    const ids = Array.from({ length: 12 }, (_, i) => `word-${i}`)
+    ids.forEach((id) => controller.completeWord(id))
+    controller.setDailyGoal(3)
+
+    const quiz = controller.getDailyQuizWordIds()
+    expect(quiz).toHaveLength(3)
+    quiz.forEach((id) => expect(ids).toContain(id))
   })
 })

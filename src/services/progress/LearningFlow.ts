@@ -309,9 +309,20 @@ export class LearningFlowController {
     this.saveProgress()
   }
 
-  /** Every word the child has ever learned, shuffled — the daily quiz set. */
+  /**
+   * The daily quiz set: as many words as the child's daily goal, shuffled.
+   *
+   * This used to be every word ever learned, so the gate grew without end — a
+   * child on five words a day with 52 learned was asked to spell 52 in one
+   * sitting before any game opened. Today's words come first, because they
+   * are what the quiz is checking; if fewer were learned today, the most
+   * recently learned fill the rest. Older words are the review's job.
+   */
   getDailyQuizWordIds(): string[] {
-    const ids = [...this.progress.wordsLearnedTotal]
+    const goal = Math.max(1, this.progress.dailyGoal || 5)
+    const today = this.progress.wordsLearnedToday
+    const recent = [...this.progress.wordsLearnedTotal].reverse().filter((id) => !today.includes(id))
+    const ids = [...new Set([...today, ...recent])].slice(0, goal)
     for (let i = ids.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
       ;[ids[i], ids[j]] = [ids[j], ids[i]]

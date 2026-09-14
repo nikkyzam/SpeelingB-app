@@ -13,7 +13,7 @@ import './DailyQuiz.css'
 import SpellingInput from '../../components/common/SpellingInput'
 
 /**
- * The daily gate for games: spell EVERY word learned so far, in random order.
+ * The daily gate for games: spell today's words (as many as the daily goal), in random order.
  * Missed words go to the back of the queue rather than failing the child, so
  * the quiz is always finishable — it just takes another try.
  */
