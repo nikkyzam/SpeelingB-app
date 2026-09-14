@@ -17,7 +17,13 @@ import SpellingInput from '../../components/common/SpellingInput'
  * Missed words go to the back of the queue rather than failing the child, so
  * the quiz is always finishable — it just takes another try.
  */
-const DailyQuiz: React.FC = () => {
+interface QuizProps {
+  /** daily: today's words, opens the games. weekly: the whole week's words. */
+  mode?: 'daily' | 'weekly'
+}
+
+const DailyQuiz: React.FC<QuizProps> = ({ mode = 'daily' }) => {
+  const weekly = mode === 'weekly'
   const navigate = useNavigate()
   const { learningFlow } = useProgress()
   const { world } = useTheme()
@@ -26,14 +32,13 @@ const DailyQuiz: React.FC = () => {
 
   const allWords = useMemo<Word[]>(
     () =>
-      learningFlow
-        .getDailyQuizWordIds()
+      (weekly ? learningFlow.getWeeklyQuizWordIds() : learningFlow.getDailyQuizWordIds())
         .map((id) => wordBank.getWordById(id))
         .filter((w): w is Word => !!w),
     [learningFlow]
   )
 
-  const alreadyPassed = learningFlow.isDailyQuizPassed()
+  const alreadyPassed = weekly ? learningFlow.isWeeklyQuizPassed() : learningFlow.isDailyQuizPassed()
 
   const [queue, setQueue] = useState<Word[]>([])
   const [done, setDone] = useState<string[]>([])
@@ -84,13 +89,13 @@ const DailyQuiz: React.FC = () => {
     )
   }
 
-  if (alreadyPassed && !current) {
+  if (alreadyPassed && !current && !weekly) {
     return (
       <div className="daily-quiz">
         <div className="dq-empty">
           <div className="dq-empty-icon" aria-hidden>🏆</div>
-          <h1>Today&apos;s quiz is done!</h1>
-          <p>All your games are unlocked for today. Go play!</p>
+          <h1>{weekly ? 'This week’s quiz is done!' : 'Today’s quiz is done!'}</h1>
+          <p>{weekly ? 'You can take it again for practice — a new one starts on Monday.' : 'All your games are unlocked for today. Go play!'}</p>
           <Button variant="success" icon="🎮" onClick={() => navigate('/games')}>Play Games</Button>
         </div>
       </div>
@@ -111,15 +116,28 @@ const DailyQuiz: React.FC = () => {
         const rest = queue.slice(1)
         setQueue(rest)
         if (rest.length === 0) {
-          // Every learned word spelled — games are open for today.
-          learningFlow.passDailyQuiz()
-          const stars = Math.max(5, total * 2)
-          addStars(stars)
-          setCelebration({
-            title: 'Quiz passed! 🏆',
-            message: `You spelled all ${total} of your words! Every game is unlocked today.`,
-            stars,
-          })
+          if (weekly) {
+            // Stars once a week; a replay is practice, not a star farm.
+            const first = !learningFlow.isWeeklyQuizPassed()
+            learningFlow.passWeeklyQuiz()
+            const stars = first ? Math.max(20, total * 3) : 0
+            if (stars) addStars(stars)
+            setCelebration({
+              title: 'Weekly quiz passed! 🏅',
+              message: `You spelled all ${total} of this week’s words!`,
+              stars,
+            })
+          } else {
+            // Today's words spelled — games are open for today.
+            learningFlow.passDailyQuiz()
+            const stars = Math.max(5, total * 2)
+            addStars(stars)
+            setCelebration({
+              title: 'Quiz passed! 🏆',
+              message: `You spelled all ${total} of today’s words! Every game is unlocked today.`,
+              stars,
+            })
+          }
         } else {
           inputRef.current?.focus()
         }
@@ -144,8 +162,12 @@ const DailyQuiz: React.FC = () => {
     <div className="daily-quiz">
       <div className="dq-header">
         <Button variant="secondary" size="small" onClick={() => navigate('/games')}>← Back</Button>
-        <h1>🏆 Daily Quiz</h1>
-        <p>Spell all {total} of your words to unlock every game today!</p>
+        <h1>{weekly ? '🏅 Weekly Quiz' : '🏆 Daily Quiz'}</h1>
+        <p>
+          {weekly
+            ? `Spell all ${total} words you learned this week!`
+            : `Spell today’s ${total} words to unlock every game today!`}
+        </p>
       </div>
 
       <div className="dq-progress">

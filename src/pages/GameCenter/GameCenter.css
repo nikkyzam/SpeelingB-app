@@ -500,3 +500,20 @@
   cursor: pointer;
   padding: 0 0.2rem;
 }
+
+/* The weekly quiz: a quieter strip under the daily quiz banner. */
+.weekly-quiz-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  margin: var(--spacing-sm) 0 var(--spacing-md);
+  padding: 0.6rem 0.9rem;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card-soft);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 0.9rem;
+}

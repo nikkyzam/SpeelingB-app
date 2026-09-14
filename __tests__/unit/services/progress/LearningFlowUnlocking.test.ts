@@ -160,3 +160,29 @@ describe('Game unlocking via the daily quiz', () => {
     quiz.forEach((id) => expect(ids).toContain(id))
   })
 })
+
+describe('the weekly quiz', () => {
+  it('asks every word learned in the last seven days, and not older ones', async () => {
+    const { LearningFlowController, weekOf } = await import('@/services/progress/LearningFlow')
+    localStorage.clear()
+    const flow = new LearningFlowController()
+    ;['old-1', 'old-2', 'new-1', 'new-2', 'new-3'].forEach((id) => flow.completeWord(id))
+    // Backdate two words to last month.
+    const p = (flow as any).progress
+    p.wordLearnedDates['old-1'] = '2000-01-01'
+    p.wordLearnedDates['old-2'] = '2000-01-01'
+
+    expect(flow.getWeeklyQuizWordIds().sort()).toEqual(['new-1', 'new-2', 'new-3'])
+    expect(weekOf(new Date(2026, 8, 13))).toBe('2026-09-07') // Sunday -> its Monday
+  })
+
+  it('is passed for the week, then a new week starts fresh', async () => {
+    const { LearningFlowController } = await import('@/services/progress/LearningFlow')
+    localStorage.clear()
+    const flow = new LearningFlowController()
+    const thursday = new Date(2026, 8, 10)
+    flow.passWeeklyQuiz(thursday)
+    expect(flow.isWeeklyQuizPassed(new Date(2026, 8, 13))).toBe(true)
+    expect(flow.isWeeklyQuizPassed(new Date(2026, 8, 14))).toBe(false)
+  })
+})

@@ -1,6 +1,14 @@
 import { useUserStore } from '../../stores/userStore'
 import ReviewSchedule from './ReviewSchedule'
 
+/** Local calendar day, YYYY-MM-DD — a week turns over at the child's midnight. */
+const localDay = (d: Date): string =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+
+/** The Monday that starts the week containing `d`. */
+export const weekOf = (d: Date): string =>
+  localDay(new Date(d.getFullYear(), d.getMonth(), d.getDate() - ((d.getDay() + 6) % 7)))
+
 export interface LearningProgress {
   wordsLearnedToday: string[]
   wordsLearnedTotal: string[]
@@ -25,6 +33,10 @@ export interface LearningProgress {
   lastGoalCheck: string | null // Last date goals were checked/reset
   lastReviewDate: string | null // Last date the "Review Time!" quiz was completed
   dailyQuizPassedDate: string | null // Date the daily all-words quiz was passed
+  /** id -> local YYYY-MM-DD it was first learned; drives the weekly quiz */
+  wordLearnedDates?: Record<string, string>
+  /** the Monday (YYYY-MM-DD) of the week whose quiz was last passed */
+  weeklyQuizPassedWeek?: string | null
 }
 
 /**
@@ -98,6 +110,7 @@ export class LearningFlowController {
         unlockedGames: parsed.unlockedGames || [],
         lockedModes: parsed.lockedModes || [],
         missedDays: parsed.missedDays || [],
+        wordLearnedDates: parsed.wordLearnedDates && typeof parsed.wordLearnedDates === 'object' ? parsed.wordLearnedDates : {},
         // Handle boolean flags explicitly to avoid issues with undefined/null
         spellQuizUnlocked: !!parsed.spellQuizUnlocked,
         vocabQuizUnlocked: !!parsed.vocabQuizUnlocked,
@@ -181,6 +194,9 @@ export class LearningFlowController {
     if (!this.progress.wordsLearnedTotal.includes(wordId)) {
       this.progress.wordsLearnedTotal.push(wordId)
     }
+    // When it was first learned — the weekly quiz asks this week's words.
+    const dates = (this.progress.wordLearnedDates ||= {})
+    if (!dates[wordId]) dates[wordId] = localDay(new Date())
 
     // Mark as learned today as well (if needed for progress tracking)
     if (!this.progress.wordsLearnedToday.includes(wordId)) {
@@ -300,6 +316,40 @@ export class LearningFlowController {
   /** True once today's all-words quiz has been passed (resets each day). */
   isDailyQuizPassed(): boolean {
     return this.progress.dailyQuizPassedDate === new Date().toDateString()
+  }
+
+  /**
+   * This week's words: everything first learned in the last seven days.
+   *
+   * The daily quiz is sized to the daily goal, so it only ever checks a day's
+   * worth. This is where a week's worth gets checked together. Words learned
+   * before dates were recorded have no date; for those, the most recent
+   * week's-worth (seven days of the daily goal) stands in.
+   */
+  getWeeklyQuizWordIds(now: Date = new Date()): string[] {
+    const dates = this.progress.wordLearnedDates || {}
+    const since = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6)
+    const sinceKey = localDay(since)
+    let ids = this.progress.wordsLearnedTotal.filter((id) => dates[id] && dates[id] >= sinceKey)
+    if (ids.length === 0 && Object.keys(dates).length === 0) {
+      const goal = Math.max(1, this.progress.dailyGoal || 5)
+      ids = this.progress.wordsLearnedTotal.slice(-goal * 7)
+    }
+    ids = [...ids]
+    for (let i = ids.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[ids[i], ids[j]] = [ids[j], ids[i]]
+    }
+    return ids
+  }
+
+  isWeeklyQuizPassed(now: Date = new Date()): boolean {
+    return this.progress.weeklyQuizPassedWeek === weekOf(now)
+  }
+
+  passWeeklyQuiz(now: Date = new Date()): void {
+    this.progress.weeklyQuizPassedWeek = weekOf(now)
+    this.saveProgress()
   }
 
   /** Record a successful daily quiz — this is what opens the games. */

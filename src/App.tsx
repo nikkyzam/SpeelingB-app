@@ -81,6 +81,7 @@ function App() {
                     <Route path="/learn" element={<LearningHub />} />
                     <Route path="/review" element={<Review />} />
                     <Route path="/daily-quiz" element={<DailyQuiz />} />
+                    <Route path="/weekly-quiz" element={<DailyQuiz mode="weekly" />} />
                     <Route path="/collection" element={<WordCollection />} />
                     <Route path="/progress" element={<ProgressReport />} />
                     <Route path="/games" element={<GameCenter />} />

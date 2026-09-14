@@ -181,6 +181,7 @@ const GameCenter: React.FC = () => {
   }, [location.state])
 
   const quizPassed = learningFlow.isDailyQuizPassed()
+  const weeklyCount = learningFlow.getWeeklyQuizWordIds().filter((id) => !!wordBank.getWordById(id)).length
   // Count words the quiz can actually ASK. Word ids are positional, so a saved
   // id could stop resolving; counting raw ids here would promise a quiz that
   // then says "no words" — leaving the games locked with no way through.
@@ -923,7 +924,7 @@ const GameCenter: React.FC = () => {
               ? 'Great work — come back tomorrow for a new quiz.'
               : learnedCount === 0
                 ? 'Learn some words first, then take the quiz to open every game.'
-                : `Spell all ${learnedCount} of your words to unlock ${lockedCount} more games.`}
+                : `Spell today’s ${Math.min(learnedCount, learningFlow.getDailyGoal())} words to unlock ${lockedCount} more games.`}
           </p>
         </div>
         {!quizPassed && (
@@ -936,6 +937,20 @@ const GameCenter: React.FC = () => {
           </Button>
         )}
       </div>
+
+      {/* The week's words, all together — the daily quiz only checks a day. */}
+      {weeklyCount > 0 && (
+        <div className="weekly-quiz-strip">
+          <span>
+            {learningFlow.isWeeklyQuizPassed()
+              ? `🏅 This week’s quiz is done — ${weeklyCount} words spelled.`
+              : `🏅 Weekly Quiz: spell all ${weeklyCount} words you learned this week.`}
+          </span>
+          <Button variant="secondary" size="small" onClick={() => navigate('/weekly-quiz')}>
+            {learningFlow.isWeeklyQuizPassed() ? 'Practise again' : 'Take it'}
+          </Button>
+        </div>
+      )}
 
       {/* Pick the kind of play you're in the mood for. */}
       <div className="games-filters" role="tablist" aria-label="Game categories">
