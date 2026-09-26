@@ -174,6 +174,17 @@ describe('concurrent server changes', () => {
     expect(JSON.parse(localStorage.getItem('learningProgress')!).dailyGoal).toBe(12)
   })
 
+  it("keeps a grown-up's reset today when the child's open device saves again", async () => {
+    getDoc.mockResolvedValue(snap({ progress: { wordsLearnedToday: ['a', 'b'], wordsLearnedTotal: ['a', 'b'] } }))
+    await FirebaseSync.syncFromServer()
+    localStorage.setItem('learningProgress', JSON.stringify({ wordsLearnedToday: ['a', 'b', 'e'], wordsLearnedTotal: ['a', 'b', 'e'] }))
+    getDoc.mockResolvedValue(snap({ progress: { wordsLearnedToday: [], wordsLearnedTotal: ['a', 'b'] } }))
+    await FirebaseSync.syncToServer()
+    const data = setDoc.mock.calls[0][1]
+    expect(data.progress.wordsLearnedToday).toEqual(['e'])
+    expect(data.progress.wordsLearnedTotal).toEqual(['a', 'b', 'e'])
+  })
+
   it('reads fresh data after a refresh without entering a reload loop', async () => {
     getDoc.mockResolvedValue(snap({ points: { availablePoints: 100 } }))
     await FirebaseSync.syncFromServer()

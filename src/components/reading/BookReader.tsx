@@ -24,6 +24,11 @@ const BookReader: React.FC<BookReaderProps> = ({ bookId: propBookId }) => {
     let cancelled = false;
     setBook(null);
     setCurrentPage(0);
+    // No id, nothing to fetch — but still clear a book or spinner from before.
+    if (!bookId) {
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(true);
     const load = async () => {
       try {
