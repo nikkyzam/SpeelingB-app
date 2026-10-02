@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAudio } from '../../../contexts/AudioContext'
 import { useProgress } from '../../../contexts/ProgressContext'
 import { wordBank, Word } from '../../../services/wordBank'
@@ -31,6 +32,7 @@ const QuizMode: React.FC<QuizModeProps> = ({
   difficulty, 
   words: providedWords 
 }) => {
+  const navigate = useNavigate()
   const { speak } = useAudio()
   const { learningFlow } = useProgress()
   const [questions, setQuestions] = useState<QuizQuestion[]>([])
@@ -280,12 +282,22 @@ const QuizMode: React.FC<QuizModeProps> = ({
             </Button>
           )}
 
-          <Button
-            onClick={() => {/* Navigate to review */}}
-            variant="secondary"
-          >
-            Review Mistakes
-          </Button>
+          {wrongAnswers > 0 && (
+            // The words missed in this quiz, practised now. The tricky-word
+            // review wasn't the place: a word needs two misses to count as
+            // tricky, and one missed today isn't due until tomorrow.
+            <Button
+              onClick={() =>
+                navigate('/review', {
+                  state: { missed: questions.filter((q) => q.isCorrect === false).map((q) => q.word.id) },
+                })
+              }
+              variant="secondary"
+              icon="🧠"
+            >
+              Practise the ones I missed
+            </Button>
+          )}
         </div>
       </div>
     )

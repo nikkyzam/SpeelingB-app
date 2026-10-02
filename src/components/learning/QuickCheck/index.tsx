@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, misspell } from '../../games/shared/wordTricks'
@@ -40,7 +40,20 @@ const QuickCheck: React.FC<QuickCheckProps> = ({ word, variant = 0, onPass, isLa
   const [picked, setPicked] = useState<number[]>([]) // build: indexes into tray
   const [wrong, setWrong] = useState<string | null>(null)
 
-  const tray = useMemo(() => shuffle([...answer]), [answer])
+  // A shuffle can land back in order ("t a g" for "tag" comes up one time in
+  // six), and then the check is just tapping left to right. Mix again until it
+  // isn't, whenever the word has two different letters to swap.
+  const tray = useMemo(() => {
+    let mixed = shuffle([...answer])
+    for (let i = 0; i < 10 && mixed.join('') === answer && new Set(answer).size > 1; i++) {
+      mixed = shuffle([...answer])
+    }
+    return mixed
+  }, [answer])
+
+  // The step to the next word is on a timer; leaving the lesson cancels it.
+  const timers = useRef<number[]>([])
+  useEffect(() => () => timers.current.forEach((t) => window.clearTimeout(t)), [])
 
   const options = useMemo(() => {
     if (kind === 'choose') {
@@ -72,7 +85,7 @@ const QuickCheck: React.FC<QuickCheckProps> = ({ word, variant = 0, onPass, isLa
     setPhase('right')
     sfx.correct()
     speak('Yes!')
-    setTimeout(() => onPass(false), 900)
+    timers.current.push(window.setTimeout(() => onPass(false), 900))
   }
 
   const miss = (label: string) => {

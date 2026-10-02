@@ -35,17 +35,15 @@ const BibleApiDashboard: React.FC<BibleApiDashboardProps> = ({ onGameSelect }) =
   }, [searchQuery])
 
   const loadDashboardData = async () => {
-    try {
-      const [daily, random] = await Promise.all([
-        bibleApi.getDailyVerse(),
-        bibleApi.getRandomVerse(selectedVersion)
-      ])
-
-      setDailyVerse(daily)
-      setRandomVerse(random)
-    } catch (error) {
-      console.error('Error loading dashboard data:', error)
-    }
+    // Settled separately: offline, the random verse fails, and Promise.all
+    // threw away the daily verse's own fallback with it — "Loading..." forever.
+    const [daily, random] = await Promise.allSettled([
+      bibleApi.getDailyVerse(),
+      bibleApi.getRandomVerse(selectedVersion)
+    ])
+    if (daily.status === 'fulfilled') setDailyVerse(daily.value)
+    else console.error('Error loading the daily verse:', daily.reason)
+    if (random.status === 'fulfilled') setRandomVerse(random.value)
   }
 
   const loadStats = () => {
@@ -105,8 +103,8 @@ const BibleApiDashboard: React.FC<BibleApiDashboardProps> = ({ onGameSelect }) =
     { id: 'reading', name: 'Bible Reading', icon: '📖', description: 'Read faith-based stories' },
     { id: 'trivia', name: 'Bible Trivia', icon: '❓', description: 'Test your Bible knowledge' },
     { id: 'memorizer', name: 'Verse Memorizer', icon: '💭', description: 'Memorize Bible verses' },
-    { id: 'study', name: 'Bible Study', icon: '📚', description: 'Study the Word deeply' },
-    { id: 'quiz', name: 'Bible Quiz', icon: '🎯', description: 'Challenge yourself' }
+    // "Bible Study" and "Bible Quiz" cards used to sit here with nothing
+    // behind them — tapping "Play Now" did nothing at all.
   ]
 
   return (

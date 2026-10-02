@@ -39,6 +39,26 @@ import FunFx from './components/common/FunFx'
 import BuddyCompanion from './components/buddy/BuddyCompanion'
 import { useTheme } from './contexts/ThemeContext'
 import { WorldPickerModal } from './components/theme/WorldPicker'
+import { setWordsLeftCounter } from './services/progress/LearningFlow'
+import { wordBank } from './services/wordBank'
+
+// LearningFlow can't see the word bank, so it is told how to count the words
+// a child still has to meet in their levels. At the end of a word list that
+// shrinks the day's goal to what is left, instead of a goal nobody can meet.
+// Cached: the answer only changes when a word is learned or the levels change.
+{
+  let lastKey = ''
+  let lastLeft = 0
+  setWordsLeftCounter((levels, learned) => {
+    const key = `${levels.join(',')}|${learned.length}|${learned[learned.length - 1] ?? ''}`
+    if (key !== lastKey) {
+      const known = new Set(learned)
+      lastLeft = wordBank.getWordsForLevels(levels).filter((w) => !known.has(w.id)).length
+      lastKey = key
+    }
+    return lastLeft
+  })
+}
 
 function FirstRunWorldPicker() {
   const { hasChosenWorld, markWorldChosen } = useTheme()
@@ -64,6 +84,24 @@ function App() {
     // Request notification permission
     if ('Notification' in window && Notification.permission === 'default') {
       Notification.requestPermission()
+    }
+  }, [])
+
+  useEffect(() => {
+    // The day also turns over while the app stays open — an iPad left on the
+    // table overnight. Checking only at start-up counted the morning's words
+    // as yesterday's, and the next reload then wiped them. The reset runs at
+    // most once a day and tells ProgressContext to re-read what it rewrote.
+    const newDayCheck = () => {
+      if (document.visibilityState === 'visible') DailyResetService.initialize()
+    }
+    const minute = window.setInterval(newDayCheck, 60_000)
+    document.addEventListener('visibilitychange', newDayCheck)
+    window.addEventListener('focus', newDayCheck)
+    return () => {
+      window.clearInterval(minute)
+      document.removeEventListener('visibilitychange', newDayCheck)
+      window.removeEventListener('focus', newDayCheck)
     }
   }, [])
 

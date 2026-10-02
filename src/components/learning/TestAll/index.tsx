@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import SpellingInput from '../../common/SpellingInput'
 import { useAudio } from '../../../contexts/AudioContext'
 import { wordBank, Word } from '../../../services/wordBank'
@@ -18,6 +19,7 @@ const TestAll: React.FC<TestAllProps> = ({
   words: providedWords,
   onMoveToGames
 }) => {
+  const navigate = useNavigate()
   const { speak } = useAudio()
   const [words, setWords] = useState<Word[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -246,12 +248,19 @@ const TestAll: React.FC<TestAllProps> = ({
             </Button>
           )}
 
-          <Button
-            onClick={() => {/* Navigate to review */}}
-            variant="secondary"
-          >
-            Review Mistakes
-          </Button>
+          {results.some((r) => !r.isCorrect) && (
+            // The words missed in this test, practised now. The tricky-word
+            // review never had them: this test records nothing anywhere.
+            <Button
+              onClick={() =>
+                navigate('/review', { state: { missed: results.filter((r) => !r.isCorrect).map((r) => r.word.id) } })
+              }
+              variant="secondary"
+              icon="🧠"
+            >
+              Practise the ones I missed
+            </Button>
+          )}
         </div>
 
         {results.length > 0 && (

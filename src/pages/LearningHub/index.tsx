@@ -5,6 +5,7 @@ import { useUser } from '../../contexts/UserContext'
 import { useRewardStore } from '../../stores/rewards/useRewardStore'
 import { wordBank } from '../../services/wordBank'
 import { getSeasonalEventById } from '../../services/seasonal'
+import { useStreak } from '../../hooks/useStreak'
 import WordMastery, {
   MASTERY_EVENT,
   LEARN_CHALLENGE_TARGET,
@@ -38,6 +39,7 @@ const LearningHub: React.FC = () => {
   const navigate = useNavigate()
   const { addStars } = useRewardStore()
   const [searchParams] = useSearchParams()
+  const { streakData } = useStreak()
   // A seasonal event (?seasonal=halloween) swaps the whole word list for the
   // event's curated set — everything downstream (groups, learn, spell) just works.
   const seasonalEvent = useMemo(
@@ -115,6 +117,20 @@ const LearningHub: React.FC = () => {
   const isGroupLearned = groupCount > 0 && groupLearnedCount === groupCount
   const isGroupSpelled = groupCount > 0 && groupSpelledCount === groupCount
 
+  // What the games really are right now. Spelling a group used to announce
+  // "You unlocked a game — go play!" even on a day when nothing was open.
+  const gate = learningFlow.gamesLockedReason()
+  const starterOpen = learningFlow.areStarterGamesOpen()
+  const canPlay = gate === null || starterOpen
+
+  // Home's "Spell It!" and "Keep Practicing" link here with ?mode=spell: go
+  // straight to spelling when there is a learned group to spell.
+  const wantsSpell = searchParams.get('mode') === 'spell'
+  useEffect(() => {
+    if (wantsSpell && isGroupLearned) setActiveMode('spell')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wantsSpell])
+
   const handleModeSelect = (mode: LearningMode) => {
     setActiveMode(mode)
     setQuizType(null)
@@ -139,10 +155,24 @@ const LearningHub: React.FC = () => {
     learningFlow.setWordLevels(next)
   }
 
-  const handleGroupSelect = (index: number) => {
-    setSelectedGroup(index)
-    learningFlow.setSelectedGroup(index)
+  /**
+   * Move to a word group. During a seasonal event the groups are the event's,
+   * so the child's saved place in their own list is left alone — saving the
+   * event's index (or adding one to the saved group and clamping it to the
+   * event's count) moved a child on group 37 back to group 2.
+   */
+  const goToGroup = (index: number) => {
+    const target = Math.min(Math.max(index, 0), groupsCount - 1)
+    setSelectedGroup(target)
+    if (!seasonalEvent) learningFlow.setSelectedGroup(target)
   }
+  const handleGroupSelect = (index: number) => goToGroup(index)
+
+  // Entering an event starts at its first group; leaving it goes back to the
+  // child's own place.
+  useEffect(() => {
+    setSelectedGroup(seasonalEvent ? 0 : learningFlow.getSelectedGroup())
+  }, [seasonalEvent, learningFlow])
 
   const renderCommonSelectors = () => (
     <>
@@ -271,6 +301,9 @@ const LearningHub: React.FC = () => {
           words={groupWords}
           difficulty={difficulty}
           onMoveToPractice={() => handleModeSelect('spell')}
+          // "More Words" means new words: the next group, as "Next Word Group"
+          // does. At the last group it keeps LearnMode's own behaviour.
+          onMoreWords={safeGroup < groupsCount - 1 ? () => goToGroup(safeGroup + 1) : undefined}
         />
       </div>
     )
@@ -358,7 +391,7 @@ const LearningHub: React.FC = () => {
         <div className="progress-summary">
           <div className="progress-item">
             <span className="progress-icon">📚</span>
-            <span className="progress-value">{learningFlow.getWordsLearnedToday().length}/{learningFlow.getDailyGoal()}</span>
+            <span className="progress-value">{learningFlow.getWordsLearnedToday().length}/{learningFlow.getLearnGoalToday()}</span>
             <span className="progress-label">Today's Goal</span>
           </div>
           <div className="progress-item">
@@ -368,8 +401,10 @@ const LearningHub: React.FC = () => {
           </div>
           <div className="progress-item">
             <span className="progress-icon">🔥</span>
-            <span className="progress-value">{learningFlow.getCurrentStreak()} days</span>
-            <span className="progress-label">Learning Streak</span>
+            {/* The same streak Home shows — this used to read a counter nothing ever
+                moved, so it said 0 days beside Home's 1. */}
+            <span className="progress-value">{streakData.currentStreak} {streakData.currentStreak === 1 ? 'day' : 'days'}</span>
+            <span className="progress-label">Day Streak</span>
           </div>
         </div>
       </div>
@@ -407,6 +442,15 @@ const LearningHub: React.FC = () => {
         />
 
         {renderMissedDays()}
+
+        {/* The end of the word list: nothing new is left to meet, so say so
+            rather than asking for words that don't exist. */}
+        {!seasonalEvent && learningFlow.isLevelFinished() && (
+          <div className="level-finished" role="status">
+            🎉 You've met every word in your level! Keep practising them — and ask a
+            grown-up to choose your next level.
+          </div>
+        )}
 
         <div className="path-steps">
           {/* Step 1 — Learn every word in the group */}
@@ -457,21 +501,37 @@ const LearningHub: React.FC = () => {
             <div className="step-icon">{isGroupSpelled ? '🎮' : '🔒'}</div>
             <div className="step-content">
               <h3>Play a Game!</h3>
-              <p>{isGroupSpelled ? 'You unlocked a game — go play! 🎉' : 'Spell all the words to unlock'}</p>
+              <p>
+                {!isGroupSpelled
+                  ? 'Spell all the words to unlock'
+                  : gate === null
+                  ? 'Every game is open — go play! 🎉'
+                  : !starterOpen
+                  ? 'Meet today’s new words to open the starter games.'
+                  : gate === 'review'
+                  ? 'Starter games are open! A quick review opens all the rest. 🎉'
+                  : 'Starter games are open! Pass today’s quiz for all the rest. 🎉'}
+              </p>
               <Button
                 onClick={() => navigate('/games')}
-                variant={isGroupSpelled ? 'success' : 'secondary'}
-                disabled={!isGroupSpelled}
-                icon={isGroupSpelled ? '🎮' : '🔒'}
+                variant={isGroupSpelled && canPlay ? 'success' : 'secondary'}
+                disabled={!isGroupSpelled || !canPlay}
+                icon={isGroupSpelled && canPlay ? '🎮' : '🔒'}
               >
-                {isGroupSpelled ? 'Play a Game!' : 'Locked'}
+                {isGroupSpelled && canPlay ? 'Play a Game!' : 'Locked'}
               </Button>
+              {isGroupSpelled && starterOpen && gate !== null && (
+                <Button
+                  onClick={() => navigate(gate === 'review' ? '/review' : '/daily-quiz')}
+                  variant="primary"
+                  icon={gate === 'review' ? '🧠' : '🏆'}
+                >
+                  {gate === 'review' ? 'Start Review' : 'Take the Quiz'}
+                </Button>
+              )}
               {isGroupSpelled && groupsCount > 1 && (
                 <Button
-                  onClick={() => {
-                    learningFlow.advanceToNextGroup(groupsCount)
-                    setSelectedGroup(g => Math.min(g + 1, groupsCount - 1))
-                  }}
+                  onClick={() => goToGroup(safeGroup + 1)}
                   variant="secondary"
                   icon="➡️"
                 >

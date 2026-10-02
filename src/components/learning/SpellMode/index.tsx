@@ -9,6 +9,7 @@ import { AchievementsService } from '../../../services/rewards/AchievementsServi
 import BuddyService from '../../../services/buddy/BuddyService'
 import useSpeechRecognition, { parseSpelling } from '../../../hooks/useSpeechRecognition'
 import { explain } from '../../../services/words/explain'
+import { sameSpelling } from '../../../services/words/spelling'
 import sfx from '../../games/shared/sfx'
 import Button from '../../common/Button'
 import './SpellMode.css'
@@ -39,6 +40,9 @@ const SpellMode: React.FC<SpellModeProps> = ({
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
   const [score, setScore] = useState(0)
   const [streak, setStreak] = useState(0)
+  // Words answered and got right this round. Accuracy used to be the streak-
+  // boosted score over ten points a word, so five right in a row read "300%".
+  const [tally, setTally] = useState({ answered: 0, correct: 0 })
   // What they wrote, kept after the box is cleared so the tip can name the
   // exact mistake rather than give a generic rule.
   const [lastAttempt, setLastAttempt] = useState('')
@@ -69,6 +73,7 @@ const SpellMode: React.FC<SpellModeProps> = ({
   }, [difficulty, providedWords, learningFlow])
 
   const loadWords = () => {
+    setTally({ answered: 0, correct: 0 })
     if (providedWords && providedWords.length > 0) {
       setWords(providedWords)
       
@@ -121,9 +126,11 @@ const SpellMode: React.FC<SpellModeProps> = ({
     if (isCorrect !== null) return
 
     const answer = (spokenValue ?? userInput).toLowerCase().trim()
-    const correct = answer === currentWord.word.toLowerCase()
+    // Accents set aside: a laptop keyboard can't type the ñ in "señor".
+    const correct = sameSpelling(answer, currentWord.word)
     setLastAttempt(answer)
     setIsCorrect(correct)
+    setTally((t) => ({ answered: t.answered + 1, correct: t.correct + (correct ? 1 : 0) }))
     // Right or wrong, this word's next review date depends on what just happened.
     ReviewSchedule.record(currentWord.id, correct)
 
@@ -261,7 +268,9 @@ const SpellMode: React.FC<SpellModeProps> = ({
           </div>
           <div className="score-item">
             <span className="score-label">Accuracy</span>
-            <span className="score-value">{Math.round((score / (words.length * 10)) * 100)}%</span>
+            <span className="score-value">
+              {tally.answered ? Math.round((tally.correct / tally.answered) * 100) : 0}%
+            </span>
           </div>
         </div>
         <div className="completed-actions">

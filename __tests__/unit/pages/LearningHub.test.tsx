@@ -71,6 +71,11 @@ const createMockLearningFlow = (overrides: Partial<LearningFlowController>) => (
   setWordLevels: vi.fn(),
   getSelectedGroup: () => 0,
   getMissedDays: () => [],
+  gamesLockedReason: () => 'quiz',
+  areStarterGamesOpen: () => false,
+  // Mid-list, today's goal is just the daily goal.
+  getLearnGoalToday(this: { getDailyGoal: () => number }) { return this.getDailyGoal() },
+  isLevelFinished: () => false,
   ...overrides,
 } as any)
 
@@ -126,12 +131,32 @@ describe('LearningHub Page - Group Succession', () => {
     vi.mocked(LearningFlowController).mockImplementation(() => createMockLearningFlow({
       getWordsLearnedTotal: () => ['1'],
       getWordsSpelledTotal: () => ['1'],
+      // Today's words are met, so the starter games are open.
+      areStarterGamesOpen: () => true,
     }))
 
     renderWithProviders(<LearningHub />)
 
     const gameStep = stepByHeading('Play a Game!')
     expect(within(gameStep).getByRole('button', { name: /Play a Game!/i })).not.toBeDisabled()
+    // ...and it says what opens the rest, with a way there.
+    expect(within(gameStep).getByText(/Pass today’s quiz for all the rest/)).toBeInTheDocument()
+    expect(within(gameStep).getByRole('button', { name: /Take the Quiz/i })).toBeInTheDocument()
+  })
+
+  it('does not promise a game when nothing is open today', () => {
+    // A group spelled on an earlier day, and nothing learned yet today.
+    vi.mocked(LearningFlowController).mockImplementation(() => createMockLearningFlow({
+      getWordsLearnedTotal: () => ['1'],
+      getWordsSpelledTotal: () => ['1'],
+    }))
+
+    renderWithProviders(<LearningHub />)
+
+    const gameStep = stepByHeading('Play a Game!')
+    expect(within(gameStep).queryByText(/You unlocked a game/)).not.toBeInTheDocument()
+    expect(within(gameStep).getByText(/Meet today’s new words/)).toBeInTheDocument()
+    expect(within(gameStep).getByRole('button', { name: /Locked/i })).toBeDisabled()
   })
 
   it('shows the daily goal from the user profile', () => {

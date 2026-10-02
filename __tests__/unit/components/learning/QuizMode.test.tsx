@@ -4,6 +4,7 @@ import QuizMode from '@/components/learning/QuizMode'
 import { ProgressProvider, useProgress } from '@/contexts/ProgressContext' // Import useProgress
 import { AudioProvider } from '@/contexts/AudioContext'
 import React from 'react'
+import { MemoryRouter } from 'react-router-dom'
 import { LearningFlowController } from '@/services/progress/LearningFlow'
 
 // Mock wordBank
@@ -60,11 +61,13 @@ describe('QuizMode Component', () => {
 
   const renderWithProviders = (ui: React.ReactElement) => {
     return render(
-      <AudioProvider>
-        <ProgressProvider>
-          {ui}
-        </ProgressProvider>
-      </AudioProvider>
+      <MemoryRouter>
+        <AudioProvider>
+          <ProgressProvider>
+            {ui}
+          </ProgressProvider>
+        </AudioProvider>
+      </MemoryRouter>
     )
   }
 

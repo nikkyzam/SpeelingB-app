@@ -58,6 +58,13 @@ import {
   VowelRescue,
   DoubleTrouble,
   OnStage,
+  CaterpillarCrawl,
+  SpellTacToe,
+  CrissCross,
+  WordJigsaw,
+  WordLock,
+  BeeBingo,
+  HoneyFlight,
   PrizeWheel,
   BibleTriviaEnhanced,
   BibleMemorizer
@@ -65,6 +72,7 @@ import {
 import BibleApiDashboard from '../../components/bible/BibleApiDashboard'
 import Celebration, { CelebrationData } from '../../components/common/Celebration'
 import ReviewSchedule from '../../services/progress/ReviewSchedule'
+import { FREE_GAMES } from '../../services/progress/LearningFlow'
 import { pickGameOfTheDay, recommendNext } from '../../services/games/gameOfTheDay'
 import './GameCenter.css'
 
@@ -91,6 +99,8 @@ type GameMode =
   | 'spell-tower' | 'word-sort' | 'parrot-party' | 'story-builder' | 'treasure-trail'
   | 'homophone-hero' | 'word-family' | 'syllable-clap' | 'definition-detective'
   | 'vowel-rescue' | 'double-trouble' | 'on-stage'
+  | 'caterpillar-crawl' | 'spell-tac-toe' | 'criss-cross' | 'word-jigsaw'
+  | 'word-lock' | 'bee-bingo' | 'honey-flight'
   | 'bible-trivia' | 'bible-memorizer'
   | null
 
@@ -145,6 +155,19 @@ const GameCenter: React.FC = () => {
   const gridRef = useRef<HTMLDivElement>(null)
   // What to try after finishing something, shown beside the celebration.
   const [nextUp, setNextUp] = useState<{ id: string; title: string; icon: string } | null>(null)
+  // A game a shortcut (Home, the Bible page) asked for that isn't open yet.
+  const [refused, setRefused] = useState<string | null>(null)
+
+  // Every opened game gets its own session, and pays out at most once and only
+  // while it is still the game on screen. Several older games finish on
+  // untracked timers: without this, a game left early paid out anyway, a
+  // "Return to menu" button plus its timer paid twice, and a stray timer from
+  // one game could close the next game a second after it opened.
+  const session = useRef(0)
+  const paidSession = useRef(-1)
+  const startSession = () => {
+    session.current += 1
+  }
 
   // Games practise what the child has ALREADY studied — nothing else. Feeding a
   // game words a child has never met turns practice into a guessing exercise
@@ -346,6 +369,83 @@ const GameCenter: React.FC = () => {
       duration: '5 words',
       category: 'spelling' as Category,
       unlocked: learningFlow.isGameUnlocked('ghost-word')
+    },
+    {
+      id: 'caterpillar-crawl',
+      title: '🐛 Caterpillar Crawl',
+      description: 'Steer the caterpillar to munch the letters in order',
+      icon: '🐛',
+      color: '#51CF66',
+      duration: '4 words',
+      category: 'arcade' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('caterpillar-crawl')
+    },
+    {
+      id: 'spell-tac-toe',
+      title: '⭕ Spell-Tac-Toe',
+      description: 'Spell a word to claim a square — get three in a row!',
+      icon: '⭕',
+      color: '#339AF0',
+      duration: '1 match',
+      category: 'think' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('spell-tac-toe')
+    },
+    {
+      id: 'criss-cross',
+      title: '✏️ Criss-Cross',
+      description: 'A mini crossword made from your own words',
+      icon: '✏️',
+      color: '#FAB005',
+      duration: '5 words',
+      category: 'think' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('criss-cross')
+    },
+    {
+      id: 'word-jigsaw',
+      title: '🧩 Word Jigsaw',
+      description: 'Snap the word together — watch out for fake pieces!',
+      icon: '🧩',
+      color: '#E64980',
+      duration: '6 words',
+      category: 'spelling' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('word-jigsaw')
+    },
+    {
+      id: 'word-lock',
+      title: '🔒 Word Lock',
+      description: 'Have a go — every try shows which letters fit',
+      icon: '🔒',
+      color: '#7950F2',
+      duration: '4 words',
+      category: 'spelling' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('word-lock')
+    },
+    {
+      id: 'bee-bingo',
+      title: '🐝 Bee Bingo',
+      description: 'Hear the call, find the word — spot the sneaky misspellings!',
+      icon: '🐝',
+      color: '#F59F00',
+      duration: '2 cards',
+      category: 'listen' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('bee-bingo')
+    },
+    {
+      id: 'honey-flight',
+      title: '🌼 Honey Flight',
+      description: 'Fly the bee through the flowers that spell the word',
+      icon: '🌼',
+      color: '#40C057',
+      duration: '4 words',
+      category: 'arcade' as Category,
+      isNew: true,
+      unlocked: learningFlow.isGameUnlocked('honey-flight')
     },
     {
       id: 'word-machine',
@@ -710,9 +810,10 @@ const GameCenter: React.FC = () => {
   // words, so it stays shut until they have studied a few.
   // Chosen from the whole catalogue rather than this child's unlocked set, so
   // two children genuinely see the same game on the same day. Whether they can
-  // play it yet is answered by the card itself.
+  // play it yet is answered by the card itself. Hidden games are left out:
+  // openGame refuses them, so featuring one left a "Play it!" that did nothing.
   const gameOfTheDayId = useMemo(
-    () => pickGameOfTheDay(rawGames.map((g) => g.id)),
+    () => pickGameOfTheDay(rawGames.filter((g) => !HIDDEN_GAMES.has(g.id)).map((g) => g.id)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [rawGames.length]
   )
@@ -727,10 +828,16 @@ const GameCenter: React.FC = () => {
     if (!requestedGame) return
     if (requestedAllowed) {
       GameStats.markSeen(requestedGame)
+      startSession()
       setActiveGame(requestedGame as GameMode)
+    } else if (rawGames.some((g) => g.id === requestedGame && !HIDDEN_GAMES.has(g.id))) {
+      // Say why, rather than dropping a child who tapped "Play" onto a grid of
+      // locks with no word about the game they asked for.
+      setRefused(requestedGame)
     }
     // Consume the shortcut so returning here cannot restart it or bypass a lock.
     navigate(location.pathname, { replace: true, state: null })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requestedGame, requestedAllowed, location.pathname, navigate])
 
   const handleGameComplete = (score: number) => {
@@ -752,9 +859,12 @@ const GameCenter: React.FC = () => {
     }
 
     // Nudge them somewhere they have not been. Computed before the grid
-    // re-renders so it reflects what was just played.
+    // re-renders so it reflects what was just played. Never a hidden game:
+    // its "Let's go" would do nothing.
     const suggestionId = recommendNext(
-      games.map((g) => ({ id: g.id, category: g.category, unlocked: g.unlocked })),
+      games
+        .filter((g) => !HIDDEN_GAMES.has(g.id))
+        .map((g) => ({ id: g.id, category: g.category, unlocked: g.unlocked })),
       finishedId,
       GameStats.getSeen()
     )
@@ -778,7 +888,16 @@ const GameCenter: React.FC = () => {
   const openGame = (id: string) => {
     if (!games.some(g => g.id === id && g.unlocked && !HIDDEN_GAMES.has(g.id))) return
     GameStats.markSeen(id)
+    startSession()
+    setRefused(null)
     setActiveGame(id as GameMode)
+  }
+
+  /** The payout for one session of one game — honoured once, and only while current. */
+  const finishFor = (id: number) => (score: number) => {
+    if (id !== session.current || paidSession.current === id) return
+    paidSession.current = id
+    handleGameComplete(score)
   }
 
   const toggleFavorite = (id: string) => {
@@ -796,6 +915,9 @@ const GameCenter: React.FC = () => {
   }
 
   const handleBackToGames = () => {
+    // Leaving ends the session: a timer the game left running can't pay for
+    // a game nobody finished.
+    startSession()
     setActiveGame(null)
   }
 
@@ -803,6 +925,36 @@ const GameCenter: React.FC = () => {
 
   // How many visible games are still behind today's quiz.
   const lockedCount = visibleGames.filter((g) => !g.unlocked).length
+
+  /**
+   * What actually stands between this child and the rest of the games. Every
+   * message on this page is worded from this one answer — after the quiz a
+   * review can still be due, and "every game is unlocked!" above a grid of
+   * locks told a child the opposite of what to do next.
+   */
+  const blockedBy: 'learn' | 'quiz' | 'review' | 'words' | null =
+    learnedCount === 0 && !quizPassed ? 'learn' : lockedReason ?? (!enoughWords && lockedCount > 0 ? 'words' : null)
+  const wordsShort = Math.max(MIN_GAME_WORDS - selectedWords.length, 1)
+  const reviewAsk =
+    reviewDueCount > 0
+      ? `practise ${reviewDueCount} word${reviewDueCount === 1 ? '' : 's'} you've learned`
+      : 'practise a few words you already know'
+
+  /** Why one card is still shut, pointing at the step that opens it. */
+  const lockedBecause = (g: GameCard): string => {
+    if (!wordlessGames.has(g.id) && !enoughWords) {
+      return `Learn ${wordsShort} more word${wordsShort === 1 ? '' : 's'} to play`
+    }
+    if (FREE_GAMES.includes(g.id)) return 'Learn today’s words to unlock'
+    if (lockedReason === 'review') {
+      // A review can be due because specific words are scheduled, or because
+      // it has simply been a while. Only the first has a number worth showing.
+      return reviewDueCount > 0
+        ? `${reviewDueCount} word${reviewDueCount === 1 ? '' : 's'} ready for review — practise them to unlock`
+        : 'Time for a quick review to unlock'
+    }
+    return learnedCount === 0 ? 'Learn some words, then pass today’s quiz' : 'Pass today’s quiz to unlock'
+  }
 
   // Favourites float to the top, then anything brand new, then the usual order.
   const shownGames = visibleGames
@@ -824,56 +976,64 @@ const GameCenter: React.FC = () => {
   const challengeDone = challengeProgress >= DAILY_CHALLENGE_TARGET
 
   const renderActiveGame = () => {
+    const done = finishFor(session.current)
     switch (activeGame) {
-      case 'bonus': return <BonusGame onComplete={handleGameComplete} />
-      case 'word-race': return <WordRace words={selectedWords} onComplete={handleGameComplete} />
-      case 'memory-match': return <MemoryMatch words={selectedWords} onComplete={handleGameComplete} />
-      case 'balloon-pop': return <BalloonPop words={selectedWords} onComplete={handleGameComplete} />
-      case 'word-scramble': return <WordScramble words={selectedWords} onComplete={handleGameComplete} />
-      case 'spell-sprint': return <SpellSprint words={selectedWords} onComplete={handleGameComplete} />
-      case 'shape-catcher': return <ShapeCatcher onComplete={handleGameComplete} />
-      case 'spelling-adventure': return <SpellingAdventure words={selectedWords} onComplete={handleGameComplete} />
-      case 'pattern-memory': return <PatternMemory onComplete={handleGameComplete} />
-      case 'rhythm-tap': return <RhythmTap onComplete={handleGameComplete} />
-      case 'memory-grid': return <MemoryGrid onComplete={handleGameComplete} />
-      case 'reaction-test': return <ReactionTest onComplete={handleGameComplete} />
-      case 'pattern-sequencer': return <PatternSequencer onComplete={handleGameComplete} />
-      case 'color-mixer': return <ColorMixer onComplete={handleGameComplete} />
-      case 'math-puzzle': return <MathPuzzle onComplete={handleGameComplete} />
-      case 'music-composer': return <MusicComposer onComplete={handleGameComplete} />
-      case 'physics-puzzle': return <PhysicsPuzzle onComplete={handleGameComplete} />
-      case 'puzzle-slider': return <PuzzleSlider onComplete={handleGameComplete} />
-      case 'word-builder': return <WordBuilder words={selectedWords} onComplete={handleGameComplete} />
-      case 'missing-letter': return <MissingLetter words={selectedWords} onComplete={handleGameComplete} />
-      case 'spelling-check': return <SpellingCheck words={selectedWords} onComplete={handleGameComplete} />
-      case 'rescue-the-bee': return <RescueTheBee words={selectedWords} onComplete={handleGameComplete} />
-      case 'word-search': return <WordSearch words={selectedWords} onComplete={handleGameComplete} />
-      case 'bee-catch': return <BeeCatch words={selectedWords} onComplete={handleGameComplete} />
-      case 'word-chef': return <WordChef words={selectedWords} onComplete={handleGameComplete} />
-      case 'abc-order': return <AbcOrder words={selectedWords} onComplete={handleGameComplete} />
-      case 'typo-detective': return <TypoDetective words={selectedWords} onComplete={handleGameComplete} />
-      case 'mystery-picture': return <MysteryPicture words={selectedWords} onComplete={handleGameComplete} />
-      case 'secret-code': return <SecretCode words={selectedWords} onComplete={handleGameComplete} />
-      case 'ghost-word': return <GhostWord words={selectedWords} onComplete={handleGameComplete} />
-      case 'word-machine': return <WordMachine words={selectedWords} onComplete={handleGameComplete} />
-      case 'dragon-duel': return <DragonDuel words={selectedWords} onComplete={handleGameComplete} />
-      case 'word-whack': return <WordWhack words={selectedWords} onComplete={handleGameComplete} />
-      case 'word-fishing': return <WordFishing words={selectedWords} onComplete={handleGameComplete} />
-      case 'rhyme-time': return <RhymeTime words={selectedWords} onComplete={handleGameComplete} />
-      case 'spell-tower': return <SpellTower words={selectedWords} onComplete={handleGameComplete} />
-      case 'word-sort': return <WordSort words={selectedWords} onComplete={handleGameComplete} />
-      case 'parrot-party': return <ParrotParty words={selectedWords} onComplete={handleGameComplete} />
-      case 'story-builder': return <StoryBuilder words={selectedWords} onComplete={handleGameComplete} />
-      case 'treasure-trail': return <TreasureTrail words={selectedWords} onComplete={handleGameComplete} />
-      case 'homophone-hero': return <HomophoneHero onComplete={handleGameComplete} />
-      case 'word-family': return <WordFamily onComplete={handleGameComplete} />
-      case 'syllable-clap': return <SyllableClap words={selectedWords} onComplete={handleGameComplete} />
-      case 'definition-detective': return <DefinitionDetective words={selectedWords} onComplete={handleGameComplete} />
-      case 'vowel-rescue': return <VowelRescue words={selectedWords} onComplete={handleGameComplete} />
-      case 'double-trouble': return <DoubleTrouble words={selectedWords} onComplete={handleGameComplete} />
-      case 'on-stage': return <OnStage words={selectedWords} onComplete={handleGameComplete} />
-      case 'bible-trivia': return <BibleTriviaEnhanced onComplete={handleGameComplete} />
-      case 'bible-memorizer': return <BibleMemorizer onComplete={handleGameComplete} />
+      case 'bonus': return <BonusGame onComplete={done} />
+      case 'word-race': return <WordRace words={selectedWords} onComplete={done} />
+      case 'memory-match': return <MemoryMatch words={selectedWords} onComplete={done} />
+      case 'balloon-pop': return <BalloonPop words={selectedWords} onComplete={done} />
+      case 'word-scramble': return <WordScramble words={selectedWords} onComplete={done} />
+      case 'spell-sprint': return <SpellSprint words={selectedWords} onComplete={done} />
+      case 'shape-catcher': return <ShapeCatcher onComplete={done} />
+      case 'spelling-adventure': return <SpellingAdventure words={selectedWords} onComplete={done} />
+      case 'pattern-memory': return <PatternMemory onComplete={done} />
+      case 'rhythm-tap': return <RhythmTap onComplete={done} />
+      case 'memory-grid': return <MemoryGrid onComplete={done} />
+      case 'reaction-test': return <ReactionTest onComplete={done} />
+      case 'pattern-sequencer': return <PatternSequencer onComplete={done} />
+      case 'color-mixer': return <ColorMixer onComplete={done} />
+      case 'math-puzzle': return <MathPuzzle onComplete={done} />
+      case 'music-composer': return <MusicComposer onComplete={done} />
+      case 'physics-puzzle': return <PhysicsPuzzle onComplete={done} />
+      case 'puzzle-slider': return <PuzzleSlider onComplete={done} />
+      case 'word-builder': return <WordBuilder words={selectedWords} onComplete={done} />
+      case 'missing-letter': return <MissingLetter words={selectedWords} onComplete={done} />
+      case 'spelling-check': return <SpellingCheck words={selectedWords} onComplete={done} />
+      case 'rescue-the-bee': return <RescueTheBee words={selectedWords} onComplete={done} />
+      case 'word-search': return <WordSearch words={selectedWords} onComplete={done} />
+      case 'bee-catch': return <BeeCatch words={selectedWords} onComplete={done} />
+      case 'word-chef': return <WordChef words={selectedWords} onComplete={done} />
+      case 'abc-order': return <AbcOrder words={selectedWords} onComplete={done} />
+      case 'typo-detective': return <TypoDetective words={selectedWords} onComplete={done} />
+      case 'mystery-picture': return <MysteryPicture words={selectedWords} onComplete={done} />
+      case 'secret-code': return <SecretCode words={selectedWords} onComplete={done} />
+      case 'ghost-word': return <GhostWord words={selectedWords} onComplete={done} />
+      case 'word-machine': return <WordMachine words={selectedWords} onComplete={done} />
+      case 'dragon-duel': return <DragonDuel words={selectedWords} onComplete={done} />
+      case 'word-whack': return <WordWhack words={selectedWords} onComplete={done} />
+      case 'word-fishing': return <WordFishing words={selectedWords} onComplete={done} />
+      case 'rhyme-time': return <RhymeTime words={selectedWords} onComplete={done} />
+      case 'spell-tower': return <SpellTower words={selectedWords} onComplete={done} />
+      case 'word-sort': return <WordSort words={selectedWords} onComplete={done} />
+      case 'parrot-party': return <ParrotParty words={selectedWords} onComplete={done} />
+      case 'story-builder': return <StoryBuilder words={selectedWords} onComplete={done} />
+      case 'treasure-trail': return <TreasureTrail words={selectedWords} onComplete={done} />
+      case 'homophone-hero': return <HomophoneHero onComplete={done} />
+      case 'word-family': return <WordFamily onComplete={done} />
+      case 'syllable-clap': return <SyllableClap words={selectedWords} onComplete={done} />
+      case 'definition-detective': return <DefinitionDetective words={selectedWords} onComplete={done} />
+      case 'vowel-rescue': return <VowelRescue words={selectedWords} onComplete={done} />
+      case 'double-trouble': return <DoubleTrouble words={selectedWords} onComplete={done} />
+      case 'on-stage': return <OnStage words={selectedWords} onComplete={done} />
+      case 'caterpillar-crawl': return <CaterpillarCrawl words={selectedWords} onComplete={done} />
+      case 'spell-tac-toe': return <SpellTacToe words={selectedWords} onComplete={done} />
+      case 'criss-cross': return <CrissCross words={selectedWords} onComplete={done} />
+      case 'word-jigsaw': return <WordJigsaw words={selectedWords} onComplete={done} />
+      case 'word-lock': return <WordLock words={selectedWords} onComplete={done} />
+      case 'bee-bingo': return <BeeBingo words={selectedWords} onComplete={done} />
+      case 'honey-flight': return <HoneyFlight words={selectedWords} onComplete={done} />
+      case 'bible-trivia': return <BibleTriviaEnhanced onComplete={done} />
+      case 'bible-memorizer': return <BibleMemorizer onComplete={done} />
       default: return null
     }
   }
@@ -910,8 +1070,14 @@ const GameCenter: React.FC = () => {
           <div className="games-tip">
             <span className="tip-icon">💡</span>
             <span className="tip-text">
-              {quizPassed
+              {blockedBy === null
                 ? 'Today’s quiz is done — every game is unlocked!'
+                : blockedBy === 'review'
+                ? 'Quiz done! One quick review opens every game.'
+                : blockedBy === 'words'
+                ? 'Learn a few more words to open the word games.'
+                : blockedBy === 'learn'
+                ? 'Learn some words, then pass today’s quiz to unlock every game'
                 : 'Pass today’s quiz to unlock every game'}
             </span>
           </div>
@@ -921,26 +1087,55 @@ const GameCenter: React.FC = () => {
       {/* A free spin every day — the reason to open the app tomorrow. */}
       <PrizeWheel />
 
-      {/* The daily gate: spell every word you've learned to open all the games. */}
-      <div className={`daily-gate ${quizPassed ? 'done' : ''}`}>
-        <div className="daily-gate-icon" aria-hidden>{quizPassed ? '🏆' : '🔒'}</div>
+      {/* A game a shortcut asked for, and why it isn't open yet. */}
+      {refused && (() => {
+        const asked = games.find((g) => g.id === refused)
+        if (!asked || asked.unlocked) return null
+        return (
+          <div className="shortcut-locked" role="status">
+            <span className="shortcut-locked-icon" aria-hidden>🔒</span>
+            <p>
+              <strong>{asked.title}</strong> isn’t open yet. {lockedBecause(asked)}, and it’s all yours!
+            </p>
+            <button className="shortcut-locked-close" onClick={() => setRefused(null)} aria-label="Dismiss">✕</button>
+          </div>
+        )
+      })()}
+
+      {/* The daily gate: whatever step is left today, and a button that goes there. */}
+      <div className={`daily-gate ${blockedBy === null ? 'done' : ''}`}>
+        <div className="daily-gate-icon" aria-hidden>
+          {blockedBy === null ? '🏆' : blockedBy === 'review' ? '🧠' : '🔒'}
+        </div>
         <div className="daily-gate-text">
-          <h3>{quizPassed ? 'All games unlocked today!' : 'Today’s Quiz'}</h3>
+          <h3>
+            {blockedBy === null
+              ? 'All games unlocked today!'
+              : blockedBy === 'review'
+              ? 'One more step: a quick review'
+              : blockedBy === 'words'
+              ? 'Nearly there!'
+              : 'Today’s Quiz'}
+          </h3>
           <p>
-            {quizPassed
+            {blockedBy === null
               ? 'Great work — come back tomorrow for a new quiz.'
+              : blockedBy === 'review'
+              ? `Quiz passed! Now ${reviewAsk} to open ${lockedCount === visibleGames.length ? 'every game' : `the other ${lockedCount} games`}.`
+              : blockedBy === 'words'
+              ? `Learn ${wordsShort} more word${wordsShort === 1 ? '' : 's'} to open the word games.`
               : learnedCount === 0
-                ? 'Learn some words first, then take the quiz to open every game.'
-                : `Spell today’s ${Math.min(learnedCount, learningFlow.getDailyGoal())} words to unlock ${lockedCount} more games.`}
+              ? 'Learn some words first, then take the quiz to open every game.'
+              : `Spell today’s ${Math.min(learnedCount, learningFlow.getDailyGoal())} words to unlock ${lockedCount} more games.`}
           </p>
         </div>
-        {!quizPassed && (
+        {blockedBy !== null && (
           <Button
             variant="primary"
-            icon="🏆"
-            onClick={() => navigate(learnedCount === 0 ? '/learn' : '/daily-quiz')}
+            icon={blockedBy === 'review' ? '🧠' : blockedBy === 'quiz' ? '🏆' : '📖'}
+            onClick={() => navigate(blockedBy === 'review' ? '/review' : blockedBy === 'quiz' ? '/daily-quiz' : '/learn')}
           >
-            {learnedCount === 0 ? 'Learn Words' : 'Start Quiz'}
+            {blockedBy === 'review' ? 'Start Review' : blockedBy === 'quiz' ? 'Start Quiz' : 'Learn Words'}
           </Button>
         )}
       </div>
@@ -994,7 +1189,7 @@ const GameCenter: React.FC = () => {
                   ? 'Double stars claimed today — nice one! Come back tomorrow for a new game.'
                   : featured.unlocked
                   ? 'Play it today for DOUBLE stars!'
-                  : 'Finish today’s learning to play it for double stars.'}
+                  : `${lockedBecause(featured)}, then play it for double stars.`}
               </p>
             </div>
             <Button
@@ -1056,20 +1251,7 @@ const GameCenter: React.FC = () => {
                   {game.unlocked ? (best > 0 ? 'Beat your best!' : 'Play Now') : 'Locked'}
                 </Button>
 
-                {!game.unlocked && (
-                  <p className="unlock-requirement">
-                    {!wordlessGames.has(game.id) && !enoughWords
-                      ? `Learn ${MIN_GAME_WORDS - selectedWords.length} more word${MIN_GAME_WORDS - selectedWords.length === 1 ? '' : 's'} to play`
-                      : lockedReason === 'review'
-                      // A review can be due because specific words are
-                      // scheduled, or because it has simply been a while. Only
-                      // the first has a number worth showing.
-                      ? reviewDueCount > 0
-                        ? `${reviewDueCount} word${reviewDueCount === 1 ? '' : 's'} ready for review — practise them to unlock`
-                        : 'Time for a quick review to unlock'
-                      : 'Complete daily learning to unlock'}
-                  </p>
-                )}
+                {!game.unlocked && <p className="unlock-requirement">{lockedBecause(game)}</p>}
               </div>
             </div>
           )

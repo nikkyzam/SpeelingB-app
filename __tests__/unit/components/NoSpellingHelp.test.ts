@@ -35,6 +35,7 @@ const SPELLING_FILES = [
   'components/games/DragonDuel/index.tsx',
   'components/games/SpellingAdventure/index.tsx',
   'components/games/StoryBuilder/index.tsx',
+  'components/games/SpellTacToe/index.tsx',
   'components/learning/TestAll/index.tsx',
 ]
 

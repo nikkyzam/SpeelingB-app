@@ -1,11 +1,14 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { useProgressStore } from '../../../stores/progressStore'
+import { useProgress } from '../../../contexts/ProgressContext'
 import { useRewardStore } from '../../../stores/rewards/useRewardStore'
 import './Navigation.css'
 
 const Navigation: React.FC = () => {
-  const { dailyGoalCompleted } = useProgressStore()
+  // Today's words met. This read the vestigial progressStore flag, which
+  // nothing ever sets, so the Learn tab's 🎯 never appeared.
+  const { learningFlow } = useProgress()
+  const dailyGoalCompleted = learningFlow.isDailyGoalReached('learn')
   const { heavenlyStars } = useRewardStore()
 
   const navItems = [

@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { wordBank } from '../../../services/wordBank'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
+import type { Word } from '../../../services/wordBank'
+import { shuffle, isPlayable } from '../shared/wordTricks'
 import './SpellingAdventure.css'
 import SpellingInput from '../../common/SpellingInput'
 
@@ -22,7 +23,7 @@ interface WordChallenge {
 
 interface SpellingAdventureProps {
   onComplete: (score: number) => void
-  words?: any[]
+  words?: Word[]
 }
 
 const SpellingAdventure: React.FC<SpellingAdventureProps> = ({ onComplete, words: providedWords }) => {
@@ -46,18 +47,42 @@ const SpellingAdventure: React.FC<SpellingAdventureProps> = ({ onComplete, words
 
   const currentLevelData = levels[currentLevel - 1]
 
-  useEffect(() => {
-    newChallenge()
+  // The child's own words, taken in turn. This used to draw strangers from the
+  // whole word bank and ignore the words it was given.
+  const pool = useMemo(
+    () => shuffle((providedWords ?? []).filter((w) => isPlayable(w, 3))),
+    [providedWords]
+  )
+  const nextWord = useRef(0)
+  // One answer per challenge: a second Enter during the feedback used to score
+  // the same word again and count it twice towards the level.
+  const settling = useRef(false)
+  // Delays are tracked so a game left early can't finish itself (and pay out)
+  // after the child has gone.
+  const timers = useRef<number[]>([])
+  const later = (fn: () => void, ms: number) => {
+    timers.current.push(window.setTimeout(fn, ms))
+  }
+  useEffect(() => () => timers.current.forEach((t) => window.clearTimeout(t)), [])
 
-    if (timeLeft > 0 && isActive) {
-      const timer = setTimeout(() => {
-        setTimeLeft(timeLeft - 1)
-      }, 1000)
-      return () => clearTimeout(timer)
-    } else if (timeLeft === 0 && isActive) {
+  // The first challenge, once. It used to be made inside the clock's effect,
+  // so a fresh word replaced the one being spelled every second.
+  useEffect(() => {
+    if (pool.length > 0) newChallenge()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pool])
+
+  // The clock.
+  useEffect(() => {
+    if (!isActive || pool.length === 0) return
+    if (timeLeft <= 0) {
       handleLevelComplete()
+      return
     }
-  }, [timeLeft, isActive])
+    const timer = setTimeout(() => setTimeLeft((t) => t - 1), 1000)
+    return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeLeft, isActive, pool])
 
   useEffect(() => {
     if (wordsCompleted >= currentLevelData.targetWords && isActive) {
@@ -65,8 +90,8 @@ const SpellingAdventure: React.FC<SpellingAdventureProps> = ({ onComplete, words
     }
   }, [wordsCompleted, currentLevelData.targetWords, isActive])
 
-  const generateChallenge = useCallback((): WordChallenge => {
-    const wordObj = wordBank.getRandomWord()
+  const generateChallenge = (): WordChallenge => {
+    const wordObj = pool[nextWord.current++ % pool.length]
     const word = wordObj.word.toLowerCase()
     const challengeTypes: Array<WordChallenge['challengeType']> = ['spelling', 'missing-letters', 'definition']
     const challengeType = challengeTypes[Math.floor(Math.random() * challengeTypes.length)]
@@ -105,9 +130,11 @@ const SpellingAdventure: React.FC<SpellingAdventureProps> = ({ onComplete, words
           challengeType: 'spelling'
         }
     }
-  }, [])
+  }
 
   const scrambleWord = (word: string): string => {
+    // One repeated letter can't be scrambled — re-rolling it recursed forever.
+    if (new Set(word).size < 2) return word
     const letters = word.split('')
     for (let i = letters.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
@@ -132,6 +159,7 @@ const SpellingAdventure: React.FC<SpellingAdventureProps> = ({ onComplete, words
   }
 
   const newChallenge = () => {
+    settling.current = false
     setCurrentChallenge(generateChallenge())
     setUserInput('')
     setFeedback(null)
@@ -139,7 +167,8 @@ const SpellingAdventure: React.FC<SpellingAdventureProps> = ({ onComplete, words
   }
 
   const handleSubmit = () => {
-    if (!userInput.trim() || !currentChallenge) return
+    if (!userInput.trim() || !currentChallenge || settling.current) return
+    settling.current = true
 
     const correct = userInput.toLowerCase() === currentChallenge.word.toLowerCase()
     setIsCorrect(correct)
@@ -151,7 +180,7 @@ const SpellingAdventure: React.FC<SpellingAdventureProps> = ({ onComplete, words
       setWordsCompleted(prev => prev + 1)
       setFeedback(`✅ Correct! +${points} points`)
 
-      setTimeout(() => {
+      later(() => {
         newChallenge()
       }, 1500)
     } else {
@@ -162,9 +191,9 @@ const SpellingAdventure: React.FC<SpellingAdventureProps> = ({ onComplete, words
 
       if (newLives <= 0) {
         setIsActive(false)
-        setTimeout(() => onComplete(score), 2000)
+        later(() => onComplete(score), 2000)
       } else {
-        setTimeout(() => {
+        later(() => {
           newChallenge()
         }, 2000)
       }
@@ -179,13 +208,13 @@ const SpellingAdventure: React.FC<SpellingAdventureProps> = ({ onComplete, words
       setStreak(0)
       setFeedback(`🎉 Level ${currentLevel} Complete! Advancing to ${levels[currentLevel].name}...`)
 
-      setTimeout(() => {
+      later(() => {
         newChallenge()
         setFeedback(null)
       }, 3000)
     } else {
       setIsActive(false)
-      setTimeout(() => onComplete(score), 2000)
+      later(() => onComplete(score), 2000)
     }
   }
 
@@ -258,6 +287,18 @@ const SpellingAdventure: React.FC<SpellingAdventureProps> = ({ onComplete, words
       case 'hard': return '#FF6B6B'
       default: return '#4ECDC4'
     }
+  }
+
+  if (pool.length === 0) {
+    return (
+      <div className="spelling-adventure">
+        {/* No button: onComplete() is a finished game to the hub, and it pays
+            a star for one. "Back to Games" in the header is the way out. */}
+        <p className="adventure-empty">
+          No words for the adventure yet — learn a few, then come back and explore! 🗺️
+        </p>
+      </div>
+    )
   }
 
   return (

@@ -46,6 +46,13 @@ export { default as DefinitionDetective } from './DefinitionDetective'
 export { default as VowelRescue } from './VowelRescue'
 export { default as DoubleTrouble } from './DoubleTrouble'
 export { default as OnStage } from './OnStage'
+export { default as CaterpillarCrawl } from './CaterpillarCrawl'
+export { default as SpellTacToe } from './SpellTacToe'
+export { default as CrissCross } from './CrissCross'
+export { default as WordJigsaw } from './WordJigsaw'
+export { default as WordLock } from './WordLock'
+export { default as BeeBingo } from './BeeBingo'
+export { default as HoneyFlight } from './HoneyFlight'
 
 // Hub extras (not a game — a daily reward the hub shows above the grid)
 export { default as PrizeWheel } from './PrizeWheel'

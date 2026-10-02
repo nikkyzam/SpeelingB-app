@@ -16,6 +16,14 @@ import SpellingInput from '../../components/common/SpellingInput'
 
 const WINGS = 2
 const BEST_KEY = 'bee_tournament_best'
+/** How the lobby says how many rounds this child's Bee really has. */
+const ROUND_COUNT: Record<number, string> = {
+  1: 'One round',
+  2: 'Two rounds',
+  3: 'Three rounds',
+  4: 'Four rounds',
+  5: 'Five rounds',
+}
 
 type Phase = 'lobby' | 'announce' | 'spelling' | 'judging' | 'over'
 
@@ -40,6 +48,10 @@ const BeeTournament: React.FC = () => {
   const [wordIndex, setWordIndex] = useState(0)
   const [wings, setWings] = useState(WINGS)
   const [spelled, setSpelled] = useState(0)
+  // Rounds finished with a wing to spare. Cups are earned by these: going by
+  // the round a child merely reached gave a Silver Cup to one who entered the
+  // Final — a new child's only round — and spelled nothing.
+  const [cleared, setCleared] = useState(0)
   const [input, setInput] = useState('')
   const [verdict, setVerdict] = useState<'right' | 'wrong' | null>(null)
   const [celebration, setCelebration] = useState<CelebrationData | null>(null)
@@ -95,7 +107,17 @@ const BeeTournament: React.FC = () => {
     () => bracket.map((round, i) => (round.length > 0 ? i : -1)).filter((i) => i >= 0),
     [bracket]
   )
-  const enough = playable.length > 0
+  // The stretch rounds can always be filled from the bank, so a child with no
+  // words of their own was handed a Bee made entirely of words nobody had
+  // taught them. It needs at least one round of their own words.
+  const enough = playable.some((i) => !ROUNDS[i].stretch)
+
+  /** Only a word the child has met goes into their review schedule. */
+  const known = useMemo(
+    () => new Set([...learningFlow.getWordsLearnedTotal(), ...learningFlow.getWordsSpelledTotal()]),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [learningFlow, phase === 'lobby']
+  )
 
   const announce = (index: number) => {
     setRoundIndex(index)
@@ -117,15 +139,18 @@ const BeeTournament: React.FC = () => {
   const start = () => {
     setWings(WINGS)
     setSpelled(0)
+    setCleared(0)
     announce(playable[0])
   }
 
-  const finish = (won: boolean, reached: number, spelledNow = spelled) => {
+  const finish = (won: boolean, reached: number, spelledNow = spelled, clearedNow = cleared) => {
     setPhase('over')
     recordBest(reached)
 
-    // A cup for how far they got — bronze at the semi, gold for the lot.
-    const cup = won ? 'cup-gold' : reached >= 4 ? 'cup-silver' : reached >= 3 ? 'cup-bronze' : null
+    // A cup for rounds cleared — bronze for two, silver for three, gold for
+    // the lot. On a full bracket that is the same as reaching the Semi-final
+    // and the Final; on a short one it can't be had without the spelling.
+    const cup = won ? 'cup-gold' : clearedNow >= 3 ? 'cup-silver' : clearedNow >= 2 ? 'cup-bronze' : null
     if (cup) TrophyService.award(cup)
 
     const stars = spelledNow * 3 + (won ? 40 : 0)
@@ -154,7 +179,9 @@ const BeeTournament: React.FC = () => {
     const correct = input.trim().toLowerCase() === word.word.toLowerCase()
     setVerdict(correct ? 'right' : 'wrong')
     setPhase('judging')
-    ReviewSchedule.record(word.id, correct)
+    // A stretch word the child never met stays out of their review schedule —
+    // missing it would otherwise lock tomorrow's games behind a word nobody taught.
+    if (known.has(word.id)) ReviewSchedule.record(word.id, correct)
 
     const spelledNow = spelled + (correct ? 1 : 0)
     if (correct) {
@@ -184,6 +211,9 @@ const BeeTournament: React.FC = () => {
         speak(`Your word is. ${roundWords[nextWord].word}.`)
         return
       }
+      // The round is finished with a wing to spare.
+      const clearedNow = cleared + 1
+      setCleared(clearedNow)
       const nextRound = playable[playable.indexOf(roundIndex) + 1]
       if (nextRound !== undefined) {
         announce(nextRound)
@@ -191,7 +221,7 @@ const BeeTournament: React.FC = () => {
         // Champion means the Championship word, not merely "no rounds left".
         // A child with eight words used to be crowned — Golden Cup, winner's
         // bonus and all — for finishing a Bee that stopped at the Qualifier.
-        finish(roundIndex === ROUNDS.length - 1, roundIndex + 1, spelledNow)
+        finish(roundIndex === ROUNDS.length - 1, roundIndex + 1, spelledNow, clearedNow)
       }
     }, correct ? 1400 : 2600)
   }
@@ -229,8 +259,8 @@ const BeeTournament: React.FC = () => {
           <div className="bee-mascot" aria-hidden>{world.mascot}</div>
           <h2>This week&apos;s Grand Bee</h2>
           <p className="bee-blurb">
-            Five rounds. The words get harder each time. You have <strong>two wings</strong> —
-            miss a word and you lose one, but you keep going.
+            {ROUND_COUNT[playable.length] ?? `${playable.length} rounds`}. The words get harder each time.
+            You have <strong>two wings</strong> — miss a word and you lose one, but you keep going.
           </p>
           <ol className="bee-rounds">
             {/* Only the rounds this child will actually be asked — listing a

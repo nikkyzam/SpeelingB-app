@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useProgress } from '../../contexts/ProgressContext'
 import { useUser } from '../../contexts/UserContext'
 import { useStreak } from '../../hooks/useStreak'
@@ -20,6 +20,7 @@ import './Progress.css'
  */
 const ProgressReport: React.FC = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const { learningFlow } = useProgress()
   const { user } = useUser()
   const { streakData } = useStreak()
@@ -58,7 +59,15 @@ const ProgressReport: React.FC = () => {
   return (
     <div className="progress-page">
       <div className="pg-header">
-        <Button variant="secondary" size="small" onClick={() => navigate(-1)}>← Back</Button>
+        {/* Opened directly (a typed link or a refresh) there is no page to go back
+            to inside the app, and navigate(-1) did nothing or left it. */}
+        <Button
+          variant="secondary"
+          size="small"
+          onClick={() => (location.key === 'default' ? navigate('/settings') : navigate(-1))}
+        >
+          ← Back
+        </Button>
         <div>
           <h1>📈 Progress</h1>
           <p className="pg-sub">A plain-English summary for grown-ups</p>

@@ -48,6 +48,16 @@ describe('Game unlocking via the daily quiz', () => {
     })
   })
 
+  it('never keeps a starter game shut once every other game is open', () => {
+    // Passing the quiz on words learned earlier opens everything else — the
+    // starter games used to stay locked until new words were met as well.
+    controller.passDailyQuiz()
+    expect(controller.isGameUnlocked('ghost-word')).toBe(true)
+    FREE_GAMES.forEach((id) => {
+      expect(controller.isGameUnlocked(id)).toBe(true)
+    })
+  })
+
   it('keeps every other game locked until the quiz is passed', () => {
     const gated = ['word-search', 'ghost-word', 'secret-code', 'mystery-picture', 'typo-detective', 'word-chef']
     gated.forEach((id) => {

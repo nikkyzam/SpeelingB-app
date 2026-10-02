@@ -341,6 +341,28 @@
   box-shadow: var(--shadow-sm);
 }
 .daily-gate.done { border-style: solid; border-color: var(--success); }
+
+/* A game a shortcut asked for that isn't open yet, and why. */
+.shortcut-locked {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 2px solid var(--warning);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--warning) 14%, var(--card));
+  color: var(--text);
+}
+.shortcut-locked p { flex: 1; margin: 0; }
+.shortcut-locked-icon { font-size: 1.4rem; }
+.shortcut-locked-close {
+  border: none;
+  background: none;
+  color: var(--text-soft);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
 .daily-gate-icon { font-size: 2.4rem; line-height: 1; }
 .daily-gate-text { flex: 1; min-width: 210px; }
 .daily-gate-text h3 { margin: 0 0 4px; color: var(--primary-2); }

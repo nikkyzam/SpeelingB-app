@@ -29,12 +29,20 @@ export interface WordRecord {
 
 type Schedule = Record<string, WordRecord>
 
-const today = (): string => new Date().toISOString().slice(0, 10)
+/**
+ * The child's own calendar day, YYYY-MM-DD. This used to be the UTC date,
+ * which turns over at 8pm on the US east coast: words came due mid-evening,
+ * and a child who had opened every game at 7:59 found them locked at 8:01.
+ */
+export const localDay = (d: Date): string =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+
+const today = (): string => localDay(new Date())
 
 const addDays = (days: number): string => {
   const d = new Date()
   d.setDate(d.getDate() + days)
-  return d.toISOString().slice(0, 10)
+  return localDay(d)
 }
 
 const read = (): Schedule => {

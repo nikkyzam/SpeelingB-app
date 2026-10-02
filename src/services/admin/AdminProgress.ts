@@ -2,6 +2,7 @@ import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../config/firebase'
 import { wordBank } from '../wordBank'
 import { levelFromXp, xpFromTotals } from '../progress/WordMastery'
+import { localDay } from '../progress/ReviewSchedule'
 
 /**
  * Everything a grown-up can see about one child's learning.
@@ -205,7 +206,8 @@ export const deriveProgress = (raw: RawUserDoc, now: Date = new Date()): AdminUs
   interface Record_ { box?: unknown; due?: unknown; right?: unknown; wrong?: unknown }
   const schedule = bundled<Record<string, Record_>>(raw, 'word_review_schedule', {})
   const entries = Object.entries(schedule).filter(([, r]) => r && typeof r === 'object')
-  const todayKey = dayKey(now)
+  // Due dates are the child's local calendar day, as ReviewSchedule writes them.
+  const todayKey = localDay(now)
 
   const boxes = [0, 0, 0, 0, 0]
   let dueToday = 0

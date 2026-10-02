@@ -25,7 +25,8 @@ const Home: React.FC = () => {
   const { learningFlow } = useProgress()
   const { world } = useTheme()
   const wordsLearnedToday = learningFlow.getWordsLearnedToday().length
-  const dailyGoal = learningFlow.getDailyGoal('learn')
+  // The goal a child can actually meet today — smaller at the end of a word list.
+  const dailyGoal = learningFlow.getLearnGoalToday()
   const { heavenlyStars } = useRewardStore()
   const { streakData, updateStreak, freezeUsed } = useStreak()
 
@@ -35,7 +36,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     updateStreak()
-    const completed = wordsLearnedToday >= dailyGoal
+    const completed = learningFlow.isDailyGoalReached('learn')
     setDailyCompleted(completed)
     if (completed) {
       setShowConfetti(true)
@@ -43,13 +44,17 @@ const Home: React.FC = () => {
     }
   }, [])
 
-  const progressPercentage = Math.min((wordsLearnedToday / dailyGoal) * 100, 100)
+  const progressPercentage = dailyGoal > 0 ? Math.min((wordsLearnedToday / dailyGoal) * 100, 100) : 100
   // How many words the scheduler says are ripe, and how many keep catching
   // them out. Both beat the old "it has been two days" rule of thumb.
   const dueCount = ReviewSchedule.dueCount()
   const trickyCount = ReviewSchedule.getTrickyWordIds().length
   const reviewDue = dueCount > 0 || learningFlow.isReviewDue()
   const name = user?.name || 'friend'
+  // Learning today's words opens three starter games; the rest wait for the
+  // quiz and, on some days, a review. Saying "games unlocked" at the first
+  // step sent children to a grid that was still mostly locked.
+  const gateLeft = learningFlow.gamesLockedReason()
 
   const greeting = dailyCompleted
     ? `Woohoo, ${name}! You crushed today's goal! 🎉`
@@ -58,7 +63,13 @@ const Home: React.FC = () => {
   const playCards = [
     { icon: '📖', label: 'Learn Words', sub: 'Meet new words', path: '/learn', tone: 'primary' },
     { icon: '✏️', label: 'Spell It!', sub: 'Type what you hear', path: '/learn?mode=spell', tone: 'secondary' },
-    { icon: '🎮', label: 'Play Games', sub: dailyCompleted ? 'Unlocked!' : 'Finish learning first', path: '/games', tone: 'accent' },
+    {
+      icon: '🎮',
+      label: 'Play Games',
+      sub: gateLeft === null ? 'Unlocked!' : !dailyCompleted ? 'Finish learning first' : gateLeft === 'review' ? 'One review to go' : 'Quiz first',
+      path: '/games',
+      tone: 'accent',
+    },
     { icon: '⚔️', label: 'Sibling Challenge', sub: 'Beat them for a prize', path: '/challenge', tone: 'accent' },
     { icon: '✍️', label: 'Sentence Maker', sub: 'Build with your words', path: '/sentences', tone: 'secondary' },
     { icon: '🔍', label: 'Word Hunt', sub: 'Find letters at home', path: '/hunt', tone: 'primary' },
@@ -144,9 +155,21 @@ const Home: React.FC = () => {
         </div>
         {dailyCompleted ? (
           <div className="quest-done">
-            <span className="quest-done-badge">🎉 Quest complete! Games &amp; prizes unlocked!</span>
+            <span className="quest-done-badge">
+              {gateLeft === null
+                ? '🎉 Quest complete! Every game is unlocked!'
+                : gateLeft === 'review'
+                ? '🎉 Quiz passed! One quick review opens every game.'
+                : '🎉 Words learned! Pass today’s quiz to open every game.'}
+            </span>
             <div className="quest-actions">
-              <Button variant="primary" icon="🎮" onClick={() => navigate('/games')}>Play Games</Button>
+              {gateLeft === null ? (
+                <Button variant="primary" icon="🎮" onClick={() => navigate('/games')}>Play Games</Button>
+              ) : gateLeft === 'review' ? (
+                <Button variant="primary" icon="🧠" onClick={() => navigate('/review')}>Start Review</Button>
+              ) : (
+                <Button variant="primary" icon="🏆" onClick={() => navigate('/daily-quiz')}>Start Quiz</Button>
+              )}
               <Button variant="secondary" icon="✏️" onClick={() => navigate('/learn?mode=spell')}>Keep Practicing</Button>
             </div>
           </div>

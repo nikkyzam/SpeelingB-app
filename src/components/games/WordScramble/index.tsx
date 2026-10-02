@@ -18,14 +18,15 @@ const WordScramble: React.FC<WordScrambleProps> = ({ onComplete, duration = 45, 
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
   const [wordsSolved, setWordsSolved] = useState(0)
   const [streak, setStreak] = useState(0)
-  const [isActive, setIsActive] = useState(true)
+  // No words, no clock: a clock running out pays for a game nobody played.
+  const [isActive, setIsActive] = useState(() => (providedWords?.length ?? 0) > 0)
 
-  const getRandomWord = () => {
-    if (providedWords && providedWords.length > 0) {
-      return providedWords[Math.floor(Math.random() * providedWords.length)]
-    }
-    return wordBank.getRandomWord()
-  }
+  // Only the child's own words — the old fallback drew strangers from the
+  // whole word bank.
+  const getRandomWord = () =>
+    providedWords && providedWords.length > 0
+      ? providedWords[Math.floor(Math.random() * providedWords.length)]
+      : undefined
 
   useEffect(() => {
     newWord()
@@ -45,6 +46,8 @@ const WordScramble: React.FC<WordScrambleProps> = ({ onComplete, duration = 45, 
   }, [timeLeft, isActive])
 
   const scrambleWord = (word: string): string => {
+    // One repeated letter can't be scrambled — re-rolling it recursed forever.
+    if (new Set(word).size < 2) return word
     const letters = word.split('')
     for (let i = letters.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
@@ -56,6 +59,7 @@ const WordScramble: React.FC<WordScrambleProps> = ({ onComplete, duration = 45, 
 
   const newWord = () => {
     const wordObj = getRandomWord()
+    if (!wordObj) return
     const word = wordObj.word.toLowerCase()
     setCurrentWord(word)
     setScrambledWord(scrambleWord(word))
@@ -97,6 +101,14 @@ const WordScramble: React.FC<WordScrambleProps> = ({ onComplete, duration = 45, 
 
   const calculateAccuracy = () => {
     return wordsSolved > 0 ? Math.round((wordsSolved / (wordsSolved + (streak === 0 ? 1 : 0))) * 100) : 0
+  }
+
+  if (!providedWords || providedWords.length === 0) {
+    return (
+      <div className="word-scramble">
+        <p className="scramble-empty">No words to unscramble yet — learn a few, then come back and play! 🔤</p>
+      </div>
+    )
   }
 
   return (

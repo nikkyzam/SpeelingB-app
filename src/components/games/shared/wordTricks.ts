@@ -117,3 +117,52 @@ export const RHYME_FAMILIES: string[][] = [
 /** Pick `n` items from `pool` that aren't in `exclude`. */
 export const pickDistinct = <T,>(pool: T[], n: number, exclude: (item: T) => boolean = () => false): T[] =>
   shuffle(pool.filter((p) => !exclude(p))).slice(0, n)
+
+/**
+ * Letters that sound like — or look like — each other. Vowels stand in for
+ * one another (the unstressed vowel in "sep_rate" could be any of them), and a
+ * handful of consonants share a sound (c/k/s, f/v, g/j) or a shape (b/d).
+ */
+const SOUND_ALIKES: Record<string, string> = {
+  a: 'eu', e: 'ia', i: 'ey', o: 'ua', u: 'oa', y: 'ie',
+  c: 'ks', k: 'c', s: 'cz', z: 's', q: 'k', x: 'z',
+  f: 'v', v: 'f', g: 'j', j: 'g', m: 'n', n: 'm',
+  b: 'dp', d: 'bt', p: 'b', t: 'd',
+}
+
+/** Letters easily written instead of `c`. Never `c` itself. */
+export const soundAlikes = (c: string): string[] => {
+  const ch = c.toLowerCase()
+  const out = [...(SOUND_ALIKES[ch] ?? '')]
+  if (VOWELS.includes(ch)) for (const v of VOWELS) if (!out.includes(v)) out.push(v)
+  return out.filter((x) => x !== ch)
+}
+
+/**
+ * The letters a speller really reaches for instead of `word[i]`, most
+ * instructive first: dropping half of a double ("balon"), doubling a letter
+ * that should stay single ("hopping" for "hoping"), then a letter that sounds
+ * or looks the same. A random letter is no trap at all — "balqoon" teaches
+ * nothing — so none appear here.
+ */
+export const likelySlips = (word: string, i: number): string[] => {
+  const w = word.toLowerCase()
+  const right = w[i]
+  const slips: string[] = []
+  const add = (c?: string) => {
+    if (c && /^[a-z]$/.test(c) && c !== right && !slips.includes(c)) slips.push(c)
+  }
+  const prev = w[i - 1]
+  if (prev && prev === right) add(w[i + 1])
+  else if (i >= 2 && prev && !VOWELS.includes(prev) && VOWELS.includes(w[i - 2])) add(prev)
+  shuffle(soundAlikes(right ?? '')).forEach(add)
+  return slips
+}
+
+/** `n` wrong letters to offer beside `word[i]`: the likely slips, then any others. */
+export const letterTraps = (word: string, i: number, n = 2): string[] => {
+  const right = word[i]?.toLowerCase()
+  const slips = likelySlips(word, i)
+  const others = shuffle([...'abcdefghijklmnopqrstuvwxyz']).filter((c) => c !== right && !slips.includes(c))
+  return [...slips, ...others].slice(0, n)
+}

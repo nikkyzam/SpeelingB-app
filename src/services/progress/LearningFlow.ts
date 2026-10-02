@@ -9,6 +9,20 @@ const localDay = (d: Date): string =>
 export const weekOf = (d: Date): string =>
   localDay(new Date(d.getFullYear(), d.getMonth(), d.getDate() - ((d.getDay() + 6) % 7)))
 
+/**
+ * How many words a child still has to meet in the levels they learn from.
+ * The word bank lives outside this module, so the app registers a way to ask
+ * (App.tsx). Without one — tests, scripts — a goal is simply the goal.
+ */
+export type WordsLeftCounter = (levels: (1 | 2 | 3)[], learned: readonly string[]) => number
+let countWordsLeft: WordsLeftCounter | null = null
+export const setWordsLeftCounter = (fn: WordsLeftCounter | null): void => {
+  countWordsLeft = fn
+}
+/** Words left to meet in these levels, or null when nobody has said how to count. */
+export const wordsLeftFor = (levels: (1 | 2 | 3)[], learned: readonly string[]): number | null =>
+  countWordsLeft ? countWordsLeft(levels, learned) : null
+
 export interface LearningProgress {
   wordsLearnedToday: string[]
   wordsLearnedTotal: string[]
@@ -277,11 +291,19 @@ export class LearningFlowController {
 
   isGameUnlocked(gameId: string): boolean {
     // The three starter games open as soon as today's new words have been met,
-    // so a first session still begins with learning rather than play.
-    if (FREE_GAMES.includes(gameId)) return this.isDailyGoalReached('learn')
+    // so a first session still begins with learning rather than play. They
+    // open early, never late: once every other game is open, so are they.
+    if (FREE_GAMES.includes(gameId)) {
+      return this.isDailyGoalReached('learn') || (this.isDailyQuizPassed() && this.isReviewSatisfiedToday())
+    }
     // Everything else is earned by passing today's quiz AND clearing whatever
     // is waiting to be reviewed.
     return this.isDailyQuizPassed() && this.isReviewSatisfiedToday()
+  }
+
+  /** Are the starter games (the ones that open before the quiz) open right now? */
+  areStarterGamesOpen(): boolean {
+    return FREE_GAMES.some((id) => this.isGameUnlocked(id))
   }
 
   /**
@@ -394,7 +416,25 @@ export class LearningFlowController {
   isDailyGoalReached(mode: 'learn' | 'spell' | 'vocab' = 'learn'): boolean {
     if (mode === 'spell') return this.progress.wordsSpelledToday.length >= this.progress.dailyGoalSpell
     if (mode === 'vocab') return this.progress.gamesUnlocked // Games unlock upon vocab completion
-    return this.progress.wordsLearnedToday.length >= this.progress.dailyGoal
+    return this.progress.wordsLearnedToday.length >= this.getLearnGoalToday()
+  }
+
+  /**
+   * Today's learn goal, shrunk to what is left at the end of a word list.
+   * Words are grouped by the daily goal, so a level's last group is often
+   * short — Three Bee's 211 words leave a group of one at goal 5 — and a goal
+   * of five new words could never be met there, day after day. The group size
+   * stays `getDailyGoal()`; only what counts as "today's words are done" moves.
+   */
+  getLearnGoalToday(): number {
+    const goal = this.progress.dailyGoal
+    const left = wordsLeftFor(this.getWordLevels(), this.progress.wordsLearnedTotal)
+    return left === null ? goal : Math.min(goal, this.progress.wordsLearnedToday.length + left)
+  }
+
+  /** Every word in the child's levels has been met. */
+  isLevelFinished(): boolean {
+    return wordsLeftFor(this.getWordLevels(), this.progress.wordsLearnedTotal) === 0
   }
 
   getWordsPracticedToday(): string[] {

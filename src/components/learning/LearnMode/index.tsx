@@ -17,6 +17,8 @@ import './LearnMode.css'
 interface LearnModeProps {
   onComplete?: () => void
   onMoveToPractice?: () => void
+  /** Go on to the next group of new words. Without it, "More Words" replayed this group. */
+  onMoreWords?: () => void
   difficulty?: 1 | 2 | 3
   words?: Word[]
 }
@@ -27,6 +29,7 @@ type Phase = 'reading' | 'checking'
 const LearnMode: React.FC<LearnModeProps> = ({
   onComplete,
   onMoveToPractice,
+  onMoreWords,
   difficulty,
   words: providedWords
 }) => {
@@ -37,7 +40,9 @@ const LearnMode: React.FC<LearnModeProps> = ({
   const [words, setWords] = useState<Word[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isCompleted, setIsCompleted] = useState(false)
-  const [showGoalPrompt, setShowGoalPrompt] = useState(false)
+  // Crossing the daily goal asks what next. 'mid' when words are left in this
+  // set (the next one is already up), 'end' when the goal came on its last word.
+  const [showGoalPrompt, setShowGoalPrompt] = useState<false | 'mid' | 'end'>(false)
   const [phase, setPhase] = useState<Phase>('reading')
   // A real streak of words got right without help — the old counter just
   // echoed the card number, which meant nothing.
@@ -138,7 +143,7 @@ const LearnMode: React.FC<LearnModeProps> = ({
     setPhase('reading')
 
     if (currentIndex < words.length - 1) {
-      if (justHitGoal) setShowGoalPrompt(true)
+      if (justHitGoal) setShowGoalPrompt('mid')
       const nextIndex = currentIndex + 1
       setCurrentIndex(nextIndex)
       setCurrentWord(words[nextIndex])
@@ -148,9 +153,13 @@ const LearnMode: React.FC<LearnModeProps> = ({
 
     // Last word of the set.
     if (justHitGoal) {
-      setShowGoalPrompt(true)
+      setShowGoalPrompt('end')
       return
     }
+    finishSet()
+  }
+
+  const finishSet = () => {
     sfx.win()
     setIsCompleted(true)
     if (onComplete) onComplete()
@@ -207,7 +216,7 @@ const LearnMode: React.FC<LearnModeProps> = ({
           <div className="prompt-icon">🎉</div>
           <h2>You did it! 🌟</h2>
           <p>
-            Wow — you learned {learningFlow.getDailyGoal()} words today!
+            Wow — you learned {learningFlow.getWordsLearnedToday().length} words today!
             Want to practice spelling them, or meet a few more?
           </p>
           <div className="prompt-actions">
@@ -223,7 +232,15 @@ const LearnMode: React.FC<LearnModeProps> = ({
             </Button>
             <Button
               variant="secondary"
-              onClick={() => setShowGoalPrompt(false)}
+              onClick={() => {
+                // Words still waiting in this set come first: the next one is
+                // already on the card. Only a finished set moves to new words.
+                const atEnd = showGoalPrompt === 'end'
+                setShowGoalPrompt(false)
+                if (!atEnd) return
+                if (onMoreWords) onMoreWords()
+                else finishSet()
+              }}
             >
               More Words
             </Button>
@@ -268,7 +285,7 @@ const LearnMode: React.FC<LearnModeProps> = ({
         </div>
 
         <div className="completed-actions">
-          <Button onClick={loadWords} variant="primary" icon="📖">
+          <Button onClick={onMoreWords ?? loadWords} variant="primary" icon="📖">
             More Words
           </Button>
           {onMoveToPractice && (
@@ -299,9 +316,15 @@ const LearnMode: React.FC<LearnModeProps> = ({
 
       <div className="word-display">
         <h1 className="word-text">{currentWord.word}</h1>
-        {currentWord.phonetic && (
-          <div className="phonetic">/{currentWord.phonetic}/</div>
-        )}
+        {(() => {
+          // The bank stores this with its slashes already, and for all but a
+          // handful of words it is just the word again — which rendered as
+          // "//tag//" on nearly every card. Show only a real pronunciation.
+          const sound = (currentWord.phonetic ?? '').replace(/^\/+|\/+$/g, '').trim()
+          return sound && sound.toLowerCase() !== currentWord.word.toLowerCase() ? (
+            <div className="phonetic">/{sound}/</div>
+          ) : null
+        })()}
 
         {/* Sound it out: a long word is friendlier in small pieces. */}
         {chunks.length > 1 && (

@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useRewardStore } from '../../stores/rewards/useRewardStore';
+import { useStreak } from '../../hooks/useStreak';
 import './RewardShop.css';
 
 const PointsDisplay: React.FC = () => {
   const { points, resetDailyStats } = useRewardStore();
+  // The streak Home and Progress show, so a child sees one number everywhere.
+  const { streakData } = useStreak();
   const [showAnimation, setShowAnimation] = useState(false);
 
   useEffect(() => {
@@ -37,7 +40,7 @@ const PointsDisplay: React.FC = () => {
         </div>
         <div className="stat-item">
           <span className="stat-label">Daily Streak:</span>
-          <span className="stat-value streak">{points.dailyStreak} days 🔥</span>
+          <span className="stat-value streak">{streakData.currentStreak} {streakData.currentStreak === 1 ? 'day' : 'days'} 🔥</span>
         </div>
         <div className="stat-item">
           <span className="stat-label">Highest Combo:</span>

@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { wordBank } from '../../../services/wordBank'
+import { misspell } from '../shared/wordTricks'
 import './WordRace.css'
+
+/** The combo bonus stops growing here, so a long race stays on the hub's usual score scale. */
+const MAX_COMBO_BONUS = 5
 
 interface WordRaceProps {
   onComplete: (score: number) => void
@@ -18,26 +21,29 @@ interface FallingWord {
 }
 
 const WordRace: React.FC<WordRaceProps> = ({ onComplete, duration = 60, words: providedWords }) => {
-  const [timeLeft, setTimeLeft] = useState(duration)
+  // Tenths of a second: the ticker runs every 100ms, and counting it down in
+  // whole seconds made the "60 second" race last six.
+  const [timeLeft, setTimeLeft] = useState(duration * 10)
   const [score, setScore] = useState(0)
   const [fallingWords, setFallingWords] = useState<FallingWord[]>([])
   const [combo, setCombo] = useState(0)
-  const [isActive, setIsActive] = useState(true)
+  // No words, no clock: a clock running out pays for a game nobody played.
+  const [isActive, setIsActive] = useState(() => (providedWords?.length ?? 0) > 0)
   const [targetWord, setTargetWord] = useState('')
   const gameAreaRef = useRef<HTMLDivElement>(null)
   const wordIdCounter = useRef(0)
 
-  const getRandomWord = () => {
-    if (providedWords && providedWords.length > 0) {
-      return providedWords[Math.floor(Math.random() * providedWords.length)]
-    }
-    return wordBank.getRandomWord()
-  }
+  // Only the child's own words — the old fallback drew strangers from the
+  // whole word bank.
+  const getRandomWord = () =>
+    providedWords && providedWords.length > 0
+      ? providedWords[Math.floor(Math.random() * providedWords.length)]
+      : undefined
 
   useEffect(() => {
     // Set initial target word
     const randomWord = getRandomWord()
-    setTargetWord(randomWord.word)
+    if (randomWord) setTargetWord(randomWord.word)
   }, [providedWords])
 
   useEffect(() => {
@@ -46,8 +52,8 @@ const WordRace: React.FC<WordRaceProps> = ({ onComplete, duration = 60, words: p
       const timer = setTimeout(() => {
         setTimeLeft(timeLeft - 1)
 
-        // Add new word every 1-2 seconds
-        if (Math.random() > 0.7) {
+        // Add new word every 1-2 seconds (this runs ten times a second)
+        if (Math.random() > 0.93) {
           addNewWord()
         }
 
@@ -77,10 +83,20 @@ const WordRace: React.FC<WordRaceProps> = ({ onComplete, duration = 60, words: p
   }, [timeLeft, isActive])
 
   const addNewWord = () => {
-    const wordObj = getRandomWord()
+    // The target falls often, beside look-alike misspellings of it and the
+    // child's other words. Drawn only at random from a list of up to 60, the
+    // target hardly ever fell, and a child waited out the clock.
+    const roll = Math.random()
+    const text =
+      targetWord && roll < 0.35
+        ? targetWord
+        : targetWord && roll < 0.6
+        ? misspell(targetWord.toLowerCase())
+        : getRandomWord()?.word
+    if (!text) return
     const newWord: FallingWord = {
       id: wordIdCounter.current++,
-      word: wordObj.word,
+      word: text,
       x: Math.random() * 80 + 10,
       y: -10,
       speed: 0.5 + Math.random() * 1,
@@ -94,7 +110,7 @@ const WordRace: React.FC<WordRaceProps> = ({ onComplete, duration = 60, words: p
 
     if (word.word.toLowerCase() === targetWord.toLowerCase()) {
       // Correct word caught
-      const points = 10 + (combo * 2)
+      const points = 10 + 2 * Math.min(combo, MAX_COMBO_BONUS)
       setScore(prev => prev + points)
       setCombo(prev => prev + 1)
 
@@ -112,7 +128,7 @@ const WordRace: React.FC<WordRaceProps> = ({ onComplete, duration = 60, words: p
 
       // Set new target word
       const newTarget = getRandomWord()
-      setTargetWord(newTarget.word)
+      if (newTarget) setTargetWord(newTarget.word)
     } else {
       // Wrong word
       setCombo(0)
@@ -121,8 +137,16 @@ const WordRace: React.FC<WordRaceProps> = ({ onComplete, duration = 60, words: p
 
   const handleSkipWord = () => {
     const newTarget = getRandomWord()
-    setTargetWord(newTarget.word)
+    if (newTarget) setTargetWord(newTarget.word)
     setCombo(prev => Math.max(0, prev - 1))
+  }
+
+  if (!providedWords || providedWords.length === 0) {
+    return (
+      <div className="word-race">
+        <p className="race-empty">No words to catch yet — learn a few, then come back and race! 🏃</p>
+      </div>
+    )
   }
 
   return (
@@ -137,7 +161,7 @@ const WordRace: React.FC<WordRaceProps> = ({ onComplete, duration = 60, words: p
         <div className="game-stats">
           <div className="stat">
             <span className="stat-label">Time</span>
-            <span className="stat-value">{timeLeft}s</span>
+            <span className="stat-value">{Math.ceil(timeLeft / 10)}s</span>
           </div>
           <div className="stat">
             <span className="stat-label">Score</span>
@@ -151,8 +175,8 @@ const WordRace: React.FC<WordRaceProps> = ({ onComplete, duration = 60, words: p
       </div>
 
       <div className="game-instructions">
-        <p>Catch the target word before it hits the bottom!</p>
-        <p className="hint">Only click words matching: <strong>{targetWord}</strong></p>
+        <p>Catch the target word before it hits the bottom — watch out for look-alike spellings!</p>
+        <p className="hint">Only tap words spelled exactly: <strong>{targetWord}</strong></p>
       </div>
 
       <div
@@ -162,9 +186,9 @@ const WordRace: React.FC<WordRaceProps> = ({ onComplete, duration = 60, words: p
         {fallingWords.map(word => (
           <button
             key={word.id}
-            className={`falling-word ${word.caught ? 'caught' : ''} ${
-              word.word.toLowerCase() === targetWord.toLowerCase() ? 'correct' : 'wrong'
-            }`}
+            // Every word looks the same: colouring the target green and the rest
+            // red turned a reading game into "tap the green one".
+            className={`falling-word ${word.caught ? 'caught' : ''}`}
             style={{
               left: `${word.x}%`,
               top: `${word.y}%`,
@@ -195,7 +219,7 @@ const WordRace: React.FC<WordRaceProps> = ({ onComplete, duration = 60, words: p
             <div className="combo-alert">
               <span className="combo-icon">🔥</span>
               <span className="combo-text">{combo} in a row!</span>
-              <span className="combo-bonus">+{combo * 2} bonus!</span>
+              <span className="combo-bonus">+{Math.min(combo, MAX_COMBO_BONUS) * 2} bonus!</span>
             </div>
           )}
         </div>
@@ -207,7 +231,7 @@ const WordRace: React.FC<WordRaceProps> = ({ onComplete, duration = 60, words: p
           <div className="progress-bar">
             <div
               className="progress-fill"
-              style={{ width: `${(timeLeft / duration) * 100}%` }}
+              style={{ width: `${(timeLeft / (duration * 10)) * 100}%` }}
             />
           </div>
         </div>

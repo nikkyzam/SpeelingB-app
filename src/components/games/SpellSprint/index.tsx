@@ -17,16 +17,17 @@ const SpellSprint: React.FC<SpellSprintProps> = ({ onComplete, duration = 60, wo
   const [userInput, setUserInput] = useState('')
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
   const [combo, setCombo] = useState(0)
-  const [isActive, setIsActive] = useState(true)
+  // No words, no clock: a clock running out pays for a game nobody played.
+  const [isActive, setIsActive] = useState(() => (providedWords?.length ?? 0) > 0)
   const [targetPosition, setTargetPosition] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const getRandomWord = () => {
-    if (providedWords && providedWords.length > 0) {
-      return providedWords[Math.floor(Math.random() * providedWords.length)]
-    }
-    return wordBank.getRandomWord()
-  }
+  // Only the child's own words — the old fallback drew strangers from the
+  // whole word bank.
+  const getRandomWord = () =>
+    providedWords && providedWords.length > 0
+      ? providedWords[Math.floor(Math.random() * providedWords.length)]
+      : undefined
 
   useEffect(() => {
     newWord()
@@ -54,6 +55,7 @@ const SpellSprint: React.FC<SpellSprintProps> = ({ onComplete, duration = 60, wo
 
   const newWord = () => {
     const wordObj = getRandomWord()
+    if (!wordObj) return
     setCurrentWord(wordObj.word.toLowerCase())
     setUserInput('')
     setIsCorrect(null)
@@ -99,6 +101,14 @@ const SpellSprint: React.FC<SpellSprintProps> = ({ onComplete, duration = 60, wo
     if (ratio > 0.7) return '#06D6A0'
     if (ratio > 0.4) return '#FFD166'
     return '#FF6B6B'
+  }
+
+  if (!providedWords || providedWords.length === 0) {
+    return (
+      <div className="spell-sprint">
+        <p className="sprint-empty">No words to sprint with yet — learn a few, then come back and race the clock! ⚡</p>
+      </div>
+    )
   }
 
   return (

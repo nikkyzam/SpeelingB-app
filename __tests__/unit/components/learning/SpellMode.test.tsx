@@ -165,6 +165,29 @@ describe('SpellMode Component', () => {
     expect(screen.getByPlaceholderText('Type the word...')).toHaveValue('')
   })
 
+  it('reports accuracy as words right out of words answered', () => {
+    // The score grows with the streak (10, then 20, ...), and accuracy used to
+    // be that score over ten points a word: two right in a row read "150%".
+    renderWithProviders(<SpellMode words={WORDS} />)
+    const input = screen.getByPlaceholderText('Type the word...')
+    for (const word of ['apple', 'banana']) {
+      fireEvent.change(input, { target: { value: word } })
+      fireEvent.click(screen.getByRole('button', { name: /Check it/i }))
+      act(() => { vi.advanceTimersByTime(1600) })
+    }
+    expect(screen.getByText('Accuracy').nextElementSibling).toHaveTextContent('100%')
+  })
+
+  it('accepts a word typed without its accents', () => {
+    // A laptop keyboard has no ñ; "señor" could never be spelled right.
+    renderWithProviders(
+      <SpellMode words={[{ ...WORDS[0], id: '3', word: 'señor', sentence: 'The señor waved.' }]} />
+    )
+    fireEvent.change(screen.getByPlaceholderText('Type the word...'), { target: { value: 'senor' } })
+    fireEvent.click(screen.getByRole('button', { name: /Check it/i }))
+    expect(screen.getByText('Yes! You spelled it! 🎉')).toBeInTheDocument()
+  })
+
   it('a correct answer still only advances once', () => {
     renderWithProviders(<SpellMode words={WORDS} />)
 

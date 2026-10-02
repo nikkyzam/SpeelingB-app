@@ -48,15 +48,19 @@ const NextUp: React.FC = () => {
 
   const suggestion = useMemo<Suggestion>(() => {
     const learnedToday = learningFlow.getWordsLearnedToday().length
-    const goal = learningFlow.getDailyGoal('learn')
+    const goal = learningFlow.getLearnGoalToday()
     const due = ReviewSchedule.dueCount()
+    // The same test the games use. A review done today counts even when more
+    // words have come due since, so this card never nags for a second one.
+    const reviewWaiting = !learningFlow.isReviewSatisfiedToday()
     const learnedTotal = learningFlow
       .getWordsLearnedTotal()
       .filter((id) => !!wordBank.getWordById(id)).length
 
-    // Order matters: revision first (it is the thing most easily skipped),
-    // then today's new words, then the quiz that opens the games.
-    if (due > 0) {
+    // Order matters: words that have come due first (revision is the thing
+    // most easily skipped), then today's new words, then the quiz that opens
+    // the games, then the day's review if one is still waiting.
+    if (due > 0 && reviewWaiting) {
       return {
         icon: '🧠',
         title: 'Review time',
@@ -66,8 +70,8 @@ const NextUp: React.FC = () => {
       }
     }
 
-    if (learnedToday < goal) {
-      const left = goal - learnedToday
+    if (!learningFlow.isDailyGoalReached('learn')) {
+      const left = Math.max(goal - learnedToday, 1)
       return {
         icon: '📖',
         title: 'Meet some new words',
@@ -81,9 +85,21 @@ const NextUp: React.FC = () => {
       return {
         icon: '🏆',
         title: "Today's quiz",
-        detail: 'Pass it to unlock every game',
+        detail: reviewWaiting ? 'Pass it, then a quick review opens every game' : 'Pass it to unlock every game',
         action: 'Start quiz',
         path: '/daily-quiz',
+      }
+    }
+
+    // Quiz passed, but the games still wait for the day's review — "all
+    // done" here sent a child to a grid of locked games and back again.
+    if (reviewWaiting && learnedTotal > 0) {
+      return {
+        icon: '🧠',
+        title: 'One quick review',
+        detail: 'Practise a few words you know to open every game',
+        action: 'Start review',
+        path: '/review',
       }
     }
 
