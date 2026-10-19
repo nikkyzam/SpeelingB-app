@@ -6,11 +6,17 @@ import { useRewardStore } from '../../stores/rewards/useRewardStore'
 import { wordBank, Word } from '../../services/wordBank'
 import ReviewSchedule from '../../services/progress/ReviewSchedule'
 import Button from '../../components/common/Button'
-import SpellMode from '../../components/learning/SpellMode'
+import SpellMode, { SpellResult } from '../../components/learning/SpellMode'
 import Celebration, { CelebrationData } from '../../components/common/Celebration'
 import './Review.css'
 
 const HOW_MANY = 8
+/**
+ * Stars for finishing a review. SpellMode already pays a star for every word
+ * spelled, so this is a bonus for the set — paying a star per word here as
+ * well would pay each word twice.
+ */
+const FINISH_BONUS = 3
 
 /** "Review Time!" — spaced repetition over the words that actually need it.
  *  Completing it awards stars. `?mode=tricky` drills only the stubborn ones;
@@ -52,10 +58,24 @@ const Review: React.FC = () => {
     return { words: resolve(learningFlow.getReviewWordIds(HOW_MANY)), source: 'sample' }
   }, [learningFlow, tricky, missedKey])
 
+  /**
+   * Only the scheduled review — the due words, or the sample when nothing is
+   * due — is the review half of the games gate. A `missed` session (one or two
+   * words just missed in a quiz or a practice test) or a tricky-words drill is
+   * extra practice: marking the review done for it let one just-missed word
+   * clear today's review while the due words waited. Whatever such a session
+   * answers still moves the scheduler (SpellMode records every answer), so if
+   * it happens to clear every due word the gate opens by itself.
+   */
+  const scheduled = source === 'due' || source === 'sample'
+
   const [celebration, setCelebration] = useState<CelebrationData | null>(null)
   // When this review was the last thing between the child and the games, the
   // celebration sends them to play rather than back home.
   const [gamesNext, setGamesNext] = useState(false)
+  // Is this review the one thing between the child and every game? Read once
+  // on arrival: finishing it changes the answer.
+  const [opensGames] = useState(() => learningFlow.gamesLockedReason() === 'review')
 
   // A review can come due with nothing in it — saved word ids the list no
   // longer knows. With nothing to practise, today's review is done; otherwise
@@ -67,15 +87,18 @@ const Review: React.FC = () => {
     if (nothingToPractise) learningFlow.markReviewDone()
   }, [nothingToPractise, learningFlow])
 
-  const handleComplete = () => {
-    learningFlow.markReviewDone()
-    setGamesNext(learningFlow.gamesLockedReason() === null)
-    const stars = Math.max(3, words.length)
-    addStars(stars)
+  const handleComplete = (_ids: string[], result?: SpellResult) => {
+    if (scheduled) learningFlow.markReviewDone()
+    const open = learningFlow.gamesLockedReason() === null
+    setGamesNext(open)
+    addStars(FINISH_BONUS)
     setCelebration({
       title: source === 'tricky' || source === 'missed' ? 'Tricky words beaten! 💪' : 'Review done! 🧠',
-      message: `You practised ${words.length} words — your brain is getting stronger!`,
-      stars,
+      message: open && opensGames
+        ? `You practised ${words.length} words — and every game is open now! 🔓`
+        : `You practised ${words.length} words — your brain is getting stronger!`,
+      // What this set paid in all: a star per word spelled, plus the bonus.
+      stars: (result?.stars ?? 0) + FINISH_BONUS,
     })
   }
 
@@ -112,15 +135,22 @@ const Review: React.FC = () => {
   return (
     <div className="review-page">
       <div className="review-header">
-        <Button variant="secondary" size="small" onClick={() => navigate('/')}>← Home</Button>
+        <Button variant="secondary" size="small" onClick={() => navigate('/spelling')}>← Spelling</Button>
         <h1>{source === 'missed' ? '💪 One More Go' : source === 'tricky' ? '💪 Tricky Words' : '🧠 Review Time!'}</h1>
         <p>{blurb}</p>
+        {opensGames && scheduled && (
+          <div className="review-gate" role="status">🔓 Finish this to open every game!</div>
+        )}
       </div>
 
-      <SpellMode words={words} onComplete={handleComplete} />
+      {/* From the top, always: these words were often met today, and resuming
+          at the first word not practised today opened at word 3 of 5. Its own
+          finish card stays hidden — the Celebration below is the finish. */}
+      <SpellMode words={words} onComplete={handleComplete} resume={false} summary={false} />
 
       <Celebration
         data={celebration}
+        autoClose={false}
         onClose={() => { setCelebration(null); navigate(gamesNext ? '/games' : '/') }}
         closeLabel={gamesNext ? 'Play Games! 🎮' : 'Back Home'}
       />

@@ -1,5 +1,5 @@
 /* ============================================================
-   Kids Spelling Bee — playful, theme-driven design system.
+   BrightHive — playful, theme-driven design system.
    Colors come from the currently selected "world" (see theme/worlds.ts),
    which sets --bg, --card, --primary, --secondary, --text, etc. on <html>.
    Everything here consumes those tokens so picking a world re-skins the app.

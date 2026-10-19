@@ -80,3 +80,32 @@
   font-weight: 800;
   margin: 0;
 }
+
+/* The child's own words, each in its chip's colour, so they can spot them in
+   the sentence. */
+.sentence-chip.s0 { border-color: var(--primary); }
+.sentence-chip.s1 { border-color: var(--secondary); }
+.sentence-chip.s2 { border-color: var(--accent); }
+.sentence-word {
+  padding: 0 0.25em;
+  border-radius: 0.4em;
+  color: var(--text);
+  background: color-mix(in srgb, var(--primary) 26%, transparent);
+}
+.sentence-word.s1 { background: color-mix(in srgb, var(--secondary) 26%, transparent); }
+.sentence-word.s2 { background: color-mix(in srgb, var(--accent) 26%, transparent); }
+
+.sentence-flash {
+  position: relative;
+  margin: 0;
+  text-align: center;
+  font-weight: 900;
+  font-size: 1.15rem;
+  color: var(--success);
+  animation: pop-in 0.35s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sentence-chip { transition: none; }
+  .sentence-chip:hover { transform: none; }
+}

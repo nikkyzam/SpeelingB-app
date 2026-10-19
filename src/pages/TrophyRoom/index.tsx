@@ -80,7 +80,7 @@ const TrophyRoom: React.FC = () => {
   return (
     <div className={`trophy-room ${showing ? 'showing' : ''}`} data-world={world.id}>
       <div className="tr-header">
-        <Button variant="secondary" size="small" onClick={() => navigate('/')}>← Home</Button>
+        <Button variant="secondary" size="small" onClick={() => navigate('/spelling')}>← Spelling</Button>
         <h1>🏆 My Trophy Room</h1>
         <span className="tr-count">{earned.length}/{items.length}</span>
       </div>

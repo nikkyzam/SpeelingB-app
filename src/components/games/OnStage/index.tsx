@@ -3,6 +3,9 @@ import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, isPlayable } from '../shared/wordTricks'
 import sfx from '../shared/sfx'
+import useCheer from '../shared/useCheer'
+import Burst from '../shared/Burst'
+import { spellOut } from '../../../services/words/praise'
 import './OnStage.css'
 
 interface OnStageProps {
@@ -39,6 +42,8 @@ const OnStage: React.FC<OnStageProps> = ({ onComplete, words: providedWords, rou
   const [score, setScore] = useState(0)
   const [cleared, setCleared] = useState(0)
   const [showMeaning, setShowMeaning] = useState(false)
+  const cheer = useCheer()
+  const [cheerLine, setCheerLine] = useState('')
 
   // A ref, not state: two taps in one frame both pass a state guard.
   const locked = useRef(false)
@@ -92,8 +97,8 @@ const OnStage: React.FC<OnStageProps> = ({ onComplete, words: providedWords, rou
       locked.current = true
       setTyped(typed + letter)
       setPhase('wrong')
-      sfx.wrong()
-      speak(`The word was ${current.word}`)
+      // Bee rules end the word, but the letters are what to take away.
+      cheer.miss({ say: `The word was ${current.word}. ${spellOut(current.word)}` })
       advance(0)
       return
     }
@@ -111,7 +116,7 @@ const OnStage: React.FC<OnStageProps> = ({ onComplete, words: providedWords, rou
       setCleared((c) => c + 1)
       setPhase('right')
       sfx.applause()
-      speak('Correct!')
+      setCheerLine(cheer.hit())
       advance(gained)
     }
   }
@@ -186,7 +191,12 @@ const OnStage: React.FC<OnStageProps> = ({ onComplete, words: providedWords, rou
         ))}
       </div>
 
-      {phase === 'right' && <div className="os-flash ok">🎉 Correct! +{answer.length * 5 + 20}</div>}
+      {phase === 'right' && (
+        <div className="os-flash ok">
+          <Burst trigger={cleared} />
+          🎉 {cheerLine} +{answer.length * 5 + 20}
+        </div>
+      )}
       {phase === 'wrong' && <div className="os-flash bad">Not this time — step up again for the next word! 💪</div>}
     </div>
   )

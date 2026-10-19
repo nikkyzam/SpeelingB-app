@@ -1,0 +1,860 @@
+[
+ {
+  "grade": "k",
+  "label": "Kindergarten",
+  "units": [
+   {
+    "name": "Counting & Cardinality",
+    "topics": [
+     {
+      "id": "k-count",
+      "name": "Counting to 120"
+     },
+     {
+      "id": "k-countback",
+      "name": "Counting Backward"
+     }
+    ]
+   },
+   {
+    "name": "Operations & Algebraic Thinking",
+    "topics": [
+     {
+      "id": "k-add10",
+      "name": "Adding Within 10"
+     },
+     {
+      "id": "k-sub10",
+      "name": "Subtracting Within 10"
+     },
+     {
+      "id": "k-compose",
+      "name": "Composing & Decomposing Numbers"
+     }
+    ]
+   },
+   {
+    "name": "Geometry",
+    "topics": [
+     {
+      "id": "k-2d",
+      "name": "Flat Shapes"
+     },
+     {
+      "id": "k-3d",
+      "name": "Solid Shapes"
+     },
+     {
+      "id": "k-combine",
+      "name": "Combining Shapes"
+     }
+    ]
+   },
+   {
+    "name": "Measurement & Data",
+    "topics": [
+     {
+      "id": "k-compare",
+      "name": "Comparing Size & Weight"
+     },
+     {
+      "id": "k-sort",
+      "name": "Sorting & Classifying"
+     },
+     {
+      "id": "k-picgraph",
+      "name": "Picture Graphs"
+     }
+    ]
+   },
+   {
+    "name": "Number Theory",
+    "advanced": true,
+    "topics": [
+     {
+      "id": "k-evenodd",
+      "name": "Even & Odd"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "grade": "1",
+  "label": "Grade 1",
+  "units": [
+   {
+    "name": "Operations & Algebraic Thinking",
+    "topics": [
+     {
+      "id": "g1-add20",
+      "name": "Adding Within 20"
+     },
+     {
+      "id": "g1-sub20",
+      "name": "Subtracting Within 20"
+     },
+     {
+      "id": "g1-equals",
+      "name": "The Equal Sign & Balance"
+     },
+     {
+      "id": "g1-wordprob",
+      "name": "Word Problems with Unknowns"
+     },
+     {
+      "id": "g1-props",
+      "name": "Commutative & Associative Properties"
+     }
+    ]
+   },
+   {
+    "name": "Number & Operations in Base Ten",
+    "topics": [
+     {
+      "id": "g1-tensones",
+      "name": "Tens & Ones"
+     },
+     {
+      "id": "g1-compare2",
+      "name": "Comparing Two-Digit Numbers"
+     },
+     {
+      "id": "g1-add100",
+      "name": "Adding & Subtracting Within 100"
+     },
+     {
+      "id": "g1-tenmore",
+      "name": "Ten More, Ten Less"
+     }
+    ]
+   },
+   {
+    "name": "Measurement & Data",
+    "topics": [
+     {
+      "id": "g1-length",
+      "name": "Measuring Length"
+     },
+     {
+      "id": "g1-time",
+      "name": "Telling Time"
+     },
+     {
+      "id": "g1-graphs",
+      "name": "Bar & Picture Graphs"
+     }
+    ]
+   },
+   {
+    "name": "Geometry",
+    "topics": [
+     {
+      "id": "g1-attrib",
+      "name": "Defining Attributes"
+     },
+     {
+      "id": "g1-compose",
+      "name": "Composing Shapes"
+     },
+     {
+      "id": "g1-shares",
+      "name": "Halves & Fourths"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "grade": "2",
+  "label": "Grade 2",
+  "units": [
+   {
+    "name": "Operations & Algebraic Thinking",
+    "topics": [
+     {
+      "id": "g2-fluency",
+      "name": "Fluency Within 20"
+     },
+     {
+      "id": "g2-add100",
+      "name": "Adding & Subtracting Within 100"
+     },
+     {
+      "id": "g2-equalgrp",
+      "name": "Equal Groups"
+     },
+     {
+      "id": "g2-arrays",
+      "name": "Arrays"
+     }
+    ]
+   },
+   {
+    "name": "Number & Operations in Base Ten",
+    "topics": [
+     {
+      "id": "g2-place1000",
+      "name": "Place Value to 1000"
+     },
+     {
+      "id": "g2-compare3",
+      "name": "Comparing Three-Digit Numbers"
+     },
+     {
+      "id": "g2-add1000",
+      "name": "Adding & Subtracting Within 1000"
+     },
+     {
+      "id": "g2-mental",
+      "name": "Mental Math with 10 and 100"
+     }
+    ]
+   },
+   {
+    "name": "Measurement & Data",
+    "topics": [
+     {
+      "id": "g2-rulers",
+      "name": "Measuring with Rulers"
+     },
+     {
+      "id": "g2-estimate",
+      "name": "Estimating Length"
+     },
+     {
+      "id": "g2-time5",
+      "name": "Time to Five Minutes"
+     },
+     {
+      "id": "g2-money",
+      "name": "Money Problems"
+     },
+     {
+      "id": "g2-lineplot",
+      "name": "Line Plots"
+     }
+    ]
+   },
+   {
+    "name": "Geometry",
+    "topics": [
+     {
+      "id": "g2-polygons",
+      "name": "Drawing Shapes by Attribute"
+     },
+     {
+      "id": "g2-rowcol",
+      "name": "Rows & Columns"
+     },
+     {
+      "id": "g2-thirds",
+      "name": "Halves, Thirds & Fourths"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "grade": "3",
+  "label": "Grade 3",
+  "units": [
+   {
+    "name": "Operations & Algebraic Thinking",
+    "topics": [
+     {
+      "id": "g3-mult",
+      "name": "Multiplication"
+     },
+     {
+      "id": "g3-div",
+      "name": "Division"
+     },
+     {
+      "id": "g3-multprops",
+      "name": "Properties of Multiplication"
+     },
+     {
+      "id": "g3-twostep",
+      "name": "Two-Step Word Problems"
+     },
+     {
+      "id": "g3-patterns",
+      "name": "Arithmetic Patterns"
+     }
+    ]
+   },
+   {
+    "name": "Number & Operations in Base Ten",
+    "topics": [
+     {
+      "id": "g3-round",
+      "name": "Rounding"
+     },
+     {
+      "id": "g3-add1000",
+      "name": "Adding & Subtracting Within 1000"
+     },
+     {
+      "id": "g3-mult10",
+      "name": "Multiplying by Multiples of Ten"
+     }
+    ]
+   },
+   {
+    "name": "Fractions",
+    "topics": [
+     {
+      "id": "g3-fracnum",
+      "name": "Fractions as Numbers"
+     },
+     {
+      "id": "g3-fraccomp",
+      "name": "Comparing Fractions"
+     },
+     {
+      "id": "g3-fraceq",
+      "name": "Equivalent Fractions"
+     },
+     {
+      "id": "g3-wholefrac",
+      "name": "Whole Numbers as Fractions"
+     }
+    ]
+   },
+   {
+    "name": "Measurement & Data",
+    "topics": [
+     {
+      "id": "g3-timemin",
+      "name": "Time to the Minute"
+     },
+     {
+      "id": "g3-volmass",
+      "name": "Liquid Volume & Mass"
+     },
+     {
+      "id": "g3-scaled",
+      "name": "Scaled Graphs"
+     },
+     {
+      "id": "g3-area",
+      "name": "Area"
+     },
+     {
+      "id": "g3-perimeter",
+      "name": "Perimeter"
+     }
+    ]
+   },
+   {
+    "name": "Geometry",
+    "topics": [
+     {
+      "id": "g3-quads",
+      "name": "Classifying Quadrilaterals"
+     },
+     {
+      "id": "g3-equalarea",
+      "name": "Equal Areas as Fractions"
+     },
+     {
+      "id": "g3-areaperim",
+      "name": "Area versus Perimeter"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "grade": "4",
+  "label": "Grade 4",
+  "units": [
+   {
+    "name": "Operations & Algebraic Thinking",
+    "topics": [
+     {
+      "id": "g4-multcomp",
+      "name": "Multiplication as Comparison"
+     },
+     {
+      "id": "g4-multistep",
+      "name": "Multi-Step Word Problems"
+     },
+     {
+      "id": "g4-factorpair",
+      "name": "Factor Pairs, Prime & Composite"
+     },
+     {
+      "id": "g4-seq",
+      "name": "Number & Shape Patterns"
+     }
+    ]
+   },
+   {
+    "name": "Number & Operations in Base Ten",
+    "topics": [
+     {
+      "id": "g4-placemil",
+      "name": "Place Value to a Million"
+     },
+     {
+      "id": "g4-multidig",
+      "name": "Multi-Digit Multiplication"
+     },
+     {
+      "id": "g4-divide",
+      "name": "Division with Remainders"
+     }
+    ]
+   },
+   {
+    "name": "Fractions & Decimals",
+    "topics": [
+     {
+      "id": "g4-fracadd",
+      "name": "Adding & Subtracting Fractions"
+     },
+     {
+      "id": "g4-mixed",
+      "name": "Mixed Numbers"
+     },
+     {
+      "id": "g4-fracmultw",
+      "name": "Multiplying Fractions by Whole Numbers"
+     },
+     {
+      "id": "g4-decnot",
+      "name": "Decimal Notation"
+     },
+     {
+      "id": "g4-deccomp",
+      "name": "Comparing Decimals"
+     }
+    ]
+   },
+   {
+    "name": "Measurement & Data",
+    "topics": [
+     {
+      "id": "g4-units",
+      "name": "Units of Measure"
+     },
+     {
+      "id": "g4-areaform",
+      "name": "Area & Perimeter Formulas"
+     },
+     {
+      "id": "g4-lineplot",
+      "name": "Line Plots with Fractions"
+     },
+     {
+      "id": "g4-protract",
+      "name": "Measuring Angles"
+     }
+    ]
+   },
+   {
+    "name": "Geometry",
+    "topics": [
+     {
+      "id": "g4-linesrays",
+      "name": "Points, Lines, Rays & Angles"
+     },
+     {
+      "id": "g4-classify",
+      "name": "Classifying Figures"
+     },
+     {
+      "id": "g4-symmetry",
+      "name": "Lines of Symmetry"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "grade": "5",
+  "label": "Grade 5",
+  "units": [
+   {
+    "name": "Operations & Algebraic Thinking",
+    "topics": [
+     {
+      "id": "g5-express",
+      "name": "Numerical Expressions"
+     },
+     {
+      "id": "g5-patterns",
+      "name": "Patterns & Ordered Pairs"
+     }
+    ]
+   },
+   {
+    "name": "Number & Operations in Base Ten",
+    "topics": [
+     {
+      "id": "g5-thousandth",
+      "name": "Place Value to Thousandths"
+     },
+     {
+      "id": "g5-decops",
+      "name": "Decimal Operations"
+     },
+     {
+      "id": "g5-twodigit",
+      "name": "Two-Digit Divisors"
+     }
+    ]
+   },
+   {
+    "name": "Fractions",
+    "topics": [
+     {
+      "id": "g5-unlike",
+      "name": "Unlike Denominators"
+     },
+     {
+      "id": "g5-fracmult",
+      "name": "Multiplying Fractions"
+     },
+     {
+      "id": "g5-fracdiv",
+      "name": "Dividing with Unit Fractions"
+     },
+     {
+      "id": "g5-fracword",
+      "name": "Fraction Word Problems"
+     }
+    ]
+   },
+   {
+    "name": "Measurement & Data",
+    "topics": [
+     {
+      "id": "g5-convert",
+      "name": "Converting Units"
+     },
+     {
+      "id": "g5-lineplot",
+      "name": "Line Plots with Fractions"
+     },
+     {
+      "id": "g5-volume",
+      "name": "Volume"
+     }
+    ]
+   },
+   {
+    "name": "Geometry",
+    "topics": [
+     {
+      "id": "g5-coord",
+      "name": "The Coordinate Plane"
+     },
+     {
+      "id": "g5-hierarchy",
+      "name": "Classifying Figures by Hierarchy"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "grade": "6",
+  "label": "Grade 6",
+  "units": [
+   {
+    "name": "Ratios & Proportional Relationships",
+    "topics": [
+     {
+      "id": "g6-ratios",
+      "name": "Ratios & Unit Rates"
+     },
+     {
+      "id": "g6-percent",
+      "name": "Percents"
+     },
+     {
+      "id": "g6-unitconv",
+      "name": "Converting Units with Ratios"
+     }
+    ]
+   },
+   {
+    "name": "The Number System",
+    "topics": [
+     {
+      "id": "g6-nscoord",
+      "name": "Coordinate Plane & Rational Numbers"
+     },
+     {
+      "id": "g6-fracdiv",
+      "name": "Dividing Fractions"
+     },
+     {
+      "id": "g6-decimals",
+      "name": "Multi-Digit Decimal Operations"
+     }
+    ]
+   },
+   {
+    "name": "Expressions & Equations",
+    "topics": [
+     {
+      "id": "g6-exprexp",
+      "name": "Expressions with Exponents"
+     },
+     {
+      "id": "g6-equivexpr",
+      "name": "Equivalent Expressions"
+     },
+     {
+      "id": "g6-onevar",
+      "name": "One-Variable Equations & Inequalities"
+     },
+     {
+      "id": "g6-relation",
+      "name": "Dependent & Independent Variables"
+     }
+    ]
+   },
+   {
+    "name": "Geometry",
+    "topics": [
+     {
+      "id": "g6-polyarea",
+      "name": "Area of Polygons"
+     },
+     {
+      "id": "g6-volfrac",
+      "name": "Volume with Fractional Edges"
+     },
+     {
+      "id": "g6-coordpoly",
+      "name": "Polygons on the Coordinate Plane"
+     },
+     {
+      "id": "g6-netsurf",
+      "name": "Nets & Surface Area"
+     }
+    ]
+   },
+   {
+    "name": "Statistics & Probability",
+    "topics": [
+     {
+      "id": "g6-statq",
+      "name": "Statistical Questions"
+     },
+     {
+      "id": "g6-centervar",
+      "name": "Centre & Variability"
+     },
+     {
+      "id": "g6-displays",
+      "name": "Dot Plots, Histograms & Box Plots"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "grade": "7",
+  "label": "Grade 7",
+  "units": [
+   {
+    "name": "Ratios & Proportional Relationships",
+    "topics": [
+     {
+      "id": "g7-unitfrac",
+      "name": "Unit Rates with Fractions"
+     },
+     {
+      "id": "g7-propor",
+      "name": "Proportional Relationships"
+     },
+     {
+      "id": "g7-percentapp",
+      "name": "Markups, Discounts & Interest"
+     }
+    ]
+   },
+   {
+    "name": "The Number System",
+    "topics": [
+     {
+      "id": "g7-ratops",
+      "name": "Operations with Rational Numbers"
+     },
+     {
+      "id": "g7-todecimal",
+      "name": "Terminating & Repeating Decimals"
+     }
+    ]
+   },
+   {
+    "name": "Expressions & Equations",
+    "topics": [
+     {
+      "id": "g7-expand",
+      "name": "Expanding & Factoring"
+     },
+     {
+      "id": "g7-multistep",
+      "name": "Multi-Step Problems"
+     },
+     {
+      "id": "g7-eqineq",
+      "name": "Equations & Inequalities"
+     }
+    ]
+   },
+   {
+    "name": "Geometry",
+    "topics": [
+     {
+      "id": "g7-scaledraw",
+      "name": "Scale Drawings"
+     },
+     {
+      "id": "g7-construct",
+      "name": "Constructing Figures"
+     },
+     {
+      "id": "g7-circles",
+      "name": "Circles"
+     },
+     {
+      "id": "g7-anglerel",
+      "name": "Angle Relationships"
+     },
+     {
+      "id": "g7-solids",
+      "name": "Volume & Surface Area"
+     }
+    ]
+   },
+   {
+    "name": "Statistics & Probability",
+    "topics": [
+     {
+      "id": "g7-sampling",
+      "name": "Random Sampling"
+     },
+     {
+      "id": "g7-probmodel",
+      "name": "Probability Models"
+     },
+     {
+      "id": "g7-compound",
+      "name": "Compound Events"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "grade": "8",
+  "label": "Grade 8",
+  "units": [
+   {
+    "name": "The Number System",
+    "topics": [
+     {
+      "id": "g8-irrational",
+      "name": "Irrational Numbers"
+     },
+     {
+      "id": "g8-radicals",
+      "name": "Radicals & Integer Exponents"
+     },
+     {
+      "id": "g8-scinot",
+      "name": "Scientific Notation"
+     }
+    ]
+   },
+   {
+    "name": "Expressions & Equations",
+    "topics": [
+     {
+      "id": "g8-propgraph",
+      "name": "Proportional Graphs & Slope"
+     },
+     {
+      "id": "g8-linear",
+      "name": "Linear Equations"
+     },
+     {
+      "id": "g8-systems",
+      "name": "Simultaneous Equations"
+     }
+    ]
+   },
+   {
+    "name": "Functions",
+    "topics": [
+     {
+      "id": "g8-funcdef",
+      "name": "What a Function Is"
+     },
+     {
+      "id": "g8-funccomp",
+      "name": "Comparing Functions"
+     },
+     {
+      "id": "g8-funcmodel",
+      "name": "Modelling with Functions"
+     },
+     {
+      "id": "g8-funcgraph",
+      "name": "Reading Function Graphs"
+     }
+    ]
+   },
+   {
+    "name": "Geometry",
+    "topics": [
+     {
+      "id": "g8-transform",
+      "name": "Transformations & Congruence"
+     },
+     {
+      "id": "g8-dilations",
+      "name": "Dilations & Similarity"
+     },
+     {
+      "id": "g8-angleAA",
+      "name": "Angle Facts & the AA Criterion"
+     },
+     {
+      "id": "g8-pythag",
+      "name": "The Pythagorean Theorem"
+     },
+     {
+      "id": "g8-solids",
+      "name": "Cylinders, Cones & Spheres"
+     }
+    ]
+   },
+   {
+    "name": "Statistics & Probability",
+    "topics": [
+     {
+      "id": "g8-scatter",
+      "name": "Scatter Plots"
+     },
+     {
+      "id": "g8-fitline",
+      "name": "Fitting a Line"
+     },
+     {
+      "id": "g8-twoway",
+      "name": "Two-Way Tables"
+     }
+    ]
+   }
+  ]
+ }
+]

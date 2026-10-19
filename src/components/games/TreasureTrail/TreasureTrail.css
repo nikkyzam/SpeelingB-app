@@ -66,6 +66,7 @@
 }
 
 .tt-message {
+  position: relative;
   font-family: var(--font-primary);
   font-weight: 700;
   min-height: 2.2rem;
@@ -74,6 +75,18 @@
   margin-bottom: var(--spacing-md);
 }
 .tt-message.result { background: color-mix(in srgb, var(--success) 16%, transparent); }
+.tt-die {
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 1.6rem;
+  line-height: 1;
+  vertical-align: middle;
+  animation: tt-spin 0.45s ease-out both;
+}
+@keyframes tt-spin {
+  0% { transform: rotate(-200deg) scale(0.4); }
+  100% { transform: rotate(0) scale(1); }
+}
 .tt-message.done { background: linear-gradient(90deg, var(--warning), var(--primary-2)); color: #fff; animation: pop-in var(--transition-normal) both; }
 
 .tt-challenge { display: grid; gap: var(--spacing-sm); justify-items: center; }
@@ -123,7 +136,12 @@
 .tt-btn:active:not(:disabled) { transform: translateY(3px); box-shadow: none; }
 
 .tt-treasure { font-size: 3rem; animation: pop-in 500ms both, bounce 1.2s 500ms infinite; }
-.tt-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tt-tile, .tt-choice { transition: none; }
+  .tt-tile.here { transform: none; }
+  .tt-choice:hover:not(:disabled) { transform: none; }
+}
 
 @media (max-width: 520px) {
   .tt-header { flex-direction: column; align-items: stretch; }

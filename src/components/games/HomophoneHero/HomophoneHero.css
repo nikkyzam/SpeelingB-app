@@ -27,6 +27,17 @@
 .hh-stat strong { font-size: 1.15rem; color: var(--text); }
 
 .hh-brief { color: var(--text-soft); font-weight: 600; margin-bottom: var(--spacing-lg); }
+.hh-streak {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 0 10px;
+  border-radius: var(--radius-round);
+  background: color-mix(in srgb, var(--warning) 22%, var(--card));
+  color: var(--text);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  animation: pop-in var(--transition-normal) both;
+}
 
 .hh-sentence {
   display: flex;
@@ -53,6 +64,9 @@
 .hh-gap.ok { color: var(--success); border-bottom-color: var(--success); }
 .hh-gap.bad { color: var(--error); border-bottom-color: var(--error); }
 .hh-speak {
+  /* A finger-sized target for a small child (44px). */
+  min-width: 44px;
+  min-height: 44px;
   border: 2px solid var(--border);
   background: var(--card);
   border-radius: var(--radius-round);
@@ -80,6 +94,7 @@
 .hh-option.dim { opacity: 0.45; }
 
 .hh-why {
+  position: relative;
   margin-top: var(--spacing-lg);
   padding: var(--spacing-md);
   border-radius: var(--radius-md);
@@ -94,18 +109,10 @@
 .hh-why-label { font-family: var(--font-primary); font-weight: 900; font-size: 0.85rem; color: var(--primary-2); }
 .hh-why-text { font-weight: 700; color: var(--text); }
 
-.hh-btn {
-  border: none;
-  cursor: pointer;
-  font-family: var(--font-primary);
-  font-weight: 800;
-  color: #fff;
-  background: linear-gradient(180deg, var(--primary), var(--primary-2));
-  border-radius: var(--radius-round);
-  padding: 0.7rem 1.4rem;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+@media (prefers-reduced-motion: reduce) {
+  .hh-option { transition: none; }
+  .hh-option:hover:not(:disabled) { transform: none; }
 }
-.hh-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
 
 @media (max-width: 520px) {
   .hh-header { flex-direction: column; align-items: stretch; }

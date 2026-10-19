@@ -71,7 +71,8 @@ describe('SpellMode Component', () => {
     fireEvent.change(input, { target: { value: 'apple' } })
     fireEvent.click(submitBtn)
     
-    expect(screen.getByText('Yes! You spelled it! 🎉')).toBeInTheDocument()
+    // Praise (never the same line twice running) with a real star, and the run grows.
+    expect(screen.getByRole('status')).toHaveTextContent('⭐')
     expect(screen.getByText('🔥 1')).toBeInTheDocument()
     
     // Should move to next word after timeout
@@ -92,11 +93,12 @@ describe('SpellMode Component', () => {
     fireEvent.change(input, { target: { value: 'wrong' } })
     fireEvent.click(submitBtn)
     
-    // A wrong answer now names the word and the rule behind it, not just "nope".
-    expect(screen.getByText(/Oops! Not quite/)).toBeInTheDocument()
-    // "banana" doubles its n, so that is the rule it should teach.
+    // A wrong answer names the word, softly, and the rule behind it.
+    expect(document.querySelector('.sm-nearly')?.textContent).toMatch(/It’s apple/)
+    // "apple" doubles its p, so that is the rule it should teach.
     expect(document.querySelector('.feedback-why')?.textContent).toMatch(/double|Sound|bits/)
-    expect(screen.getByText('🔥 0')).toBeInTheDocument()
+    // The run is over, so there is no streak chip to show.
+    expect(screen.queryByText(/🔥/)).not.toBeInTheDocument()
   })
 
   it('offers no hint, and lets no device spell the word for them', () => {
@@ -116,14 +118,14 @@ describe('SpellMode Component', () => {
     expect(input).toHaveAttribute('autocomplete', 'off')
   })
 
-  it('reveals the word when "Reveal Word" is clicked', () => {
+  it('shows the word when the child is stuck', () => {
     renderWithProviders(<SpellMode words={WORDS} />)
     
-    const revealBtn = screen.getByText('Reveal Answer')
-    fireEvent.click(revealBtn)
+    fireEvent.click(screen.getByRole('button', { name: /Stuck\?/ }))
     
     const input = screen.getByPlaceholderText('Type the word...')
     expect(input).toHaveValue('apple')
+    expect(screen.getByText(/Here it is/)).toBeInTheDocument()
   })
 
   it('scores a word once, and cannot be made to score it twice', () => {
@@ -161,21 +163,23 @@ describe('SpellMode Component', () => {
 
     fireEvent.click(next)
 
-    expect(screen.queryByText(/Oops! Not quite/)).not.toBeInTheDocument()
+    expect(document.querySelector('.sm-nearly')).toBeNull()
     expect(screen.getByPlaceholderText('Type the word...')).toHaveValue('')
   })
 
-  it('reports accuracy as words right out of words answered', () => {
-    // The score grows with the streak (10, then 20, ...), and accuracy used to
-    // be that score over ten points a word: two right in a row read "150%".
-    renderWithProviders(<SpellMode words={WORDS} />)
+  it('pays a real star per word spelled, and no pretend score or accuracy', () => {
+    // The old Score grew with the streak and went nowhere; accuracy read "300%".
+    const onComplete = vi.fn()
+    renderWithProviders(<SpellMode words={WORDS} onComplete={onComplete} />)
     const input = screen.getByPlaceholderText('Type the word...')
     for (const word of ['apple', 'banana']) {
       fireEvent.change(input, { target: { value: word } })
       fireEvent.click(screen.getByRole('button', { name: /Check it/i }))
       act(() => { vi.advanceTimersByTime(1600) })
     }
-    expect(screen.getByText('Accuracy').nextElementSibling).toHaveTextContent('100%')
+    expect(screen.getByText('⭐ +2 stars')).toBeInTheDocument()
+    expect(screen.queryByText(/Accuracy|Score/)).not.toBeInTheDocument()
+    expect(onComplete).toHaveBeenCalledWith(['1', '2'], { correct: 2, stars: 2 })
   })
 
   it('accepts a word typed without its accents', () => {
@@ -185,7 +189,8 @@ describe('SpellMode Component', () => {
     )
     fireEvent.change(screen.getByPlaceholderText('Type the word...'), { target: { value: 'senor' } })
     fireEvent.click(screen.getByRole('button', { name: /Check it/i }))
-    expect(screen.getByText('Yes! You spelled it! 🎉')).toBeInTheDocument()
+    expect(screen.getByRole('status')).toHaveTextContent('⭐')
+    expect(document.querySelector('.sm-nearly')).toBeNull()
   })
 
   it('a correct answer still only advances once', () => {
@@ -194,7 +199,7 @@ describe('SpellMode Component', () => {
     const input = screen.getByPlaceholderText('Type the word...')
     fireEvent.change(input, { target: { value: 'apple' } })
     fireEvent.click(screen.getByRole('button', { name: /Check it/i }))
-    expect(screen.getByText('Yes! You spelled it! 🎉')).toBeInTheDocument()
+    expect(screen.getByRole('status')).toHaveTextContent('⭐')
 
     // Tapping "Next Word" cancels the automatic advance rather than adding to
     // it, so the two together cannot skip the following word.

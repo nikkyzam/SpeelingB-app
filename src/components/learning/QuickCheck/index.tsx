@@ -2,7 +2,9 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, misspell } from '../../games/shared/wordTricks'
+import { praise, spellOut, isStreakMilestone } from '../../../services/words/praise'
 import sfx from '../../games/shared/sfx'
+import Burst from '../../games/shared/Burst'
 import './QuickCheck.css'
 
 interface QuickCheckProps {
@@ -13,10 +15,15 @@ interface QuickCheckProps {
   onPass: (helped: boolean) => void
   /** Label the continue button as the end of the lesson. */
   isLast?: boolean
+  /** Words got right in a row before this one, so the praise can build into a cheer. */
+  streak?: number
 }
 
 type Kind = 'build' | 'choose' | 'missing'
 type Phase = 'working' | 'right' | 'revealed'
+
+/** How fast "Show me" fills in the letters, one by one. */
+const LETTER_MS = 450
 
 const KINDS: Kind[] = ['build', 'choose', 'missing']
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
@@ -29,7 +36,7 @@ const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
  * as learned. It can never block them: "Not sure?" shows the answer and the
  * lesson carries on, because a stuck child stops playing.
  */
-const QuickCheck: React.FC<QuickCheckProps> = ({ word, variant = 0, onPass, isLast }) => {
+const QuickCheck: React.FC<QuickCheckProps> = ({ word, variant = 0, onPass, isLast, streak = 0 }) => {
   const { speak } = useAudio()
   const answer = word.word.toLowerCase()
 
@@ -39,6 +46,10 @@ const QuickCheck: React.FC<QuickCheckProps> = ({ word, variant = 0, onPass, isLa
   const [phase, setPhase] = useState<Phase>('working')
   const [picked, setPicked] = useState<number[]>([]) // build: indexes into tray
   const [wrong, setWrong] = useState<string | null>(null)
+  // The praise for this word — never the same "Yes!" every time.
+  const [cheer, setCheer] = useState('')
+  // "Show me" spells the word out: how many letters are filled in so far.
+  const [shown, setShown] = useState(0)
 
   // A shuffle can land back in order ("t a g" for "tag" comes up one time in
   // six), and then the check is just tapping left to right. Mix again until it
@@ -78,21 +89,33 @@ const QuickCheck: React.FC<QuickCheckProps> = ({ word, variant = 0, onPass, isLa
 
   const pass = (helped: boolean) => {
     if (helped) {
+      // Help that teaches: the letters fill in one at a time while they are
+      // said aloud, rather than the answer just appearing.
       setPhase('revealed')
-      speak(word.word)
+      speak(`${word.word}. ${spellOut(word.word)}.`)
+      for (let i = 1; i <= answer.length; i++) {
+        timers.current.push(window.setTimeout(() => setShown(i), i * LETTER_MS))
+      }
       return
     }
+    const run = streak + 1
+    const line = praise(run)
+    setCheer(line)
     setPhase('right')
     sfx.correct()
-    speak('Yes!')
+    if (isStreakMilestone(run)) timers.current.push(window.setTimeout(() => sfx.star(), 180))
+    speak(line)
     timers.current.push(window.setTimeout(() => onPass(false), 900))
   }
 
   const miss = (label: string) => {
     sfx.wrong()
     setWrong(label)
-    setTimeout(() => setWrong((w) => (w === label ? null : w)), 600)
+    timers.current.push(window.setTimeout(() => setWrong((w) => (w === label ? null : w)), 600))
   }
+
+  /** While "Show me" spells the word: is letter i filled in yet? */
+  const lit = (i: number) => phase === 'revealed' && i < shown
 
   // --- build: tap the letters in order ---
   const tapTile = (index: number) => {
@@ -125,6 +148,7 @@ const QuickCheck: React.FC<QuickCheckProps> = ({ word, variant = 0, onPass, isLa
 
   return (
     <div className={`quick-check ${phase}`}>
+      <Burst trigger={phase === 'right' ? 1 : 0} />
       <div className="qc-title">
         <span className="qc-spark" aria-hidden>⚡</span> Quick check!
         <button className="qc-hear" onClick={() => speak(word.word)} aria-label="Hear the word again">🔊</button>
@@ -135,8 +159,8 @@ const QuickCheck: React.FC<QuickCheckProps> = ({ word, variant = 0, onPass, isLa
         <>
           <div className="qc-slots">
             {answer.split('').map((c, i) => (
-              <span key={i} className={`qc-slot ${i < built.length ? 'filled' : ''}`}>
-                {i < built.length ? built[i] : phase === 'revealed' ? c : ''}
+              <span key={i} className={`qc-slot ${i < built.length ? 'filled' : lit(i) ? 'filled shown' : ''}`}>
+                {i < built.length ? built[i] : lit(i) ? c : ''}
               </span>
             ))}
           </div>
@@ -158,6 +182,14 @@ const QuickCheck: React.FC<QuickCheckProps> = ({ word, variant = 0, onPass, isLa
         </>
       )}
 
+      {kind === 'choose' && phase === 'revealed' && (
+        <div className="qc-slots">
+          {answer.split('').map((c, i) => (
+            <span key={i} className={`qc-slot ${lit(i) ? 'filled shown' : ''}`}>{lit(i) ? c : ''}</span>
+          ))}
+        </div>
+      )}
+
       {kind === 'choose' && (
         <div className="qc-options">
           {options.map((o) => (
@@ -177,8 +209,8 @@ const QuickCheck: React.FC<QuickCheckProps> = ({ word, variant = 0, onPass, isLa
         <>
           <div className="qc-slots">
             {answer.split('').map((c, i) => (
-              <span key={i} className={`qc-slot ${i === hidden.at ? 'gap' : 'filled'}`}>
-                {i === hidden.at ? (phase === 'working' ? '?' : c) : c}
+              <span key={i} className={`qc-slot ${i === hidden.at && phase !== 'right' && !lit(i) ? 'gap' : 'filled'} ${lit(i) ? 'shown' : ''}`}>
+                {i === hidden.at ? (phase === 'right' || lit(i) ? c : '?') : c}
               </span>
             ))}
           </div>
@@ -203,7 +235,7 @@ const QuickCheck: React.FC<QuickCheckProps> = ({ word, variant = 0, onPass, isLa
         </button>
       )}
 
-      {phase === 'right' && <div className="qc-flash ok">🎉 Yes! You know this one!</div>}
+      {phase === 'right' && <div className="qc-flash ok" role="status">🎉 {cheer}</div>}
 
       {phase === 'revealed' && (
         <div className="qc-revealed">

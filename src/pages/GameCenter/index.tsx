@@ -7,6 +7,9 @@ import GameStats, {
   GAME_STATS_EVENT,
   DAILY_CHALLENGE_TARGET,
   DAILY_CHALLENGE_REWARD,
+  medalFor,
+  MEDAL_ICON,
+  type Medal,
 } from '../../services/games/GameStats'
 import { AchievementsService } from '../../services/rewards/AchievementsService'
 import Button from '../../components/common/Button'
@@ -73,11 +76,15 @@ import BibleApiDashboard from '../../components/bible/BibleApiDashboard'
 import Celebration, { CelebrationData } from '../../components/common/Celebration'
 import ReviewSchedule from '../../services/progress/ReviewSchedule'
 import { FREE_GAMES } from '../../services/progress/LearningFlow'
+import sfx from '../../components/games/shared/sfx'
 import { pickGameOfTheDay, recommendNext } from '../../services/games/gameOfTheDay'
 import './GameCenter.css'
 
 // Off-topic mini-games (reflex/memory/art/math/music/physics) are hidden so the
 // Games hub stays focused on spelling & words. Their code remains for later.
+/** The most stars one finished game can pay, before Game of the Day doubles it. */
+const MAX_GAME_STARS = 5
+
 const HIDDEN_GAMES = new Set([
   'bonus', 'shape-catcher', 'pattern-memory', 'rhythm-tap', 'memory-grid',
   'reaction-test', 'pattern-sequencer', 'color-mixer', 'math-puzzle',
@@ -134,6 +141,15 @@ const GameCenter: React.FC = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const [activeGame, setActiveGame] = useState<GameMode>(null)
+
+  // While a game is on screen the bottom bar steps aside: games put their
+  // "Nearly!" and "Nailed it!" at the bottom, and on a short screen the bar
+  // sat right on top of them. "← Back to Games" is the way out meanwhile.
+  useEffect(() => {
+    if (!activeGame) return
+    document.body.classList.add('playing-game')
+    return () => document.body.classList.remove('playing-game')
+  }, [activeGame])
   const [celebration, setCelebration] = useState<CelebrationData | null>(null)
   const [filter, setFilter] = useState<Category | 'all' | 'favorites'>('all')
   // Bumped whenever a best score, favourite or daily play is written, so the
@@ -152,6 +168,7 @@ const GameCenter: React.FC = () => {
   const favorites = useMemo(() => GameStats.getFavorites(), [statsTick])
   const challenge = useMemo(() => GameStats.getDailyChallenge(), [statsTick])
   const seen = useMemo(() => GameStats.getSeen(), [statsTick])
+  const plays = useMemo(() => GameStats.getAllPlays(), [statsTick])
   const gridRef = useRef<HTMLDivElement>(null)
   // What to try after finishing something, shown beside the celebration.
   const [nextUp, setNextUp] = useState<{ id: string; title: string; icon: string } | null>(null)
@@ -844,15 +861,24 @@ const GameCenter: React.FC = () => {
     const finishedId = activeGame
 
     // Award stars based on score, doubled for the Game of the Day — but only
-    // the first time today, so replaying it is not a star farm.
-    const base = Math.max(1, Math.floor(score / 100))
+    // the first time today, so replaying it is not a star farm. Capped, so a
+    // game that happens to score in the thousands (Memory Match, Balloon Pop)
+    // doesn't pay fifteen stars while its neighbours pay two.
+    const base = Math.min(MAX_GAME_STARS, Math.max(1, Math.floor(score / 100)))
     const doubled = finishedId === gameOfTheDayId && GameStats.claimDailyBonus()
     const starsEarned = doubled ? base * 2 : base
     addStars(starsEarned)
 
     let newBest = false
+    let newMedal: Medal | null = null
     if (finishedId) {
-      newBest = GameStats.recordScore(finishedId, score).isNewBest
+      const result = GameStats.recordScore(finishedId, score)
+      newBest = result.isNewBest
+      // Crossing 1, 3 or 7 plays of this game earns its next medal.
+      const medal = medalFor(result.plays)
+      if (medal !== medalFor(result.plays - 1)) newMedal = medal
+      // A personal best gets its own fanfare on top of the crowd's applause.
+      if (newBest) sfx.fanfare()
       GameStats.recordDailyPlay(finishedId)
       // Counts towards the "play lots of different games" badge.
       AchievementsService.recordGamePlayed(finishedId)
@@ -878,6 +904,10 @@ const GameCenter: React.FC = () => {
         : newBest
         ? `${score} points — that's your best ever at this game!`
         : `You scored ${score}!`,
+      // Its own line in the celebration, under the score.
+      badge: newMedal
+        ? `${MEDAL_ICON[newMedal]} New ${newMedal} medal: ${games.find((g) => g.id === finishedId)?.title ?? 'this game'}!`
+        : null,
       stars: starsEarned,
     })
 
@@ -1067,6 +1097,21 @@ const GameCenter: React.FC = () => {
             <span className="stars-icon">⭐</span>
             <span className="stars-text">Play games to earn stars!</span>
           </div>
+          <div className="medal-tally" aria-label="Your game medals">
+            {(() => {
+              const visible = visibleGames.map((g) => medalFor(plays[g.id] ?? 0))
+              const count = (m: Medal) => visible.filter((v) => v === m).length
+              const any = visible.filter(Boolean).length
+              return any === 0 ? (
+                <span>🏅 Finish a game to win its first medal!</span>
+              ) : (
+                <span>
+                  🏅 Medals: {MEDAL_ICON.gold} {count('gold')} · {MEDAL_ICON.silver} {count('silver')} · {MEDAL_ICON.bronze} {count('bronze')}
+                  <small>in {any} of {visible.length} games</small>
+                </span>
+              )
+            })()}
+          </div>
           <div className="games-tip">
             <span className="tip-icon">💡</span>
             <span className="tip-text">
@@ -1221,6 +1266,14 @@ const GameCenter: React.FC = () => {
                   {!game.isNew && !seen.includes(game.id) && game.unlocked && (
                     <span className="untried-badge">NOT TRIED YET</span>
                   )}
+                  {(() => {
+                    const medal = medalFor(plays[game.id] ?? 0)
+                    return medal ? (
+                      <span className={`medal-badge ${medal}`} aria-label={`${medal} medal`} title={`${medal} medal`}>
+                        {MEDAL_ICON[medal]}
+                      </span>
+                    ) : null
+                  })()}
                   <span className="game-duration">{game.duration}</span>
                   {!game.unlocked && <span className="lock-icon">🔒</span>}
                   <button

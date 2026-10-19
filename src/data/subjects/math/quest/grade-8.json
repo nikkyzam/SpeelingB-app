@@ -1,0 +1,1708 @@
+{
+ "g8-irrational": [
+  {
+   "id": "g8-irrational-1",
+   "prompt": "Which of these is IRRATIONAL?",
+   "category": "Number",
+   "explanation": "√2 cannot be written as a fraction of whole numbers — its decimal never ends or repeats.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "√2",
+    "4",
+    "1/2",
+    "0.75"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-irrational-2",
+   "prompt": "Which of these is RATIONAL?",
+   "category": "Number",
+   "explanation": "√9 = 3, a whole number, which is rational. The others are irrational.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "√9",
+    "√2",
+    "√3",
+    "π"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-irrational-3",
+   "prompt": "Is 0.333... (repeating forever) rational or irrational?",
+   "category": "Number",
+   "explanation": "A repeating decimal can always be written as a fraction (0.333... = 1/3), so it is rational.",
+   "kind": "choice",
+   "choices": [
+    "Rational",
+    "Irrational",
+    "Neither",
+    "Both"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-irrational-4",
+   "prompt": "What is √16?",
+   "category": "Number",
+   "explanation": "4 × 4 = 16, so √16 = 4.",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "g8-irrational-5",
+   "prompt": "Which best describes π?",
+   "category": "Number",
+   "explanation": "π's decimal digits never end or repeat, which is the definition of irrational.",
+   "kind": "choice",
+   "choices": [
+    "An irrational number",
+    "A whole number",
+    "A fraction",
+    "A repeating decimal"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-irrational-6",
+   "prompt": "√2 is approximately 1.41421356... Between which two whole numbers does √2 lie?",
+   "category": "Number",
+   "explanation": "1² = 1 and 2² = 4, and 2 is between them, so √2 is between 1 and 2.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "1 and 2",
+    "0 and 1",
+    "2 and 3",
+    "1.4 and 1.5"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-irrational-7",
+   "prompt": "What is √49?",
+   "category": "Number",
+   "explanation": "7 × 7 = 49, so √49 = 7.",
+   "level": 2,
+   "kind": "number",
+   "answer": 7
+  },
+  {
+   "id": "g8-irrational-8",
+   "prompt": "Which sum is RATIONAL?",
+   "category": "Number",
+   "explanation": "√4 + √9 = 2 + 3 = 5, a whole number. The others combine irrational values that do not cancel out.",
+   "level": 3,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "√4 + √9",
+    "√2 + √3",
+    "π + 1",
+    "√2 + π"
+   ],
+   "answer": 0
+  }
+ ],
+ "g8-radicals": [
+  {
+   "id": "g8-radicals-1",
+   "prompt": "What is √25?",
+   "category": "Number",
+   "explanation": "5 × 5 = 25, so √25 = 5.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g8-radicals-2",
+   "prompt": "What is √64?",
+   "category": "Number",
+   "explanation": "8 × 8 = 64, so √64 = 8.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g8-radicals-3",
+   "prompt": "Simplify: 2³ × 2²",
+   "category": "Number",
+   "explanation": "Multiplying powers with the same base adds the exponents: 3 + 2 = 5, so 2⁵.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "2⁵",
+    "2⁶",
+    "4⁵",
+    "2¹"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-radicals-4",
+   "prompt": "Simplify: (3²)³",
+   "category": "Number",
+   "explanation": "Raising a power to a power multiplies the exponents: 2 × 3 = 6, so 3⁶.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "3⁶",
+    "3⁵",
+    "3⁹",
+    "6⁶"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-radicals-5",
+   "prompt": "What is 5⁻¹ written as a fraction, 1/__? Type just the denominator.",
+   "category": "Number",
+   "explanation": "A negative exponent flips it to a fraction: 5⁻¹ = 1/5.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g8-radicals-6",
+   "prompt": "Simplify: 2⁴ ÷ 2²",
+   "category": "Number",
+   "explanation": "Dividing powers with the same base subtracts the exponents: 4 − 2 = 2, so 2².",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "2²",
+    "2⁶",
+    "2⁸",
+    "1"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-radicals-7",
+   "prompt": "What is 4^(1/2), the square root of 4?",
+   "category": "Number",
+   "explanation": "A power of 1/2 means square root: 4^(1/2) = √4 = 2.",
+   "level": 2,
+   "kind": "number",
+   "answer": 2
+  },
+  {
+   "id": "g8-radicals-8",
+   "prompt": "Simplify: (2³)² ÷ 2²",
+   "category": "Number",
+   "explanation": "(2³)² = 2⁶, then 2⁶ ÷ 2² = 2⁴.",
+   "level": 3,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "2⁴",
+    "2³",
+    "2⁸",
+    "2¹"
+   ],
+   "answer": 0
+  }
+ ],
+ "g8-linear": [
+  {
+   "id": "g8-linear-1",
+   "prompt": "Solve for x: 3x + 5 = 20",
+   "category": "Patterns & Algebra",
+   "explanation": "20 − 5 = 15, and 15 ÷ 3 = 5.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g8-linear-2",
+   "prompt": "Solve for x: 2(x − 4) = 10",
+   "category": "Patterns & Algebra",
+   "explanation": "2x − 8 = 10, so 2x = 18 and x = 9.",
+   "kind": "number",
+   "answer": 9
+  },
+  {
+   "id": "g8-linear-3",
+   "prompt": "Which value of x solves 4x − 7 = 9?",
+   "category": "Patterns & Algebra",
+   "explanation": "4 × 4 − 7 = 16 − 7 = 9.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "4",
+    "3",
+    "5",
+    "2"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-linear-4",
+   "prompt": "Solve for x: 5x − 3 = 3x + 9",
+   "category": "Patterns & Algebra",
+   "explanation": "2x = 12, so x = 6.",
+   "hint": "Get the x terms on one side first.",
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "g8-linear-5",
+   "prompt": "Which describes the solution to 2x + 6 = 2x + 6?",
+   "category": "Patterns & Algebra",
+   "explanation": "Both sides are identical for every x, so every real number is a solution.",
+   "kind": "choice",
+   "choices": [
+    "All real numbers (infinite solutions)",
+    "Only x equals zero exactly",
+    "There is no solution at all",
+    "Only x equals six exactly"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-linear-6",
+   "prompt": "Solve for x: 3(x + 2) = 2(x + 7)",
+   "category": "Patterns & Algebra",
+   "explanation": "3x + 6 = 2x + 14, so x = 8.",
+   "level": 2,
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g8-linear-7",
+   "prompt": "Which equation has NO solution?",
+   "category": "Patterns & Algebra",
+   "explanation": "Subtracting 2x from both sides leaves 3 = 5, which is never true.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "2x + 3 = 2x + 5",
+    "2x + 3 = 2x + 3",
+    "x + 3 = 5",
+    "2x = 6"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-linear-8",
+   "prompt": "Solve for x: 4(x − 1) − 2x = 3x − 10",
+   "category": "Patterns & Algebra",
+   "explanation": "4x − 4 − 2x = 2x − 4, so 2x − 4 = 3x − 10, giving x = 6.",
+   "hint": "Simplify the left side first.",
+   "level": 3,
+   "kind": "number",
+   "answer": 6
+  }
+ ],
+ "g8-scinot": [
+  {
+   "id": "g8-scinot-1",
+   "prompt": "Which is 4,500 in scientific notation?",
+   "category": "Number",
+   "explanation": "4,500 = 4.5 × 1000 = 4.5 × 10³.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "4.5 × 10³",
+    "4.5 × 10²",
+    "45 × 10²",
+    "0.45 × 10⁴"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-scinot-2",
+   "prompt": "Which is 0.0032 in scientific notation?",
+   "category": "Number",
+   "explanation": "0.0032 = 3.2 × 10⁻³, moving the decimal 3 places right.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "3.2 × 10⁻³",
+    "3.2 × 10³",
+    "32 × 10⁻⁴",
+    "0.32 × 10⁻²"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-scinot-3",
+   "prompt": "Write 6.2 × 10³ as a standard number.",
+   "category": "Number",
+   "explanation": "Move the decimal 3 places right: 6200.",
+   "kind": "number",
+   "answer": 6200
+  },
+  {
+   "id": "g8-scinot-4",
+   "prompt": "Write 5 × 10⁻² as a decimal.",
+   "category": "Number",
+   "explanation": "Move the decimal 2 places left: 0.05.",
+   "kind": "number",
+   "answer": 0.05
+  },
+  {
+   "id": "g8-scinot-5",
+   "prompt": "Which number is LARGER: 3 × 10⁵ or 3 × 10⁴?",
+   "category": "Number",
+   "explanation": "A bigger exponent means a bigger power of 10, so 3 × 10⁵ is larger.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "3 × 10⁵",
+    "3 × 10⁴",
+    "They are equal",
+    "Cannot tell"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-scinot-6",
+   "prompt": "Multiply: (2 × 10³) × (3 × 10²). Type the coefficient (the number part) of the result.",
+   "category": "Number",
+   "explanation": "2 × 3 = 6.",
+   "level": 2,
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "g8-scinot-7",
+   "prompt": "(2 × 10³) × (3 × 10²) = 6 × 10^?. What is the exponent?",
+   "category": "Number",
+   "explanation": "Multiplying powers of 10 adds the exponents: 3 + 2 = 5.",
+   "level": 2,
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g8-scinot-8",
+   "prompt": "4 × 10⁶ plus 8 × 10⁵, written as (coefficient) × 10⁶. What is the coefficient?",
+   "category": "Number",
+   "explanation": "4,000,000 + 800,000 = 4,800,000 = 4.8 × 10⁶.",
+   "hint": "Convert both to the same power of 10 first.",
+   "level": 3,
+   "kind": "number",
+   "answer": 4.8
+  }
+ ],
+ "g8-propgraph": [
+  {
+   "id": "g8-propgraph-1",
+   "prompt": "A line passes through (0,0) and (2,6). What is its slope?",
+   "category": "Patterns & Algebra",
+   "explanation": "Slope = 6 ÷ 2 = 3.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g8-propgraph-2",
+   "prompt": "A proportional graph has slope 4. What is y when x = 5?",
+   "category": "Patterns & Algebra",
+   "explanation": "y = 4 × 5 = 20.",
+   "kind": "number",
+   "answer": 20
+  },
+  {
+   "id": "g8-propgraph-3",
+   "prompt": "The slope of a proportional relationship's graph equals ___.",
+   "category": "Patterns & Algebra",
+   "explanation": "In y = kx, the slope k is exactly the constant of proportionality.",
+   "kind": "choice",
+   "choices": [
+    "the constant of proportionality",
+    "only the y-intercept value",
+    "always exactly zero",
+    "only the x-intercept value"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-propgraph-4",
+   "prompt": "A line passes through (0,0) and (3,9). What is its slope?",
+   "category": "Patterns & Algebra",
+   "explanation": "Slope = 9 ÷ 3 = 3.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g8-propgraph-5",
+   "prompt": "Which graph represents a proportional relationship?",
+   "category": "Patterns & Algebra",
+   "explanation": "Proportional relationships always graph as a straight line passing through (0, 0).",
+   "kind": "choice",
+   "choices": [
+    "A straight line through the origin",
+    "A curve",
+    "A line NOT through the origin",
+    "A circle"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-propgraph-6",
+   "prompt": "A proportional graph passes through (4,12). What is the slope?",
+   "category": "Patterns & Algebra",
+   "explanation": "Slope = 12 ÷ 4 = 3.",
+   "level": 2,
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g8-propgraph-7",
+   "prompt": "Using a proportional graph with slope 3, what is y when x = 7?",
+   "category": "Patterns & Algebra",
+   "explanation": "y = 3 × 7 = 21.",
+   "level": 2,
+   "kind": "number",
+   "answer": 21
+  },
+  {
+   "id": "g8-propgraph-8",
+   "prompt": "Two points on a proportional line are (2,10) and (5,25). What is the slope, (25−10)/(5−2)?",
+   "category": "Patterns & Algebra",
+   "explanation": "(25 − 10) ÷ (5 − 2) = 15 ÷ 3 = 5.",
+   "level": 3,
+   "kind": "number",
+   "answer": 5
+  }
+ ],
+ "g8-systems": [
+  {
+   "id": "g8-systems-1",
+   "prompt": "Solve the system: x + y = 10, x = 4. What is y?",
+   "category": "Patterns & Algebra",
+   "explanation": "10 − 4 = 6.",
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "g8-systems-2",
+   "prompt": "Solve: y = 2x, x + y = 12. What is x?",
+   "category": "Patterns & Algebra",
+   "explanation": "x + 2x = 12, so 3x = 12 and x = 4.",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "g8-systems-3",
+   "prompt": "Two lines with DIFFERENT slopes will ___.",
+   "category": "Patterns & Algebra",
+   "explanation": "Lines with different slopes are not parallel, so they cross at exactly one point.",
+   "kind": "choice",
+   "choices": [
+    "intersect at exactly one point",
+    "never intersect",
+    "overlap completely",
+    "have no solution"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-systems-4",
+   "prompt": "Solve: x + y = 15, x − y = 3. What is x?",
+   "category": "Patterns & Algebra",
+   "explanation": "Adding both equations: 2x = 18, so x = 9.",
+   "hint": "Add the two equations together.",
+   "kind": "number",
+   "answer": 9
+  },
+  {
+   "id": "g8-systems-5",
+   "prompt": "Two lines with the SAME slope but different y-intercepts are ___.",
+   "category": "Patterns & Algebra",
+   "explanation": "Same slope, different intercept means the lines never meet — they run parallel forever.",
+   "kind": "choice",
+   "choices": [
+    "parallel, no solution",
+    "the same line, infinite solutions",
+    "intersecting once",
+    "perpendicular"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-systems-6",
+   "prompt": "Solve: 2x + y = 9, y = x. What is x?",
+   "category": "Patterns & Algebra",
+   "explanation": "2x + x = 9, so 3x = 9 and x = 3.",
+   "level": 2,
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g8-systems-7",
+   "prompt": "Solve: x − y = 2, x + y = 8. What is x?",
+   "category": "Patterns & Algebra",
+   "explanation": "Adding both equations: 2x = 10, so x = 5.",
+   "hint": "Add the two equations together.",
+   "level": 2,
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g8-systems-8",
+   "prompt": "Solve: 2x + 3y = 16, x = y + 3. What is y?",
+   "category": "Patterns & Algebra",
+   "explanation": "2(y + 3) + 3y = 16, so 2y + 6 + 3y = 16, giving 5y = 10 and y = 2.",
+   "hint": "Substitute x = y + 3 into the first equation.",
+   "level": 3,
+   "kind": "number",
+   "answer": 2
+  }
+ ],
+ "g8-funcdef": [
+  {
+   "id": "g8-funcdef-1",
+   "prompt": "A function assigns to each input ___.",
+   "category": "Patterns & Algebra",
+   "explanation": "That is the defining rule of a function: one input never maps to two different outputs.",
+   "kind": "choice",
+   "choices": [
+    "exactly one output",
+    "any number of outputs",
+    "no outputs",
+    "always the same output"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funcdef-2",
+   "prompt": "Which set of pairs (x, y) represents a function?",
+   "category": "Patterns & Algebra",
+   "explanation": "Only the first set has each x-value appearing exactly once.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "(1,2), (2,3), (3,4)",
+    "(1,2), (1,3), (2,4)",
+    "(1,2), (1,5)",
+    "(2,3), (2,7)"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funcdef-3",
+   "prompt": "The VERTICAL LINE TEST checks whether a graph is a function by seeing if ___.",
+   "category": "Patterns & Algebra",
+   "explanation": "If a vertical line ever crosses the graph twice, that x-value has two outputs, so it is not a function.",
+   "kind": "choice",
+   "choices": [
+    "any vertical line crosses the graph more than once",
+    "any horizontal line crosses once",
+    "the graph is straight",
+    "the graph passes through the origin"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funcdef-4",
+   "prompt": "A function is f(x) = 2x + 1. What is f(3)?",
+   "category": "Patterns & Algebra",
+   "explanation": "2 × 3 + 1 = 7.",
+   "kind": "number",
+   "answer": 7
+  },
+  {
+   "id": "g8-funcdef-5",
+   "prompt": "A function is f(x) = x². What is f(4)?",
+   "category": "Patterns & Algebra",
+   "explanation": "4² = 16.",
+   "kind": "number",
+   "answer": 16
+  },
+  {
+   "id": "g8-funcdef-6",
+   "prompt": "A function is f(x) = 3x − 2. What is f(5)?",
+   "category": "Patterns & Algebra",
+   "explanation": "3 × 5 − 2 = 13.",
+   "level": 2,
+   "kind": "number",
+   "answer": 13
+  },
+  {
+   "id": "g8-funcdef-7",
+   "prompt": "Which table does NOT represent a function?",
+   "category": "Patterns & Algebra",
+   "explanation": "x = 1 maps to two different outputs (5 and 8), which breaks the function rule.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "x=1→y=5, x=1→y=8",
+    "x=1→y=5, x=2→y=8",
+    "x=1→y=5, x=2→y=5",
+    "x=1→y=5, x=3→y=9"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funcdef-8",
+   "prompt": "A function is f(x) = 2x² − 3. What is f(−2)?",
+   "category": "Patterns & Algebra",
+   "explanation": "2 × (−2)² − 3 = 2 × 4 − 3 = 5.",
+   "level": 3,
+   "kind": "number",
+   "answer": 5
+  }
+ ],
+ "g8-funccomp": [
+  {
+   "id": "g8-funccomp-1",
+   "prompt": "Function A: y = 2x. Function B: y = 5x. Which has the STEEPER graph?",
+   "category": "Patterns & Algebra",
+   "explanation": "A larger slope (5 vs 2) means a steeper line.",
+   "kind": "choice",
+   "choices": [
+    "Function B",
+    "Function A",
+    "They are equally steep",
+    "Cannot tell"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funccomp-2",
+   "prompt": "Function A is given by a table: x=1,y=3; x=2,y=6. What is its rate of change (slope)?",
+   "category": "Patterns & Algebra",
+   "explanation": "From x=1 to x=2, y goes from 3 to 6 — a change of 3 for each 1 in x.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g8-funccomp-3",
+   "prompt": "Comparing two functions given in different forms (table vs equation) requires ___.",
+   "category": "Patterns & Algebra",
+   "explanation": "Computing the same measure (rate of change, or a specific output) for both lets you compare fairly.",
+   "kind": "choice",
+   "choices": [
+    "finding a common measure like rate of change",
+    "simply guessing at random",
+    "ignoring one function entirely",
+    "assuming both are equal already"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funccomp-4",
+   "prompt": "Function A: y = 4x + 1. What is y when x = 0 (the y-intercept)?",
+   "category": "Patterns & Algebra",
+   "explanation": "4 × 0 + 1 = 1.",
+   "kind": "number",
+   "answer": 1
+  },
+  {
+   "id": "g8-funccomp-5",
+   "prompt": "Function A has a rate of change of 3. Function B (table) has points (0,2) and (2,10), a rate of change of 4. Which grows FASTER?",
+   "category": "Patterns & Algebra",
+   "explanation": "4 is a bigger rate of change than 3.",
+   "kind": "choice",
+   "choices": [
+    "Function B",
+    "Function A",
+    "Equal",
+    "Cannot tell"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funccomp-6",
+   "prompt": "Function A: y = 2x + 5. Function B: y = 2x + 1. Both have the SAME rate of change. What is it?",
+   "category": "Patterns & Algebra",
+   "explanation": "Both equations have a coefficient of 2 on x.",
+   "level": 2,
+   "kind": "number",
+   "answer": 2
+  },
+  {
+   "id": "g8-funccomp-7",
+   "prompt": "Two functions have the same rate of change but different y-intercepts. Their graphs are ___.",
+   "category": "Patterns & Algebra",
+   "explanation": "Equal slope with different intercepts always produces parallel, non-intersecting lines.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "parallel lines",
+    "the same line",
+    "intersecting lines",
+    "not lines at all"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funccomp-8",
+   "prompt": "Function A (table): x=0,y=4; x=3,y=13. Function B: y = 4x − 2. At x = 3, which gives the LARGER value?",
+   "category": "Patterns & Algebra",
+   "explanation": "Function A gives 13 at x=3. Function B gives 4×3−2 = 10. 13 is larger.",
+   "level": 3,
+   "kind": "choice",
+   "choices": [
+    "Function A",
+    "Function B",
+    "They are equal",
+    "Cannot tell"
+   ],
+   "answer": 0
+  }
+ ],
+ "g8-funcmodel": [
+  {
+   "id": "g8-funcmodel-1",
+   "prompt": "A taxi charges $3 plus $2 per mile: y = 2x + 3. What is the cost for 5 miles?",
+   "category": "Patterns & Algebra",
+   "explanation": "2 × 5 + 3 = 13.",
+   "kind": "number",
+   "answer": 13
+  },
+  {
+   "id": "g8-funcmodel-2",
+   "prompt": "Which situation is modeled by a LINEAR function?",
+   "category": "Patterns & Algebra",
+   "explanation": "A constant starting amount plus a constant rate per unit is exactly the form y = mx + b.",
+   "kind": "choice",
+   "choices": [
+    "A flat fee plus a constant rate per unit",
+    "Compound interest",
+    "Area of a growing circle",
+    "Population doubling each year"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funcmodel-3",
+   "prompt": "A savings model is y = 50 + 10x (x = months). How much after 6 months?",
+   "category": "Patterns & Algebra",
+   "explanation": "50 + 10 × 6 = 110.",
+   "kind": "number",
+   "answer": 110
+  },
+  {
+   "id": "g8-funcmodel-4",
+   "prompt": "In the model y = 50 + 10x, what does the 50 represent?",
+   "category": "Patterns & Algebra",
+   "explanation": "50 is the value when x = 0 — the starting point before any months pass.",
+   "kind": "choice",
+   "choices": [
+    "The starting amount",
+    "The monthly rate",
+    "The number of months",
+    "The final amount"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funcmodel-5",
+   "prompt": "In the model y = 50 + 10x, what does the 10 represent?",
+   "category": "Patterns & Algebra",
+   "explanation": "10 is added for every one unit increase in x — the rate of change.",
+   "kind": "choice",
+   "choices": [
+    "The rate of change per month",
+    "The starting amount",
+    "The total after 1 year",
+    "Nothing important"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funcmodel-6",
+   "prompt": "A model is y = 100 − 5x (x = weeks, y = money left). How much is left after 8 weeks?",
+   "category": "Patterns & Algebra",
+   "explanation": "100 − 5 × 8 = 60.",
+   "level": 2,
+   "kind": "number",
+   "answer": 60
+  },
+  {
+   "id": "g8-funcmodel-7",
+   "prompt": "Using y = 100 − 5x, after how many weeks does y = 0?",
+   "category": "Patterns & Algebra",
+   "explanation": "0 = 100 − 5x, so 5x = 100 and x = 20.",
+   "level": 2,
+   "kind": "number",
+   "answer": 20
+  },
+  {
+   "id": "g8-funcmodel-8",
+   "prompt": "A gym charges a $40 sign-up fee plus $15/month: y = 15x + 40. After how many months has a member paid $130 total?",
+   "category": "Patterns & Algebra",
+   "explanation": "130 = 15x + 40, so 90 = 15x and x = 6.",
+   "level": 3,
+   "kind": "number",
+   "answer": 6
+  }
+ ],
+ "g8-funcgraph": [
+  {
+   "id": "g8-funcgraph-1",
+   "prompt": "On a graph, where does a function cross the y-axis?",
+   "category": "Patterns & Algebra",
+   "explanation": "The y-intercept is defined as where a graph crosses the y-axis.",
+   "kind": "choice",
+   "choices": [
+    "At its y-intercept",
+    "At its slope",
+    "At the origin always",
+    "Nowhere"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funcgraph-2",
+   "prompt": "A graph is a straight line rising left to right. Its slope is ___.",
+   "category": "Patterns & Algebra",
+   "explanation": "A rising line (left to right) always has a positive slope.",
+   "kind": "choice",
+   "choices": [
+    "positive",
+    "negative",
+    "zero",
+    "undefined"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funcgraph-3",
+   "prompt": "A graph is a straight line falling left to right. Its slope is ___.",
+   "category": "Patterns & Algebra",
+   "explanation": "A falling line (left to right) always has a negative slope.",
+   "kind": "choice",
+   "choices": [
+    "negative",
+    "positive",
+    "zero",
+    "undefined"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funcgraph-4",
+   "prompt": "A horizontal line has a slope of ___.",
+   "category": "Patterns & Algebra",
+   "explanation": "A horizontal line never rises or falls, so its slope is 0.",
+   "kind": "choice",
+   "choices": [
+    "zero",
+    "positive",
+    "negative",
+    "undefined"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funcgraph-5",
+   "prompt": "Reading a graph, if y = 8 when x = 2, what point is plotted?",
+   "category": "Patterns & Algebra",
+   "explanation": "An ordered pair is always written (x, y): (2, 8).",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "(2, 8)",
+    "(8, 2)",
+    "(2, 2)",
+    "(8, 8)"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funcgraph-6",
+   "prompt": "A graph shows a function increasing quickly then leveling off. Which best describes its rate of change?",
+   "category": "Patterns & Algebra",
+   "explanation": "Leveling off after a fast start means the rate of increase itself is shrinking over time.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "It decreases over time",
+    "It stays exactly constant",
+    "It increases at first, then slows",
+    "It is always zero"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funcgraph-7",
+   "prompt": "Two functions are graphed. Function A is always above Function B for all x shown. What does that mean?",
+   "category": "Patterns & Algebra",
+   "explanation": "Being higher on the graph at every x means larger y-values at every x.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "Function A has greater output values than B, everywhere shown",
+    "They are equal",
+    "Function B is always increasing",
+    "Nothing can be concluded"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-funcgraph-8",
+   "prompt": "A graph shows a function passing through (0,5) and decreasing at a constant rate to (5,0). What is its slope?",
+   "category": "Patterns & Algebra",
+   "explanation": "(0 − 5) ÷ (5 − 0) = −1.",
+   "level": 3,
+   "kind": "choice",
+   "choices": [
+    "−1",
+    "1",
+    "−5",
+    "5"
+   ],
+   "answer": 0
+  }
+ ],
+ "g8-transform": [
+  {
+   "id": "g8-transform-1",
+   "prompt": "A reflection, rotation, or translation of a shape produces a shape that is ___ to the original.",
+   "category": "Geometry & Measure",
+   "explanation": "These transformations preserve size and shape exactly — the image is congruent to the original.",
+   "kind": "choice",
+   "choices": [
+    "congruent",
+    "similar but not congruent",
+    "always bigger",
+    "always smaller"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-transform-2",
+   "prompt": "Which transformation flips a shape over a line?",
+   "category": "Geometry & Measure",
+   "explanation": "A reflection is a mirror-flip across a line.",
+   "kind": "choice",
+   "choices": [
+    "Reflection",
+    "Rotation",
+    "Translation",
+    "Dilation"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-transform-3",
+   "prompt": "Which transformation slides a shape without turning or flipping it?",
+   "category": "Geometry & Measure",
+   "explanation": "A translation moves every point the same distance in the same direction.",
+   "kind": "choice",
+   "choices": [
+    "Translation",
+    "Reflection",
+    "Rotation",
+    "Dilation"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-transform-4",
+   "prompt": "Which transformation turns a shape around a fixed point?",
+   "category": "Geometry & Measure",
+   "explanation": "A rotation spins a shape around a center point by some angle.",
+   "kind": "choice",
+   "choices": [
+    "Rotation",
+    "Translation",
+    "Reflection",
+    "Dilation"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-transform-5",
+   "prompt": "Two shapes are congruent if one can be mapped onto the other using ___.",
+   "category": "Geometry & Measure",
+   "explanation": "Congruence transformations (rotate, reflect, translate) preserve size — exactly what congruence requires.",
+   "kind": "choice",
+   "choices": [
+    "rotations, reflections and translations",
+    "only enlarging the shape",
+    "only shrinking the shape",
+    "only changing its color"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-transform-6",
+   "prompt": "A triangle is translated 3 units right and 2 units up. What happens to its side lengths?",
+   "category": "Geometry & Measure",
+   "explanation": "A translation only moves a shape — it never changes any lengths.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "They stay exactly the same",
+    "They all increase",
+    "They all decrease",
+    "They double"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-transform-7",
+   "prompt": "A shape is reflected twice over the same line. What is the result?",
+   "category": "Geometry & Measure",
+   "explanation": "Reflecting back over the same line undoes the first reflection, returning the original.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "The same shape as the original",
+    "A shape twice as big",
+    "A rotated shape",
+    "A shrunk shape"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-transform-8",
+   "prompt": "A figure undergoes a rotation, then a reflection, then a translation. Is the final figure congruent to the original?",
+   "category": "Geometry & Measure",
+   "explanation": "Rotations, reflections and translations all preserve size and shape, so any sequence of them keeps the figure congruent.",
+   "level": 3,
+   "kind": "choice",
+   "choices": [
+    "Yes, all three are congruence transformations",
+    "No, reflections break congruence",
+    "No, only translations preserve congruence",
+    "Only if it's a circle"
+   ],
+   "answer": 0
+  }
+ ],
+ "g8-dilations": [
+  {
+   "id": "g8-dilations-1",
+   "prompt": "A shape is dilated by a scale factor of 3. A side that was 4 units becomes how many units?",
+   "category": "Geometry & Measure",
+   "explanation": "4 × 3 = 12.",
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "g8-dilations-2",
+   "prompt": "A shape is dilated by a scale factor of 1/2. A side that was 10 units becomes how many units?",
+   "category": "Geometry & Measure",
+   "explanation": "10 × 0.5 = 5.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g8-dilations-3",
+   "prompt": "A dilation with scale factor greater than 1 makes a shape ___.",
+   "category": "Geometry & Measure",
+   "explanation": "A scale factor above 1 enlarges every length.",
+   "kind": "choice",
+   "choices": [
+    "larger",
+    "smaller",
+    "the same size",
+    "rotated"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-dilations-4",
+   "prompt": "A dilation with scale factor between 0 and 1 makes a shape ___.",
+   "category": "Geometry & Measure",
+   "explanation": "A scale factor below 1 shrinks every length.",
+   "kind": "choice",
+   "choices": [
+    "smaller",
+    "larger",
+    "the same size",
+    "reflected"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-dilations-5",
+   "prompt": "Two similar figures have ___.",
+   "category": "Geometry & Measure",
+   "explanation": "Similar figures keep matching angles and proportional sides, but can differ in overall size.",
+   "kind": "choice",
+   "choices": [
+    "the same shape but maybe not the same size",
+    "only the same size, nothing else",
+    "completely different shapes",
+    "no relationship at all"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-dilations-6",
+   "prompt": "A triangle with sides 3, 4, 5 is dilated by scale factor 2. What is the length of the side that was originally 5?",
+   "category": "Geometry & Measure",
+   "explanation": "5 × 2 = 10.",
+   "level": 2,
+   "kind": "number",
+   "answer": 10
+  },
+  {
+   "id": "g8-dilations-7",
+   "prompt": "Two similar rectangles have a scale factor of 4. If the smaller rectangle's width is 3, what is the larger rectangle's width?",
+   "category": "Geometry & Measure",
+   "explanation": "3 × 4 = 12.",
+   "level": 2,
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "g8-dilations-8",
+   "prompt": "A figure is dilated by scale factor 2, then that image is dilated by scale factor 3. What is the OVERALL scale factor from the original?",
+   "category": "Geometry & Measure",
+   "explanation": "Scale factors multiply together: 2 × 3 = 6.",
+   "level": 3,
+   "kind": "number",
+   "answer": 6
+  }
+ ],
+ "g8-angleAA": [
+  {
+   "id": "g8-angleAA-1",
+   "prompt": "Two angles of a triangle are 50° and 60°. What is the third angle?",
+   "category": "Geometry & Measure",
+   "explanation": "180 − 50 − 60 = 70.",
+   "kind": "number",
+   "answer": 70
+  },
+  {
+   "id": "g8-angleAA-2",
+   "prompt": "The AA (Angle-Angle) criterion says two triangles are similar if ___.",
+   "category": "Geometry & Measure",
+   "explanation": "Matching just two angles is enough to guarantee similarity.",
+   "kind": "choice",
+   "choices": [
+    "two pairs of corresponding angles are equal",
+    "one pair of sides is equal",
+    "all sides are equal",
+    "they have the same perimeter"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-angleAA-3",
+   "prompt": "If two angles of Triangle A match two angles of Triangle B, what can you conclude?",
+   "category": "Geometry & Measure",
+   "explanation": "AA guarantees similarity (same shape), not congruence (same size).",
+   "kind": "choice",
+   "choices": [
+    "The triangles are similar",
+    "The triangles are congruent",
+    "The triangles are identical in size",
+    "Nothing"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-angleAA-4",
+   "prompt": "A triangle has angles 90° and 40°. What is the third angle?",
+   "category": "Geometry & Measure",
+   "explanation": "180 − 90 − 40 = 50.",
+   "kind": "number",
+   "answer": 50
+  },
+  {
+   "id": "g8-angleAA-5",
+   "prompt": "Why does matching just 2 angles guarantee similarity, without needing the 3rd?",
+   "category": "Geometry & Measure",
+   "explanation": "Once two angles are fixed, the third is forced to make the total 180°, so all three automatically match.",
+   "kind": "choice",
+   "choices": [
+    "Triangle angles always sum to 180°, fixing the 3rd",
+    "Triangles never actually need 3 angles",
+    "This rule doesn't really work at all",
+    "Only right triangles work this way"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-angleAA-6",
+   "prompt": "Triangle A has angles 30° and 70°. Triangle B has angles 30° and 70°. What is the third angle in EACH triangle?",
+   "category": "Geometry & Measure",
+   "explanation": "180 − 30 − 70 = 80.",
+   "level": 2,
+   "kind": "number",
+   "answer": 80
+  },
+  {
+   "id": "g8-angleAA-7",
+   "prompt": "Two right triangles both have a 35° angle. Are they similar by AA?",
+   "category": "Geometry & Measure",
+   "explanation": "Both share the right angle (90°) plus the 35° angle — that is 2 matching angles, which is enough for AA.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "Yes — both share a right angle and a 35° angle, so 2 angles match",
+    "No, right triangles are never similar",
+    "Only if their sides are equal too",
+    "Cannot tell without more angles"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-angleAA-8",
+   "prompt": "Triangle A has angles 45°-45°-90°. Triangle B has angles 45°-45°-90°. Are they necessarily CONGRUENT (not just similar)?",
+   "category": "Geometry & Measure",
+   "explanation": "Matching angles alone guarantees similarity, not size — the triangles could still be different sizes.",
+   "level": 3,
+   "kind": "choice",
+   "choices": [
+    "Not necessarily — they could be different sizes",
+    "Yes, always congruent",
+    "No, they can never be similar",
+    "Only if drawn identically"
+   ],
+   "answer": 0
+  }
+ ],
+ "g8-pythag": [
+  {
+   "id": "g8-pythag-1",
+   "prompt": "A right triangle has legs 3 and 4. What is the hypotenuse?",
+   "category": "Geometry & Measure",
+   "explanation": "3² + 4² = 9 + 16 = 25, and √25 = 5.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g8-pythag-2",
+   "prompt": "A right triangle has legs 6 and 8. What is the hypotenuse?",
+   "category": "Geometry & Measure",
+   "explanation": "6² + 8² = 36 + 64 = 100, and √100 = 10.",
+   "kind": "number",
+   "answer": 10
+  },
+  {
+   "id": "g8-pythag-3",
+   "prompt": "A right triangle has a hypotenuse of 13 and one leg of 5. What is the other leg?",
+   "category": "Geometry & Measure",
+   "explanation": "13² − 5² = 169 − 25 = 144, and √144 = 12.",
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "g8-pythag-4",
+   "prompt": "The Pythagorean theorem states a² + b² = c², where c is ___.",
+   "category": "Geometry & Measure",
+   "explanation": "c always represents the hypotenuse, the longest side, opposite the right angle.",
+   "kind": "choice",
+   "choices": [
+    "the hypotenuse",
+    "the shortest leg",
+    "either leg",
+    "the perimeter"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-pythag-5",
+   "prompt": "A right triangle has legs 5 and 12. What is the hypotenuse?",
+   "category": "Geometry & Measure",
+   "explanation": "5² + 12² = 25 + 144 = 169, and √169 = 13.",
+   "kind": "number",
+   "answer": 13
+  },
+  {
+   "id": "g8-pythag-6",
+   "prompt": "A ladder leans against a wall, reaching 12 feet up. The base is 5 feet from the wall. How long is the ladder?",
+   "category": "Geometry & Measure",
+   "explanation": "12² + 5² = 144 + 25 = 169, and √169 = 13.",
+   "level": 2,
+   "kind": "number",
+   "answer": 13
+  },
+  {
+   "id": "g8-pythag-7",
+   "prompt": "A right triangle has hypotenuse 25 and one leg 7. What is the other leg?",
+   "category": "Geometry & Measure",
+   "explanation": "25² − 7² = 625 − 49 = 576, and √576 = 24.",
+   "level": 2,
+   "kind": "number",
+   "answer": 24
+  },
+  {
+   "id": "g8-pythag-8",
+   "prompt": "A rectangular TV screen is 24 by 18 inches. What is the diagonal length (its size in inches)?",
+   "category": "Geometry & Measure",
+   "explanation": "24² + 18² = 576 + 324 = 900, and √900 = 30.",
+   "level": 3,
+   "kind": "number",
+   "answer": 30
+  }
+ ],
+ "g8-solids": [
+  {
+   "id": "g8-solids-1",
+   "prompt": "A sphere has radius 3. Using volume = (4/3)πr³ and π ≈ 3.14, what is its volume? Type as a decimal rounded to 2 places.",
+   "category": "Geometry & Measure",
+   "explanation": "(4/3) × 3.14 × 27 = 113.04.",
+   "kind": "number",
+   "answer": 113.04
+  },
+  {
+   "id": "g8-solids-2",
+   "prompt": "A cone has radius 3, height 4. Using volume = (1/3)πr²h and π ≈ 3.14, what is its volume?",
+   "category": "Geometry & Measure",
+   "explanation": "(1/3) × 3.14 × 9 × 4 = 37.68.",
+   "kind": "number",
+   "answer": 37.68
+  },
+  {
+   "id": "g8-solids-3",
+   "prompt": "Which formula gives the volume of a sphere?",
+   "category": "Geometry & Measure",
+   "explanation": "A sphere's volume formula is (4/3) times π times its radius cubed.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "(4/3)πr³",
+    "πr²h",
+    "(1/3)πr²h",
+    "2πr"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-solids-4",
+   "prompt": "Which formula gives the volume of a cone?",
+   "category": "Geometry & Measure",
+   "explanation": "A cone's volume is exactly 1/3 of a cylinder with the same base and height.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "(1/3)πr²h",
+    "πr²h",
+    "(4/3)πr³",
+    "2πrh"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-solids-5",
+   "prompt": "A cylinder and a cone share the same radius and height. If the cylinder's volume is 300, what is the cone's volume?",
+   "category": "Geometry & Measure",
+   "explanation": "A cone's volume is always 1/3 of the matching cylinder's: 300 ÷ 3 = 100.",
+   "kind": "number",
+   "answer": 100
+  },
+  {
+   "id": "g8-solids-6",
+   "prompt": "A sphere has radius 6. Using π ≈ 3.14, what is its volume? Type as a decimal.",
+   "category": "Geometry & Measure",
+   "explanation": "(4/3) × 3.14 × 216 = 904.32.",
+   "level": 2,
+   "kind": "number",
+   "answer": 904.32
+  },
+  {
+   "id": "g8-solids-7",
+   "prompt": "A cone has volume 50.24, π ≈ 3.14, and radius 4. What is its height?",
+   "category": "Geometry & Measure",
+   "explanation": "50.24 = (1/3) × 3.14 × 16 × h, so h = 50.24 ÷ 16.75 ≈ 3.",
+   "hint": "Rearrange V = (1/3)πr²h to solve for h.",
+   "level": 2,
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g8-solids-8",
+   "prompt": "Two spheres have radii 2 and 4. The second sphere's volume is how many times the first's? (Volume scales with r³.)",
+   "category": "Geometry & Measure",
+   "explanation": "(4 ÷ 2)³ = 2³ = 8.",
+   "level": 3,
+   "kind": "number",
+   "answer": 8
+  }
+ ],
+ "g8-scatter": [
+  {
+   "id": "g8-scatter-1",
+   "prompt": "A scatter plot with points trending upward (as x increases, y increases) shows a ___ association.",
+   "category": "Statistics",
+   "explanation": "An upward trend means both variables increase together — a positive association.",
+   "kind": "choice",
+   "choices": [
+    "positive",
+    "negative",
+    "no",
+    "perfect only"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-scatter-2",
+   "prompt": "A scatter plot with points trending downward shows a ___ association.",
+   "category": "Statistics",
+   "explanation": "A downward trend means one variable increases as the other decreases — negative.",
+   "kind": "choice",
+   "choices": [
+    "negative",
+    "positive",
+    "no",
+    "perfect only"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-scatter-3",
+   "prompt": "A scatter plot with points scattered randomly, no trend, shows ___.",
+   "category": "Statistics",
+   "explanation": "No consistent pattern between the variables means no association.",
+   "kind": "choice",
+   "choices": [
+    "no association",
+    "strong positive association",
+    "strong negative association",
+    "a perfect line"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-scatter-4",
+   "prompt": "Which pair of variables would likely show a POSITIVE association on a scatter plot?",
+   "category": "Statistics",
+   "explanation": "More hours studied tends to go with higher test scores — both tend to rise together.",
+   "kind": "choice",
+   "choices": [
+    "Hours studied and test score",
+    "Hours of TV watched and test score",
+    "Temperature and hot cocoa sales",
+    "None of these"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-scatter-5",
+   "prompt": "An outlier on a scatter plot is a point that ___.",
+   "category": "Statistics",
+   "explanation": "An outlier stands apart from where most of the data falls, breaking the general trend.",
+   "kind": "choice",
+   "choices": [
+    "doesn't fit the overall pattern",
+    "is exactly on the trend line",
+    "is at the origin",
+    "doesn't exist"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-scatter-6",
+   "prompt": "A scatter plot shows height vs. shoe size with points closely following a line. This suggests a ___ association.",
+   "category": "Statistics",
+   "explanation": "Points that hug a line closely indicate a strong relationship between the variables.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "strong",
+    "weak",
+    "no",
+    "random"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-scatter-7",
+   "prompt": "Which scatter plot pattern shows the STRONGEST association?",
+   "category": "Statistics",
+   "explanation": "A tight clustering along a line is the clearest sign of a strong relationship.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "Points tightly clustered along a line",
+    "Points spread randomly everywhere",
+    "Points forming a circle",
+    "Points all at one spot"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-scatter-8",
+   "prompt": "A scatter plot of ice cream sales vs. temperature shows a positive trend, but one hot day had very LOW sales due to a storm. That point is a(n) ___.",
+   "category": "Statistics",
+   "explanation": "That point breaks the overall pattern for an explainable reason — a classic outlier.",
+   "level": 3,
+   "kind": "choice",
+   "choices": [
+    "outlier",
+    "the trend line",
+    "the mean",
+    "impossible data"
+   ],
+   "answer": 0
+  }
+ ],
+ "g8-fitline": [
+  {
+   "id": "g8-fitline-1",
+   "prompt": "A line of best fit is y = 2x + 1. What is the predicted y when x = 5?",
+   "category": "Statistics",
+   "explanation": "2 × 5 + 1 = 11.",
+   "kind": "number",
+   "answer": 11
+  },
+  {
+   "id": "g8-fitline-2",
+   "prompt": "A line of best fit is y = 3x − 2. What is the predicted y when x = 4?",
+   "category": "Statistics",
+   "explanation": "3 × 4 − 2 = 10.",
+   "kind": "number",
+   "answer": 10
+  },
+  {
+   "id": "g8-fitline-3",
+   "prompt": "A line of best fit is used to ___.",
+   "category": "Statistics",
+   "explanation": "It summarizes the trend so you can estimate values the data didn't directly measure.",
+   "kind": "choice",
+   "choices": [
+    "make predictions from the data's overall trend",
+    "connect every single point exactly",
+    "show data with no pattern",
+    "replace the actual data"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-fitline-4",
+   "prompt": "In y = mx + b for a line of best fit, m represents ___.",
+   "category": "Statistics",
+   "explanation": "m is the slope, showing how y changes per unit of x.",
+   "kind": "choice",
+   "choices": [
+    "the rate of change (slope)",
+    "the starting value",
+    "the number of data points",
+    "the outliers"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-fitline-5",
+   "prompt": "In y = mx + b for a line of best fit, b represents ___.",
+   "category": "Statistics",
+   "explanation": "b is the value of y when x = 0 — the y-intercept.",
+   "kind": "choice",
+   "choices": [
+    "the y-intercept",
+    "the slope",
+    "the mean",
+    "the range"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-fitline-6",
+   "prompt": "A line of best fit is y = 1.5x + 3. What is the predicted y when x = 10?",
+   "category": "Statistics",
+   "explanation": "1.5 × 10 + 3 = 18.",
+   "level": 2,
+   "kind": "number",
+   "answer": 18
+  },
+  {
+   "id": "g8-fitline-7",
+   "prompt": "A line of best fit does NOT need to ___.",
+   "category": "Statistics",
+   "explanation": "A best-fit line summarizes the trend — it rarely hits every single point exactly.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "pass through every data point",
+    "show the general trend",
+    "have a slope",
+    "be useful for predictions"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-fitline-8",
+   "prompt": "A line of best fit is y = 0.5x + 20, modeling test scores (y) vs. hours studied (x). Predict the score for 10 hours studied.",
+   "category": "Statistics",
+   "explanation": "0.5 × 10 + 20 = 25.",
+   "level": 3,
+   "kind": "number",
+   "answer": 25
+  }
+ ],
+ "g8-twoway": [
+  {
+   "id": "g8-twoway-1",
+   "prompt": "A two-way table shows: 20 students like pizza and are in 6th grade; 15 like pizza and are in 7th grade. How many total students like pizza?",
+   "category": "Statistics",
+   "explanation": "20 + 15 = 35.",
+   "kind": "number",
+   "answer": 35
+  },
+  {
+   "id": "g8-twoway-2",
+   "prompt": "A two-way table organizes data by ___.",
+   "category": "Statistics",
+   "explanation": "A two-way table cross-tabulates two categories, like grade and favorite food.",
+   "kind": "choice",
+   "choices": [
+    "two categorical variables at once",
+    "only one variable",
+    "numbers only",
+    "nothing meaningful"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-twoway-3",
+   "prompt": "A table shows: boys who play sports = 12, boys who don't = 8, girls who play = 15, girls who don't = 5. How many total boys?",
+   "category": "Statistics",
+   "explanation": "12 + 8 = 20.",
+   "kind": "number",
+   "answer": 20
+  },
+  {
+   "id": "g8-twoway-4",
+   "prompt": "Using that same table, how many total students play sports?",
+   "category": "Statistics",
+   "explanation": "12 + 15 = 27.",
+   "kind": "number",
+   "answer": 27
+  },
+  {
+   "id": "g8-twoway-5",
+   "prompt": "A relative frequency in a two-way table is usually expressed as a ___.",
+   "category": "Statistics",
+   "explanation": "Relative frequencies compare a count to a total, typically shown as a percent or fraction.",
+   "kind": "choice",
+   "choices": [
+    "percentage or proportion",
+    "whole number only",
+    "negative number",
+    "letter"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g8-twoway-6",
+   "prompt": "Using the table (boys who play sports = 12, boys who don't = 8, girls who play = 15, girls who don't = 5), how many total students are there?",
+   "category": "Statistics",
+   "explanation": "12 + 8 + 15 + 5 = 40.",
+   "level": 2,
+   "kind": "number",
+   "answer": 40
+  },
+  {
+   "id": "g8-twoway-7",
+   "prompt": "Using that table, how many more girls play sports than boys who don't play?",
+   "category": "Statistics",
+   "explanation": "15 − 8 = 7.",
+   "level": 2,
+   "kind": "number",
+   "answer": 7
+  },
+  {
+   "id": "g8-twoway-8",
+   "prompt": "A two-way table has 60 students total: 25 boys play sports, 15 boys don't play, and 5 girls don't play. How many girls DO play?",
+   "category": "Statistics",
+   "explanation": "Total boys: 25 + 15 = 40. Total girls: 60 − 40 = 20. Girls who play: 20 − 5 = 15.",
+   "hint": "Find the total number of girls first.",
+   "level": 3,
+   "kind": "number",
+   "answer": 15
+  }
+ ]
+}

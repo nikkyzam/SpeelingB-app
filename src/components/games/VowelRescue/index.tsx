@@ -3,6 +3,9 @@ import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, isPlayable } from '../shared/wordTricks'
 import sfx from '../shared/sfx'
+import useCheer from '../shared/useCheer'
+import Burst from '../shared/Burst'
+import { spellOut } from '../../../services/words/praise'
 import './VowelRescue.css'
 
 interface VowelRescueProps {
@@ -45,6 +48,10 @@ const VowelRescue: React.FC<VowelRescueProps> = ({ onComplete, words: providedWo
   const [misses, setMisses] = useState(0)
   const [score, setScore] = useState(0)
   const [rescued, setRescued] = useState(0)
+  // The cheer for the last rescue, and a count that fires the star burst.
+  const cheer = useCheer()
+  const [cheerLine, setCheerLine] = useState('')
+  const [hits, setHits] = useState(0)
   const [shake, setShake] = useState(false)
   const [done, setDone] = useState(false)
 
@@ -107,7 +114,7 @@ const VowelRescue: React.FC<VowelRescueProps> = ({ onComplete, words: providedWo
     locked.current = true
     setDone(true)
     setFilled(slots.map((i) => answer[i]))
-    speak(`It was ${current.word}`)
+    speak(`It was ${current.word}. ${spellOut(current.word)}`)
     advance(0)
   }
 
@@ -128,14 +135,15 @@ const VowelRescue: React.FC<VowelRescueProps> = ({ onComplete, words: providedWo
         setScore((s) => s + gained)
         setRescued((r) => r + 1)
         setDone(true)
-        sfx.correct()
-        speak('Rescued!')
+        setCheerLine(cheer.hit({ say: 'Rescued!' }))
+        setHits((h) => h + 1)
         advance(gained)
       }
       return
     }
 
-    sfx.wrong()
+    // Same soft sound, and the run of right answers starts again.
+    cheer.miss({ quiet: true })
     setShake(true)
     later(() => setShake(false), 400)
     const used = misses + 1
@@ -195,7 +203,10 @@ const VowelRescue: React.FC<VowelRescueProps> = ({ onComplete, words: providedWo
       </div>
 
       {done && misses < MISSES_ALLOWED && (
-        <div className="vr-flash ok">🎉 Every vowel back where it belongs!</div>
+        <div className="vr-flash ok">
+          <Burst trigger={hits} />
+          🎉 {cheerLine} Every vowel back where it belongs!
+        </div>
       )}
       {done && misses >= MISSES_ALLOWED && (
         <div className="vr-flash bad">It was “{current.word}” — the next one is yours! 💪</div>

@@ -26,7 +26,12 @@
   position: relative;
   transition: width var(--transition-normal);
 }
-.dq-runner { position: absolute; right: 2px; top: 50%; transform: translateY(-50%); font-size: 1.1rem; }
+.dq-runner { position: absolute; right: 2px; top: 50%; transform: translateY(-50%); font-size: 1.1rem; animation: dq-hop 0.5s ease-out both; }
+@keyframes dq-hop {
+  0% { transform: translateY(-110%); }
+  60% { transform: translateY(-40%); }
+  100% { transform: translateY(-50%); }
+}
 .dq-counts {
   display: flex;
   justify-content: space-between;
@@ -36,8 +41,29 @@
   font-weight: 700;
 }
 .dq-retries { color: var(--primary-2); }
+.dq-streak { font-family: var(--font-primary); font-weight: 900; color: var(--text); }
+.dq-streak.is-milestone {
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--primary-2));
+  padding: 0 10px;
+  border-radius: var(--radius-round);
+  animation: pop-in var(--transition-normal) both;
+}
+/* The runner's call at halfway and one to go. */
+.dq-cheer {
+  width: fit-content;
+  margin: var(--spacing-sm) auto 0;
+  padding: 4px 16px;
+  border-radius: var(--radius-round);
+  background: var(--secondary);
+  color: #fff;
+  font-family: var(--font-primary);
+  font-weight: 900;
+  animation: pop-in var(--transition-normal) both;
+}
 
 .dq-card {
+  position: relative; /* the Burst flies out from here */
   background: var(--card);
   border: 2px solid var(--border);
   border-radius: var(--radius-lg);
@@ -86,7 +112,7 @@
 }
 .dq-input:focus { outline: none; border-color: var(--primary); }
 .dq-input.right { border-color: var(--success); background: rgba(47,191,113,0.15); }
-.dq-input.wrong { border-color: var(--error); background: rgba(239,71,111,0.12); animation: shake 0.4s; }
+.dq-input.wrong { border-color: var(--border); background: var(--card-soft); }
 
 .dq-flash {
   margin-top: var(--spacing-md);
@@ -97,7 +123,20 @@
   animation: pop-in var(--transition-normal) both;
 }
 .dq-flash.ok { background: linear-gradient(90deg, var(--success), #4EF4C5); color: #fff; }
-.dq-flash.bad { background: var(--card-soft); color: var(--text); border: 2px solid var(--error); }
+.dq-flash.soft { background: var(--card-soft); color: var(--text); border: 2px solid var(--border); }
+.dq-letters { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin-top: var(--spacing-sm); }
+.dq-letter {
+  min-width: 34px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  border: 3px solid var(--secondary);
+  background: var(--card);
+  font-size: 1.3rem;
+  font-weight: 900;
+  animation: pop-in var(--transition-normal) both;
+}
 
 .dq-empty {
   text-align: center;
@@ -111,3 +150,7 @@
 .dq-empty-icon { font-size: 3.5rem; }
 .dq-empty h1 { margin: var(--spacing-md) 0 var(--spacing-sm); }
 .dq-empty p { color: var(--text-soft); margin-bottom: var(--spacing-lg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .dq-runner, .dq-cheer, .dq-streak.is-milestone, .dq-letter, .dq-flash { animation: none; }
+}

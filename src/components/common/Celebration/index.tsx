@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 import { useTheme } from '../../../contexts/ThemeContext'
+import sfx from '../../games/shared/sfx'
 import './Celebration.css'
 
 export interface CelebrationData {
@@ -7,6 +8,8 @@ export interface CelebrationData {
   message?: string
   stars?: number
   unlockedLabel?: string | null
+  /** A line of its own for something newly earned — a medal, say. */
+  badge?: string | null
 }
 
 export type CelebrationVariant = 'confetti' | 'fireworks' | 'balloons' | 'starrain' | 'cannon'
@@ -19,20 +22,31 @@ interface CelebrationProps {
   closeLabel?: string
   /** force a style; defaults to a surprise each time */
   variant?: CelebrationVariant
+  /**
+   * Close by itself after a few seconds (the default), so it never blocks
+   * play. Turn it off when closing also leaves the page: a child still
+   * looking at their stars was whisked off to another screen.
+   */
+  autoClose?: boolean
 }
 
 /** A joyful, theme-aware "you did it!" overlay used when a game or stage finishes.
  *  Replaces jarring window.alert() popups. The backdrop effect varies —
  *  confetti, fireworks, balloons, star rain or a mascot cannonball — so the
  *  hundredth win doesn't feel like the ninety-ninth. */
-const Celebration: React.FC<CelebrationProps> = ({ data, onClose, closeLabel = 'Yay!', variant }) => {
+const Celebration: React.FC<CelebrationProps> = ({ data, onClose, closeLabel = 'Yay!', variant, autoClose = true }) => {
   const { world } = useTheme()
 
+  // A party needs a crowd: it opened in total silence before.
   useEffect(() => {
-    if (!data) return
+    if (data) sfx.applause()
+  }, [data])
+
+  useEffect(() => {
+    if (!data || !autoClose) return
     const t = setTimeout(onClose, 6000) // auto-dismiss so it never blocks play
     return () => clearTimeout(t)
-  }, [data, onClose])
+  }, [data, onClose, autoClose])
 
   // One surprise style per celebration, stable while it's open.
   const effect: CelebrationVariant = useMemo(
@@ -146,6 +160,8 @@ const Celebration: React.FC<CelebrationProps> = ({ data, onClose, closeLabel = '
             <span>+{data.stars} {data.stars === 1 ? 'star' : 'stars'}</span>
           </div>
         )}
+
+        {data.badge && <div className="celebration__unlock">{data.badge}</div>}
 
         {data.unlockedLabel && (
           <div className="celebration__unlock">🔓 New game unlocked: <strong>{data.unlockedLabel}</strong></div>

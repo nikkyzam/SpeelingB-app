@@ -281,7 +281,7 @@ const SiblingShowdown: React.FC = () => {
         />
 
         {feedback === 'correct' && <p className="showdown-feedback good">✅ Yes! +{10 + (players[current].streak - 1) * 5} points!</p>}
-        {feedback === 'wrong' && word && <p className="showdown-feedback bad">❌ It was <strong>{word.word}</strong></p>}
+        {feedback === 'wrong' && word && <p className="showdown-feedback bad">So close! It was <strong>{word.word}</strong> 💪</p>}
 
         {!feedback && (
           <Button variant="primary" size="large" onClick={submit} disabled={!input.trim()}>

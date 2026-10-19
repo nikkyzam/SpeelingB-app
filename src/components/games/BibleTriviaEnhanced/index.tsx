@@ -1,444 +1,307 @@
-import React, { useState, useEffect } from 'react'
-import { bibleApi, BibleVersion, BIBLE_CATEGORIES } from '../../../services/bibleApi'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useAudio } from '../../../contexts/AudioContext'
+import { shuffle } from '../shared/wordTricks'
+import useCheer from '../shared/useCheer'
+import useLater from '../shared/useLater'
+import Burst from '../shared/Burst'
 import './BibleTriviaEnhanced.css'
-
-interface BibleQuestion {
-  id: number
-  question: string
-  options: string[]
-  correctAnswer: string
-  reference: string
-  explanation: string
-  category: string
-  difficulty: 'easy' | 'medium' | 'hard'
-  points: number
-}
 
 interface BibleTriviaEnhancedProps {
   onComplete: (score: number) => void
-  difficulty?: 'easy' | 'medium' | 'hard'
-  category?: string
-  version?: BibleVersion
+  rounds?: number
 }
 
-const BibleTriviaEnhanced: React.FC<BibleTriviaEnhancedProps> = ({
-  onComplete,
-  difficulty = 'medium',
-  category,
-  version = 'KJV'
-}) => {
-  const [questions, setQuestions] = useState<BibleQuestion[]>([])
-  const [currentQuestion, setCurrentQuestion] = useState(0)
+export interface TriviaQuestion {
+  question: string
+  answer: string
+  /** Two wrong answers. Kept gentle and clearly wrong to a child who knows the story. */
+  wrong: [string, string]
+  reference: string
+  /** A short line about the story, shown and read out after the answer. */
+  fact: string
+}
+
+/**
+ * Well-known Bible stories, asked at a child's level. The facts paraphrase the
+ * passage; check a new one against the reference before adding it.
+ */
+export const TRIVIA: TriviaQuestion[] = [
+  {
+    question: 'Who built a big boat called an ark?',
+    answer: 'Noah',
+    wrong: ['Moses', 'Peter'],
+    reference: 'Genesis 6:14',
+    fact: 'God told Noah to build an ark to keep his family and the animals safe from the flood.',
+  },
+  {
+    question: 'What did God put in the clouds as a promise after the flood?',
+    answer: 'A rainbow',
+    wrong: ['A star', 'The moon'],
+    reference: 'Genesis 9:13',
+    fact: 'The rainbow is God’s promise that he will never flood the whole earth again.',
+  },
+  {
+    question: 'What did young David use to defeat the giant Goliath?',
+    answer: 'A sling and a stone',
+    wrong: ['A big sword', 'A bow and arrow'],
+    reference: '1 Samuel 17:49-50',
+    fact: 'David trusted God, and one stone from his sling knocked Goliath down.',
+  },
+  {
+    question: 'What swallowed Jonah when he was thrown into the sea?',
+    answer: 'A great fish',
+    wrong: ['A lion', 'A bear'],
+    reference: 'Jonah 1:17',
+    fact: 'God sent a great fish to swallow Jonah. After three days it spat him out onto dry land.',
+  },
+  {
+    question: 'Where did baby Moses’ mother hide him?',
+    answer: 'In a basket by the river',
+    wrong: ['In a cave', 'Up a tree'],
+    reference: 'Exodus 2:3',
+    fact: 'She put him in a basket among the reeds by the Nile River, and a princess found him.',
+  },
+  {
+    question: 'Jesus fed a huge crowd with five loaves and two fish. About how many men were there?',
+    answer: 'About 5,000',
+    wrong: ['About 50', 'About 500'],
+    reference: 'Matthew 14:21',
+    fact: 'About 5,000 men ate until they were full, and women and children too!',
+  },
+  {
+    question: 'Who shut the lions’ mouths to keep Daniel safe?',
+    answer: 'An angel God sent',
+    wrong: ['The king', 'Daniel’s friends'],
+    reference: 'Daniel 6:22',
+    fact: 'Daniel said, “My God sent his angel to shut the lions’ mouths.”',
+  },
+  {
+    question: 'What did God make on the very first day?',
+    answer: 'Light',
+    wrong: ['Animals', 'People'],
+    reference: 'Genesis 1:3',
+    fact: 'God said, “Let there be light,” and there was light.',
+  },
+  {
+    question: 'Where was baby Jesus laid when he was born?',
+    answer: 'In a manger',
+    wrong: ['In a boat', 'In a palace'],
+    reference: 'Luke 2:7',
+    fact: 'Mary laid baby Jesus in a manger, because there was no room for them to stay.',
+  },
+  {
+    question: 'In Jesus’ story, who stopped to help the hurt man by the road?',
+    answer: 'A Samaritan',
+    wrong: ['A priest', 'A soldier'],
+    reference: 'Luke 10:33-34',
+    fact: 'A priest walked past, but the Samaritan stopped, bandaged the man and cared for him.',
+  },
+  {
+    question: 'Why did Zacchaeus climb a tree?',
+    answer: 'To see Jesus',
+    wrong: ['To pick fruit', 'To hide from a lion'],
+    reference: 'Luke 19:3-4',
+    fact: 'Zacchaeus was too short to see over the crowd, so he climbed a tree to see Jesus.',
+  },
+  {
+    question: 'On which day did God rest after making the world?',
+    answer: 'The seventh day',
+    wrong: ['The first day', 'The third day'],
+    reference: 'Genesis 2:2',
+    fact: 'God finished his work and rested on the seventh day.',
+  },
+  {
+    question: 'Who were the first man and woman God made?',
+    answer: 'Adam and Eve',
+    wrong: ['Mary and Joseph', 'Ruth and Boaz'],
+    reference: 'Genesis 2:7, 3:20',
+    fact: 'God made Adam from the dust of the ground, and then he made Eve.',
+  },
+  {
+    question: 'What did Jesus walk on to reach his friends in their boat?',
+    answer: 'Water',
+    wrong: ['Clouds', 'A bridge'],
+    reference: 'Matthew 14:25-27',
+    fact: 'Jesus walked on the water in a storm and told his friends, “Don’t be afraid.”',
+  },
+  {
+    question: 'How many disciples did Jesus choose?',
+    answer: 'Twelve',
+    wrong: ['Three', 'Forty'],
+    reference: 'Luke 6:13',
+    fact: 'Jesus chose twelve disciples to follow him and learn from him.',
+  },
+  {
+    question: 'Who did God send to lead his people out of Egypt?',
+    answer: 'Moses',
+    wrong: ['Jonah', 'David'],
+    reference: 'Exodus 3:10',
+    fact: 'God sent Moses to lead his people out of Egypt to freedom.',
+  },
+  {
+    question: 'What did the wise men follow to find baby Jesus?',
+    answer: 'A star',
+    wrong: ['A river', 'A rainbow'],
+    reference: 'Matthew 2:9',
+    fact: 'The star went ahead of the wise men and stopped over the place where Jesus was.',
+  },
+  {
+    question: 'What happened to the walls of Jericho when God’s people shouted?',
+    answer: 'They fell down',
+    wrong: ['They grew taller', 'They turned to gold'],
+    reference: 'Joshua 6:20',
+    fact: 'The people marched, the rams’ horns blew, everyone shouted, and the walls fell down.',
+  },
+  {
+    question: 'Jesus said the greatest commandment is to love who with all your heart?',
+    answer: 'God',
+    wrong: ['Money', 'Yourself first'],
+    reference: 'Matthew 22:37-38',
+    fact: 'Jesus said, “You must love the Lord your God with all your heart.”',
+  },
+]
+
+interface Round extends TriviaQuestion {
+  options: string[]
+}
+
+/** A game's questions: a shuffled handful, each with its answers shuffled. */
+export const dealTrivia = (rounds: number, bank: TriviaQuestion[] = TRIVIA): Round[] =>
+  shuffle(bank)
+    .slice(0, rounds)
+    .map((q) => ({ ...q, options: shuffle([q.answer, ...q.wrong]) }))
+
+/**
+ * Bible Trivia — a few questions about well-loved Bible stories.
+ *
+ * Seven questions from a bank of nineteen, in a new order with the answers
+ * moved around every game, so it can't be learned by position. Each question
+ * and its answers are read aloud. There is no clock and nothing to lose: a
+ * miss says the answer and the next question comes along.
+ */
+const BibleTriviaEnhanced: React.FC<BibleTriviaEnhancedProps> = ({ onComplete, rounds = 7 }) => {
+  const { speak } = useAudio()
+  const cheer = useCheer()
+  const later = useLater()
+
+  const questions = useMemo(() => dealTrivia(rounds), [rounds])
+
+  const [index, setIndex] = useState(0)
+  const [picked, setPicked] = useState<string | null>(null)
   const [score, setScore] = useState(0)
-  const [timeLeft, setTimeLeft] = useState(90)
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
-  const [isAnswered, setIsAnswered] = useState(false)
+  const [right, setRight] = useState(0)
   const [streak, setStreak] = useState(0)
-  const [lives, setLives] = useState(3)
-  const [gameActive, setGameActive] = useState(true)
-  const [showExplanation, setShowExplanation] = useState(false)
-  const [verseText, setVerseText] = useState('')
-  const [isLoading, setIsLoading] = useState(true)
-  const [gameMode, setGameMode] = useState<'trivia' | 'verse'>('trivia')
+  const [line, setLine] = useState('')
+  const [hits, setHits] = useState(0)
+  // One answer per question, however fast the taps come.
+  const locked = useRef(false)
 
-  // Pre-defined questions as fallback
-  const predefinedQuestions: BibleQuestion[] = [
-    {
-      id: 1,
-      question: "Who was the first man created by God?",
-      options: ["Abraham", "Moses", "Adam", "Noah"],
-      correctAnswer: "Adam",
-      reference: "Genesis 2:7",
-      explanation: "The LORD God formed man from the dust of the ground and breathed into his nostrils the breath of life.",
-      category: "old_testament",
-      difficulty: "easy",
-      points: 100
-    },
-    {
-      id: 2,
-      question: "What was the name of the giant that David defeated?",
-      options: ["Goliath", "Samson", "Saul", "Jonathan"],
-      correctAnswer: "Goliath",
-      reference: "1 Samuel 17:49",
-      explanation: "David took out a stone, slung it, and struck the Philistine on his forehead.",
-      category: "old_testament",
-      difficulty: "easy",
-      points: 100
-    },
-    {
-      id: 3,
-      question: "How many disciples did Jesus have?",
-      options: ["10", "12", "14", "16"],
-      correctAnswer: "12",
-      reference: "Matthew 10:1",
-      explanation: "Jesus called his twelve disciples to him and gave them authority...",
-      category: "new_testament",
-      difficulty: "easy",
-      points: 100
-    }
-  ]
+  const current = questions[index]
 
-  useEffect(() => {
-    initializeGame()
-  }, [difficulty, category, version])
-
-  useEffect(() => {
-    if (gameActive && timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
-      return () => clearTimeout(timer)
-    } else if (timeLeft === 0 && gameActive) {
-      endGame()
-    }
-  }, [timeLeft, gameActive])
-
-  useEffect(() => {
-    if (questions.length > 0 && currentQuestion < questions.length) {
-      fetchVerseText(questions[currentQuestion].reference)
-    }
-  }, [currentQuestion, questions])
-
-  const initializeGame = async () => {
-    setIsLoading(true)
-    try {
-      // Try to generate questions from API
-      const generatedQuestions = await generateQuestionsFromAPI()
-      if (generatedQuestions.length > 0) {
-        setQuestions(generatedQuestions)
-      } else {
-        // Use pre-defined questions as fallback
-        let filtered = predefinedQuestions
-
-        if (difficulty) {
-          filtered = filtered.filter(q => q.difficulty === difficulty)
-        }
-
-        if (category) {
-          filtered = filtered.filter(q => q.category === category)
-        }
-
-        setQuestions(filtered.slice(0, 10))
-      }
-    } catch (error) {
-      console.error('Error initializing game:', error)
-      // Use pre-defined questions on error
-      setQuestions(predefinedQuestions.slice(0, 5))
-    } finally {
-      setIsLoading(false)
-    }
+  const readAloud = (q: Round) => {
+    speak(q.question)
+    const [a, b, c] = q.options
+    speak(`${a}? ${b}? Or ${c}?`, { queue: true })
   }
 
-  const generateQuestionsFromAPI = async (): Promise<BibleQuestion[]> => {
-    try {
-      // This would ideally call an AI service to generate questions
-      // For now, we'll use pre-defined questions
-      return predefinedQuestions.slice(0, 8)
-    } catch (error) {
-      console.error('Error generating questions:', error)
-      return []
-    }
-  }
+  useEffect(() => {
+    if (!current) return
+    setPicked(null)
+    locked.current = false
+    readAloud(current)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [index, questions])
 
-  const fetchVerseText = async (reference: string) => {
-    try {
-      const verse = await bibleApi.getVerse(reference, version)
-      setVerseText(verse.text)
-    } catch (error) {
-      console.error('Error fetching verse:', error)
-      setVerseText('')
-    }
-  }
+  if (!current) return null
 
-  const handleAnswerSelect = async (answer: string) => {
-    if (isAnswered || !gameActive) return
+  const choose = (option: string) => {
+    if (locked.current) return
+    locked.current = true
+    setPicked(option)
 
-    setSelectedAnswer(answer)
-    setIsAnswered(true)
-
-    const currentQ = questions[currentQuestion]
-    const isCorrect = answer === currentQ.correctAnswer
-
-    if (isCorrect) {
-      const difficultyMultiplier = {
-        easy: 1,
-        medium: 1.5,
-        hard: 2
-      }
-
-      const timeBonus = Math.floor((timeLeft / 90) * 50)
-      const streakBonus = streak * 15
-      const basePoints = currentQ.points
-      const difficultyBonus = difficultyMultiplier[currentQ.difficulty] * basePoints
-
-      const points = Math.floor(basePoints + difficultyBonus + timeBonus + streakBonus)
-      setScore(prev => prev + points)
-      setStreak(prev => prev + 1)
-
-      setShowExplanation(true)
-
-      // Fetch more context for the verse
-      if (gameMode === 'verse') {
-        const context = await bibleApi.getVerseContext(currentQ.reference, 1, version)
-        if (context) {
-          setVerseText(context.text)
-        }
-      }
+    let gained = 0
+    if (option === current.answer) {
+      setLine(cheer.hit({ say: current.fact }))
+      const run = cheer.streak()
+      gained = 40 + (run >= 3 ? 10 : 0)
+      setScore((s) => s + gained)
+      setRight((n) => n + 1)
+      setStreak(run)
+      setHits((h) => h + 1)
     } else {
+      setLine(cheer.miss({ say: `It was ${current.answer}. ${current.fact}` }))
       setStreak(0)
-      const newLives = lives - 1
-      setLives(newLives)
-
-      if (newLives <= 0) {
-        setGameActive(false)
-        setTimeout(() => endGame(), 2000)
-      }
     }
 
-    // Move to next question after delay
-    setTimeout(() => {
-      setShowExplanation(false)
-      setSelectedAnswer(null)
-      setIsAnswered(false)
-
-      if (currentQuestion < questions.length - 1) {
-        setCurrentQuestion(prev => prev + 1)
-      } else {
-        endGame()
-      }
-    }, isCorrect ? 2500 : 1500)
+    later(() => {
+      if (index < questions.length - 1) {
+        // Cleared with the move, so the next question never shows a ⭐ on its
+        // answer from the last pick, even for a frame.
+        setPicked(null)
+        setIndex((i) => i + 1)
+      } else onComplete(score + gained)
+    }, option === current.answer ? 3600 : 4200)
   }
 
-  const endGame = () => {
-    setGameActive(false)
-    const accuracy = questions.length > 0 ? Math.round(((currentQuestion + 1) / questions.length) * 100) : 0
-    const timeBonus = Math.floor(timeLeft * 3)
-    const streakBonus = streak * 50
-    const finalScore = score + timeBonus + streakBonus + (accuracy * 2)
-
-    setTimeout(() => onComplete(finalScore), 2000)
-  }
-
-  const getCategoryColor = (cat: string) => {
-    const category = BIBLE_CATEGORIES.find(c => c.id === cat)
-    return category ? category.color : '#4ECDC4'
-  }
-
-  const getCategoryName = (cat: string) => {
-    const category = BIBLE_CATEGORIES.find(c => c.id === cat)
-    return category ? category.name : 'Bible'
-  }
-
-  const getDifficultyColor = (diff: string) => {
-    switch(diff) {
-      case 'easy': return '#06D6A0'
-      case 'medium': return '#FFD166'
-      case 'hard': return '#FF6B6B'
-      default: return '#FFD166'
-    }
-  }
-
-  const toggleGameMode = () => {
-    setGameMode(mode => mode === 'trivia' ? 'verse' : 'trivia')
-  }
-
-  const currentQ = questions[currentQuestion]
-
-  if (isLoading) {
-    return (
-      <div className="bible-trivia-loading">
-        <div className="loading-content">
-          <div className="loading-icon">📖</div>
-          <div className="loading-text">Loading Bible Trivia...</div>
-          <div className="loading-subtext">Fetching questions from the Word of God</div>
-        </div>
-      </div>
-    )
-  }
-
-  if (questions.length === 0) {
-    return (
-      <div className="bible-trivia-error">
-        <div className="error-content">
-          <div className="error-icon">⚠️</div>
-          <div className="error-text">Unable to load questions</div>
-          <button className="retry-btn" onClick={initializeGame}>
-            Retry
-          </button>
-        </div>
-      </div>
-    )
-  }
+  const answered = picked !== null
+  const gotIt = picked === current.answer
 
   return (
     <div className="bible-trivia-enhanced">
-      <div className="game-header">
-        <div className="header-left">
-          <div className="game-title">
-            <span className="title-icon">📖</span>
-            <span className="title-text">Bible Trivia Enhanced</span>
-            <span className="version-badge">{version}</span>
-          </div>
+      <div className="btq-header">
+        <div className="btq-title">📖 Bible Trivia</div>
+        <div className="btq-stats">
+          <div className="btq-stat"><span>Question</span><strong>{index + 1}/{questions.length}</strong></div>
+          <div className="btq-stat"><span>Score</span><strong>{score}</strong></div>
+          <div className="btq-stat"><span>Right</span><strong>⭐ {right}</strong></div>
+        </div>
+      </div>
 
-          <div className="game-mode-selector">
+      <div className="btq-progress" aria-hidden>
+        {questions.map((_, k) => (
+          <span key={k} className={`btq-dot ${k < index ? 'done' : ''} ${k === index ? 'here' : ''}`} />
+        ))}
+      </div>
+
+      <div className="btq-card">
+        <Burst trigger={hits} />
+        <p className="btq-question">{current.question}</p>
+        <button className="btq-btn ghost" onClick={() => readAloud(current)} aria-label="Read the question again">
+          🔊 Read it again
+        </button>
+      </div>
+
+      <div className="btq-options" role="group" aria-label="Answers">
+        {current.options.map((option, k) => {
+          const isAnswer = option === current.answer
+          const state = !answered ? '' : isAnswer ? 'ok' : option === picked ? 'picked' : 'faded'
+          return (
             <button
-              className={`mode-btn ${gameMode === 'trivia' ? 'active' : ''}`}
-              onClick={toggleGameMode}
+              key={option}
+              className={`btq-option ${state}`}
+              onClick={() => choose(option)}
+              disabled={answered}
+              aria-label={option}
             >
-              Trivia Mode
+              <span className="btq-letter" aria-hidden>{String.fromCharCode(65 + k)}</span>
+              <span className="btq-text">{option}</span>
+              {answered && isAnswer && <span className="btq-mark" aria-hidden>⭐</span>}
             </button>
-            <button
-              className={`mode-btn ${gameMode === 'verse' ? 'active' : ''}`}
-              onClick={toggleGameMode}
-            >
-              Verse Study
-            </button>
-          </div>
-        </div>
-
-        <div className="game-stats">
-          <div className="stat">
-            <span className="stat-label">Time</span>
-            <span className="stat-value">{timeLeft}s</span>
-          </div>
-          <div className="stat">
-            <span className="stat-label">Score</span>
-            <span className="stat-value">{score}</span>
-          </div>
-          <div className="stat">
-            <span className="stat-label">Question</span>
-            <span className="stat-value">{currentQuestion + 1}/{questions.length}</span>
-          </div>
-          <div className="stat">
-            <span className="stat-label">Lives</span>
-            <span className="stat-value lives">{'❤️'.repeat(lives)}</span>
-          </div>
-          <div className="stat">
-            <span className="stat-label">Streak</span>
-            <span className="stat-value streak">🔥 {streak}</span>
-          </div>
-        </div>
+          )
+        })}
       </div>
 
-      <div className="question-info">
-        <div className="info-row">
-          <div className="category-tag" style={{ backgroundColor: getCategoryColor(currentQ?.category || 'old_testament') }}>
-            {getCategoryName(currentQ?.category || 'old_testament')}
-          </div>
-          <div className="difficulty-tag" style={{ backgroundColor: getDifficultyColor(currentQ?.difficulty || 'medium') }}>
-            {currentQ?.difficulty?.toUpperCase() || 'MEDIUM'}
-          </div>
-          <div className="points-tag">
-            {currentQ?.points || 100} points
-          </div>
+      {answered && (
+        <div className={`btq-flash ${gotIt ? 'ok' : 'soft'}`} role="status">
+          <p className="btq-line">
+            {gotIt ? `🎉 ${line}` : `${line} It was “${current.answer}”.`}
+          </p>
+          <p className="btq-fact">
+            💡 {current.fact} <span className="btq-ref">📜 {current.reference}</span>
+          </p>
         </div>
-
-        <div className="progress-section">
-          <div className="progress-bar">
-            <div
-              className="progress-fill"
-              style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
-            />
-          </div>
-          <div className="progress-text">
-            Question {currentQuestion + 1} of {questions.length}
-          </div>
-        </div>
-      </div>
-
-      <div className="game-content">
-        <div className="question-section">
-          <div className="question-box">
-            <div className="question-text">
-              {currentQ?.question}
-            </div>
-
-            {gameMode === 'verse' && verseText && (
-              <div className="verse-preview">
-                <div className="verse-text">{verseText}</div>
-                <div className="verse-reference">{currentQ?.reference}</div>
-              </div>
-            )}
-          </div>
-
-          <div className="options-grid">
-            {currentQ?.options.map((option, index) => {
-              const isSelected = selectedAnswer === option
-              const isCorrect = option === currentQ.correctAnswer
-              const letter = String.fromCharCode(65 + index)
-
-              return (
-                <button
-                  key={index}
-                  className={`option-btn ${isSelected ? (isCorrect ? 'correct' : 'incorrect') : ''} ${isAnswered && isCorrect ? 'revealed-correct' : ''}`}
-                  onClick={() => handleAnswerSelect(option)}
-                  disabled={isAnswered || !gameActive}
-                >
-                  <div className="option-letter">{letter}</div>
-                  <div className="option-text">{option}</div>
-                  {isSelected && (
-                    <div className="answer-feedback">
-                      {isCorrect ? '✓' : '✗'}
-                    </div>
-                  )}
-                </button>
-              )
-            })}
-          </div>
-
-          {showExplanation && (
-            <div className="explanation-section">
-              <div className="explanation-header">
-                <span className="explanation-icon">💡</span>
-                <span className="explanation-title">Biblical Insight</span>
-              </div>
-              <div className="explanation-content">
-                <div className="explanation-text">{currentQ?.explanation}</div>
-                <div className="explanation-reference">
-                  <span className="reference-icon">📜</span>
-                  <span className="reference-text">{currentQ?.reference}</span>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {streak > 2 && (
-            <div className="streak-display">
-              <div className="streak-icons">
-                {'🔥'.repeat(Math.min(streak, 5))}
-              </div>
-              <div className="streak-text">
-                Bible Master! {streak} correct in a row!
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="api-info">
-          <div className="api-status">
-            <div className="status-indicator online"></div>
-            <div className="status-text">Connected to Bible API</div>
-          </div>
-          <div className="api-version">
-            Bible Version: <span className="version-name">{version}</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="game-footer">
-        <div className="scoring-info">
-          <div className="score-item">
-            <span className="score-icon">⏱️</span>
-            <span className="score-text">Time Bonus: +{Math.floor(timeLeft * 3)}</span>
-          </div>
-          <div className="score-item">
-            <span className="score-icon">📈</span>
-            <span className="score-text">Streak Bonus: +{streak * 15} per question</span>
-          </div>
-          <div className="score-item">
-            <span className="score-icon">⭐</span>
-            <span className="score-text">Difficulty Multiplier: {difficulty === 'easy' ? '1x' : difficulty === 'medium' ? '1.5x' : '2x'}</span>
-          </div>
-        </div>
-      </div>
+      )}
+      {!answered && streak >= 2 && <div className="btq-streak">🔥 {streak} in a row!</div>}
     </div>
   )
 }

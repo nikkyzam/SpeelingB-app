@@ -50,7 +50,8 @@ const doc = (over: Partial<RawUserDoc> = {}): RawUserDoc => ({
     },
     learn_history: { '2026-09-07': 3, '2026-09-05': 2, '2025-01-01': 99 },
     game_play_counts: { 'word-scramble': 4, 'spell-sprint': 9, 'ghost-word': 0 },
-    game_high_scores: { 'spell-sprint': 120 },
+    // Spell Sprint was rebuilt: its 2,400 is from the old scale, 120 from the new one.
+    game_high_scores: { 'spell-sprint': 2400, 'spell-sprint@2': 120 },
     trophy_case: { 'cup-gold': '2026-09-01', 'plaque-50': '2026-08-02' },
   }),
   rewards: { unlockedBadges: ['first-word', 'streak-3'] },

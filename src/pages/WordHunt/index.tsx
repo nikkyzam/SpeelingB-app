@@ -1,10 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useProgress } from '../../contexts/ProgressContext'
+import { useAudio } from '../../contexts/AudioContext'
 import { useRewardStore } from '../../stores/rewards/useRewardStore'
 import { wordBank } from '../../services/wordBank'
 import Celebration, { CelebrationData } from '../../components/common/Celebration'
 import sfx from '../../components/games/shared/sfx'
+import useCheer from '../../components/games/shared/useCheer'
+import Burst from '../../components/games/shared/Burst'
 import Button from '../../components/common/Button'
 import './WordHunt.css'
 
@@ -48,6 +51,10 @@ const readState = (): HuntState => {
   return { date: todayKey(), letters: [], done: [], claimed: false }
 }
 
+/** The stars for a whole hunt, once a day. */
+export const HUNT_STARS = 15
+const UNTICK_GRACE_MS = 800
+
 const writeState = (state: HuntState) => {
   try { localStorage.setItem(STATE_KEY, JSON.stringify(state)) } catch { /* the hunt goes on */ }
 }
@@ -62,9 +69,24 @@ const writeState = (state: HuntState) => {
 const WordHunt: React.FC = () => {
   const navigate = useNavigate()
   const { learningFlow } = useProgress()
+  const { speak } = useAudio()
+  const cheer = useCheer()
   const { addStars } = useRewardStore()
-  const [state, setState] = useState<HuntState>(readState)
+  const [state, setShown] = useState<HuntState>(readState)
+  // Every tap reads the hunt from here, not from `state`: two quick taps (or
+  // two children) both read the same stale state, so the second undid the
+  // first tick — or, on the last letter, paid the 15 stars a second time.
+  const live = useRef(state)
+  const save = (next: HuntState) => {
+    live.current = next
+    setShown(next)
+    writeState(next)
+  }
   const [celebration, setCelebration] = useState<CelebrationData | null>(null)
+  /** When each card was last ticked: a fast double tap must not untick it. */
+  const tickedAt = useRef<Record<string, number>>({})
+  /** The last find: which card bursts, and the cheer shown under the track. */
+  const [found, setFound] = useState<{ id: string; line: string; n: number } | null>(null)
 
   const tasks = useMemo<HuntTask[]>(() => {
     // Only words the child has met — the clue says "like the word X that you
@@ -101,40 +123,52 @@ const WordHunt: React.FC = () => {
   // Save the letters the first time they are drawn, so tomorrow's reload keeps
   // today's hunt intact.
   useEffect(() => {
-    if (state.letters.length === 0 && tasks.length > 0) {
-      const next = { ...state, letters: tasks.map((t) => t.letter) }
-      setState(next)
-      writeState(next)
+    if (live.current.letters.length === 0 && tasks.length > 0) {
+      save({ ...live.current, letters: tasks.map((t) => t.letter) })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tasks])
 
   const toggle = (task: HuntTask) => {
-    const done = state.done.includes(task.id)
-      ? state.done.filter((id) => id !== task.id)
-      : [...state.done, task.id]
-    const next = { ...state, done }
-    setState(next)
-    writeState(next)
+    const now = live.current
+    const wasDone = now.done.includes(task.id)
+    const done = wasDone ? now.done.filter((id) => id !== task.id) : [...now.done, task.id]
 
-    if (!state.done.includes(task.id)) {
-      sfx.pop()
-      // A finished hunt is a celebration — once per day.
-      const doneOnScreen = tasks.filter((t) => done.includes(t.id)).length
-      if (tasks.length > 0 && doneOnScreen === tasks.length && !state.claimed) {
-        const claimed = { ...next, claimed: true }
-        setState(claimed)
-        writeState(claimed)
-        addStars(15)
-        sfx.fanfare()
-        window.dispatchEvent(new Event('show-confetti'))
-        setCelebration({
-          title: '🔍 Hunt complete!',
-          message: 'You found them all — letters are hiding everywhere, aren\u2019t they?',
-          stars: 15,
-        })
-      }
+    if (wasDone) {
+      // Unticking is allowed — a mistaken tick can be put right — but not by
+      // the second half of an excited double tap.
+      if (Date.now() - (tickedAt.current[task.id] ?? 0) < UNTICK_GRACE_MS) return
+      save({ ...now, done })
+      sfx.tap()
+      return
     }
+
+    tickedAt.current[task.id] = Date.now()
+    // A finished hunt is a celebration — once per day.
+    const doneOnScreen = tasks.filter((t) => done.includes(t.id)).length
+    const complete = tasks.length > 0 && doneOnScreen === tasks.length && !now.claimed
+    save({ ...now, done, claimed: now.claimed || complete })
+
+    const line = cheer.hit({ say: complete ? undefined : `You found something for ${task.letter}!` })
+    setFound((f) => ({ id: task.id, line, n: (f?.n ?? 0) + 1 }))
+
+    if (complete) {
+      addStars(HUNT_STARS)
+      sfx.fanfare()
+      window.dispatchEvent(new Event('show-confetti'))
+      speak('Hunt complete! You found them all!', { queue: true })
+      setCelebration({
+        title: '🔍 Hunt complete!',
+        message: 'You found them all — letters are hiding everywhere, aren\u2019t they?',
+        stars: HUNT_STARS,
+      })
+    }
+  }
+
+  /** For a child who can't read the clue yet. */
+  const hear = (task: HuntTask) => {
+    const like = task.example !== task.letter.toLowerCase() ? ` Like the word ${task.example}!` : ''
+    speak(`${task.clue}${like}`)
   }
 
   // Count only ticks that belong to a task on screen.
@@ -144,7 +178,7 @@ const WordHunt: React.FC = () => {
     return (
       <div className="hunt-page">
         <div className="hunt-header">
-          <Button variant="secondary" size="small" onClick={() => navigate('/')}>← Home</Button>
+          <Button variant="secondary" size="small" onClick={() => navigate('/spelling')}>← Spelling</Button>
           <h1>🔍 Word Hunt</h1>
         </div>
         <p className="hunt-intro">
@@ -161,35 +195,48 @@ const WordHunt: React.FC = () => {
   return (
     <div className="hunt-page">
       <div className="hunt-header">
-        <Button variant="secondary" size="small" onClick={() => navigate('/')}>← Home</Button>
+        <Button variant="secondary" size="small" onClick={() => navigate('/spelling')}>← Spelling</Button>
         <h1>🔍 Word Hunt</h1>
         <span className="hunt-count">{doneCount}/{tasks.length}</span>
       </div>
 
       <p className="hunt-intro">
-        Time to hunt letters in the real world! Find each thing, come back, and tap the magnifying glass. 🕵️
+        Hunt letters in the real world! Find each thing, come back, and tap its card. Tap 🔊 to hear the clue. 🕵️
       </p>
 
       <div className="hunt-track">
         <div className="hunt-track-fill" style={{ width: `${tasks.length ? (doneCount / tasks.length) * 100 : 0}%` }} />
       </div>
+      {found && <p className="hunt-flash" key={found.n} role="status">🎉 {found.line}</p>}
 
       <div className="hunt-tasks">
         {tasks.map((task) => {
           const done = state.done.includes(task.id)
           return (
-            <button
-              key={task.id}
-              className={`hunt-task ${done ? 'done' : ''}`}
-              onClick={() => toggle(task)}
-            >
-              <span className="hunt-letter" aria-hidden>{task.letter}</span>
-              <span className="hunt-clue">
-                {task.clue}
-                <small>…like the word “{task.example}” that you already know!</small>
-              </span>
-              <span className="hunt-check" aria-hidden>{done ? '✅' : '🔍'}</span>
-            </button>
+            <div key={task.id} className="hunt-row">
+              <button
+                className={`hunt-task ${done ? 'done' : ''}`}
+                onClick={() => toggle(task)}
+                aria-pressed={done}
+              >
+                <Burst trigger={found?.id === task.id && done ? found.n : 0} />
+                <span className="hunt-letter" aria-hidden>{task.letter}</span>
+                <span className="hunt-clue">
+                  {task.clue}
+                  {task.example !== task.letter.toLowerCase() && (
+                    <small>…like the word “{task.example}” that you already know!</small>
+                  )}
+                </span>
+                <span className="hunt-check" aria-hidden>{done ? '✅' : '🔍'}</span>
+              </button>
+              <button
+                className="hunt-hear"
+                onClick={() => { sfx.tap(); hear(task) }}
+                aria-label={`Hear the clue for ${task.letter}`}
+              >
+                🔊
+              </button>
+            </div>
           )
         })}
       </div>

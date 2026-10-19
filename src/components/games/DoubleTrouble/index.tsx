@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, isPlayable } from '../shared/wordTricks'
-import sfx from '../shared/sfx'
+import useCheer from '../shared/useCheer'
+import Burst from '../shared/Burst'
 import './DoubleTrouble.css'
 
 interface DoubleTroubleProps {
@@ -57,6 +58,8 @@ const DoubleTrouble: React.FC<DoubleTroubleProps> = ({ onComplete, words: provid
   const [score, setScore] = useState(0)
   const [found, setFound] = useState(0)
   const [verdict, setVerdict] = useState<'right' | 'wrong' | null>(null)
+  const cheer = useCheer()
+  const [cheerLine, setCheerLine] = useState('')
 
   // Settles before React re-renders, so a double tap cannot score twice.
   const locked = useRef(false)
@@ -97,10 +100,13 @@ const DoubleTrouble: React.FC<DoubleTroubleProps> = ({ onComplete, words: provid
     if (correct) {
       setScore((s) => s + 20)
       setFound((f) => f + 1)
-      sfx.correct()
+      setCheerLine(cheer.hit())
     } else {
-      sfx.wrong()
-      speak(pairAt >= 0 ? `${current.word} has a double letter` : `${current.word} has no double letters`)
+      setCheerLine(
+        cheer.miss({
+          say: pairAt >= 0 ? `${current.word} has a double ${current.word[pairAt]}` : `${current.word} has no double letters`,
+        })
+      )
     }
     later(() => {
       if (index < words.length - 1) {
@@ -156,9 +162,15 @@ const DoubleTrouble: React.FC<DoubleTroubleProps> = ({ onComplete, words: provid
         🚫 No doubles here!
       </button>
 
-      {verdict === 'right' && <div className="dt-flash ok">🎉 Spotted it! +20</div>}
+      {verdict === 'right' && (
+        <div className="dt-flash ok">
+          <Burst trigger={found} />
+          🎉 {cheerLine} Spotted it! +20
+        </div>
+      )}
       {verdict === 'wrong' && (
         <div className="dt-flash bad">
+          {cheerLine}{' '}
           {pairAt >= 0
             ? `“${current.word}” doubles its ${current.word[pairAt]} — look again next time!`
             : `“${current.word}” has no double letters at all!`}

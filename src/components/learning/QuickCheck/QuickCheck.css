@@ -1,4 +1,5 @@
 .quick-check {
+  position: relative; /* the Burst flies out from here */
   margin-top: var(--spacing-lg);
   padding: var(--spacing-lg);
   border-radius: var(--radius-lg);
@@ -51,6 +52,8 @@
 }
 .qc-slot.filled { border-color: var(--success); background: color-mix(in srgb, var(--success) 14%, var(--card)); }
 .qc-slot.gap { border-color: var(--primary); color: var(--primary-2); animation: pulse 1.2s infinite; }
+/* "Show me" lights each letter as it is said. */
+.qc-slot.shown { border-color: var(--secondary); background: color-mix(in srgb, var(--secondary) 18%, var(--card)); animation: pop-in var(--transition-normal) both; }
 
 .qc-tray { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
 .qc-tile {
@@ -69,7 +72,7 @@
 }
 .qc-tile:active:not(:disabled) { transform: translateY(3px); box-shadow: none; }
 .qc-tile.used { opacity: 0.25; cursor: default; box-shadow: none; }
-.qc-tile.miss { animation: shake 0.4s; border-color: var(--error); }
+.qc-tile.miss { animation: shake 0.4s; border-color: var(--text-soft); opacity: 0.7; }
 
 .qc-undo {
   margin-top: var(--spacing-md);
@@ -100,7 +103,7 @@
 }
 .qc-options.letters .qc-option { text-transform: uppercase; font-size: 1.4rem; }
 .qc-option:hover:not(:disabled) { transform: translateY(-3px); border-color: var(--primary); }
-.qc-option.miss { animation: shake 0.4s; border-color: var(--error); }
+.qc-option.miss { animation: shake 0.4s; border-color: var(--text-soft); opacity: 0.7; }
 .qc-option.right { border-color: var(--success); background: color-mix(in srgb, var(--success) 18%, var(--card)); }
 
 .qc-help {
@@ -140,7 +143,14 @@
 }
 .qc-next:active { transform: translateY(3px); box-shadow: none; }
 
+/* Small phones: the slots (not tappable) can shrink, but a tile stays a
+   44px target a small finger can hit, and the tray wraps instead. */
 @media (max-width: 420px) {
-  .qc-tile { width: 40px; height: 40px; font-size: 1.15rem; }
-  .qc-slot { min-width: 32px; height: 40px; font-size: 1.15rem; }
+  .qc-tray { gap: 6px; }
+  .qc-tile { width: 44px; height: 44px; font-size: 1.2rem; }
+  .qc-slot { min-width: 30px; height: 40px; font-size: 1.15rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qc-spark, .qc-slot.gap, .qc-slot.shown, .qc-flash, .quick-check { animation: none; }
 }

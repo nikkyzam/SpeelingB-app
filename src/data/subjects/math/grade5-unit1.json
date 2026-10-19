@@ -1,0 +1,520 @@
+{
+ "main": [
+  {
+   "id": "grade5-unit1-main-1",
+   "prompt": "What is 10³ written in standard form?",
+   "category": "Powers of 10",
+   "explanation": "The exponent tells you how many zeros to write. 10³ means 10 × 10 × 10 = 1,000 — three zeros for the exponent 3.",
+   "tip": "The Exponent's Three Jobs: it's the zero counter.",
+   "kind": "choice",
+   "choices": [
+    "100",
+    "1,000",
+    "10,000",
+    "30"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "grade5-unit1-main-2",
+   "prompt": "How many zeros are in the standard form of 10⁵?",
+   "category": "Powers of 10",
+   "explanation": "The exponent IS the zero counter — 10⁵ has exactly 5 zeros: 100,000.",
+   "tip": "The Exponent's Three Jobs",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "grade5-unit1-main-3",
+   "prompt": "Which exponential form matches 10 × 10 × 10 × 10?",
+   "category": "Powers of 10",
+   "explanation": "Count the number of times 10 is used as a factor — here it's 4 times, so the exponent is 4: 10⁴.",
+   "tip": "Exponential Form",
+   "kind": "choice",
+   "choices": [
+    "10⁴",
+    "4¹⁰",
+    "10 × 4",
+    "40"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "grade5-unit1-main-4",
+   "prompt": "Solve: 7 × 10²",
+   "category": "Powers of 10",
+   "explanation": "10² = 100, and 7 × 100 = 700. Multiplying by a power of 10 shifts every digit that many places to the left.",
+   "tip": "10 as a Factor",
+   "kind": "number",
+   "answer": 700
+  },
+  {
+   "id": "grade5-unit1-main-5",
+   "prompt": "Which power of 10 would shift every digit 4 places to the LEFT?",
+   "category": "Powers of 10",
+   "explanation": "The exponent tells you how many places the digits slide on a place value chart. An exponent of 4 means 4 places left.",
+   "tip": "Place Value Shifts",
+   "kind": "choice",
+   "choices": [
+    "10²",
+    "10³",
+    "10⁴",
+    "10⁵"
+   ],
+   "answer": 2
+  },
+  {
+   "id": "grade5-unit1-main-6",
+   "prompt": "In the expression 10³ = 1,000, what do we call the small raised '3'?",
+   "category": "Powers of 10",
+   "explanation": "The exponent sits small and high next to the base and tells it exactly what to do — here, multiply 10 by itself 3 times.",
+   "tip": "Exponential Form vocabulary",
+   "kind": "choice",
+   "choices": [
+    "The base",
+    "The exponent",
+    "The product",
+    "The factor"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "grade5-unit1-main-7",
+   "prompt": "In 6,600, the 6 in the thousands place is how many times as much as the 6 in the hundreds place?",
+   "category": "Place Value",
+   "explanation": "6,000 ÷ 600 = 10. Moving one place to the LEFT on a place value chart always multiplies a digit's value by 10.",
+   "tip": "The '10 Times As Much' Rule",
+   "kind": "choice",
+   "choices": [
+    "2 times",
+    "10 times",
+    "100 times",
+    "The same"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "grade5-unit1-main-8",
+   "prompt": "The 4 in 4,000 is 10 times as much as the 4 in ____.",
+   "category": "Place Value",
+   "explanation": "4,000 ÷ 10 = 400. One place to the right of the thousands place is the hundreds place.",
+   "tip": "Quick Practice, straight from your guide",
+   "kind": "number",
+   "answer": 400
+  },
+  {
+   "id": "grade5-unit1-main-9",
+   "prompt": "The 8 in 80,000 is 10 times as much as the 8 in ____.",
+   "category": "Place Value",
+   "explanation": "80,000 ÷ 10 = 8,000. Same rule — one place value to the right divides the value by 10.",
+   "tip": "Quick Practice, straight from your guide",
+   "kind": "number",
+   "answer": 8000
+  },
+  {
+   "id": "grade5-unit1-main-10",
+   "prompt": "The 2 in 5,200 is 10 times as much as the 2 in 520. What is the VALUE of the 2 in 5,200?",
+   "category": "Place Value",
+   "explanation": "In 5,200 the 2 sits in the hundreds place, so its value is 200. (And 200 is 10 times the value of the 2 in 520, which is 20.)",
+   "tip": "Across two numbers",
+   "kind": "number",
+   "answer": 200
+  },
+  {
+   "id": "grade5-unit1-main-11",
+   "prompt": "If a digit moves ONE place to the RIGHT on a place value chart, its value is...",
+   "category": "Place Value",
+   "explanation": "Shifting right is the opposite of shifting left. Left = × 10. Right = ÷ 10.",
+   "tip": "When multiplying by 10, digits shift left. When dividing, they shift right.",
+   "kind": "choice",
+   "choices": [
+    "multiplied by 10",
+    "divided by 10",
+    "multiplied by 100",
+    "unchanged"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "grade5-unit1-main-12",
+   "prompt": "The 7 in 740 is how many times as much as the 7 in 74?",
+   "category": "Place Value",
+   "explanation": "In 740 the 7 is worth 700 (hundreds). In 74 the 7 is worth 70 (tens). 700 ÷ 70 = 10.",
+   "tip": "The '10 Times As Much' Rule",
+   "kind": "choice",
+   "choices": [
+    "1 time",
+    "10 times",
+    "70 times",
+    "100 times"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "grade5-unit1-main-13",
+   "prompt": "Using the Standard Algorithm: 184 × 28 = ?",
+   "category": "Multiplication",
+   "explanation": "Step 1: 184 × 8 = 1,472. Step 2–3: 184 × 20 = 3,680 (that's the 'scratch, scratch, lay an egg' placeholder zero). Step 4: 1,472 + 3,680 = 5,152.",
+   "tip": "Standard Algorithm, Steps 1–4",
+   "kind": "number",
+   "answer": 5152
+  },
+  {
+   "id": "grade5-unit1-main-14",
+   "prompt": "In the Standard Algorithm, why do you write a placeholder zero before multiplying by the tens digit?",
+   "category": "Multiplication",
+   "explanation": "That zero (\"scratch, scratch, lay an egg!\") holds the ones place so the tens-digit product lines up correctly before you add.",
+   "tip": "Standard Algorithm, Step 2",
+   "kind": "choice",
+   "choices": [
+    "Because you're now multiplying by a TENS digit, not ones",
+    "Because the answer must end in zero",
+    "It's just a rule with no reason",
+    "To make the number look bigger"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "grade5-unit1-main-15",
+   "prompt": "Using Partial Products: 21,876 × 9 = ?",
+   "category": "Multiplication",
+   "explanation": "9×20,000=180,000, 9×1,000=9,000, 9×800=7,200, 9×70=630, 9×6=54. Add them: 180,000+9,000+7,200+630+54 = 196,884.",
+   "tip": "Partial Product strategy",
+   "kind": "number",
+   "answer": 196884
+  },
+  {
+   "id": "grade5-unit1-main-16",
+   "prompt": "Using the Distributive Property on 7 × 3,098, first decompose 3,098 into 3,000 + 90 + 8. What is 7 × 90?",
+   "category": "Multiplication",
+   "explanation": "That's the middle partial product in the distributive property breakdown: 7 × 90 = 630.",
+   "tip": "Distributive Property, Step 2",
+   "kind": "number",
+   "answer": 630
+  },
+  {
+   "id": "grade5-unit1-main-17",
+   "prompt": "Finish it: 7 × 3,098 = (7×3,000) + (7×90) + (7×8) = 21,000 + 630 + 56. What's the final product?",
+   "category": "Multiplication",
+   "explanation": "21,000 + 630 + 56 = 21,686. Adding the partial products together is Step 3 of the Distributive Property strategy.",
+   "tip": "Distributive Property, Step 3",
+   "kind": "number",
+   "answer": 21686
+  },
+  {
+   "id": "grade5-unit1-main-18",
+   "prompt": "Open Area Model for 7 × 40,823 splits it into 7×40,000, 7×0, 7×800, 7×20, and 7×3. What is 7 × 800?",
+   "category": "Multiplication",
+   "explanation": "7 × 800 = 5,600 — one column of the area model. (The full model adds up to 285,761.)",
+   "tip": "Open Area Model Strategy",
+   "kind": "number",
+   "answer": 5600
+  },
+  {
+   "id": "grade5-unit1-main-19",
+   "prompt": "To ESTIMATE 289 × 6, you round 289 to the nearest hundred first. What do you round it to?",
+   "category": "Multiplication",
+   "explanation": "289 is closer to 300 than to 200, so it rounds to 300. Then 300 × 6 = 1,800 is your reasonable estimate.",
+   "tip": "Estimating Products",
+   "kind": "choice",
+   "choices": [
+    "200",
+    "280",
+    "290",
+    "300"
+   ],
+   "answer": 3
+  },
+  {
+   "id": "grade5-unit1-main-20",
+   "prompt": "Which is the best ESTIMATE for 412 × 7?",
+   "category": "Multiplication",
+   "explanation": "Round 412 to 400 (nearest hundred), then 400 × 7 = 2,800.",
+   "tip": "Estimating Products — round, then multiply",
+   "kind": "choice",
+   "choices": [
+    "700",
+    "2,800",
+    "3,000",
+    "4,200"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "grade5-unit1-main-21",
+   "prompt": "Using Partial Quotients: 1,344 ÷ 7 = ?",
+   "category": "Division",
+   "explanation": "Subtract friendly chunks: 1,344 − 700(×100) = 644, − 350(×50) = 294, − 140(×20) = 154, − 140(×20) = 14, − 14(×2) = 0. Add the ×'s: 100+50+20+20+2 = 192.",
+   "tip": "Dividing with Partial Quotients",
+   "kind": "number",
+   "answer": 192
+  },
+  {
+   "id": "grade5-unit1-main-22",
+   "prompt": "Why does Partial Quotients let you subtract friendly chunks like ×10, ×20, ×50, ×100 instead of one big step?",
+   "category": "Division",
+   "explanation": "A 'think box' of easy facts (like 7×10, 7×50, 7×100) lets you chip away at the dividend using multiplication you're already confident with.",
+   "tip": "The Think Box",
+   "kind": "choice",
+   "choices": [
+    "It breaks a hard division into easier multiplication facts you already know",
+    "It's always faster than every other method",
+    "It only works with even numbers",
+    "It avoids ever having a remainder"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "grade5-unit1-main-23",
+   "prompt": "Using the Area Model for division, 756 ÷ 5 — what is the QUOTIENT (whole number part, ignore the remainder)?",
+   "category": "Division",
+   "explanation": "The area model splits 756 into 500 (×100) + 250 (×50) + 5 (×1), using up 5×151 = 755 with 1 left over: 151 r1.",
+   "tip": "Division Using the Area Model",
+   "kind": "number",
+   "answer": 151
+  },
+  {
+   "id": "grade5-unit1-main-24",
+   "prompt": "Same problem — 756 ÷ 5. What is the REMAINDER?",
+   "category": "Division",
+   "explanation": "5 × 151 = 755, and 756 − 755 = 1. So 756 ÷ 5 = 151 r1.",
+   "tip": "Division Using the Area Model",
+   "kind": "number",
+   "answer": 1
+  },
+  {
+   "id": "grade5-unit1-main-25",
+   "prompt": "\"Does McDonald's Serve Burgers?\" — what does the S stand for?",
+   "category": "Division",
+   "explanation": "D-M-S-B = Divide, Multiply, Subtract, Bring down — the four repeating steps of long division.",
+   "tip": "Does McDonald's Serve Burgers?",
+   "kind": "choice",
+   "choices": [
+    "Solve",
+    "Sum",
+    "Subtract",
+    "Start"
+   ],
+   "answer": 2
+  },
+  {
+   "id": "grade5-unit1-main-26",
+   "prompt": "\"Does McDonald's Serve Burgers?\" — what does the B stand for?",
+   "category": "Division",
+   "explanation": "After you subtract, you Bring Down the next digit and repeat the cycle: Divide, Multiply, Subtract, Bring down.",
+   "tip": "Does McDonald's Serve Burgers?",
+   "kind": "choice",
+   "choices": [
+    "Bring down",
+    "Borrow",
+    "Base",
+    "Big number"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "grade5-unit1-main-27",
+   "prompt": "In 756 ÷ 5 = 151 r1, what do we call 756?",
+   "category": "Division",
+   "explanation": "The dividend is the number being divided (756). The divisor (5) divides it, giving a quotient (151) and remainder (1).",
+   "tip": "Division vocabulary",
+   "kind": "choice",
+   "choices": [
+    "The divisor",
+    "The dividend",
+    "The quotient",
+    "The remainder"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "grade5-unit1-main-28",
+   "prompt": "To ESTIMATE 3,214 ÷ 8, round to a friendlier number that divides evenly, like 3,200. What is 3,200 ÷ 8?",
+   "category": "Division",
+   "explanation": "3,200 ÷ 8 = 400 — a quick, reasonable estimate for 3,214 ÷ 8.",
+   "tip": "Estimating Quotients",
+   "kind": "number",
+   "answer": 400
+  },
+  {
+   "id": "grade5-unit1-main-29",
+   "prompt": "A bakery packs 2,845 cookies into boxes of 12. In 2,845 ÷ 12, what does the QUOTIENT represent?",
+   "category": "Quotient & Remainder",
+   "explanation": "The quotient tells you how many complete groups (boxes) of 12 you can make from the total.",
+   "tip": "Model word problem from your guide",
+   "kind": "choice",
+   "choices": [
+    "How many cookies are left over",
+    "How many full boxes of 12 can be filled",
+    "The total number of cookies",
+    "How many bakeries there are"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "grade5-unit1-main-30",
+   "prompt": "Solve it: 2,845 ÷ 12 — what is the QUOTIENT?",
+   "category": "Quotient & Remainder",
+   "explanation": "12 × 237 = 2,844, with 1 cookie left over. So the bakery fills 237 full boxes.",
+   "tip": "Model word problem from your guide",
+   "kind": "number",
+   "answer": 237
+  },
+  {
+   "id": "grade5-unit1-main-31",
+   "prompt": "Same problem, 2,845 ÷ 12 — what is the REMAINDER?",
+   "category": "Quotient & Remainder",
+   "explanation": "2,845 − 2,844 = 1. That 1 leftover cookie means the bakery actually needs one MORE box so nothing is left behind.",
+   "tip": "Interpreting the remainder",
+   "kind": "number",
+   "answer": 1
+  },
+  {
+   "id": "grade5-unit1-main-32",
+   "prompt": "Your word problem: 3,520 pencils shared equally among 24 students. How many pencils does EACH student get (the quotient)?",
+   "category": "Quotient & Remainder",
+   "explanation": "24 × 146 = 3,504. Each student gets 146 pencils, with some left over — this is exactly the problem you wrote yourself!",
+   "tip": "From your own practice problem",
+   "kind": "number",
+   "answer": 146
+  },
+  {
+   "id": "grade5-unit1-main-33",
+   "prompt": "Same problem — how many pencils are LEFT OVER (the remainder)?",
+   "category": "Quotient & Remainder",
+   "explanation": "3,520 − 3,504 = 16 pencils left over after giving every student an equal share of 146.",
+   "tip": "From your own practice problem",
+   "kind": "number",
+   "answer": 16
+  },
+  {
+   "id": "grade5-unit1-main-34",
+   "prompt": "When a division word problem has a remainder, what should you always do?",
+   "category": "Quotient & Remainder",
+   "explanation": "Sometimes you round up (the bakery needs one more box). Sometimes the remainder IS the answer (16 leftover pencils). It depends on the story.",
+   "tip": "The most important habit for word problems",
+   "kind": "choice",
+   "choices": [
+    "Always round the quotient up, no matter what",
+    "Think about what the remainder actually MEANS in that situation",
+    "Always ignore the remainder completely",
+    "Always round the quotient down, no matter what"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "grade5-unit1-main-35",
+   "prompt": "A school orders 8 boxes of markers with 24 markers in each box, then gives 45 markers to the art room. How many markers are left?",
+   "category": "Multi-Step Problems",
+   "explanation": "Step 1: 8 × 24 = 192 total markers. Step 2: 192 − 45 = 147 markers left.",
+   "tip": "Multiply, then subtract",
+   "kind": "number",
+   "answer": 147
+  },
+  {
+   "id": "grade5-unit1-main-36",
+   "prompt": "A theater has 15 rows with 18 seats each. If 187 seats are already filled, how many empty seats are there?",
+   "category": "Multi-Step Problems",
+   "explanation": "Step 1: 15 × 18 = 270 total seats. Step 2: 270 − 187 = 83 empty seats.",
+   "tip": "Multiply, then subtract",
+   "kind": "number",
+   "answer": 83
+  },
+  {
+   "id": "grade5-unit1-main-37",
+   "prompt": "Mia buys 6 packs of stickers with 45 stickers in each pack, then shares them equally among 9 friends. How many stickers does each friend get?",
+   "category": "Multi-Step Problems",
+   "explanation": "Step 1: 6 × 45 = 270 total stickers. Step 2: 270 ÷ 9 = 30 stickers each.",
+   "tip": "Multiply, then divide",
+   "kind": "number",
+   "answer": 30
+  },
+  {
+   "id": "grade5-unit1-main-38",
+   "prompt": "A farmer has 1,260 apples and packs them into crates of 15 apples each. He then sells 42 of the crates. How many crates does he have left?",
+   "category": "Multi-Step Problems",
+   "explanation": "Step 1: 1,260 ÷ 15 = 84 total crates. Step 2: 84 − 42 = 42 crates left.",
+   "tip": "Divide, then subtract",
+   "kind": "number",
+   "answer": 42
+  },
+  {
+   "id": "grade5-unit1-main-39",
+   "prompt": "A number is multiplied by 10³ and the result is 47,000. What was the original number?",
+   "category": "Challenge Round",
+   "explanation": "Work backwards: 47,000 ÷ 10³ = 47,000 ÷ 1,000 = 47. Undoing 'shift left 3 places' means shifting back right.",
+   "tip": "Place Value Shifts, in reverse",
+   "kind": "number",
+   "answer": 47
+  },
+  {
+   "id": "grade5-unit1-main-40",
+   "prompt": "The value of the 5 in a number is 500,000. If that digit moves 2 places to the RIGHT on a place value chart, what is its NEW value?",
+   "category": "Challenge Round",
+   "explanation": "Moving right divides by 10 each place: 500,000 ÷ 10 ÷ 10 = 5,000. Two places right is the same as dividing by 100.",
+   "tip": "The '10 Times As Much' Rule, two shifts",
+   "kind": "number",
+   "answer": 5000
+  },
+  {
+   "id": "grade5-unit1-main-41",
+   "prompt": "Using any strategy you like: 356 × 47 = ?",
+   "category": "Challenge Round",
+   "explanation": "Distributive Property: 356 × 47 = 356 × 40 + 356 × 7 = 14,240 + 2,492 = 16,732. Two 2-digit-ish factors — the same idea as the Standard Algorithm, just bigger.",
+   "tip": "Choose your own strategy",
+   "kind": "number",
+   "answer": 16732
+  },
+  {
+   "id": "grade5-unit1-main-42",
+   "prompt": "Which is the best ESTIMATE for 587 × 42?",
+   "category": "Challenge Round",
+   "explanation": "Round 587 to 600 and 42 to 40 (both nearest hundred/ten). 600 × 40 = 24,000.",
+   "tip": "Estimating Products with bigger numbers",
+   "kind": "choice",
+   "choices": [
+    "18,000",
+    "21,000",
+    "24,000",
+    "30,000"
+   ],
+   "answer": 2
+  },
+  {
+   "id": "grade5-unit1-main-43",
+   "prompt": "6,192 ÷ 24 = ?",
+   "category": "Challenge Round",
+   "explanation": "Partial Quotients: 6,192 − 6,000 (×250) = 192, then 192 − 192 (×8) = 0. Add the ×'s: 250 + 8 = 258.",
+   "tip": "Partial Quotients with a 2-digit divisor",
+   "kind": "number",
+   "answer": 258
+  },
+  {
+   "id": "grade5-unit1-main-44",
+   "prompt": "A field trip has 245 students. Each bus holds 36 students. How many buses are needed so NO student is left behind?",
+   "category": "Challenge Round",
+   "explanation": "245 ÷ 36 = 6 remainder 29. Six buses only fit 216 students, leaving 29 behind — you need a 7th bus for them. Round UP, because leftover people still need a seat.",
+   "tip": "Interpreting the remainder — round up",
+   "kind": "number",
+   "answer": 7
+  },
+  {
+   "id": "grade5-unit1-main-45",
+   "prompt": "A store has 18 shelves with 34 books on each. They sell 212 books, then restock 75 more. How many books are there now?",
+   "category": "Challenge Round",
+   "explanation": "Step 1: 18 × 34 = 612. Step 2: 612 − 212 = 400. Step 3: 400 + 75 = 475. Three steps this time — multiply, subtract, then add.",
+   "tip": "Multi-Step Problems, one step further",
+   "kind": "number",
+   "answer": 475
+  },
+  {
+   "id": "grade5-unit1-main-46",
+   "prompt": "A number divided by 8 gives a quotient of 47 with a remainder of 5. What is the number?",
+   "category": "Challenge Round",
+   "explanation": "Work backwards using dividend = (divisor × quotient) + remainder: (8 × 47) + 5 = 376 + 5 = 381.",
+   "tip": "Division vocabulary, in reverse",
+   "kind": "number",
+   "answer": 381
+  }
+ ]
+}

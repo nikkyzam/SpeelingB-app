@@ -92,6 +92,7 @@ const CHANGE_EVENTS = [
   'badgeUnlocked',
   'rewardPurchased',
   'streakUpdated',
+  'subjectProgressUpdated',
 ];
 if (typeof window !== 'undefined') {
   for (const name of CHANGE_EVENTS) {

@@ -4,7 +4,10 @@ import { render, screen, fireEvent, act } from '@testing-library/react'
 
 // vi.mock is hoisted above everything, so what it uses must be hoisted too.
 const h = vi.hoisted(() => {
-  const noSound = { tap: () => {}, pop: () => {}, correct: () => {}, wrong: () => {}, applause: () => {} }
+  const noSound = {
+    tap: () => {}, pop: () => {}, correct: () => {}, wrong: () => {}, applause: () => {},
+    win: () => {}, star: () => {}, whoosh: () => {}, thud: () => {}, fanfare: () => {}, worldJingle: () => {},
+  }
   return { noSound }
 })
 vi.mock('@/components/games/shared/sfx', () => ({

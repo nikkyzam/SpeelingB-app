@@ -77,6 +77,8 @@
   font-weight: 800;
   color: var(--text);
   background: var(--card);
+  /* Every critter looks the same until it is tapped: only the spelling differs. */
+  border: 3px solid var(--primary);
   box-shadow: var(--shadow-sm);
   animation: ww-rise 180ms ease-out both;
 }
@@ -84,22 +86,23 @@
   0%   { transform: translateY(100%); opacity: 0; }
   100% { transform: translateY(0); opacity: 1; }
 }
-.ww-mole.bug { border: 3px solid var(--warning); }
-.ww-mole.bee { border: 3px solid var(--secondary); }
-.ww-mole.bonk { animation: ww-squash 380ms ease-out both; background: var(--success); color: #fff; }
+.ww-mole.bonk { animation: ww-squash 700ms ease-out both; background: var(--success); border-color: var(--success); color: #fff; }
 @keyframes ww-squash {
   0%   { transform: scale(1); }
-  40%  { transform: scale(1.2, 0.7); }
+  25%  { transform: scale(1.2, 0.7); }
+  60%  { transform: scale(1); opacity: 1; }
   100% { transform: scale(0.3) translateY(30%); opacity: 0; }
 }
-.ww-mole.oops { animation: shake 380ms; border-color: var(--error); }
+.ww-mole.oops { animation: shake 380ms; border-color: var(--secondary); border-style: dashed; background: color-mix(in srgb, var(--secondary) 14%, var(--card)); }
 
 .ww-face { font-size: clamp(1.2rem, 5vw, 1.8rem); line-height: 1; }
 .ww-word {
-  font-size: clamp(0.72rem, 3.2vw, 1rem);
-  letter-spacing: 0.02em;
-  word-break: break-all;
-  line-height: 1.1;
+  /* The size comes from the word's length (wordSize); never split a word. */
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
 }
 
 .ww-toast {
@@ -132,4 +135,12 @@
 @media (max-width: 520px) {
   .ww-header { flex-direction: column; align-items: stretch; }
   .ww-stats { justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ww-mole,
+  .ww-mole.bonk,
+  .ww-mole.oops,
+  .ww-toast,
+  .ww-over { animation: none; }
 }

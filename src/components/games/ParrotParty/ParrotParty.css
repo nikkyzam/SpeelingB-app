@@ -27,6 +27,7 @@
 .pp-stat strong { font-size: 1.15rem; color: var(--text); }
 
 .pp-stage {
+  position: relative;
   padding: var(--spacing-md);
   border-radius: var(--radius-md);
   background:
@@ -47,6 +48,13 @@
   transition: background var(--transition-fast);
 }
 .pp-dot.done { background: var(--success); }
+.pp-dark {
+  margin-top: 6px;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
 
 .pp-message {
   font-family: var(--font-primary);
@@ -85,21 +93,19 @@
   box-shadow: 0 0 0 4px hsl(var(--tile-hue) 85% 75%), var(--shadow-md);
 }
 
-.pp-btn {
-  border: none;
-  cursor: pointer;
-  font-family: var(--font-primary);
-  font-weight: 800;
-  color: #fff;
-  background: linear-gradient(180deg, var(--primary), var(--primary-2));
-  border-radius: var(--radius-round);
-  padding: 0.7rem 1.4rem;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
-}
-.pp-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
 
 @media (max-width: 520px) {
   .pp-header { flex-direction: column; align-items: stretch; }
   .pp-stats { justify-content: center; }
   .pp-tiles { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pp-parrot.talking,
+  .pp-parrot.party,
+  .pp-message.won { animation: none; }
+  .pp-dot,
+  .pp-tile { transition: none; }
+  .pp-tile:hover:not(:disabled),
+  .pp-tile.lit { transform: none; }
 }

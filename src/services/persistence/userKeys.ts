@@ -81,6 +81,9 @@ export const USER_KEYS = [
 
   'bible_favorites',
 
+  // math, social studies and language arts best scores
+  'subject_progress',
+
   // legacy keys still cleared for older installs
   'streak',
   'streak-storage',

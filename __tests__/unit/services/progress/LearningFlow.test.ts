@@ -185,6 +185,19 @@ describe('LearningFlowController', () => {
   })
 
   // --- Vocab Quiz Tracking (`completeVocabQuiz`) ---
+  it('does not count a word learned on an earlier day as learned today', () => {
+    // An earlier day's word, then a new day: it is in the total, not in today.
+    controller.completeWord('oldWord')
+    controller.resetDailyProgress()
+    expect(controller.getWordsLearnedToday()).toEqual([])
+
+    controller.completeVocabQuiz(['oldWord', 'newWord'], 0)
+
+    // Only the word met for the first time counts towards today's goal.
+    expect(controller.getWordsLearnedToday()).toEqual(['newWord'])
+    expect(controller.getWordsLearnedTotal()).toEqual(expect.arrayContaining(['oldWord', 'newWord']))
+  })
+
   it('should increment selectedGroup and unlock games if vocab quiz completed with 0 errors', () => {
     expect(controller.getSelectedGroup()).toBe(0)
     expect(controller.areGamesUnlocked()).toBe(false)

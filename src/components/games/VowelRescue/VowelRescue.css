@@ -123,6 +123,7 @@
 .vr-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
 
 .vr-flash {
+  position: relative;
   margin-top: var(--spacing-md);
   font-family: var(--font-primary);
   font-weight: 800;

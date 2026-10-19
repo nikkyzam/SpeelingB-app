@@ -27,6 +27,17 @@
 .dd2-stat strong { font-size: 1.15rem; color: var(--text); }
 
 .dd2-brief { color: var(--text-soft); font-weight: 600; margin-bottom: var(--spacing-md); }
+.dd2-streak {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 0 10px;
+  border-radius: var(--radius-round);
+  background: color-mix(in srgb, var(--warning) 22%, var(--card));
+  color: var(--text);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  animation: pop-in var(--transition-normal) both;
+}
 
 .dd2-clue {
   position: relative;
@@ -52,6 +63,9 @@
   color: var(--text);
 }
 .dd2-speak {
+  /* A finger-sized target for a small child (44px). */
+  min-width: 44px;
+  min-height: 44px;
   border: 2px solid var(--border);
   background: var(--card);
   border-radius: var(--radius-round);
@@ -81,6 +95,7 @@
 .dd2-suspect.dim { opacity: 0.45; }
 
 .dd2-verdict {
+  position: relative;
   margin-top: var(--spacing-lg);
   padding: 0.8rem 1rem;
   border-radius: var(--radius-md);
@@ -91,18 +106,10 @@
 .dd2-verdict.ok { background: linear-gradient(90deg, var(--success), #4EF4C5); color: #fff; }
 .dd2-verdict.bad { background: var(--card-soft); border: 2px solid var(--warning); color: var(--text); font-weight: 700; }
 
-.dd2-btn {
-  border: none;
-  cursor: pointer;
-  font-family: var(--font-primary);
-  font-weight: 800;
-  color: #fff;
-  background: linear-gradient(180deg, var(--primary), var(--primary-2));
-  border-radius: var(--radius-round);
-  padding: 0.7rem 1.4rem;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+@media (prefers-reduced-motion: reduce) {
+  .dd2-suspect { transition: none; }
+  .dd2-suspect:hover:not(:disabled) { transform: none; }
 }
-.dd2-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
 
 @media (max-width: 520px) {
   .dd2-header { flex-direction: column; align-items: stretch; }

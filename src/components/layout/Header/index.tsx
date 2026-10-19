@@ -72,7 +72,7 @@ const Header: React.FC = () => {
           </button>
           <div className="logo-block" onClick={() => navigate('/')} role="link" tabIndex={0}
                onKeyDown={(e) => e.key === 'Enter' && navigate('/')}>
-            <h1 className="logo-text">Spelling Bee</h1>
+            <h1 className="logo-text">BrightHive</h1>
             <span className="logo-world">{world.name}</span>
           </div>
           {whisper && <span className="logo-whisper" role="status">{whisper}</span>}

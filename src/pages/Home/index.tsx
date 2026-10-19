@@ -8,31 +8,28 @@ import { useTheme } from '../../contexts/ThemeContext'
 import { useRewardStore } from '../../stores/rewards/useRewardStore'
 import { useStreak } from '../../hooks/useStreak'
 import Button from '../../components/common/Button'
-import AuthModal from '../../components/auth/AuthModal'
 import ExplorerLevel from '../../components/progress/ExplorerLevel'
 import BuddyCard from '../../components/buddy/BuddyCard'
 import NextUp from '../../components/progress/NextUp'
 import WordProgress from '../../components/progress/WordProgress'
 import WordOfTheDay from '../../components/learning/WordOfTheDay'
-import MysteryBox from '../../components/rewards/MysteryBox'
 import SeasonalBanner from '../../components/seasonal/SeasonalBanner'
 import ReviewSchedule from '../../services/progress/ReviewSchedule'
 import './Home.css'
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
-  const { user, logout } = useUser()
+  const { user } = useUser()
   const { learningFlow } = useProgress()
   const { world } = useTheme()
   const wordsLearnedToday = learningFlow.getWordsLearnedToday().length
   // The goal a child can actually meet today — smaller at the end of a word list.
   const dailyGoal = learningFlow.getLearnGoalToday()
   const { heavenlyStars } = useRewardStore()
-  const { streakData, updateStreak, freezeUsed } = useStreak()
+  const { streakData, updateStreak } = useStreak()
 
   const [dailyCompleted, setDailyCompleted] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
 
   useEffect(() => {
     updateStreak()
@@ -87,15 +84,6 @@ const Home: React.FC = () => {
         <div className="hero-text">
           <div className="hero-top">
             <h1>{greeting}</h1>
-            {user?.isGuest ? (
-              <Button variant="secondary" size="small" onClick={() => setIsAuthModalOpen(true)}>
-                Sign In
-              </Button>
-            ) : (
-              <Button variant="secondary" size="small" onClick={logout}>
-                Log out
-              </Button>
-            )}
           </div>
           <p className="hero-tagline">{world.name} — {world.tagline}</p>
 
@@ -121,9 +109,6 @@ const Home: React.FC = () => {
 
       {/* Limited-time seasonal words, only while the event runs */}
       <SeasonalBanner />
-
-      {/* One free surprise a day */}
-      <MysteryBox />
 
       {/* One clear thing to do, before any of the other choices */}
       <NextUp />
@@ -180,15 +165,6 @@ const Home: React.FC = () => {
         )}
       </section>
 
-      {/* A missed day was forgiven — tell the child their streak survived. */}
-      {freezeUsed && (
-        <section className="streak-saved pop-in">
-          <span className="streak-saved-icon" aria-hidden>❄️</span>
-          <span>
-            We saved your <strong>{streakData.currentStreak}-day streak</strong>! Welcome back — let&apos;s keep it going! 🔥
-          </span>
-        </section>
-      )}
 
       {/* Spaced-repetition review — appears every couple of days */}
       {reviewDue && (
@@ -265,7 +241,6 @@ const Home: React.FC = () => {
         </div>
       )}
 
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </div>
   )
 }

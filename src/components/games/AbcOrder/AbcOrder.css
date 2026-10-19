@@ -26,8 +26,37 @@
 .ao-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .ao-stat strong { font-size: 1.15rem; color: var(--text); }
 
-.ao-hint { color: var(--text-soft); margin-bottom: var(--spacing-lg); }
-.ao-next { color: var(--primary-2); font-size: 1.3rem; }
+.ao-hint { color: var(--text-soft); margin-bottom: var(--spacing-md); }
+
+/* The alphabet, with this round's first letters lit up. */
+.ao-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px;
+  margin: 0 auto var(--spacing-lg);
+  max-width: 34rem;
+}
+.ao-letter {
+  width: 1.25rem;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  border-radius: 6px;
+  color: color-mix(in srgb, var(--text-soft) 55%, transparent);
+}
+.ao-letter.lit { color: #fff; background: var(--primary); }
+.ao-letter.lit.used { background: color-mix(in srgb, var(--success) 70%, transparent); }
+.ao-letter.help {
+  background: var(--secondary);
+  transform: scale(1.25);
+  animation: ao-glow 1s ease-in-out infinite;
+}
+@keyframes ao-glow {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--secondary) 60%, transparent); }
+  50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--secondary) 20%, transparent); }
+}
 
 .ao-slots {
   display: flex;
@@ -62,6 +91,7 @@
   flex-wrap: wrap;
 }
 .ao-word {
+  touch-action: manipulation;
   font-family: var(--font-primary);
   font-weight: 800;
   font-size: 1.15rem;
@@ -77,7 +107,14 @@
 .ao-word:hover:not(:disabled) { transform: translateY(-2px); }
 .ao-word:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,0.18); }
 .ao-word.done { opacity: 0.3; pointer-events: none; }
-.ao-word.wrong { animation: shake 0.4s; background: linear-gradient(180deg, #FF8E8E, var(--error)); }
+.ao-word.wrong { animation: ao-shake 0.4s ease; }
+@keyframes ao-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+.ao-nudge { margin-top: var(--spacing-md); color: var(--text-soft); font-weight: 700; }
 
 .ao-flash {
   margin-top: var(--spacing-lg);
@@ -89,6 +126,7 @@
   background: linear-gradient(90deg, var(--success), #4EF4C5);
   color: #fff;
   animation: pop-in var(--transition-normal) both;
+  position: relative;
 }
 
 @media (max-width: 520px) {
@@ -96,4 +134,10 @@
   .ao-stats { justify-content: center; }
   .ao-word { font-size: 1rem; padding: 0.6rem 1rem; }
   .ao-slot { min-width: 3.6rem; font-size: 0.85rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ao-word { transition: none; }
+  .ao-word.wrong,
+  .ao-letter.help { animation: none; }
 }

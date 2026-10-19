@@ -1,450 +1,266 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import type { Word } from '../../../services/wordBank'
+import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, isPlayable } from '../shared/wordTricks'
-import './SpellingAdventure.css'
+import { maskClue } from '../shared/clues'
+import { spellOut } from '../../../services/words/praise'
+import useCheer from '../shared/useCheer'
+import useLater from '../shared/useLater'
+import Burst from '../shared/Burst'
+import GameEmpty from '../shared/GameEmpty'
 import SpellingInput from '../../common/SpellingInput'
-
-interface Level {
-  id: number
-  name: string
-  difficulty: 'easy' | 'medium' | 'hard'
-  targetWords: number
-  timeLimit: number
-  pointsMultiplier: number
-}
-
-interface WordChallenge {
-  word: string
-  meaning: string
-  scrambledWord: string
-  missingLetters: string
-  challengeType: 'spelling' | 'missing-letters' | 'definition'
-}
+import './SpellingAdventure.css'
 
 interface SpellingAdventureProps {
   onComplete: (score: number) => void
   words?: Word[]
+  rounds?: number
 }
 
-const SpellingAdventure: React.FC<SpellingAdventureProps> = ({ onComplete, words: providedWords }) => {
-  const [currentLevel, setCurrentLevel] = useState(1)
+type Kind = 'missing' | 'jumble' | 'hear'
+
+/** The three places on the map, easiest first. */
+export const PLACES: { name: string; icon: string; kind: Kind; ask: string }[] = [
+  { name: 'Forest Path', icon: '🌲', kind: 'missing', ask: 'Some letters fell off the signpost — spell the whole word!' },
+  { name: 'Mountain Pass', icon: '⛰️', kind: 'jumble', ask: 'A rockslide jumbled the letters — spell the word!' },
+  { name: 'Dragon Cave', icon: '🐉', kind: 'hear', ask: 'Spell the word you hear to sing the dragon to sleep!' },
+]
+
+/** Which place word `i` of `n` belongs to: the map is split in three. */
+export const placeOf = (i: number, n: number): number => Math.min(PLACES.length - 1, Math.floor((i * PLACES.length) / n))
+
+interface Challenge {
+  word: Word
+  answer: string
+  place: number
+  kind: Kind
+  /** What the child sees: a letter, or '' for a blank. */
+  shown: string[]
+}
+
+const jumble = (w: string): string[] => {
+  for (let t = 0; t < 20; t++) {
+    const s = shuffle([...w])
+    if (s.join('') !== w) return s
+  }
+  return [...w.slice(1), w[0]]
+}
+
+/** About a third of the letters hidden — at least one, never all of them. */
+const withGaps = (w: string): string[] => {
+  const hide = new Set(shuffle([...w].map((_, i) => i)).slice(0, Math.max(1, Math.round(w.length / 3))))
+  return [...w].map((c, i) => (hide.has(i) ? '' : c))
+}
+
+const makeChallenge = (word: Word, i: number, n: number): Challenge => {
+  const answer = word.word.toLowerCase()
+  const place = placeOf(i, n)
+  let kind = PLACES[place].kind
+  // A word like "aaa" can't be jumbled; give it gaps instead.
+  if (kind === 'jumble' && new Set(answer).size < 2) kind = 'missing'
+  const shown = kind === 'missing' ? withGaps(answer) : kind === 'jumble' ? jumble(answer) : [...answer].map(() => '')
+  return { word, answer, place, kind, shown }
+}
+
+/**
+ * Spelling Adventure — one trip across the map: the Forest Path, the Mountain
+ * Pass and the Dragon Cave, a couple of the child's words in each.
+ *
+ * Every word is spoken. There are no lives and no clock (three misses used to
+ * end the whole game, and a clock running out moved you on, so idling won). A
+ * wrong answer gets one more go; then the word is shown and spelled out, and
+ * the adventure carries on.
+ */
+const SpellingAdventure: React.FC<SpellingAdventureProps> = ({ onComplete, words: providedWords, rounds = 7 }) => {
+  const { speak } = useAudio()
+  const cheer = useCheer()
+  const later = useLater()
+
+  const challenges = useMemo<Challenge[]>(() => {
+    const picked = shuffle(providedWords ?? []).filter((w) => isPlayable(w, 3)).slice(0, rounds)
+    return picked.map((w, i) => makeChallenge(w, i, picked.length))
+  }, [providedWords, rounds])
+
+  const [index, setIndex] = useState(0)
+  const [input, setInput] = useState('')
+  const [tries, setTries] = useState(0)
+  const [flash, setFlash] = useState<'ok' | 'again' | 'shown' | null>(null)
+  const [line, setLine] = useState('')
+  const [shake, setShake] = useState(false)
   const [score, setScore] = useState(0)
-  const [lives, setLives] = useState(3)
-  const [timeLeft, setTimeLeft] = useState(180)
-  const [wordsCompleted, setWordsCompleted] = useState(0)
-  const [currentChallenge, setCurrentChallenge] = useState<WordChallenge | null>(null)
-  const [userInput, setUserInput] = useState('')
-  const [feedback, setFeedback] = useState<string | null>(null)
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
   const [streak, setStreak] = useState(0)
-  const [isActive, setIsActive] = useState(true)
-
-  const levels: Level[] = [
-    { id: 1, name: 'Forest Path', difficulty: 'easy', targetWords: 5, timeLimit: 180, pointsMultiplier: 1 },
-    { id: 2, name: 'Mountain Pass', difficulty: 'medium', targetWords: 8, timeLimit: 240, pointsMultiplier: 1.5 },
-    { id: 3, name: 'Dragon Cave', difficulty: 'hard', targetWords: 12, timeLimit: 300, pointsMultiplier: 2 },
-  ]
-
-  const currentLevelData = levels[currentLevel - 1]
-
-  // The child's own words, taken in turn. This used to draw strangers from the
-  // whole word bank and ignore the words it was given.
-  const pool = useMemo(
-    () => shuffle((providedWords ?? []).filter((w) => isPlayable(w, 3))),
-    [providedWords]
-  )
-  const nextWord = useRef(0)
+  const [hits, setHits] = useState(0)
+  const [sleepy, setSleepy] = useState(0)
   // One answer per challenge: a second Enter during the feedback used to score
-  // the same word again and count it twice towards the level.
+  // the same word again.
   const settling = useRef(false)
-  // Delays are tracked so a game left early can't finish itself (and pay out)
-  // after the child has gone.
-  const timers = useRef<number[]>([])
-  const later = (fn: () => void, ms: number) => {
-    timers.current.push(window.setTimeout(fn, ms))
-  }
-  useEffect(() => () => timers.current.forEach((t) => window.clearTimeout(t)), [])
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  // The first challenge, once. It used to be made inside the clock's effect,
-  // so a fresh word replaced the one being spelled every second.
-  useEffect(() => {
-    if (pool.length > 0) newChallenge()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pool])
-
-  // The clock.
-  useEffect(() => {
-    if (!isActive || pool.length === 0) return
-    if (timeLeft <= 0) {
-      handleLevelComplete()
-      return
-    }
-    const timer = setTimeout(() => setTimeLeft((t) => t - 1), 1000)
-    return () => clearTimeout(timer)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeLeft, isActive, pool])
+  const current = challenges[index]
 
   useEffect(() => {
-    if (wordsCompleted >= currentLevelData.targetWords && isActive) {
-      handleLevelComplete()
-    }
-  }, [wordsCompleted, currentLevelData.targetWords, isActive])
-
-  const generateChallenge = (): WordChallenge => {
-    const wordObj = pool[nextWord.current++ % pool.length]
-    const word = wordObj.word.toLowerCase()
-    const challengeTypes: Array<WordChallenge['challengeType']> = ['spelling', 'missing-letters', 'definition']
-    const challengeType = challengeTypes[Math.floor(Math.random() * challengeTypes.length)]
-
-    switch (challengeType) {
-      case 'spelling':
-        return {
-          word,
-          meaning: wordObj.meaning,
-          scrambledWord: scrambleWord(word),
-          missingLetters: '',
-          challengeType
-        }
-      case 'missing-letters':
-        return {
-          word,
-          meaning: wordObj.meaning,
-          scrambledWord: '',
-          missingLetters: createMissingLetters(word),
-          challengeType
-        }
-      case 'definition':
-        return {
-          word,
-          meaning: wordObj.meaning,
-          scrambledWord: '',
-          missingLetters: '',
-          challengeType
-        }
-      default:
-        return {
-          word,
-          meaning: wordObj.meaning,
-          scrambledWord: scrambleWord(word),
-          missingLetters: '',
-          challengeType: 'spelling'
-        }
-    }
-  }
-
-  const scrambleWord = (word: string): string => {
-    // One repeated letter can't be scrambled — re-rolling it recursed forever.
-    if (new Set(word).size < 2) return word
-    const letters = word.split('')
-    for (let i = letters.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      ;[letters[i], letters[j]] = [letters[j], letters[i]]
-    }
-    const scrambled = letters.join('')
-    return scrambled === word ? scrambleWord(word) : scrambled
-  }
-
-  const createMissingLetters = (word: string): string => {
-    const wordLength = word.length
-    const missingCount = Math.max(1, Math.floor(wordLength / 3))
-    const positions = new Set<number>()
-
-    while (positions.size < missingCount) {
-      positions.add(Math.floor(Math.random() * wordLength))
-    }
-
-    return Array.from(word)
-      .map((letter, index) => positions.has(index) ? '_' : letter)
-      .join('')
-  }
-
-  const newChallenge = () => {
+    if (!current) return
+    setInput('')
+    setTries(0)
+    setFlash(null)
     settling.current = false
-    setCurrentChallenge(generateChallenge())
-    setUserInput('')
-    setFeedback(null)
-    setIsCorrect(null)
-  }
+    speak(current.word.word)
+    inputRef.current?.focus()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [index, challenges])
 
-  const handleSubmit = () => {
-    if (!userInput.trim() || !currentChallenge || settling.current) return
-    settling.current = true
-
-    const correct = userInput.toLowerCase() === currentChallenge.word.toLowerCase()
-    setIsCorrect(correct)
-
-    if (correct) {
-      const points = Math.floor(10 * currentLevelData.pointsMultiplier * (1 + streak * 0.2))
-      setScore(prev => prev + points)
-      setStreak(prev => prev + 1)
-      setWordsCompleted(prev => prev + 1)
-      setFeedback(`✅ Correct! +${points} points`)
-
-      later(() => {
-        newChallenge()
-      }, 1500)
-    } else {
-      setStreak(0)
-      const newLives = lives - 1
-      setLives(newLives)
-      setFeedback(`❌ Wrong! The word was: ${currentChallenge.word}`)
-
-      if (newLives <= 0) {
-        setIsActive(false)
-        later(() => onComplete(score), 2000)
-      } else {
-        later(() => {
-          newChallenge()
-        }, 2000)
-      }
-    }
-  }
-
-  const handleLevelComplete = () => {
-    if (currentLevel < levels.length) {
-      setCurrentLevel(prev => prev + 1)
-      setWordsCompleted(0)
-      setTimeLeft(levels[currentLevel].timeLimit)
-      setStreak(0)
-      setFeedback(`🎉 Level ${currentLevel} Complete! Advancing to ${levels[currentLevel].name}...`)
-
-      later(() => {
-        newChallenge()
-        setFeedback(null)
-      }, 3000)
-    } else {
-      setIsActive(false)
-      later(() => onComplete(score), 2000)
-    }
-  }
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSubmit()
-    }
-  }
-
-  const renderChallenge = () => {
-    if (!currentChallenge) return null
-
-    switch (currentChallenge.challengeType) {
-      case 'spelling':
-        return (
-          <div className="challenge-section">
-            <div className="challenge-title">Unscramble the word:</div>
-            <div className="scrambled-word">
-              {currentChallenge.scrambledWord.split('').map((letter, index) => (
-                <span key={index} className="scrambled-letter">
-                  {letter.toUpperCase()}
-                </span>
-              ))}
-            </div>
-            <div className="challenge-hint">
-              <strong>Hint:</strong> {currentChallenge.meaning.split('.')[0]}
-            </div>
-          </div>
-        )
-
-      case 'missing-letters':
-        return (
-          <div className="challenge-section">
-            <div className="challenge-title">Fill in the missing letters:</div>
-            <div className="missing-letters">
-              {currentChallenge.missingLetters.split('').map((char, index) => (
-                <span key={index} className={`letter-cell ${char === '_' ? 'missing' : 'filled'}`}>
-                  {char === '_' ? '?' : char.toUpperCase()}
-                </span>
-              ))}
-            </div>
-            <div className="challenge-hint">
-              <strong>Meaning:</strong> {currentChallenge.meaning}
-            </div>
-          </div>
-        )
-
-      case 'definition':
-        return (
-          <div className="challenge-section">
-            <div className="challenge-title">Spell the word for this definition:</div>
-            <div className="definition-challenge">
-              <div className="definition">{currentChallenge.meaning}</div>
-              <div className="word-length">
-                Word has {currentChallenge.word.length} letters
-              </div>
-            </div>
-          </div>
-        )
-
-      default:
-        return null
-    }
-  }
-
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'easy': return '#4ECDC4'
-      case 'medium': return '#FFD166'
-      case 'hard': return '#FF6B6B'
-      default: return '#4ECDC4'
-    }
-  }
-
-  if (pool.length === 0) {
+  if (!current) {
     return (
       <div className="spelling-adventure">
-        {/* No button: onComplete() is a finished game to the hub, and it pays
-            a star for one. "Back to Games" in the header is the way out. */}
-        <p className="adventure-empty">
-          No words for the adventure yet — learn a few, then come back and explore! 🗺️
-        </p>
+        <GameEmpty icon="🗺️">No words for the adventure yet — learn a few, then come back and explore!</GameEmpty>
       </div>
     )
   }
 
+  const { answer, word, place } = current
+  const settled = flash === 'ok' || flash === 'shown'
+  const isLast = index === challenges.length - 1
+  const nextPlace = isLast ? null : challenges[index + 1].place
+  const crossing = nextPlace !== null && nextPlace !== place
+  const clue = word.meaning ? maskClue(word.meaning, word.word) : ''
+
+  const advance = (gained: number, ms: number) => {
+    if (crossing && nextPlace !== null) {
+      speak(`On to the ${PLACES[nextPlace].name}!`, { queue: true })
+    }
+    later(() => {
+      if (!isLast) {
+        // Clear the last word's verdict in the same step that moves on: left to
+        // the effect, one frame could show the new word's answer under the old flash.
+        setInput('')
+        setTries(0)
+        setFlash(null)
+        setIndex((i) => i + 1)
+      } else onComplete(score + gained)
+    }, ms)
+  }
+
+  const submit = () => {
+    if (settling.current || settled) return
+    const typed = input.trim().toLowerCase()
+    if (!typed) return
+    settling.current = true
+
+    if (typed === answer) {
+      const cave = PLACES[place].kind === 'hear'
+      const gained = (tries === 0 ? 40 : 20) + (cave ? 10 : 0)
+      setScore((s) => s + gained)
+      if (cave) setSleepy((z) => z + 1)
+      setFlash('ok')
+      setLine(cheer.hit({ say: word.word }))
+      setStreak(cheer.streak())
+      setHits((h) => h + 1)
+      advance(gained, crossing || isLast ? 2000 : 1500)
+      return
+    }
+
+    setStreak(0)
+    setShake(true)
+    later(() => setShake(false), 400)
+
+    if (tries === 0) {
+      setTries(1)
+      setFlash('again')
+      setLine(cheer.miss({ say: `Listen again: ${word.word}` }))
+      later(() => {
+        setInput('')
+        setFlash(null)
+        settling.current = false
+        inputRef.current?.focus()
+      }, 900)
+      return
+    }
+
+    setFlash('shown')
+    setLine(cheer.miss({ say: `It's spelled ${spellOut(answer)}.` }))
+    advance(0, 2400)
+  }
+
+  const cave = PLACES[place].kind === 'hear'
+  const caveWords = challenges.filter((c) => PLACES[c.place].kind === 'hear').length
+
   return (
     <div className="spelling-adventure">
-      <div className="game-header">
-        <div className="game-title">🗺️ Spelling Adventure</div>
-        <div className="game-stats">
-          <div className="stat">
-            <span className="stat-label">Level</span>
-            <span className="stat-value level-badge" style={{
-              backgroundColor: getDifficultyColor(currentLevelData.difficulty)
-            }}>
-              {currentLevel}
-            </span>
-          </div>
-          <div className="stat">
-            <span className="stat-label">Score</span>
-            <span className="stat-value">{score}</span>
-          </div>
-          <div className="stat">
-            <span className="stat-label">Lives</span>
-            <span className="stat-value lives">{'❤️'.repeat(lives)}</span>
-          </div>
-          <div className="stat">
-            <span className="stat-label">Time</span>
-            <span className="stat-value">{timeLeft}s</span>
-          </div>
-          <div className="stat">
-            <span className="stat-label">Streak</span>
-            <span className="stat-value streak">🔥 {streak}</span>
-          </div>
-          <div className="stat">
-            <span className="stat-label">Words</span>
-            <span className="stat-value">{wordsCompleted}/{currentLevelData.targetWords}</span>
-          </div>
+      <div className="adv-header">
+        <div className="adv-title">🗺️ Spelling Adventure</div>
+        <div className="adv-stats">
+          <div className="adv-stat"><span>Word</span><strong>{index + 1}/{challenges.length}</strong></div>
+          <div className="adv-stat"><span>Score</span><strong>{score}</strong></div>
+          <div className="adv-stat"><span>Streak</span><strong>🔥 {streak}</strong></div>
         </div>
       </div>
 
-      <div className="level-info">
-        <div className="level-name">
-          <span className="level-icon">📍</span>
-          {currentLevelData.name}
-          <span className="difficulty-badge" style={{
-            backgroundColor: getDifficultyColor(currentLevelData.difficulty)
-          }}>
-            {currentLevelData.difficulty.toUpperCase()}
-          </span>
-        </div>
-        <div className="level-progress">
-          <div className="progress-text">
-            Progress: {wordsCompleted} / {currentLevelData.targetWords} words
-          </div>
-          <div className="progress-bar">
-            <div
-              className="progress-fill"
-              style={{ width: `${(wordsCompleted / currentLevelData.targetWords) * 100}%` }}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="game-content">
-        {renderChallenge()}
-
-        <div className="input-section">
-          <SpellingInput
-            type="text"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            className={`adventure-input ${isCorrect === true ? 'correct' : isCorrect === false ? 'incorrect' : ''}`}
-            placeholder={`Type the word here... (Level ${currentLevel} - ${currentLevelData.difficulty})`}
-            disabled={!isActive}
-            autoFocus
-          />
-
-          <button
-            className="submit-btn"
-            onClick={handleSubmit}
-            disabled={!userInput.trim() || !isActive}
+      <ol className="adv-map" aria-label="The adventure map">
+        {PLACES.map((p, k) => (
+          <li
+            key={p.name}
+            className={`adv-place ${k === place ? 'here' : ''} ${k < place ? 'passed' : ''}`}
+            aria-current={k === place ? 'step' : undefined}
           >
-            Submit Answer 🗡️
-          </button>
-        </div>
+            <span className="adv-place-icon" aria-hidden>{k < place ? '✅' : p.icon}</span>
+            <span className="adv-place-name">{p.name}</span>
+            {k === place && <span className="adv-hero" aria-hidden>🧒</span>}
+          </li>
+        ))}
+      </ol>
 
-        {feedback && (
-          <div className={`feedback ${isCorrect ? 'correct' : 'incorrect'}`}>
-            {feedback}
-          </div>
+      <div className={`adv-scene ${cave ? 'cave' : ''}`}>
+        <p className="adv-ask">{PLACES[place].ask}</p>
+        {cave && (
+          <p className="adv-dragon" aria-label={`The dragon is ${sleepy} of ${caveWords} asleep`}>
+            🐉 {'💤'.repeat(sleepy)}
+          </p>
         )}
 
-        {streak > 2 && (
-          <div className="streak-bonus">
-            <div className="streak-icon">⚡</div>
-            <div className="streak-text">
-              {streak} in a row! Points multiplier: {Math.floor(100 + streak * 20)}%
-            </div>
-          </div>
-        )}
+        <button className="adv-btn ghost" onClick={() => speak(word.word)} aria-label="Hear the word again">
+          🔊 Hear it again
+        </button>
+
+        <div className={`adv-letters ${shake ? 'shake' : ''} ${current.kind}`} aria-label="The word's letters">
+          <Burst trigger={hits} />
+          {flash === 'shown'
+            ? [...answer].map((c, i) => <span key={`a${i}`} className="adv-letter shown">{c}</span>)
+            : current.shown.map((c, i) => (
+                <span key={i} className={`adv-letter ${c ? 'given' : 'gap'}`}>{c}</span>
+              ))}
+        </div>
+        {clue && <p className="adv-clue">{clue}</p>}
       </div>
 
-      <div className="game-footer">
-        <div className="status-display">
-          <div className="status-item">
-            <div className="status-label">Current Level</div>
-            <div className="status-value">{currentLevelData.name}</div>
-          </div>
-          <div className="status-item">
-            <div className="status-label">Points Multiplier</div>
-            <div className="status-value">{currentLevelData.pointsMultiplier}x</div>
-          </div>
-          <div className="status-item">
-            <div className="status-label">Time Remaining</div>
-            <div className="status-value">{timeLeft}s</div>
-          </div>
-        </div>
-
-        <div className="adventure-tips">
-          <div className="tip">
-            <span className="tip-icon">💡</span>
-            <span className="tip-text">Each level gets harder but offers more points!</span>
-          </div>
-          <div className="tip">
-            <span className="tip-icon">⚔️</span>
-            <span className="tip-text">Maintain streaks for bonus multipliers!</span>
-          </div>
-          <div className="tip">
-            <span className="tip-icon">🏆</span>
-            <span className="tip-text">Complete all 3 levels to win the adventure!</span>
-          </div>
-        </div>
+      <div className="adv-answer">
+        <SpellingInput
+          ref={inputRef}
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && submit()}
+          className={`adv-input ${flash ?? ''}`}
+          placeholder="Spell the whole word"
+          aria-label="Spell the word"
+          disabled={settled || flash === 'again'}
+          autoFocus
+        />
+        <button className="adv-btn" onClick={submit} disabled={settled || !input.trim()} aria-label="Check my spelling">
+          ✓ Check
+        </button>
       </div>
 
-      {!isActive && (
-        <div className="game-overlay">
-          <div className="overlay-content">
-            <h2>{lives > 0 ? 'Adventure Complete! 🏆' : 'Game Over! 💀'}</h2>
-            <p className="final-score">Final Score: {score}</p>
-            <p className="level-reached">Levels Completed: {currentLevel - 1}/3</p>
-            <button
-              className="continue-btn"
-              onClick={() => onComplete(score)}
-            >
-              Return to Game Menu
-            </button>
-          </div>
+      {flash === 'ok' && (
+        <div className="adv-flash ok">
+          🎉 {line}
+          {crossing && nextPlace !== null && ` On to the ${PLACES[nextPlace].name} ${PLACES[nextPlace].icon}!`}
+          {isLast && (cave ? ' The dragon is fast asleep — adventure complete! 🏆' : ' Adventure complete! 🏆')}
+        </div>
+      )}
+      {flash === 'again' && <div className="adv-flash soft">{line} Listen and have another go! 💪</div>}
+      {flash === 'shown' && (
+        <div className="adv-flash soft">
+          {line} It's “{word.word}” — onwards, the next one is yours! 💪
         </div>
       )}
     </div>

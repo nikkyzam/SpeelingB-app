@@ -26,8 +26,90 @@
 .rb-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.8rem; color: var(--text-soft); }
 .rb-stat strong { font-size: 1.2rem; color: var(--text); }
 
-.rb-lives { font-size: 1.4rem; letter-spacing: 2px; margin-bottom: var(--spacing-md); }
-.rb-heart.lost { filter: grayscale(1); opacity: 0.6; }
+/* --- the bee in its jar ---------------------------------------------- */
+
+.rb-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+.rb-jar {
+  position: relative;
+  width: 5.5rem;
+  height: 6.5rem;
+}
+.rb-jar.wobble { animation: rb-wobble 0.45s ease; }
+@keyframes rb-wobble {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-6deg); }
+  75% { transform: rotate(6deg); }
+}
+.rb-lid {
+  position: absolute;
+  top: 0;
+  left: 12%;
+  width: 76%;
+  height: 0.9rem;
+  border-radius: 6px;
+  background: linear-gradient(180deg, var(--primary), var(--primary-2));
+  box-shadow: 0 2px 0 rgba(0,0,0,0.15);
+  transform-origin: left bottom;
+  transition: transform 0.5s ease;
+  z-index: 2;
+}
+.rb-jar.open .rb-lid { transform: translate(-0.4rem, -1.1rem) rotate(-28deg); }
+.rb-glass {
+  position: absolute;
+  top: 0.7rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border: 3px solid color-mix(in srgb, var(--secondary) 55%, #fff);
+  border-radius: 1.2rem 1.2rem 1.6rem 1.6rem;
+  background: color-mix(in srgb, var(--secondary) 12%, transparent);
+  overflow: hidden;
+}
+/* Cracks appear as hearts are used: one, two, then three. */
+.rb-crack {
+  display: none;
+  position: absolute;
+  width: 3px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--text-soft) 70%, transparent);
+}
+.rb-crack.c1 { top: 12%; left: 28%; height: 45%; transform: rotate(18deg); }
+.rb-crack.c2 { top: 30%; right: 22%; height: 42%; transform: rotate(-26deg); }
+.rb-crack.c3 { bottom: 6%; left: 52%; height: 36%; transform: rotate(38deg); }
+.rb-jar[data-cracks='1'] .c1,
+.rb-jar[data-cracks='2'] .c1,
+.rb-jar[data-cracks='2'] .c2,
+.rb-jar[data-cracks='3'] .rb-crack { display: block; }
+
+.rb-bee {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  font-size: 2.6rem;
+  line-height: 1;
+  transform: translate(-50%, -50%);
+  animation: rb-buzz 1.6s ease-in-out infinite;
+  z-index: 3;
+}
+@keyframes rb-buzz {
+  0%, 100% { transform: translate(-50%, -50%) rotate(-6deg); }
+  50% { transform: translate(-45%, -60%) rotate(6deg); }
+}
+.rb-bee.free { animation: rb-fly 1.4s ease-out forwards; }
+@keyframes rb-fly {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  40% { transform: translate(-10%, -150%) scale(1.15) rotate(10deg); }
+  100% { transform: translate(90%, -190%) scale(1.25) rotate(-8deg); }
+}
+
+.rb-lives { font-size: 1.25rem; letter-spacing: 2px; }
+.rb-heart.lost { filter: grayscale(1); opacity: 0.5; }
 
 .rb-clue { margin-bottom: var(--spacing-lg); }
 .rb-hear {
@@ -63,6 +145,8 @@
   color: var(--text);
 }
 .rb-slot.shown { animation: pop-in 200ms both; }
+/* Letters handed over at the end, apart from the ones the child found. */
+.rb-slot.given { color: var(--secondary); }
 
 .rb-keys {
   display: grid;
@@ -72,6 +156,7 @@
   margin: 0 auto;
 }
 .rb-key {
+  touch-action: manipulation;
   aspect-ratio: 1 / 1;
   border: none;
   border-radius: var(--radius-sm);
@@ -96,13 +181,23 @@
   padding: 0.7rem 1rem;
   border-radius: var(--radius-md);
   animation: pop-in var(--transition-normal) both;
+  position: relative;
 }
 .rb-flash.ok { background: linear-gradient(90deg, var(--success), #4EF4C5); color: #fff; }
-.rb-flash.bad { background: var(--card-soft); color: var(--text); border: 2px solid var(--error); }
+.rb-flash.bad { background: var(--card-soft); color: var(--text); border: 2px solid var(--warning); }
 
 @media (max-width: 520px) {
   .rb-header { flex-direction: column; align-items: stretch; }
   .rb-stats { justify-content: center; }
   .rb-keys { grid-template-columns: repeat(7, 1fr); }
   .rb-slot { width: 2rem; height: 2.6rem; font-size: 1.3rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rb-lid { transition: none; }
+  .rb-jar.wobble,
+  .rb-bee,
+  .rb-bee.free { animation: none; }
+  /* Still out of the jar, just without the flight. */
+  .rb-bee.free { transform: translate(40%, -170%); }
 }

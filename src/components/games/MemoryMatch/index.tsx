@@ -1,244 +1,197 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useMemo, useRef } from 'react'
+import type { Word } from '../../../services/wordBank'
+import { useAudio } from '../../../contexts/AudioContext'
+import { shuffle, isPlayable } from '../shared/wordTricks'
+import { maskClue } from '../shared/clues'
+import { useCheer } from '../shared/useCheer'
+import { useLater } from '../shared/useLater'
+import sfx from '../shared/sfx'
+import Burst from '../shared/Burst'
+import GameEmpty from '../shared/GameEmpty'
 import './MemoryMatch.css'
 
-interface Card {
+export interface Card {
   id: number
   content: string
   type: 'word' | 'meaning'
   matchedWord: string
-  flipped: boolean
-  matched: boolean
 }
 
 interface MemoryMatchProps {
   onComplete: (score: number) => void
+  /** Kept for old callers; the board is sized by `pairs`. */
   gridSize?: number
-  words?: any[]
+  words?: Word[]
+  /** Pairs on the board: six is twelve cards, about right for a five-year-old's memory. */
+  pairs?: number
 }
 
-const MemoryMatch: React.FC<MemoryMatchProps> = ({ onComplete, gridSize = 4, words: providedWords }) => {
-  const [cards, setCards] = useState<Card[]>([])
-  const [flippedCards, setFlippedCards] = useState<number[]>([])
+const POINTS_PER_PAIR = 25
+/** Most clue words a card shows — a whole dictionary entry won't fit a card or a young reader. */
+const CLUE_WORDS = 8
+const CHECK_MS = 900
+const FINISH_MS = 1600
+
+/**
+ * The bonus for a sharp memory, added once at the end. Every pair takes at
+ * least one turn; each extra turn costs a little of the bonus, never the
+ * points already won — a score that shrinks as a child plays feels like
+ * being told off.
+ */
+export const memoryBonus = (pairs: number, turns: number): number =>
+  Math.max(0, pairs * 15 - Math.max(0, turns - pairs) * 8)
+
+/**
+ * A meaning short enough for a card: the first clause, the word itself
+ * blanked out (a clue that says the word is a copy, not a match), at most
+ * eight words.
+ */
+export const shortClue = (meaning: string, word: string): string => {
+  let clause = (meaning || '').split(/[.;:(]/)[0].trim()
+  const words = clause.split(/\s+/)
+  if (words.length > CLUE_WORDS) {
+    const comma = clause.indexOf(',')
+    clause = comma > 0 && clause.slice(0, comma).split(/\s+/).length >= 3
+      ? clause.slice(0, comma)
+      : words.slice(0, CLUE_WORDS).join(' ') + '…'
+  }
+  return maskClue(clause, word)
+}
+
+export const dealCards = (words: Word[], pairs: number): Card[] => {
+  const chosen = shuffle(words.filter((w) => isPlayable(w, 3) && (w.meaning || '').trim())).slice(0, pairs)
+  const cards: Card[] = []
+  chosen.forEach((w, i) => {
+    const word = w.word.toLowerCase()
+    cards.push({ id: i * 2, content: word, type: 'word', matchedWord: word })
+    cards.push({ id: i * 2 + 1, content: shortClue(w.meaning, word), type: 'meaning', matchedWord: word })
+  })
+  return shuffle(cards)
+}
+
+/** Flip two cards: find each word and the card that says what it means. */
+const MemoryMatch: React.FC<MemoryMatchProps> = ({ onComplete, words: providedWords, pairs = 6 }) => {
+  const { speak } = useAudio()
+  const cheer = useCheer()
+  const later = useLater()
+
+  const cards = useMemo(() => dealCards(providedWords || [], pairs), [providedWords, pairs])
+  const totalPairs = cards.length / 2
+
+  const [flipped, setFlipped] = useState<number[]>([])
+  const [matched, setMatched] = useState<Set<number>>(new Set())
   const [matches, setMatches] = useState(0)
-  const [moves, setMoves] = useState(0)
-  const [gameComplete, setGameComplete] = useState(false)
-  const [isChecking, setIsChecking] = useState(false)
-  // The board is as big as the child's own word list allows, so the target is
-  // the number of pairs actually dealt — not the size of a full grid.
-  const [totalPairs, setTotalPairs] = useState(0)
-
-  useEffect(() => {
-    initializeGame()
-  }, [providedWords])
-
-  useEffect(() => {
-    if (totalPairs > 0 && matches === totalPairs) {
-      setGameComplete(true)
-      const score = calculateScore()
-      setTimeout(() => onComplete(score), 1000)
-    }
-  }, [matches, totalPairs])
-
-  const initializeGame = () => {
-    const maxPairs = (gridSize * gridSize) / 2
-    let words = []
-    
-    if (providedWords && providedWords.length > 0) {
-      // Fewer pairs is fine — a short board of their own words beats a full
-      // board of strangers.
-      words = [...providedWords].sort(() => 0.5 - Math.random()).slice(0, maxPairs)
-    } else {
-      words = []
-    }
-
-    const cardPairs: Card[] = []
-
-    words.forEach((word, index) => {
-      // Word card
-      cardPairs.push({
-        id: index * 2,
-        content: word.word,
-        type: 'word',
-        matchedWord: word.word,
-        flipped: false,
-        matched: false
-      })
-
-      // Meaning card
-      cardPairs.push({
-        id: index * 2 + 1,
-        content: word.meaning,
-        type: 'meaning',
-        matchedWord: word.word,
-        flipped: false,
-        matched: false
-      })
-    })
-
-    // Shuffle cards
-    const shuffled = [...cardPairs].sort(() => Math.random() - 0.5)
-    setCards(shuffled)
-    setTotalPairs(words.length)
-    setMatches(0)
-    setMoves(0)
-    setFlippedCards([])
-    setGameComplete(false)
-  }
-
-  const handleCardClick = (id: number) => {
-    if (isChecking || gameComplete) return
-    if (flippedCards.length >= 2) return
-    if (flippedCards.includes(id)) return
-
-    const clickedCard = cards.find(card => card.id === id)
-    if (!clickedCard || clickedCard.matched) return
-
-    setCards(prev =>
-      prev.map(card =>
-        card.id === id ? { ...card, flipped: true } : card
-      )
-    )
-
-    const newFlipped = [...flippedCards, id]
-    setFlippedCards(newFlipped)
-
-    if (newFlipped.length === 2) {
-      setIsChecking(true)
-      setMoves(prev => prev + 1)
-
-      setTimeout(() => {
-        checkForMatch(newFlipped)
-      }, 1000)
-    }
-  }
-
-  const checkForMatch = (flippedIds: number[]) => {
-    const [id1, id2] = flippedIds
-    const card1 = cards.find(c => c.id === id1)
-    const card2 = cards.find(c => c.id === id2)
-
-    if (card1 && card2 && card1.matchedWord === card2.matchedWord) {
-      // Match found
-      setCards(prev =>
-        prev.map(card =>
-          flippedIds.includes(card.id)
-            ? { ...card, matched: true, flipped: true }
-            : card
-        )
-      )
-      setMatches(prev => prev + 1)
-    } else {
-      // No match, flip back
-      setCards(prev =>
-        prev.map(card =>
-          flippedIds.includes(card.id)
-            ? { ...card, flipped: false }
-            : card
-        )
-      )
-    }
-
-    setFlippedCards([])
-    setIsChecking(false)
-  }
-
-  const calculateScore = () => {
-    const baseScore = matches * 100
-    const moveBonus = Math.max(0, 500 - (moves * 10))
-    const timeBonus = 200
-    return baseScore + moveBonus + timeBonus
-  }
-
-  const getCardEmoji = (type: 'word' | 'meaning') => {
-    return type === 'word' ? '🔤' : '📖'
-  }
+  const [turns, setTurns] = useState(0)
+  const [line, setLine] = useState('')
+  const [bonus, setBonus] = useState<number | null>(null)
+  // A third tap while two cards are face up waits; the last pair pays once.
+  const checking = useRef(false)
+  const finished = useRef(false)
+  // Only the newest cheer may clear the flash.
+  const flashId = useRef(0)
 
   if (totalPairs === 0) {
     return (
       <div className="memory-match">
-        <p className="mm-empty">No word pairs yet — learn a few words first! 🧠</p>
-        <button className="mm-btn" onClick={() => onComplete(0)}>Back to Games</button>
+        <GameEmpty icon="🧠">No word pairs yet — learn a few words, then come back and match them to their meanings!</GameEmpty>
       </div>
     )
   }
 
+  const byId = (id: number) => cards.find((c) => c.id === id)!
+
+  const handleCardClick = (id: number) => {
+    if (checking.current || finished.current) return
+    if (flipped.includes(id) || matched.has(id)) return
+
+    const card = byId(id)
+    sfx.tap()
+    // Hearing the card read out lets a child who can't read the clue yet play too.
+    speak(card.type === 'word' ? card.content : card.content.replace(/_+/g, 'blank'))
+    const nowUp = [...flipped, id]
+    setFlipped(nowUp)
+    if (nowUp.length < 2) return
+
+    checking.current = true
+    const turnsNow = turns + 1
+    setTurns(turnsNow)
+    const [a, b] = nowUp.map(byId)
+    later(() => {
+      if (a.matchedWord === b.matchedWord) {
+        const nextMatched = new Set(matched)
+        nextMatched.add(a.id)
+        nextMatched.add(b.id)
+        setMatched(nextMatched)
+        const found = matches + 1
+        setMatches(found)
+        setLine(cheer.hit({ say: a.matchedWord }))
+        const id = ++flashId.current
+        later(() => {
+          if (flashId.current === id && !finished.current) setLine('')
+        }, 1400)
+        if (found === totalPairs) {
+          finished.current = true
+          const extra = memoryBonus(totalPairs, turnsNow)
+          setBonus(extra)
+          later(() => onComplete(totalPairs * POINTS_PER_PAIR + extra), FINISH_MS)
+        }
+      } else {
+        // Not a pair: they just turn back over. No "wrong" sound — missing
+        // is how a memory game is played.
+        sfx.whoosh()
+      }
+      setFlipped([])
+      checking.current = false
+    }, CHECK_MS)
+  }
+
   return (
     <div className="memory-match">
-      <div className="game-header">
-        <div className="game-title">🧠 Memory Match</div>
-        <div className="game-stats">
-          <div className="stat">
-            <span className="stat-label">Matches</span>
-            <span className="stat-value">{matches}/{totalPairs}</span>
-          </div>
-          <div className="stat">
-            <span className="stat-label">Moves</span>
-            <span className="stat-value">{moves}</span>
-          </div>
-          <div className="stat">
-            <span className="stat-label">Score</span>
-            <span className="stat-value">{calculateScore()}</span>
+      <div className="mm-header">
+        <div className="mm-title">🧠 Memory Match</div>
+        <div className="mm-stats">
+          <div className="mm-stat">
+            <span className="mm-stat-label">Matches</span>
+            <span className="mm-stat-value">{matches}/{totalPairs}</span>
           </div>
         </div>
       </div>
 
-      <div className="game-instructions">
-        <p>Match words with their meanings!</p>
-        <p className="hint">Find all pairs to win!</p>
-      </div>
+      <p className="mm-instructions">Match each word to what it means! Tap a card to turn it over.</p>
 
-      <div className={`game-grid grid-${gridSize}`}>
-        {cards.map(card => (
-          <button
-            key={card.id}
-            className={`memory-card ${
-              card.flipped ? 'flipped' : ''
-            } ${card.matched ? 'matched' : ''} ${
-              flippedCards.includes(card.id) ? 'selected' : ''
-            }`}
-            onClick={() => handleCardClick(card.id)}
-            disabled={card.matched || card.flipped || isChecking}
-          >
-            <div className="card-front">
-              <span className="card-emoji">❓</span>
-            </div>
-            <div className="card-back">
-              <div className="card-type">{getCardEmoji(card.type)}</div>
-              <div className="card-content">
-                {card.type === 'word' ? (
-                  <span className="word-text">{card.content}</span>
-                ) : (
-                  <span className="meaning-text">{card.content}</span>
-                )}
-              </div>
-              {card.matched && (
-                <div className="match-indicator">✅</div>
-              )}
-            </div>
-          </button>
-        ))}
-      </div>
-
-      <div className="game-controls">
-        <button
-          className="reset-button"
-          onClick={initializeGame}
-        >
-          Restart Game
-        </button>
-
-        <div className="game-info">
-          {gameComplete ? (
-            <div className="completion-message">
-              🎉 Game Complete! Score: {calculateScore()}
-            </div>
-          ) : (
-            <div className="current-status">
-              {isChecking ? 'Checking...' : `Find the matches! ${flippedCards.length}/2 cards flipped`}
-            </div>
-          )}
+      <div className="mm-board">
+        <div className="mm-grid">
+          {cards.map((card) => {
+            const up = flipped.includes(card.id) || matched.has(card.id)
+            return (
+              <button
+                key={card.id}
+                className={`mm-card ${up ? 'flipped' : ''} ${matched.has(card.id) ? 'matched' : ''} ${card.type}`}
+                onClick={() => handleCardClick(card.id)}
+                disabled={up}
+                aria-label={up ? card.content : 'Face-down card'}
+              >
+                <span className="mm-front" aria-hidden>❓</span>
+                <span className="mm-back" aria-hidden>
+                  <span className="mm-type">{card.type === 'word' ? '🔤' : '📖'}</span>
+                  <span className={card.type === 'word' ? 'mm-word' : 'mm-clue'}>{card.content}</span>
+                  {matched.has(card.id) && <span className="mm-tick">✅</span>}
+                </span>
+              </button>
+            )
+          })}
         </div>
+        {line && (
+          <div className="mm-flash ok" role="status" key={matches}>
+            {line}
+            <Burst trigger={matches} />
+          </div>
+        )}
       </div>
+
+      {bonus !== null && (
+        <div className="mm-done" role="status">🎉 All matched! +{bonus} memory bonus</div>
+      )}
     </div>
   )
 }

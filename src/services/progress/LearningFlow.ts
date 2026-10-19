@@ -265,13 +265,14 @@ export class LearningFlowController {
       this.progress.unlockedGames.push('word-scramble')
     }
 
-    // Mark progress towards daily goal upon vocab quiz completion
+    // Words the quiz meets for the first time count as learned today. One
+    // learned on an earlier day doesn't: it used to join today's list, which
+    // met today's goal without a new word and put old words in today's quiz.
     wordIds.forEach(id => {
+      if (this.progress.wordsLearnedTotal.includes(id)) return
+      this.progress.wordsLearnedTotal.push(id)
       if (!this.progress.wordsLearnedToday.includes(id)) {
         this.progress.wordsLearnedToday.push(id)
-      }
-      if (!this.progress.wordsLearnedTotal.includes(id)) {
-        this.progress.wordsLearnedTotal.push(id)
       }
     })
     this.saveProgress()

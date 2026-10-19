@@ -1,8 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
-import { shuffle, misspell, splitChunk, isPlayable } from '../shared/wordTricks'
-import sfx from '../shared/sfx'
+import { shuffle, misspell, splitChunk, isPlayable, letterTraps } from '../shared/wordTricks'
+import { spellOut } from '../../../services/words/praise'
+import useCheer from '../shared/useCheer'
+import useLater from '../shared/useLater'
+import Burst from '../shared/Burst'
+import GameEmpty from '../shared/GameEmpty'
 import './WordFishing.css'
 
 interface WordFishingProps {
@@ -23,6 +27,50 @@ interface Fish {
 }
 
 const FISH_COLORS = ['#FF8FAB', '#4ECDC4', '#FFD166', '#8AC926', '#7C5CFF']
+/** Two splashes, then the right fish is reeled in for them. */
+const MISSES_ALLOWED = 2
+const FIRST_CAST = 30
+const SECOND_CAST = 15
+const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
+
+/**
+ * Three wrong endings for `word`, all different from each other and from the
+ * real one: two believable slips of the real ending, one borrowed from
+ * another of the child's words, topped up from a fixed list.
+ *
+ * It always finishes. It used to top up with `tail + 'e'` in a while loop —
+ * the same string every time — so a list like ball, tall, call, fall (every
+ * ending "ll", whose only `misspell` is "lll") spun forever and froze the app.
+ */
+export const endingDecoys = (word: string, others: string[], n = 3): string[] => {
+  const w = word.toLowerCase()
+  const [head, tail] = splitChunk(w)
+  const out: string[] = []
+  const add = (c: string) => {
+    if (out.length < n && c && /^[a-z]+$/.test(c) && c !== tail && !out.includes(c)) out.push(c)
+  }
+
+  // Slips a speller really makes: a typo, half of a double dropped, a letter
+  // that sounds or looks like the right one.
+  const slips: string[] = []
+  for (let i = 0; i < 6; i++) slips.push(misspell(tail))
+  slips.push(tail.replace(/(.)\1/, '$1'))
+  for (let i = 0; i < tail.length; i++) {
+    for (const c of letterTraps(w, head.length + i, 2)) slips.push(tail.slice(0, i) + c + tail.slice(i + 1))
+  }
+  const fresh = shuffle([...new Set(slips)])
+  fresh.forEach((s) => {
+    if (out.length < n - 1) add(s)
+  })
+
+  // …an ending borrowed from another word entirely…
+  shuffle(others).forEach((o) => add(splitChunk(o.toLowerCase())[1] ?? ''))
+
+  // …and whatever is still missing. 26 distinct fillers, so this always ends.
+  fresh.forEach(add)
+  for (let k = 0; k < ALPHABET.length && out.length < n; k++) add(tail + ALPHABET[k])
+  return out
+}
 
 /**
  * The end of the word swam away! Hook the fish carrying the piece that finishes
@@ -30,6 +78,8 @@ const FISH_COLORS = ['#FF8FAB', '#4ECDC4', '#FFD166', '#8AC926', '#7C5CFF']
  */
 const WordFishing: React.FC<WordFishingProps> = ({ onComplete, words: providedWords, rounds = 6 }) => {
   const { speak } = useAudio()
+  const cheer = useCheer()
+  const later = useLater()
 
   const words = useMemo<Word[]>(() => {
     const pool = providedWords && providedWords.length > 0 ? providedWords : []
@@ -41,9 +91,13 @@ const WordFishing: React.FC<WordFishingProps> = ({ onComplete, words: providedWo
   const [index, setIndex] = useState(0)
   const [score, setScore] = useState(0)
   const [caught, setCaught] = useState(0)
-  const [missed, setMissed] = useState(false)
+  const [misses, setMisses] = useState(0)
+  /** Fish already tried this round: they swim off. */
+  const [splashed, setSplashed] = useState<number[]>([])
   const [hooked, setHooked] = useState<Fish | null>(null)
-  const [splash, setSplash] = useState<number | null>(null)
+  const [cheerLine, setCheerLine] = useState('')
+  const [hits, setHits] = useState(0)
+  const locked = useRef(false)
 
   const current = words[index]
   const [head, tail] = useMemo(() => splitChunk((current?.word || '').toLowerCase()), [current])
@@ -51,27 +105,11 @@ const WordFishing: React.FC<WordFishingProps> = ({ onComplete, words: providedWo
   // Four fish: the real ending plus three believable impostors.
   const fish = useMemo<Fish[]>(() => {
     if (!current) return []
-    const decoys = new Set<string>()
-    // Two mangled versions of the real ending…
-    for (let i = 0; i < 6 && decoys.size < 2; i++) {
-      const bad = misspell(tail)
-      if (bad !== tail) decoys.add(bad)
-    }
-    // …and an ending borrowed from another word entirely.
-    shuffle(words)
-      .filter((w) => w.id !== current.id)
-      .forEach((w) => {
-        if (decoys.size >= 3) return
-        const other = splitChunk(w.word.toLowerCase())[1]
-        if (other && other !== tail) decoys.add(other)
-      })
-    while (decoys.size < 3) decoys.add(tail + 'e')
-
+    const others = words.filter((w) => w.id !== current.id).map((w) => w.word)
     const chunks = shuffle([
       { chunk: tail, right: true },
-      ...[...decoys].slice(0, 3).map((c) => ({ chunk: c, right: false })),
+      ...endingDecoys(current.word, others).map((c) => ({ chunk: c, right: false })),
     ])
-
     return chunks.map((c, i) => ({
       id: i,
       ...c,
@@ -84,45 +122,62 @@ const WordFishing: React.FC<WordFishingProps> = ({ onComplete, words: providedWo
   }, [current, tail])
 
   useEffect(() => {
-    if (current) speak(current.word)
+    if (!current) return
+    locked.current = false
+    // Queued, so the last word's spoken correction (its letters) isn't cut off.
+    speak(current.word, { queue: true })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index])
+  }, [index, words])
 
   if (!current) {
     return (
       <div className="word-fishing">
-        <p className="wf-empty">The pond is empty — learn a few words first! 🎣</p>
-        <button className="wf-btn" onClick={() => onComplete(0)}>Back to Games</button>
+        <GameEmpty icon="🎣">The pond is empty — learn a few words first!</GameEmpty>
       </div>
     )
   }
 
+  const reelIn = (f: Fish, gained: number, wait: number) => {
+    locked.current = true
+    setHooked(f)
+    later(() => {
+      if (index < words.length - 1) {
+        // Cleared in the same step as the index moves, or the next word's
+        // first frame would show its ending already filled in.
+        setHooked(null)
+        setMisses(0)
+        setSplashed([])
+        setIndex((i) => i + 1)
+      } else {
+        onComplete(score + gained)
+      }
+    }, wait)
+  }
+
   const cast = (f: Fish) => {
-    if (hooked) return
+    if (locked.current || hooked || splashed.includes(f.id)) return
     if (f.right) {
       // First-try catches are worth more, but a second look still pays.
-      const points = missed ? 15 : 30
-      setScore((s) => s + points)
+      const gained = misses === 0 ? FIRST_CAST : SECOND_CAST
+      setScore((s) => s + gained)
       setCaught((c) => c + 1)
-      setHooked(f)
-      sfx.correct()
-      speak(`${current.word}! Nice catch!`)
-      setTimeout(() => {
-        if (index < words.length - 1) {
-          setIndex((i) => i + 1)
-          setHooked(null)
-          setMissed(false)
-        } else {
-          sfx.win()
-          onComplete(score + points)
-        }
-      }, 1700)
-    } else {
-      setMissed(true)
-      setSplash(f.id)
-      sfx.wrong()
-      setTimeout(() => setSplash((s) => (s === f.id ? null : s)), 600)
+      setCheerLine(cheer.hit({ say: current.word }))
+      setHits((h) => h + 1)
+      reelIn(f, gained, 1700)
+      return
     }
+
+    const used = misses + 1
+    setMisses(used)
+    setSplashed((s) => [...s, f.id])
+    if (used >= MISSES_ALLOWED) {
+      // Never left casting at random: the right fish comes in, and we hear why.
+      const right = fish.find((x) => x.right)
+      setCheerLine(cheer.miss({ say: `It was ${current.word}. ${spellOut(current.word)}.` }))
+      if (right) reelIn(right, 0, 2700)
+      return
+    }
+    setCheerLine(cheer.miss({ say: `Listen: ${current.word}` }))
   }
 
   return (
@@ -136,7 +191,8 @@ const WordFishing: React.FC<WordFishingProps> = ({ onComplete, words: providedWo
         </div>
       </div>
 
-      <div className="wf-target">
+      <div className="wf-target" aria-label="The word with its ending missing">
+        {hooked && misses < MISSES_ALLOWED && <Burst trigger={hits} />}
         <span className="wf-head">{head}</span>
         <span className={`wf-gap ${hooked ? 'filled' : ''}`}>{hooked ? tail : '?'.repeat(tail.length)}</span>
       </div>
@@ -149,16 +205,17 @@ const WordFishing: React.FC<WordFishingProps> = ({ onComplete, words: providedWo
       <div className="wf-pond">
         {fish.map((f) => (
           <button
-            key={f.id}
-            className={`wf-fish ${hooked?.id === f.id ? 'hooked' : ''} ${splash === f.id ? 'splash' : ''} ${hooked && hooked.id !== f.id ? 'swim-away' : ''}`}
+            key={`${index}-${f.id}`}
+            className={`wf-fish ${hooked?.id === f.id ? 'hooked' : ''} ${splashed.includes(f.id) ? 'splash' : ''} ${hooked && hooked.id !== f.id ? 'swim-away' : ''}`}
             style={{
               top: `${8 + f.lane * 23}%`,
               animationDuration: `${f.speed}s`,
               animationDelay: `${f.delay}s`,
               '--fish-color': f.color,
+              '--wf-rest': `${6 + f.lane * 22}%`,
             } as React.CSSProperties}
             onClick={() => cast(f)}
-            disabled={!!hooked}
+            disabled={!!hooked || splashed.includes(f.id)}
           >
             <span className="wf-fish-body">{f.chunk}</span>
             <span className="wf-tail" aria-hidden />
@@ -167,8 +224,15 @@ const WordFishing: React.FC<WordFishingProps> = ({ onComplete, words: providedWo
         <div className="wf-water" aria-hidden />
       </div>
 
-      {hooked && <div className="wf-flash">🎉 Reeled it in — <strong>{current.word}</strong>!</div>}
-      {missed && !hooked && <div className="wf-nudge">Splash! That one didn&apos;t fit — try another. 🌊</div>}
+      {hooked && misses < MISSES_ALLOWED && (
+        <div className="wf-flash">🎉 {cheerLine} Reeled it in — <strong>{current.word}</strong>!</div>
+      )}
+      {hooked && misses >= MISSES_ALLOWED && (
+        <div className="wf-nudge shown">It was <strong>{current.word}</strong> — the next fish is yours! 🐟</div>
+      )}
+      {!hooked && misses > 0 && (
+        <div className="wf-nudge">{cheerLine} That one swam off — listen again and try another. 🌊</div>
+      )}
     </div>
   )
 }

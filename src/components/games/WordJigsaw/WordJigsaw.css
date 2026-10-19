@@ -1,0 +1,200 @@
+.word-jigsaw {
+  max-width: 660px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  text-align: center;
+}
+
+.jig-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  border-bottom: 2px dashed var(--border);
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  text-align: left;
+}
+.jig-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.jig-stats { display: flex; gap: var(--spacing-lg); }
+.jig-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
+.jig-stat strong { font-size: 1.15rem; color: var(--text); }
+
+.jig-meaning {
+  margin: var(--spacing-sm) 0 0;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+/* --- a jigsaw piece --------------------------------------------------------
+ * A knob on the right and a socket on the left. The socket is a circle in the
+ * colour of whatever the piece sits on, so pieces placed edge to edge look
+ * interlocked: each knob fills the next piece's socket exactly.
+ */
+
+.jig-piece {
+  --jig: #4DABF7;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.2rem;
+  height: 3rem;
+  padding: 0 1.05rem;
+  border: none;
+  border-radius: 10px;
+  background: var(--jig);
+  color: #FFFFFF;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.18);
+  cursor: grab;
+  /* A drag must move the piece, not scroll the page. */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.jig-piece::after,
+.jig-piece::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  border-radius: 50%;
+}
+.jig-piece::after { right: -8px; background: var(--jig); z-index: 2; }
+.jig-piece::before { left: -8px; background: var(--jig-socket, var(--card-soft)); z-index: 1; }
+
+.jig-piece.h0 { --jig: #FF6B6B; }
+.jig-piece.h1 { --jig: #4DABF7; }
+.jig-piece.h2 { --jig: #38B26A; }
+.jig-piece.h3 { --jig: #F2B705; color: #4A3200; text-shadow: none; }
+.jig-piece.h4 { --jig: #B35FD6; }
+.jig-piece.h5 { --jig: #FF8A3D; }
+.jig-piece.given { --jig: #9AA5B1; }
+
+.jig-piece:disabled { cursor: default; }
+.jig-piece.dragging {
+  z-index: 10;
+  cursor: grabbing;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+  transition: none;
+}
+.jig-piece.bounce { animation: jig-bounce 0.45s ease; }
+@keyframes jig-bounce {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px) rotate(-3deg); }
+  60% { transform: translateX(7px) rotate(3deg); }
+}
+.jig-piece.placed { cursor: default; animation: jig-snap 0.3s ease; }
+@keyframes jig-snap {
+  0% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* --- where the word is built ------------------------------------------------ */
+
+.jig-board {
+  --jig-socket: var(--card-soft);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 0.6rem;
+  margin: var(--spacing-md) auto var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  background: var(--card-soft);
+  min-height: 4.6rem;
+}
+
+.jig-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3.4rem;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+/* Every empty space is the same size, so a space never gives away its piece. */
+.jig-slot:not(.filled) {
+  width: 4.4rem;
+  margin: 0 0.35rem;
+  border: 3px dashed var(--border);
+  border-radius: 12px;
+}
+.jig-slot.next { border-color: var(--primary); animation: jig-glow 1.2s ease-in-out infinite; }
+.jig-slot.hover {
+  border-style: solid;
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 22%, transparent);
+}
+@keyframes jig-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+.jig-board.done .jig-piece { box-shadow: 0 4px 0 rgba(0, 0, 0, 0.18), 0 0 0 3px var(--success); }
+
+.jig-hint { margin: 0 0 var(--spacing-sm); font-size: 0.85rem; color: var(--text-soft); min-height: 1.2em; }
+
+/* --- the loose pieces ---------------------------------------------------------- */
+
+.jig-tray {
+  --jig-socket: var(--card-soft);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.9rem 1.4rem;
+  min-height: 4.4rem;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  background: var(--card-soft);
+}
+
+.jig-lives { margin-top: var(--spacing-md); font-size: 1.1rem; letter-spacing: 0.2rem; }
+.jig-lives .off { opacity: 0.25; filter: grayscale(1); }
+
+.jig-btn {
+  border: none;
+  border-radius: var(--radius-round);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  padding: 0.5rem 1.1rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.jig-btn.hear { background: var(--card-soft); color: var(--text); border: 2px solid var(--border); }
+
+.jig-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
+
+.jig-flash {
+  position: relative;
+  margin-top: var(--spacing-md);
+  font-family: var(--font-primary);
+  font-weight: 800;
+}
+.jig-flash.ok { color: var(--success); }
+.jig-flash.bad { color: var(--error); }
+
+@media (prefers-reduced-motion: reduce) {
+  .jig-piece.bounce,
+  .jig-piece.placed,
+  .jig-slot.next { animation: none; }
+  .jig-piece,
+  .jig-slot { transition: none; }
+}

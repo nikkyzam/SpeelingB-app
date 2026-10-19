@@ -1,257 +1,275 @@
-import React, { useState, useEffect } from 'react'
-import { wordBank } from '../../../services/wordBank'
-import './WordScramble.css'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import type { Word } from '../../../services/wordBank'
+import { useAudio } from '../../../contexts/AudioContext'
+import { shuffle, isPlayable } from '../shared/wordTricks'
+import { maskClue } from '../shared/clues'
+import { spellOut } from '../../../services/words/praise'
+import sfx from '../shared/sfx'
+import useCheer from '../shared/useCheer'
+import useLater from '../shared/useLater'
+import Burst from '../shared/Burst'
+import GameEmpty from '../shared/GameEmpty'
 import SpellingInput from '../../common/SpellingInput'
+import './WordScramble.css'
 
 interface WordScrambleProps {
   onComplete: (score: number) => void
-  duration?: number
-  words?: any[]
+  words?: Word[]
+  rounds?: number
 }
 
-const WordScramble: React.FC<WordScrambleProps> = ({ onComplete, duration = 45, words: providedWords }) => {
-  const [timeLeft, setTimeLeft] = useState(duration)
+/** The letters of `word` in a different order. Needs two different letters. */
+export const scramble = (word: string): string => {
+  if (new Set(word).size < 2) return word
+  for (let t = 0; t < 20; t++) {
+    const s = shuffle([...word]).join('')
+    if (s !== word) return s
+  }
+  // A rotation always differs once there are two different letters.
+  return word.slice(1) + word[0]
+}
+
+/** Which tiles the typed letters have used up, left to right. */
+export const usedTiles = (tiles: string[], typed: string): boolean[] => {
+  const used = tiles.map(() => false)
+  for (const ch of typed.toLowerCase()) {
+    const k = tiles.findIndex((t, i) => !used[i] && t === ch)
+    if (k >= 0) used[k] = true
+  }
+  return used
+}
+
+interface Puzzle {
+  word: Word
+  answer: string
+  tiles: string[]
+}
+
+/**
+ * Word Scramble — put a jumbled word back together.
+ *
+ * Tap the letter tiles (or type) to rebuild the word. "🔊 Hear it" and the
+ * clue are there on request; a solve without them earns a little extra. A
+ * wrong answer gets one more go, then the word is shown and spelled out and
+ * the next puzzle comes up — it used to stay on screen to be copied for full
+ * points.
+ */
+const WordScramble: React.FC<WordScrambleProps> = ({ onComplete, words: providedWords, rounds = 6 }) => {
+  const { speak } = useAudio()
+  const cheer = useCheer()
+  const later = useLater()
+
+  const puzzles = useMemo<Puzzle[]>(
+    () =>
+      shuffle(providedWords ?? [])
+        .filter((w) => isPlayable(w, 3) && new Set(w.word.toLowerCase()).size >= 2)
+        .slice(0, rounds)
+        .map((w) => {
+          const answer = w.word.toLowerCase()
+          return { word: w, answer, tiles: [...scramble(answer)] }
+        }),
+    [providedWords, rounds]
+  )
+
+  const [index, setIndex] = useState(0)
+  const [input, setInput] = useState('')
+  const [tries, setTries] = useState(0)
+  const [helped, setHelped] = useState(false)
+  const [showClue, setShowClue] = useState(false)
+  const [flash, setFlash] = useState<'ok' | 'again' | 'shown' | null>(null)
+  const [note, setNote] = useState('')
+  const [line, setLine] = useState('')
+  const [shake, setShake] = useState(false)
   const [score, setScore] = useState(0)
-  const [currentWord, setCurrentWord] = useState('')
-  const [scrambledWord, setScrambledWord] = useState('')
-  const [userInput, setUserInput] = useState('')
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
-  const [wordsSolved, setWordsSolved] = useState(0)
+  const [solved, setSolved] = useState(0)
   const [streak, setStreak] = useState(0)
-  // No words, no clock: a clock running out pays for a game nobody played.
-  const [isActive, setIsActive] = useState(() => (providedWords?.length ?? 0) > 0)
+  const [hits, setHits] = useState(0)
+  // One answer per check: two Enters inside a second used to score twice.
+  const locked = useRef(false)
 
-  // Only the child's own words — the old fallback drew strangers from the
-  // whole word bank.
-  const getRandomWord = () =>
-    providedWords && providedWords.length > 0
-      ? providedWords[Math.floor(Math.random() * providedWords.length)]
-      : undefined
+  const current = puzzles[index]
 
   useEffect(() => {
-    newWord()
-  }, [providedWords])
+    if (!current) return
+    setInput('')
+    setTries(0)
+    setHelped(false)
+    setShowClue(false)
+    setFlash(null)
+    setNote('')
+    locked.current = false
+    sfx.whoosh()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [index, puzzles])
 
-  useEffect(() => {
-    // Timer
-    if (timeLeft > 0 && isActive) {
-      const timer = setTimeout(() => {
-        setTimeLeft(timeLeft - 1)
-      }, 1000)
-      return () => clearTimeout(timer)
-    } else if (timeLeft === 0 && isActive) {
-      setIsActive(false)
-      onComplete(score)
-    }
-  }, [timeLeft, isActive])
-
-  const scrambleWord = (word: string): string => {
-    // One repeated letter can't be scrambled — re-rolling it recursed forever.
-    if (new Set(word).size < 2) return word
-    const letters = word.split('')
-    for (let i = letters.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      ;[letters[i], letters[j]] = [letters[j], letters[i]]
-    }
-    const scrambled = letters.join('')
-    return scrambled === word ? scrambleWord(word) : scrambled
-  }
-
-  const newWord = () => {
-    const wordObj = getRandomWord()
-    if (!wordObj) return
-    const word = wordObj.word.toLowerCase()
-    setCurrentWord(word)
-    setScrambledWord(scrambleWord(word))
-    setUserInput('')
-    setIsCorrect(null)
-  }
-
-  const handleSubmit = () => {
-    if (!userInput.trim()) return
-
-    const correct = userInput.toLowerCase() === currentWord.toLowerCase()
-    setIsCorrect(correct)
-
-    if (correct) {
-      const points = 10 + (streak * 2) + 5
-      setScore(prev => prev + points)
-      setStreak(prev => prev + 1)
-      setWordsSolved(prev => prev + 1)
-
-      setTimeout(() => {
-        newWord()
-      }, 1000)
-    } else {
-      setStreak(0)
-    }
-  }
-
-
-  const handleSkip = () => {
-    setStreak(0)
-    newWord()
-  }
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSubmit()
-    }
-  }
-
-  const calculateAccuracy = () => {
-    return wordsSolved > 0 ? Math.round((wordsSolved / (wordsSolved + (streak === 0 ? 1 : 0))) * 100) : 0
-  }
-
-  if (!providedWords || providedWords.length === 0) {
+  if (!current) {
     return (
       <div className="word-scramble">
-        <p className="scramble-empty">No words to unscramble yet — learn a few, then come back and play! 🔤</p>
+        <GameEmpty icon="🔤">No words to unscramble yet — learn a few, then come back and play!</GameEmpty>
       </div>
     )
   }
 
+  const { answer, tiles, word } = current
+  const settled = flash === 'ok' || flash === 'shown'
+  const used = usedTiles(tiles, input)
+  const clue = word.meaning ? maskClue(word.meaning, word.word) : ''
+
+  const advance = (gained: number, ms: number) => {
+    later(() => {
+      if (index < puzzles.length - 1) {
+        // Clear the last word's verdict in the same step that moves on: left to
+        // the effect, one frame could show the new word's answer under the old flash.
+        setInput('')
+        setTries(0)
+        setHelped(false)
+        setShowClue(false)
+        setFlash(null)
+        setNote('')
+        setIndex((i) => i + 1)
+      } else onComplete(score + gained)
+    }, ms)
+  }
+
+  const check = () => {
+    if (locked.current || settled) return
+    const typed = input.trim().toLowerCase()
+    if (!typed) return
+    // Half a word isn't an answer yet — nothing is marked until every letter is in.
+    if (typed.length < answer.length) {
+      setNote(`Use all ${answer.length} letters`)
+      return
+    }
+    locked.current = true
+    setNote('')
+
+    if (typed === answer) {
+      const gained = (tries === 0 ? 40 : 20) + (helped ? 0 : 10)
+      setScore((s) => s + gained)
+      setSolved((n) => n + 1)
+      setFlash('ok')
+      setLine(cheer.hit({ say: word.word }))
+      setStreak(cheer.streak())
+      setHits((h) => h + 1)
+      advance(gained, 1400)
+      return
+    }
+
+    setStreak(0)
+    setShake(true)
+    later(() => setShake(false), 400)
+
+    if (tries === 0) {
+      setTries(1)
+      setFlash('again')
+      setLine(cheer.miss({ say: 'Have another go!' }))
+      // The wrong answer doesn't stay up to be patched letter by letter.
+      later(() => {
+        setInput('')
+        setFlash(null)
+        locked.current = false
+      }, 900)
+      return
+    }
+
+    setFlash('shown')
+    setInput(answer)
+    setLine(cheer.miss({ say: `It's spelled ${spellOut(answer)}.` }))
+    advance(0, 2400)
+  }
+
+  const tapTile = (k: number) => {
+    if (locked.current || settled || used[k]) return
+    sfx.tap()
+    setNote('')
+    // Re-checked against the latest letters, so a fast double tap uses a tile once.
+    setInput((v) => (usedTiles(tiles, v)[k] ? v : v + tiles[k]))
+  }
+
+  const hear = () => {
+    setHelped(true)
+    speak(word.word)
+  }
+
+  const openClue = () => {
+    setHelped(true)
+    setShowClue(true)
+    speak(clue.replace(/_+/g, 'blank'))
+  }
+
   return (
     <div className="word-scramble">
-      <div className="game-header">
-        <div className="game-title">🔤 Word Scramble</div>
-        <div className="game-stats">
-          <div className="stat">
-            <span className="stat-label">Time</span>
-            <span className="stat-value">{timeLeft}s</span>
-          </div>
-          <div className="stat">
-            <span className="stat-label">Score</span>
-            <span className="stat-value">{score}</span>
-          </div>
-          <div className="stat">
-            <span className="stat-label">Solved</span>
-            <span className="stat-value">{wordsSolved}</span>
-          </div>
-          <div className="stat">
-            <span className="stat-label">Streak</span>
-            <span className="stat-value streak">🔥 {streak}</span>
-          </div>
+      <div className="wsc-header">
+        <div className="wsc-title">🔤 Word Scramble</div>
+        <div className="wsc-stats">
+          <div className="wsc-stat"><span>Word</span><strong>{index + 1}/{puzzles.length}</strong></div>
+          <div className="wsc-stat"><span>Score</span><strong>{score}</strong></div>
+          <div className="wsc-stat"><span>Solved</span><strong>✨ {solved}</strong></div>
         </div>
       </div>
 
-      <div className="game-instructions">
-        <p>Unscramble the letters to form a word!</p>
-        <p className="hint">You have {duration} seconds to solve as many as you can!</p>
+      <p className="wsc-help">Tap the letters to put the word back together!</p>
+
+      <div className={`wsc-tiles ${shake ? 'shake' : ''}`} role="group" aria-label="Scrambled letters">
+        <Burst trigger={hits} />
+        {(flash === 'shown' ? [...answer] : tiles).map((t, k) => (
+          <button
+            key={`${flash === 'shown' ? 'a' : 't'}-${k}`}
+            className={`wsc-tile ${flash !== 'shown' && used[k] ? 'used' : ''} ${flash === 'shown' ? 'shown' : ''}`}
+            onClick={() => tapTile(k)}
+            disabled={settled || used[k] || flash === 'again'}
+            aria-label={`Letter ${t}`}
+          >
+            {t}
+          </button>
+        ))}
       </div>
 
-      <div className="scramble-area">
-        <div className="scrambled-letters">
-          {scrambledWord.split('').map((letter, index) => (
-            <span key={index} className="scrambled-letter">
-              {letter.toUpperCase()}
-            </span>
-          ))}
-        </div>
+      <div className="wsc-answer">
+        <SpellingInput
+          type="text"
+          value={input}
+          onChange={(e) => {
+            setNote('')
+            setInput(e.target.value)
+          }}
+          onKeyDown={(e) => e.key === 'Enter' && check()}
+          className={`wsc-input ${flash ?? ''}`}
+          placeholder="Your word"
+          aria-label="Your word"
+          disabled={settled || flash === 'again'}
+          autoFocus
+        />
+        <button className="wsc-btn ghost" onClick={() => setInput('')} disabled={settled || !input} aria-label="Clear my letters">
+          ↺
+        </button>
+        <button className="wsc-btn" onClick={check} disabled={settled || !input.trim()} aria-label="Check my word">
+          ✓ Check
+        </button>
+      </div>
+      <p className="wsc-note" aria-live="polite">{note}</p>
 
-        <div className="word-info">
-          <div className="hint-section">
-            <div className="hint-label">Hint:</div>
-            <div className="hint-content">
-              {wordBank.getWordByWord(currentWord)?.meaning.split('.')[0] || 'Think carefully!'}
-            </div>
-          </div>
-        </div>
-
-        <div className="input-section">
-          <SpellingInput
-            type="text"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            className={`scramble-input ${isCorrect === true ? 'correct' : isCorrect === false ? 'incorrect' : ''}`}
-            placeholder="Type the unscrambled word..."
-            autoFocus
-            disabled={!isActive}
-          />
-
-          <div className="input-actions">
-          </div>
-        </div>
-
-        {isCorrect === true && (
-          <div className="feedback correct-feedback">
-            ✅ Correct! +{10 + (streak * 2) + 5} points
-          </div>
-        )}
-
-        {isCorrect === false && (
-          <div className="feedback incorrect-feedback">
-            ❌ Try again! The word was: {currentWord}
-          </div>
+      <div className="wsc-helpers">
+        <button className="wsc-btn ghost" onClick={hear} disabled={settled} aria-label="Hear the word">
+          🔊 Hear it
+        </button>
+        {clue && (
+          <button className="wsc-btn ghost" onClick={openClue} disabled={settled || showClue} aria-label="Show a clue">
+            💡 Clue
+          </button>
         )}
       </div>
+      {showClue && clue && <p className="wsc-clue">{clue}</p>}
 
-      <div className="game-controls">
-        <Button
-          onClick={handleSubmit}
-          variant="primary"
-          size="large"
-          disabled={!userInput.trim() || !isActive}
-        >
-          Submit Answer
-        </Button>
-
-        <Button
-          onClick={handleSkip}
-          variant="warning"
-          disabled={!isActive}
-        >
-          Skip Word
-        </Button>
-      </div>
-
-      <div className="game-footer">
-        <div className="progress-container">
-          <div className="progress-info">
-            <div className="progress-item">
-              <span className="progress-label">Time Left</span>
-              <div className="progress-bar">
-                <div
-                  className="progress-fill"
-                  style={{ width: `${(timeLeft / duration) * 100}%` }}
-                />
-              </div>
-            </div>
-            <div className="progress-item">
-              <span className="progress-label">Accuracy</span>
-              <div className="progress-bar">
-                <div
-                  className="progress-fill accuracy"
-                  style={{ width: `${calculateAccuracy()}%` }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {streak > 2 && (
-            <div className="streak-alert">
-              <span className="streak-icon">🔥</span>
-              <span className="streak-text">{streak} in a row! Keep going!</span>
-            </div>
-          )}
+      {flash === 'ok' && <div className="wsc-flash ok">🎉 {line}</div>}
+      {flash === 'again' && <div className="wsc-flash soft">{line} Have another go! 💪</div>}
+      {flash === 'shown' && (
+        <div className="wsc-flash soft">
+          {line} It's “{word.word}” — the next one is yours! 💪
         </div>
-      </div>
+      )}
+      {!flash && streak >= 2 && <div className="wsc-streak">🔥 {streak} in a row!</div>}
     </div>
-  )
-}
-
-// Button component for the game
-const Button: React.FC<any> = ({ children, onClick, variant = 'primary', size = 'medium', disabled = false, ...props }) => {
-  return (
-    <button
-      className={`game-btn btn-${variant} btn-${size}`}
-      onClick={onClick}
-      disabled={disabled}
-      {...props}
-    >
-      {children}
-    </button>
   )
 }
 

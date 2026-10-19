@@ -3,6 +3,7 @@ import { db } from '../../config/firebase'
 import { wordBank } from '../wordBank'
 import { levelFromXp, xpFromTotals } from '../progress/WordMastery'
 import { localDay } from '../progress/ReviewSchedule'
+import { bestOf } from '../games/GameStats'
 
 /**
  * Everything a grown-up can see about one child's learning.
@@ -244,7 +245,9 @@ export const deriveProgress = (raw: RawUserDoc, now: Date = new Date()): AdminUs
   const plays = bundled<Record<string, number>>(raw, 'game_play_counts', {})
   const bests = bundled<Record<string, number>>(raw, 'game_high_scores', {})
   const games: GamePlay[] = Object.keys(plays)
-    .map((id) => ({ id, name: gameName(id), plays: num(plays[id]), best: num(bests[id]) }))
+    // On the game's current score scale: an old best from before a rebuild
+    // isn't comparable (see SCORE_SCALES).
+    .map((id) => ({ id, name: gameName(id), plays: num(plays[id]), best: bestOf(bests, id) }))
     .filter((g) => g.plays > 0)
     .sort((a, b) => b.plays - a.plays || a.name.localeCompare(b.name))
 

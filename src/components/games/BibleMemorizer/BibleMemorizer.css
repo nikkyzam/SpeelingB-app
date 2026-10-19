@@ -1,0 +1,123 @@
+.bible-memorizer {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  text-align: center;
+}
+
+.bmz-loading { margin: var(--spacing-xl) 0; font-family: var(--font-primary); font-weight: 700; color: var(--text-soft); }
+
+.bmz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  border-bottom: 2px dashed var(--border);
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  text-align: left;
+}
+.bmz-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.bmz-stats { display: flex; gap: var(--spacing-lg); }
+.bmz-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
+.bmz-stat strong { font-size: 1.15rem; color: var(--text); }
+
+/* --- seed, sprout, tree -------------------------------------------------------- */
+
+.bmz-steps {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  list-style: none;
+  margin: 0 0 var(--spacing-md);
+  padding: 0;
+}
+.bmz-step {
+  padding: 0.3rem 0.8rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-round);
+  background: var(--card-soft);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-soft);
+  opacity: 0.7;
+}
+.bmz-step.here { opacity: 1; border-color: var(--primary); color: var(--text); }
+.bmz-step.done { opacity: 1; border-color: var(--success); }
+
+.bmz-help { margin: 0 0 var(--spacing-sm); color: var(--text-soft); }
+
+.bmz-btn {
+  border: none;
+  border-radius: var(--radius-round);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  padding: 0.6rem 1.3rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.bmz-btn.ghost { background: var(--card-soft); color: var(--text); border: 2px solid var(--border); }
+.bmz-btn:disabled { opacity: 0.5; cursor: default; }
+
+/* --- the verse with its gaps ------------------------------------------------------ */
+
+.bmz-verse {
+  position: relative;
+  margin: var(--spacing-md) 0;
+  padding: var(--spacing-lg) var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border);
+  background: color-mix(in srgb, var(--warning) 8%, var(--card));
+}
+.bmz-verse.shake { animation: bmz-shake 0.4s ease; }
+@keyframes bmz-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+.bmz-text {
+  margin: 0;
+  font-family: var(--font-secondary, var(--font-primary));
+  font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+  line-height: 2.2;
+}
+.bmz-gap { white-space: nowrap; }
+.bmz-input {
+  display: inline-block;
+  min-width: 4ch;
+  max-width: 100%;
+  padding: 0.1rem 0.3rem;
+  border: none;
+  border-bottom: 3px solid var(--primary);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  text-align: center;
+}
+.bmz-input:focus { outline: none; background: color-mix(in srgb, var(--primary) 12%, var(--card)); }
+.bmz-input.right { border-bottom-color: var(--success); color: var(--success); }
+.bmz-input.wrong { border-bottom-color: var(--warning); }
+.bmz-input.shown { border-bottom-color: var(--warning); color: var(--text); }
+.bmz-ref { margin: var(--spacing-sm) 0 0; font-size: 0.9rem; font-weight: 700; color: var(--text-soft); }
+
+.bmz-flash {
+  margin-top: var(--spacing-md);
+  font-family: var(--font-primary);
+  font-weight: 800;
+}
+.bmz-flash.ok { color: var(--success); }
+.bmz-flash.soft { color: var(--text); }
+
+@media (prefers-reduced-motion: reduce) {
+  .bmz-verse.shake { animation: none; }
+}

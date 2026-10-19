@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { useAudio } from '../../../contexts/AudioContext'
 import { useProgress } from '../../../contexts/ProgressContext'
+import { useTheme } from '../../../contexts/ThemeContext'
 import { useRewardStore } from '../../../stores/rewards/useRewardStore'
-import { wordBank, Word } from '../../../services/wordBank'
+import { Word } from '../../../services/wordBank'
 import { chunkWord, wordFacts } from '../../../services/words/wordShape'
 import WordMastery from '../../../services/progress/WordMastery'
 import ReviewSchedule from '../../../services/progress/ReviewSchedule'
@@ -12,6 +13,7 @@ import randomJoke, { WordJoke } from '../../../services/words/wordJokes'
 import sfx from '../../games/shared/sfx'
 import Button from '../../common/Button'
 import QuickCheck from '../QuickCheck'
+import WordTrail from '../WordTrail'
 import './LearnMode.css'
 
 interface LearnModeProps {
@@ -35,6 +37,7 @@ const LearnMode: React.FC<LearnModeProps> = ({
 }) => {
   const { speak } = useAudio()
   const { learningFlow } = useProgress()
+  const { world } = useTheme()
   const { addStars } = useRewardStore()
   const [currentWord, setCurrentWord] = useState<Word | null>(null)
   const [words, setWords] = useState<Word[]>([])
@@ -49,6 +52,19 @@ const LearnMode: React.FC<LearnModeProps> = ({
   const [combo, setCombo] = useState(0)
   const [bestCombo, setBestCombo] = useState(0)
   const [starsEarned, setStarsEarned] = useState(0)
+  // While the quick check is up the word on the card is covered — otherwise
+  // "which one is spelled right?" is just copying from the line above. A peek
+  // is always allowed; it counts as being shown the word.
+  const [peeked, setPeeked] = useState(false)
+  // Synonyms, hint, category and facts: there for the curious, folded away so
+  // a card is a word, its sound and one sentence.
+  const [showMore, setShowMore] = useState(false)
+  // Words met this visit, for the stars on the trail.
+  const [passedIds, setPassedIds] = useState<string[]>([])
+  // Words met for the first time on this lap, for an honest finish line.
+  const [newCount, setNewCount] = useState(0)
+  // "You know this one!" after passing a word met before — it pays nothing.
+  const [knownNote, setKnownNote] = useState<string | null>(null)
   const sayTimers = useRef<number[]>([])
   // The prize for finishing: a joke worth running off to tell someone.
   const [joke, setJoke] = useState<WordJoke>(() => randomJoke())
@@ -68,10 +84,21 @@ const LearnMode: React.FC<LearnModeProps> = ({
       setCurrentWord(providedWords[startIndex])
       setIsCompleted(false)
       setPhase('reading')
+      setNewCount(0)
+      setKnownNote(null)
+      // The first card is heard as well as seen; only the later ones used to be.
+      speak(providedWords[startIndex].word)
     } else {
       loadWords()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty, providedWords, learningFlow])
+
+  // Every new card starts uncovered and folded.
+  useEffect(() => {
+    setPeeked(false)
+    setShowMore(false)
+  }, [currentWord])
 
   useEffect(() => () => sayTimers.current.forEach((t) => window.clearTimeout(t)), [])
 
@@ -87,6 +114,8 @@ const LearnMode: React.FC<LearnModeProps> = ({
       setCurrentWord(providedWords[startIndex])
       setIsCompleted(false)
       setPhase('reading')
+      setNewCount(0)
+      setKnownNote(null)
       return
     }
     // No fallback to the word bank. Every caller passes the words this child
@@ -114,8 +143,26 @@ const LearnMode: React.FC<LearnModeProps> = ({
   }
 
   /** The child has shown they know this word — bank it and move on. */
-  const completeCurrentWord = (helped: boolean) => {
+  const completeCurrentWord = (checkHelped: boolean) => {
     if (!currentWord) return
+    setKnownNote(null)
+
+    // Met before — earlier in this lesson (Previous, then "Got it!") or on an
+    // earlier lap or day ("Learn Again", "More Words" on the last group). It
+    // is reading practice now, so it just moves on. Each lap used to pay two
+    // more stars and a snack, count the word as learned again, and promote it
+    // a Leitner box: a word never spelled reached box 5, and due words left
+    // "due", which opened the review gate.
+    const metBefore =
+      passedIds.includes(currentWord.id) || learningFlow.getWordsLearnedTotal().includes(currentWord.id)
+    if (metBefore) {
+      setKnownNote(`You know “${currentWord.word}”! ⭐`)
+      goOn(false)
+      return
+    }
+
+    // Peeking at the covered word is being shown it, the same as "Show me".
+    const helped = checkHelped || peeked
 
     // Getting there unaided is worth more, but asking for help still earns:
     // a child who looks up the answer has still just read it carefully.
@@ -137,9 +184,19 @@ const LearnMode: React.FC<LearnModeProps> = ({
     learningFlow.completeWord(currentWord.id)
     const isGoalReachedNow = learningFlow.isDailyGoalReached()
     const justHitGoal = !wasGoalReachedBefore && isGoalReachedNow
-    if (justHitGoal) AchievementsService.recordDailyGoalComplete()
+    if (justHitGoal) {
+      AchievementsService.recordDailyGoalComplete()
+      celebrateGoal()
+    }
     if (!helped) AchievementsService.recordComboAchieved(combo + 1)
+    setPassedIds((ids) => (ids.includes(currentWord.id) ? ids : [...ids, currentWord.id]))
+    setNewCount((n) => n + 1)
 
+    goOn(justHitGoal)
+  }
+
+  /** On to the next card, the goal prompt, or the finish. */
+  const goOn = (justHitGoal: boolean) => {
     setPhase('reading')
 
     if (currentIndex < words.length - 1) {
@@ -147,7 +204,8 @@ const LearnMode: React.FC<LearnModeProps> = ({
       const nextIndex = currentIndex + 1
       setCurrentIndex(nextIndex)
       setCurrentWord(words[nextIndex])
-      speak(words[nextIndex].word)
+      // Under the goal prompt the next word waits until they choose to go on.
+      if (!justHitGoal) speak(words[nextIndex].word)
       return
     }
 
@@ -159,6 +217,13 @@ const LearnMode: React.FC<LearnModeProps> = ({
     finishSet()
   }
 
+  /** Today's words are met: the biggest moment of the lesson, so it sounds like one. */
+  const celebrateGoal = () => {
+    sfx.fanfare()
+    window.dispatchEvent(new Event('show-confetti'))
+    speak('You did it! You learned all your words for today!')
+  }
+
   const finishSet = () => {
     sfx.win()
     setIsCompleted(true)
@@ -167,6 +232,7 @@ const LearnMode: React.FC<LearnModeProps> = ({
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
+      setKnownNote(null)
       const prevIndex = currentIndex - 1
       setCurrentIndex(prevIndex)
       setCurrentWord(words[prevIndex])
@@ -237,7 +303,10 @@ const LearnMode: React.FC<LearnModeProps> = ({
                 // already on the card. Only a finished set moves to new words.
                 const atEnd = showGoalPrompt === 'end'
                 setShowGoalPrompt(false)
-                if (!atEnd) return
+                if (!atEnd) {
+                  speak(words[currentIndex].word)
+                  return
+                }
                 if (onMoreWords) onMoreWords()
                 else finishSet()
               }}
@@ -255,7 +324,11 @@ const LearnMode: React.FC<LearnModeProps> = ({
       <div className="learn-completed">
         <div className="prompt-icon">🎉</div>
         <h2>Awesome job!</h2>
-        <p>You just learned {words.length} new words! High five! ✋</p>
+        <p>
+          {newCount > 0
+            ? `You just learned ${newCount} new ${newCount === 1 ? 'word' : 'words'}! High five! ✋`
+            : `You went over your ${words.length} ${words.length === 1 ? 'word' : 'words'} again — great practice! ✋`}
+        </p>
         <div className="lesson-scoreboard">
           <div className="lesson-stat"><span>⭐ Stars</span><strong>+{starsEarned}</strong></div>
           <div className="lesson-stat"><span>🔥 Best streak</span><strong>{bestCombo}</strong></div>
@@ -284,111 +357,146 @@ const LearnMode: React.FC<LearnModeProps> = ({
           )}
         </div>
 
+        {/* Spelling them is the real next step, so it is the big button. */}
         <div className="completed-actions">
-          <Button onClick={onMoreWords ?? loadWords} variant="primary" icon="📖">
-            More Words
-          </Button>
           {onMoveToPractice && (
-            <Button onClick={onMoveToPractice} variant="success" icon="✏️">
+            <Button onClick={onMoveToPractice} variant="primary" size="large" icon="✏️">
               Let&apos;s Spell!
             </Button>
           )}
+          <Button onClick={onMoreWords ?? loadWords} variant="secondary" icon="📖">
+            More Words
+          </Button>
         </div>
       </div>
     )
   }
 
+  // While checking, the word and the sentence (which contains it) are covered.
+  const covered = phase === 'checking' && !peeked
+  const learnedIds = learningFlow.getWordsLearnedTotal()
+  const solvedIndexes = words
+    .map((w, i) => (passedIds.includes(w.id) || learnedIds.includes(w.id) ? i : -1))
+    .filter((i) => i >= 0)
+  const sound = (currentWord.phonetic ?? '').replace(/^\/+|\/+$/g, '').trim()
+  const hasMore =
+    (currentWord.synonyms?.length ?? 0) > 0 || !!currentWord.hint || !!currentWord.category || facts.length > 0
+
   return (
     <div className="learn-mode">
-      <div className="word-header">
-        <div className="word-meta">
-          <span className="difficulty">
-            Difficulty: {getDifficultyStars(currentWord.difficulty)}
-          </span>
-          <span className="category">
-            Category: {currentWord.category}
-          </span>
-        </div>
-        <div className="word-counter">
-          Word {currentIndex + 1} of {words.length}
-        </div>
-      </div>
+      <WordTrail
+        total={words.length}
+        current={currentIndex}
+        solved={solvedIndexes}
+        mascot={world.mascot}
+        streak={combo}
+        stars={starsEarned}
+      />
+
+      {knownNote && (
+        <div className="lm-known" role="status">{knownNote}</div>
+      )}
 
       <div className="word-display">
-        <h1 className="word-text">{currentWord.word}</h1>
-        {(() => {
-          // The bank stores this with its slashes already, and for all but a
-          // handful of words it is just the word again — which rendered as
-          // "//tag//" on nearly every card. Show only a real pronunciation.
-          const sound = (currentWord.phonetic ?? '').replace(/^\/+|\/+$/g, '').trim()
-          return sound && sound.toLowerCase() !== currentWord.word.toLowerCase() ? (
-            <div className="phonetic">/{sound}/</div>
-          ) : null
-        })()}
-
-        {/* Sound it out: a long word is friendlier in small pieces. */}
-        {chunks.length > 1 && (
-          <div className="chunk-strip">
-            {chunks.map((chunk, i) => (
-              <React.Fragment key={i}>
-                {i > 0 && <span className="chunk-dash" aria-hidden>-</span>}
-                <button className="chunk" onClick={() => speak(chunk)}>{chunk}</button>
-              </React.Fragment>
-            ))}
+        {covered ? (
+          <div className="lm-covered">
+            <div className="word-text lm-cover" aria-label="The word is covered — try it from memory!">🙈</div>
+            <button className="lm-peek" onClick={() => { sfx.tap(); setPeeked(true) }}>
+              👀 Peek
+            </button>
           </div>
+        ) : (
+          <>
+            <h1 className="word-text">{currentWord.word}</h1>
+            {/* The bank stores this with its slashes already, and for all but a
+                handful of words it is just the word again — which rendered as
+                "//tag//" on nearly every card. Show only a real pronunciation. */}
+            {sound && sound.toLowerCase() !== currentWord.word.toLowerCase() && (
+              <div className="phonetic">/{sound}/</div>
+            )}
+
+            {/* Sound it out: a long word is friendlier in small pieces. */}
+            {chunks.length > 1 && (
+              <div className="chunk-strip">
+                {chunks.map((chunk, i) => (
+                  <React.Fragment key={i}>
+                    {i > 0 && <span className="chunk-dash" aria-hidden>-</span>}
+                    <button className="chunk" onClick={() => speak(chunk)}>{chunk}</button>
+                  </React.Fragment>
+                ))}
+              </div>
+            )}
+
+            <div className="audio-controls">
+              <Button onClick={handleSpeak} icon="🔊">
+                Hear it
+              </Button>
+              <Button onClick={sayItSlowly} icon="🐢" variant="secondary">
+                Slowly
+              </Button>
+            </div>
+          </>
         )}
-
-        <div className="word-facts">
-          {facts.map((f) => (
-            <span key={f} className="word-fact">{f}</span>
-          ))}
-        </div>
-
-        <div className="audio-controls">
-          <Button onClick={handleSpeak} icon="🔊">
-            Hear Word
-          </Button>
-          <Button onClick={sayItSlowly} icon="🐢">
-            Say it Slowly
-          </Button>
-          <Button onClick={handleSpeakSentence} icon="💬">
-            Hear Sentence
-          </Button>
-          <Button onClick={handleSpeakMeaning} icon="📖">
-            Hear Meaning
-          </Button>
-        </div>
       </div>
 
+      {/* Tap a line to hear it: a five-year-old can follow along without reading. */}
       <div className="word-details">
-        <div className="meaning-section">
-          <h3>Meaning</h3>
-          <p>{currentWord.meaning}</p>
-        </div>
-
-        <div className="sentence-section">
-          <h3>Example Sentence</h3>
-          <p className="sentence">"{currentWord.sentence}"</p>
-        </div>
-
-        {currentWord.synonyms && currentWord.synonyms.length > 0 && (
-          <div className="synonyms-section">
-            <h3>Synonyms</h3>
-            <div className="synonyms">
-              {currentWord.synonyms.map((synonym, index) => (
-                <span key={index} className="synonym-tag">
-                  {synonym}
-                </span>
-              ))}
-            </div>
-          </div>
+        <button className="lm-line" onClick={handleSpeakMeaning}>
+          <span className="lm-line-icon" aria-hidden>📖</span>
+          <span className="lm-meaning">{currentWord.meaning}</span>
+          <span className="lm-line-hear" aria-hidden>🔊</span>
+        </button>
+        {!covered && (
+          <button className="lm-line" onClick={handleSpeakSentence}>
+            <span className="lm-line-icon" aria-hidden>💬</span>
+            <span className="sentence">"{currentWord.sentence}"</span>
+            <span className="lm-line-hear" aria-hidden>🔊</span>
+          </button>
         )}
 
-        {currentWord.hint && (
-          <div className="hint-section">
-            <h3>💡 Hint</h3>
-            <p>{currentWord.hint}</p>
-          </div>
+        {phase === 'reading' && hasMore && (
+          <>
+            <button
+              className="lm-more-toggle"
+              aria-expanded={showMore}
+              onClick={() => setShowMore((m) => !m)}
+            >
+              {showMore ? '▲ Less' : '▼ More about this word'}
+            </button>
+            {showMore && (
+              <div className="lm-more">
+                <div className="lm-more-meta">
+                  <span className="difficulty">{getDifficultyStars(currentWord.difficulty)}</span>
+                  {currentWord.category && <span className="category">{currentWord.category}</span>}
+                </div>
+                {facts.length > 0 && (
+                  <div className="word-facts">
+                    {facts.map((f) => (
+                      <span key={f} className="word-fact">{f}</span>
+                    ))}
+                  </div>
+                )}
+                {currentWord.synonyms && currentWord.synonyms.length > 0 && (
+                  <div className="synonyms-section">
+                    <h3>Words like it</h3>
+                    <div className="synonyms">
+                      {currentWord.synonyms.map((synonym, index) => (
+                        <span key={index} className="synonym-tag">
+                          {synonym}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {currentWord.hint && (
+                  <div className="hint-section">
+                    <h3>💡 Hint</h3>
+                    <p>{currentWord.hint}</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </>
         )}
       </div>
 
@@ -397,6 +505,7 @@ const LearnMode: React.FC<LearnModeProps> = ({
           key={currentWord.id}
           word={currentWord}
           variant={currentIndex}
+          streak={combo}
           isLast={currentIndex === words.length - 1}
           onPass={completeCurrentWord}
         />
@@ -410,33 +519,16 @@ const LearnMode: React.FC<LearnModeProps> = ({
             ← Previous
           </Button>
 
-          <div className="progress-indicator">
-            <div
-              className="progress-bar"
-              style={{ width: `${((currentIndex + 1) / words.length) * 100}%` }}
-            />
-          </div>
-
           <Button
-            onClick={() => { sfx.tap(); setPhase('checking') }}
+            onClick={() => { setKnownNote(null); setPhase('checking') }}
             variant="primary"
+            size="large"
             icon={currentIndex === words.length - 1 ? "🏁" : "→"}
           >
             Got it!
           </Button>
         </div>
       )}
-
-      <div className="combo-display">
-        <div className="combo-counter">
-          <span className="combo-icon">🔥</span>
-          <span className="combo-count">Streak: {combo}</span>
-        </div>
-        <div className="stars-earned">
-          <span className="star-icon">⭐</span>
-          <span className="star-count">Stars: {starsEarned}</span>
-        </div>
-      </div>
     </div>
   )
 }

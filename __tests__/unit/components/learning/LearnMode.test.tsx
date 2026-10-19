@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import LearnMode from '@/components/learning/LearnMode'
 import { useProgress } from '@/contexts/ProgressContext' // Import useProgress
 import { AudioProvider } from '@/contexts/AudioContext'
+import { ThemeProvider } from '@/contexts/ThemeContext'
 import React from 'react'
 import { LearningFlowController } from '@/services/progress/LearningFlow'
 import { wordBank } from '@/services/wordBank' // Import wordBank to mock its methods
@@ -56,11 +57,14 @@ const createMockLearningFlow = (overrides: Partial<LearningFlowController> = {})
   ...overrides,
 } as any)
 
+// The word trail hops the world's mascot along, so the theme is needed.
 const renderWithProviders = (ui: React.ReactElement) => {
   return render(
-    <AudioProvider>
-      {ui}
-    </AudioProvider>
+    <ThemeProvider>
+      <AudioProvider>
+        {ui}
+      </AudioProvider>
+    </ThemeProvider>
   )
 }
 

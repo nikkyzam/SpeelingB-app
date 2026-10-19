@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useRewardStore } from '../../../stores/rewards/useRewardStore'
 import { useAudio } from '../../../contexts/AudioContext'
 import sfx from '../shared/sfx'
+import useLater from '../shared/useLater'
+import Burst from '../shared/Burst'
 import './PrizeWheel.css'
 
 interface Prize {
@@ -26,6 +28,10 @@ const PRIZES: Prize[] = [
 
 const SLICE = 360 / PRIZES.length
 const LAST_SPIN_KEY = 'prizeWheelLastSpin'
+/** How long the wheel turns, matching the CSS transition. */
+export const SPIN_MS = 4200
+/** Clicks as the pegs go by — quick at first, slowing as the wheel does. */
+const TICKS = 14
 
 const today = () => new Date().toDateString()
 
@@ -46,48 +52,81 @@ const readLastSpin = (): string | null => {
 const PrizeWheel: React.FC = () => {
   const { addStars } = useRewardStore()
   const { speak } = useAudio()
+  const later = useLater()
 
   const [spunToday, setSpunToday] = useState(() => readLastSpin() === today())
   const [angle, setAngle] = useState(0)
   const [spinning, setSpinning] = useState(false)
   const [won, setWon] = useState<Prize | null>(null)
+  // A double tap on "Spin" used to start two spins — two prizes paid — because
+  // both taps read `spinning` before it changed. A ref settles at once.
+  const started = useRef(false)
+  /**
+   * The prize of a spin still turning. It is paid exactly once: when the wheel
+   * stops, or — if the child taps into a game first — as the wheel goes away.
+   * The bare timer it used to wait on kept running after the wheel had gone.
+   */
+  const pending = useRef<Prize | null>(null)
+  const addRef = useRef(addStars)
+  addRef.current = addStars
+
+  const settle = (): Prize | null => {
+    const prize = pending.current
+    if (!prize) return null
+    pending.current = null
+    addRef.current(prize.stars)
+    try {
+      localStorage.setItem(LAST_SPIN_KEY, today())
+    } catch {
+      /* if storage is blocked they simply get another spin later */
+    }
+    return prize
+  }
+
+  // Leaving mid-spin still pays the spin (and uses it up) — nothing more.
+  useEffect(() => () => void settle(), []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const spin = () => {
-    if (spinning || spunToday) return
+    if (started.current || spinning || spunToday) return
+    started.current = true
     setSpinning(true)
     sfx.whoosh()
 
     const index = Math.floor(Math.random() * PRIZES.length)
+    pending.current = PRIZES[index]
     // Five full turns, then stop with the winning slice under the pointer.
     const target = 360 * 5 - (index * SLICE + SLICE / 2)
     setAngle(target)
 
-    setTimeout(() => {
-      const prize = PRIZES[index]
+    // Squared spacing: the clicks bunch up early and spread out as it slows.
+    for (let k = 1; k <= TICKS; k++) {
+      later(() => sfx.tap(), Math.round((SPIN_MS - 300) * (k / TICKS) ** 2))
+    }
+
+    later(() => {
+      const prize = settle()
+      if (!prize) return
       setWon(prize)
       setSpinning(false)
       setSpunToday(true)
-      addStars(prize.stars)
-      try {
-        localStorage.setItem(LAST_SPIN_KEY, today())
-      } catch {
-        /* if storage is blocked they simply get another spin later */
-      }
       sfx.fanfare()
-      speak(prize.stars >= 50 ? 'Jackpot!' : `You won ${prize.stars} stars!`)
-    }, 4200)
+      if (prize.stars >= 50) sfx.applause()
+      speak(prize.stars >= 50 ? 'Jackpot! Fifty stars!' : `You won ${prize.stars} stars!`)
+    }, SPIN_MS)
   }
 
   return (
     <div className="prize-wheel">
       <div className="pw-text">
         <h3>🎡 Daily Prize Wheel</h3>
-        <p>
+        <p aria-live="polite">
           {won
             ? `${won.icon} You won ${won.stars} stars! Come back tomorrow for another spin.`
-            : spunToday
-              ? 'Already spun today — a fresh spin is waiting tomorrow! 🌙'
-              : 'One free spin every day. Everybody wins something!'}
+            : spinning
+              ? 'Round and round it goes… 🤞'
+              : spunToday
+                ? 'Already spun today — a fresh spin is waiting tomorrow! 🌙'
+                : 'One free spin every day. Everybody wins something!'}
         </p>
         <button className="pw-btn" onClick={spin} disabled={spinning || spunToday}>
           {spinning ? 'Spinning…' : spunToday ? '✅ Spun today' : '🎡 Spin the wheel!'}
@@ -116,6 +155,7 @@ const PrizeWheel: React.FC = () => {
           ))}
           <span className="pw-hub" aria-hidden>🎁</span>
         </div>
+        <Burst trigger={won ? 1 : 0} emoji={won && won.stars >= 50 ? ['🏆', '⭐', '🌟', '🎉'] : undefined} count={12} />
       </div>
     </div>
   )

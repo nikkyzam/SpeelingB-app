@@ -1,9 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import ReviewSchedule from '../../../services/progress/ReviewSchedule'
 import { pickRounds } from '../shared/plurals'
-import sfx from '../shared/sfx'
+import useCheer from '../shared/useCheer'
+import useLater from '../shared/useLater'
+import Burst from '../shared/Burst'
+import GameEmpty from '../shared/GameEmpty'
 import './WordMachine.css'
 
 interface WordMachineProps {
@@ -12,7 +15,14 @@ interface WordMachineProps {
   rounds?: number
 }
 
-const REVEAL_MS = 2400
+/** A right answer moves on after this… */
+const REVEAL_MS = 2200
+/** …and a wrong one waits for the rule to be said out loud. */
+const LESSON_MS = 3800
+
+/** The lesson as a voice should say it: "box → boxes" reads "box becomes boxes". */
+export const spokenLesson = (lesson: string): string =>
+  lesson.replace(/\s*→\s*/g, ' becomes ').replace(/[“”]/g, '')
 
 /**
  * Feed a word into the machine and out comes more than one of it.
@@ -26,6 +36,8 @@ const REVEAL_MS = 2400
  */
 const WordMachine: React.FC<WordMachineProps> = ({ onComplete, words: providedWords, rounds = 6 }) => {
   const { speak } = useAudio()
+  const cheer = useCheer()
+  const later = useLater()
 
   const gameRounds = useMemo(
     () => pickRounds(providedWords && providedWords.length > 0 ? providedWords : [], rounds),
@@ -36,27 +48,36 @@ const WordMachine: React.FC<WordMachineProps> = ({ onComplete, words: providedWo
   const [score, setScore] = useState(0)
   const [streak, setStreak] = useState(0)
   const [picked, setPicked] = useState<string | null>(null)
+  const [cheerLine, setCheerLine] = useState('')
+  const [hits, setHits] = useState(0)
+  // One answer per word, however fast the taps: the record and the score both
+  // happen exactly once.
+  const locked = useRef(false)
 
   const current = gameRounds[index]
 
   useEffect(() => {
-    if (current) speak(`One ${current.plural.singular}. What about two?`)
+    if (!current) return
+    setPicked(null)
+    locked.current = false
+    // Queued: the rule spoken after a miss is long, and it's the lesson.
+    speak(`One ${current.plural.singular}. What about two?`, { queue: true })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index])
+  }, [index, gameRounds])
 
   if (!current) {
     return (
       <div className="word-machine">
-        <p className="wm-empty">
-          The machine needs words it knows how to change — learn a few more and come back! ⚙️
-        </p>
-        <button className="wm-btn" onClick={() => onComplete(0)}>Back to Games</button>
+        <GameEmpty icon="⚙️">
+          The machine needs words it knows how to change — learn a few more and come back!
+        </GameEmpty>
       </div>
     )
   }
 
   const choose = (choice: string) => {
-    if (picked) return
+    if (locked.current) return
+    locked.current = true
     setPicked(choice)
 
     const correct = choice === current.plural.plural
@@ -69,23 +90,30 @@ const WordMachine: React.FC<WordMachineProps> = ({ onComplete, words: providedWo
       points = 25 + (nextStreak >= 3 ? 10 : 0)
       setScore((s) => s + points)
       setStreak(nextStreak)
-      sfx.correct()
-      speak(`${current.plural.plural}! ${current.plural.rule === 'special' ? 'You knew the tricky one!' : ''}`)
+      setHits((h) => h + 1)
+      setCheerLine(
+        cheer.hit({
+          say: `${current.plural.plural}! ${current.plural.rule === 'special' ? 'You knew the tricky one!' : ''}`,
+        })
+      )
     } else {
       setStreak(0)
-      sfx.wrong()
-      speak(`Not quite. Two ${current.plural.plural}.`)
+      // The rule is the lesson, so it is said as well as shown.
+      setCheerLine(
+        cheer.miss({ say: `Two ${current.plural.plural}. ${spokenLesson(current.plural.lesson)}` })
+      )
     }
 
-    window.setTimeout(() => {
+    later(() => {
       if (index < gameRounds.length - 1) {
-        setIndex((i) => i + 1)
+        // Same step as the index, or the next word's first frame shows its
+        // plural already in the output box.
         setPicked(null)
+        setIndex((i) => i + 1)
       } else {
-        sfx.win()
         onComplete(score + points)
       }
-    }, REVEAL_MS)
+    }, correct ? REVEAL_MS : LESSON_MS)
   }
 
   const revealed = picked !== null
@@ -146,8 +174,11 @@ const WordMachine: React.FC<WordMachineProps> = ({ onComplete, words: providedWo
 
       {revealed && (
         <div className={`wm-lesson ${right ? 'ok' : 'bad'}`}>
-          <span className="wm-lesson-icon" aria-hidden>{right ? '✅' : '💡'}</span>
-          <span>{current.plural.lesson}</span>
+          {right && <Burst trigger={hits} />}
+          <span className="wm-lesson-icon" aria-hidden>{right ? '🎉' : '💡'}</span>
+          <span>
+            <strong className="wm-lesson-cheer">{cheerLine}</strong> {current.plural.lesson}
+          </span>
         </div>
       )}
     </div>

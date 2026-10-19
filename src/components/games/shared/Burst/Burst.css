@@ -1,0 +1,34 @@
+.bst-burst {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+.bst-piece {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 1.4rem;
+  line-height: 1;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  animation: bst-fly 0.8s ease-out forwards;
+}
+@keyframes bst-fly {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--bst-angle)) translateX(0) scale(0.4);
+  }
+  70% { opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--bst-angle)) translateX(var(--bst-reach)) scale(1.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bst-burst { display: none; }
+}

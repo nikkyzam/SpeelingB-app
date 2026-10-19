@@ -61,8 +61,13 @@
   border: 2px solid transparent;
 }
 .ml-cell.blank { border: 3px dashed var(--primary); color: var(--primary-2); }
-.ml-cell.blank.ok { border-color: var(--success); background: rgba(47,191,113,0.15); color: var(--success); animation: pop-in 200ms both; }
-.ml-cell.blank.bad { border-color: var(--error); background: rgba(239,71,111,0.15); color: var(--error); animation: shake 0.5s; }
+.ml-cell.blank.ok { border-style: solid; border-color: var(--success); background: rgba(47,191,113,0.15); color: var(--success); animation: pop-in 200ms both; }
+.ml-word.shake { animation: ml-shake 0.4s ease; }
+@keyframes ml-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
 
 .ml-choices {
   display: flex;
@@ -87,7 +92,7 @@
 .ml-choice:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.05); }
 .ml-choice:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,0.18); }
 .ml-choice.correct { background: linear-gradient(180deg, #34E0A1, var(--success)); }
-.ml-choice.wrong { background: linear-gradient(180deg, #FF8E8E, var(--error)); }
+.ml-choice.missed { background: var(--card-soft); color: var(--text-soft); box-shadow: none; text-decoration: line-through; }
 .ml-choice:disabled { cursor: default; }
 
 .ml-flash {
@@ -99,13 +104,19 @@
   padding: 0.7rem 1rem;
   border-radius: var(--radius-md);
   animation: pop-in var(--transition-normal) both;
+  position: relative;
 }
 .ml-flash.ok { background: linear-gradient(90deg, var(--success), #4EF4C5); color: #fff; }
-.ml-flash.bad { background: var(--card-soft); color: var(--text); border: 2px solid var(--error); }
+.ml-flash.bad { background: var(--card-soft); color: var(--text); border: 2px solid var(--warning); }
 
 @media (max-width: 600px) {
   .ml-header { flex-direction: column; align-items: stretch; text-align: center; }
   .ml-stats { justify-content: center; }
   .ml-cell { min-width: 2.2rem; height: 3rem; font-size: 1.4rem; }
   .ml-choice { width: 3rem; height: 3.2rem; font-size: 1.3rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ml-word.shake { animation: none; }
+  .ml-choice { transition: none; }
 }

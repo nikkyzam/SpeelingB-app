@@ -1,0 +1,158 @@
+[
+  {
+    "id": "p-cats",
+    "grade": 1,
+    "topic": "g1-deduce",
+    "kind": "reasons",
+    "claim": "All cats have tails. Max is a cat. So Max has a tail.",
+    "steps": [
+      {
+        "text": "All cats have tails.",
+        "reason": "Given"
+      },
+      {
+        "text": "Max is a cat.",
+        "reason": "Given"
+      },
+      {
+        "text": "So Max has a tail.",
+        "reason": "Applying the rule to Max"
+      }
+    ],
+    "reasons": [
+      "Given",
+      "Applying the rule to Max",
+      "Guessing",
+      "Counting"
+    ],
+    "hints": [
+      "A 'Given' is something the problem tells you is true.",
+      "The last step takes the rule about all cats and uses it on one cat."
+    ]
+  },
+  {
+    "id": "p-even-sum",
+    "grade": 3,
+    "topic": "g3-patterns",
+    "kind": "order",
+    "claim": "Adding two even numbers always gives an even number.",
+    "steps": [
+      {
+        "text": "An even number is made of pairs with none left over."
+      },
+      {
+        "text": "Take two even numbers, each made only of pairs."
+      },
+      {
+        "text": "Putting them together still leaves no odd one out."
+      },
+      {
+        "text": "So the total is even."
+      }
+    ],
+    "hints": [
+      "Start with what the word 'even' means.",
+      "The last step should say the same thing as the claim."
+    ]
+  },
+  {
+    "id": "p-triangle-180",
+    "grade": 5,
+    "topic": "g5-angletri",
+    "kind": "reasons",
+    "claim": "The angles inside a triangle add to 180°.",
+    "steps": [
+      {
+        "text": "Draw a line through one vertex parallel to the opposite side.",
+        "reason": "Construction"
+      },
+      {
+        "text": "The two outer angles equal the two far angles of the triangle.",
+        "reason": "Alternate angles on parallel lines are equal"
+      },
+      {
+        "text": "Those three angles sit on a straight line.",
+        "reason": "Angles on a straight line add to 180°"
+      },
+      {
+        "text": "So the triangle's three angles add to 180°.",
+        "reason": "Substituting the equal angles"
+      }
+    ],
+    "reasons": [
+      "Construction",
+      "Alternate angles on parallel lines are equal",
+      "Angles on a straight line add to 180°",
+      "Substituting the equal angles",
+      "Vertically opposite angles are equal",
+      "Because it looks true"
+    ],
+    "hints": [
+      "The first step draws a new line. Drawing something new is called a construction.",
+      "Find the step about a straight line: angles on a straight line add to 180°."
+    ]
+  },
+  {
+    "id": "p-infinite-primes",
+    "grade": 6,
+    "topic": "g6-perfect",
+    "kind": "order",
+    "claim": "There is no largest prime number.",
+    "steps": [
+      {
+        "text": "Suppose there were a largest prime, and list every prime up to it."
+      },
+      {
+        "text": "Multiply them all together and add 1. Call the result N."
+      },
+      {
+        "text": "N leaves remainder 1 when divided by any prime on the list."
+      },
+      {
+        "text": "So N has a prime factor not on the list, or is itself prime."
+      },
+      {
+        "text": "Either way there is a prime beyond the supposed largest — a contradiction."
+      }
+    ],
+    "hints": [
+      "This proof starts by pretending the opposite is true.",
+      "It ends by showing the pretend idea can't be right."
+    ]
+  },
+  {
+    "id": "p-induction-sum",
+    "grade": 8,
+    "topic": "g8-series",
+    "kind": "blanks",
+    "claim": "1 + 2 + ... + n = n(n+1)/2 for every whole number n ≥ 1.",
+    "steps": [
+      {
+        "text": "Check n = 1: the left side is 1 and the right side is 1(2)/2 = 1."
+      },
+      {
+        "missing": true,
+        "choices": [
+          "Assume the formula holds for some n = k.",
+          "Assume the formula holds for every n at once.",
+          "Check n = 2 and conclude it always works.",
+          "Assume the formula is false."
+        ],
+        "answer": 0
+      },
+      {
+        "text": "Then 1 + ... + k + (k+1) = k(k+1)/2 + (k+1)."
+      },
+      {
+        "text": "That simplifies to (k+1)(k+2)/2, which is the formula for n = k+1."
+      },
+      {
+        "text": "So it holds for 1, and whenever it holds for k it holds for k+1."
+      }
+    ],
+    "hints": [
+      "Induction has two parts: a first case, and a step from k to k + 1.",
+      "Before you can go from k to k + 1, you need to suppose it works for k."
+    ]
+  }
+]

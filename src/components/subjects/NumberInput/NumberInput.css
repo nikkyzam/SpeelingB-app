@@ -1,0 +1,52 @@
+.number-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 8px);
+  max-width: 320px;
+}
+
+.number-input-box {
+  font-family: var(--font-primary, 'Baloo 2', cursive);
+  font-size: 1.4rem;
+  padding: 10px 14px;
+  border: 3px solid var(--border, #e6dcc4);
+  border-radius: var(--radius-md, 12px);
+  background: var(--card, #fff);
+  color: var(--text, #4a3200);
+}
+
+.number-input-box:focus {
+  outline: none;
+  border-color: var(--primary, #f5a623);
+}
+
+.number-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 240px;
+  gap: 6px;
+}
+
+.number-pad button {
+  min-height: 44px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius-sm, 8px);
+  background: var(--card-soft, #fff8e1);
+  color: var(--text, #4a3200);
+  box-shadow: var(--shadow-sm, 0 2px 0 rgba(0, 0, 0, 0.08));
+  cursor: pointer;
+}
+
+.number-pad button:active {
+  transform: translateY(1px);
+}
+
+.number-pad .number-pad-extra {
+  background: rgba(var(--primary-rgb, 245, 166, 35), 0.18);
+}
+
+.number-pad .number-pad-wide {
+  grid-column: span 3;
+}

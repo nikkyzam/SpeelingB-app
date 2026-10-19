@@ -2,13 +2,15 @@ import React from 'react'
 import { beforeEach, afterEach, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent, act, cleanup } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-const h = vi.hoisted(() => ({ flow: null as any, addStars: vi.fn(), word: 'cat' }))
+const h = vi.hoisted(() => ({ flow: null as any, addStars: vi.fn(), speak: vi.fn(), word: 'cat' }))
 vi.mock('@/contexts/ProgressContext', () => ({ useProgress: () => ({ learningFlow: h.flow }) }))
 vi.mock('@/contexts/ThemeContext', () => ({ useTheme: () => ({ world: { mascot: '🐝' } }) }))
-vi.mock('@/contexts/AudioContext', () => ({ useAudio: () => ({ speak: vi.fn() }) }))
+vi.mock('@/contexts/AudioContext', () => ({ useAudio: () => ({ speak: h.speak }) }))
 vi.mock('@/stores/rewards/useRewardStore', () => ({ useRewardStore: () => ({ addStars: h.addStars }) }))
 vi.mock('@/services/persistence/FirebaseSync', () => ({ default: { syncToServer: vi.fn() } }))
-vi.mock('@/components/games/shared/sfx', () => ({ default: { tap: vi.fn() } }))
+vi.mock('@/components/games/shared/sfx', () => ({
+  default: { tap: vi.fn(), correct: vi.fn(), wrong: vi.fn(), win: vi.fn(), pop: vi.fn(), star: vi.fn(), applause: vi.fn(), fanfare: vi.fn() },
+}))
 vi.mock('@/services/wordBank', () => ({ wordBank: { getWordById: (id: string) => ({ id, word: h.word, sentence: `A ${h.word} sat.`, meaning: 'An animal' }) } }))
 import DailyQuiz from '@/pages/DailyQuiz'
 import { LearningFlowController } from '@/services/progress/LearningFlow'
@@ -41,7 +43,8 @@ it('counts only the words still waiting for another try', () => {
   mount()
   answer('kat')
   expect(screen.getByText('1 to try again')).toBeInTheDocument()
-  act(() => vi.advanceTimersByTime(1800))
+  // The answer stays up long enough to hear it spelled out (it was 1.8s).
+  act(() => vi.advanceTimersByTime(3000))
   answer('cat')
   act(() => vi.advanceTimersByTime(900))
   // Spelled on the second go: nothing is left to try again.
@@ -104,4 +107,25 @@ it('allows weekly practice without another reward', () => {
   expect(screen.getByRole('dialog')).toBeInTheDocument()
   expect(h.addStars).not.toHaveBeenCalled()
   expect(h.flow.isDailyQuizPassed()).toBe(false)
+})
+
+it('asks bee-style, praises a right answer and spells a miss out letter by letter', () => {
+  mount()
+  expect(h.speak).toHaveBeenCalledWith('cat. A cat sat. cat.')
+  answer('kat')
+  // Not "It is spelled cat" — the letters are what a child needs.
+  expect(h.speak.mock.lastCall?.[0]).toMatch(/cat is spelled c, a, t\.$/)
+  expect(screen.getByRole('status')).toHaveTextContent('It\'s “cat”')
+  act(() => vi.advanceTimersByTime(3000))
+  // The same word comes straight back, and is asked again — queued behind the
+  // letters, so the prompt can't cut them off.
+  expect(h.speak).toHaveBeenLastCalledWith('cat. A cat sat. cat.', { queue: true })
+  answer('cat')
+  expect(screen.getByRole('status')).toHaveTextContent('⭐')
+})
+
+it('goes back Home, not to the games that are still locked', () => {
+  mount()
+  expect(screen.getByRole('button', { name: '← Spelling' })).toBeInTheDocument()
+  expect(screen.queryByRole('button', { name: '← Back' })).not.toBeInTheDocument()
 })

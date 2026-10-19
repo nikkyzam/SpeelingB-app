@@ -1,0 +1,159 @@
+.bee-bingo {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  text-align: center;
+}
+
+.bb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  border-bottom: 2px dashed var(--border);
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  text-align: left;
+}
+.bb-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.bb-stats { display: flex; gap: var(--spacing-lg); }
+.bb-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
+.bb-stat strong { font-size: 1.15rem; color: var(--text); }
+
+.bb-caller {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-md);
+}
+.bb-call-tag {
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--primary);
+}
+.bb-btn {
+  border: none;
+  border-radius: var(--radius-round);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  padding: 0.55rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.bb-btn:disabled { opacity: 0.5; cursor: default; }
+
+/* --- the card -------------------------------------------------------------------- */
+
+.bb-card {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  width: min(100%, 26rem);
+  margin: 0 auto;
+  padding: 10px;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--primary) 22%, var(--card));
+}
+
+.bb-square {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 4px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  color: var(--text);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  cursor: pointer;
+  touch-action: manipulation;
+  /* Visible, so a mark's star burst can fly past the square's edge. */
+  overflow: visible;
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+.bb-square:disabled { cursor: default; }
+.bb-word {
+  /* Long words wrap anywhere rather than spill out of their square. */
+  font-size: clamp(0.75rem, 3.6vw, 1.2rem);
+  overflow-wrap: anywhere;
+  line-height: 1.1;
+}
+.bb-square.free {
+  flex-direction: column;
+  background: color-mix(in srgb, var(--primary) 35%, var(--card));
+  cursor: default;
+}
+.bb-free { font-size: 0.8rem; letter-spacing: 0.1em; }
+/* The stamp sits in the corner, so the marked word can still be read. */
+.bb-stamp {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-size: clamp(1rem, 4.5vw, 1.6rem);
+  line-height: 1;
+  pointer-events: none;
+}
+.bb-square.free .bb-stamp { position: static; opacity: 1; font-size: 1.8rem; }
+.bb-square.marked {
+  border-color: var(--success);
+  background: color-mix(in srgb, var(--success) 18%, var(--card));
+}
+.bb-square.line {
+  border-color: var(--success);
+  background: color-mix(in srgb, var(--success) 40%, var(--card));
+}
+.bb-square.wobble { animation: bb-wobble 0.4s ease; }
+@keyframes bb-wobble {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-4deg); }
+  75% { transform: rotate(4deg); }
+}
+.bb-square.buzz {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 45%, transparent);
+  animation: bb-buzz 0.9s ease-in-out infinite;
+}
+@keyframes bb-buzz {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+.bb-turned { display: flex; flex-direction: column; gap: 2px; font-size: clamp(0.7rem, 3.2vw, 1rem); }
+.bb-turned s { color: var(--error); opacity: 0.8; }
+.bb-turned span { color: var(--success); }
+
+.bb-note {
+  margin: var(--spacing-md) 0 0;
+  min-height: 1.3em;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  color: var(--text-soft);
+}
+.bb-note.ok { color: var(--success); }
+.bb-note.bad { color: var(--error); }
+.bb-note.help { color: var(--primary); }
+.bb-lesson { margin: var(--spacing-xs) 0 0; font-size: 0.85rem; color: var(--text-soft); }
+
+.bb-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
+
+@media (prefers-reduced-motion: reduce) {
+  .bb-square.wobble,
+  .bb-square.buzz { animation: none; }
+  .bb-square { transition: none; }
+}

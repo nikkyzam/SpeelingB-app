@@ -22,7 +22,7 @@
   text-align: left;
 }
 .ws2-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
-.ws2-stats { display: flex; gap: var(--spacing-lg); }
+.ws2-stats { display: flex; gap: var(--spacing-md); flex-wrap: wrap; }
 .ws2-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .ws2-stat strong { font-size: 1.15rem; color: var(--text); }
 
@@ -31,6 +31,18 @@
   font-weight: 800;
   color: var(--accent);
   margin-bottom: var(--spacing-md);
+}
+.ws2-hear {
+  /* A finger-sized target for a small child (44px). */
+  min-width: 44px;
+  min-height: 44px;
+  margin-left: 8px;
+  border: 2px solid var(--border);
+  background: var(--card-soft);
+  border-radius: var(--radius-round);
+  padding: 2px 10px;
+  cursor: pointer;
+  font-size: 1rem;
 }
 
 .ws2-card {
@@ -53,7 +65,7 @@
 }
 .ws2-card-speak { font-size: 1rem; opacity: 0.7; }
 .ws2-card.good { border-color: var(--success); background: color-mix(in srgb, var(--success) 18%, var(--card-soft)); }
-.ws2-card.bad { border-color: var(--error); animation: shake 0.45s; }
+.ws2-card.bad { border-color: var(--warning); border-style: dashed; animation: shake 0.45s; }
 
 .ws2-baskets { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); }
 
@@ -72,7 +84,7 @@
 }
 .ws2-basket:hover:not(:disabled) { transform: translateY(-4px); border-color: var(--primary); }
 .ws2-basket.target { border-color: var(--success); border-style: solid; background: color-mix(in srgb, var(--success) 14%, var(--card-soft)); }
-.ws2-basket.missed { border-color: var(--error); animation: shake 0.45s; }
+.ws2-basket.missed { border-color: var(--warning); animation: shake 0.45s; }
 
 .ws2-basket-icon { font-size: 2rem; }
 .ws2-basket-label { font-family: var(--font-primary); font-weight: 800; font-size: 0.95rem; line-height: 1.15; }
@@ -80,6 +92,7 @@
 .ws2-basket-words { font-size: 0.7rem; color: var(--text-soft); word-break: break-word; min-height: 1rem; }
 
 .ws2-flash {
+  position: relative;
   margin-top: var(--spacing-md);
   padding: 0.7rem 1rem;
   border-radius: var(--radius-md);
@@ -90,20 +103,17 @@
 .ws2-flash.ok { background: linear-gradient(90deg, var(--success), #4EF4C5); color: #fff; }
 .ws2-flash.bad { background: var(--card-soft); border: 2px solid var(--border); color: var(--text); }
 
-.ws2-btn {
-  border: none;
-  cursor: pointer;
-  font-family: var(--font-primary);
-  font-weight: 800;
-  color: #fff;
-  background: linear-gradient(180deg, var(--primary), var(--primary-2));
-  border-radius: var(--radius-round);
-  padding: 0.7rem 1.4rem;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
-}
-.ws2-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
 
 @media (max-width: 520px) {
   .ws2-header { flex-direction: column; align-items: stretch; }
   .ws2-stats { justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ws2-card,
+  .ws2-card.bad,
+  .ws2-basket.missed,
+  .ws2-flash { animation: none; }
+  .ws2-basket { transition: none; }
+  .ws2-basket:hover:not(:disabled) { transform: none; }
 }

@@ -1,0 +1,18 @@
+.ge-empty {
+  max-width: 32rem;
+  margin: var(--spacing-xl) auto;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  background: var(--card);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-lg);
+  color: var(--text);
+  text-align: center;
+}
+.ge-icon { font-size: 3.5rem; line-height: 1; margin-bottom: var(--spacing-sm); }
+.ge-text {
+  margin: 0;
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text-soft);
+}

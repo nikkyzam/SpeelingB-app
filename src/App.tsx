@@ -29,6 +29,14 @@ import BeeTournament from './pages/BeeTournament'
 import TrophyRoom from './pages/TrophyRoom'
 import SiblingChallenge from './pages/SiblingChallenge'
 import WordHunt from './pages/WordHunt'
+import Subjects from './pages/Subjects'
+import SubjectPage from './pages/Subjects/SubjectPage'
+import TestPage from './pages/Subjects/TestPage'
+import MathQuest from './pages/Subjects/MathQuest'
+import QuestTopic from './pages/Subjects/QuestTopic'
+import MathArcadePage from './pages/Subjects/MathArcadePage'
+import MathProofs from './pages/Subjects/MathProofs'
+import MathPuzzles from './pages/Subjects/MathPuzzles'
 import SiblingShowdown from './components/games/SiblingShowdown'
 
 // Layout Components
@@ -115,7 +123,8 @@ function App() {
                 <Header />
                 <main className="main-content">
                   <Routes>
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<Subjects />} />
+                    <Route path="/spelling" element={<Home />} />
                     <Route path="/learn" element={<LearningHub />} />
                     <Route path="/review" element={<Review />} />
                     <Route path="/daily-quiz" element={<DailyQuiz />} />
@@ -133,6 +142,14 @@ function App() {
                     <Route path="/challenge" element={<SiblingChallenge />} />
                     <Route path="/hunt" element={<WordHunt />} />
                     <Route path="/showdown" element={<SiblingShowdown />} />
+                    <Route path="/subjects" element={<Navigate to="/" replace />} />
+                    <Route path="/subjects/math/quest/topic/:topicId" element={<QuestTopic />} />
+                    <Route path="/subjects/math/quest/:grade" element={<MathQuest />} />
+                    <Route path="/subjects/math/arcade" element={<MathArcadePage />} />
+                    <Route path="/subjects/math/proofs" element={<MathProofs />} />
+                    <Route path="/subjects/math/puzzles" element={<MathPuzzles />} />
+                    <Route path="/subjects/:subjectId/tests/:testId" element={<TestPage />} />
+                    <Route path="/subjects/:subjectId" element={<SubjectPage />} />
                     <Route path="/settings" element={<Settings />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>

@@ -23,7 +23,8 @@ export const misspell = (w: string): string => {
     opts.push(w.slice(0, i) + w[i + 1] + w[i] + w.slice(i + 2))
   }
   {
-    const i = Math.floor(Math.random() * w.length)
+    // Never the first letter: nobody writes "ccat", so it gave the game away.
+    const i = w.length > 1 ? 1 + Math.floor(Math.random() * (w.length - 1)) : 0
     opts.push(w.slice(0, i) + w[i] + w.slice(i))
   }
   if (w.length > 3) {
@@ -103,7 +104,8 @@ export const RHYME_FAMILIES: string[][] = [
   ['play', 'day', 'stay', 'gray', 'today'],
   ['boat', 'coat', 'goat', 'float', 'note'],
   ['bug', 'hug', 'rug', 'mug', 'jug'],
-  ['sun', 'run', 'fun', 'bun', 'one'],
+  // Not "one": it rhymes with sun by ear but ends like "bone", "prone", "ozone".
+  ['sun', 'run', 'fun', 'bun', 'spun'],
   ['bell', 'shell', 'well', 'spell', 'tell'],
   ['duck', 'truck', 'luck', 'stuck', 'buck'],
   ['pig', 'big', 'dig', 'wig', 'twig'],

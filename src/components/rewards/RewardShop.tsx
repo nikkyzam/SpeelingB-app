@@ -79,14 +79,14 @@ const RewardShop: React.FC = () => {
         <PointsDisplay />
 
         {/* Stars used to have nowhere visible to go. This is where they land. */}
-        <button className="buddy-shop-banner" onClick={() => navigate('/')}>
+        <button className="buddy-shop-banner" onClick={() => navigate('/spelling')}>
           <span className="bsb-icon" aria-hidden>🎽</span>
           <span className="bsb-text">
             <strong>{buddyName ? `Dress up ${buddyName}` : 'Meet your buddy'}</strong>
             <span>
               {buddyName
                 ? 'Spend your stars on hats, specs and sparkles for your buddy'
-                : 'Hatch a buddy on the home screen, then spend your stars on it'}
+                : 'Hatch a buddy on the Spelling page, then spend your stars on it'}
             </span>
           </span>
           <span className="bsb-go" aria-hidden>→</span>

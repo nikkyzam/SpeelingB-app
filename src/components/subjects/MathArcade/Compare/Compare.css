@@ -1,0 +1,103 @@
+.ma-cmp { color: var(--text); }
+
+.ma-cmp-q {
+  margin: 0 0 var(--spacing-md);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.25rem;
+}
+
+.ma-cmp-plates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+.ma-cmp-plate {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  min-height: 160px;
+  padding: var(--spacing-md);
+  border: 3px solid var(--border);
+  border-radius: 50%/40%;
+  background: var(--card-soft);
+  box-shadow: var(--shadow-pop);
+  color: var(--text);
+  font-family: var(--font-primary);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+.ma-cmp-plate:active { transform: translateY(3px); }
+.ma-cmp-plate:disabled { cursor: default; }
+.ma-cmp-plate.right,
+.ma-cmp-plate.reveal { border-color: var(--success); background: var(--card); }
+.ma-cmp-plate.reveal { animation: ma-cmp-glow 0.9s ease-in-out infinite alternate; }
+.ma-cmp-plate.wrong { opacity: 0.45; }
+
+.ma-cmp-num { font-weight: 800; font-size: clamp(2.4rem, 10vw, 3.4rem); }
+.ma-cmp-count { font-weight: 800; font-size: 1.3rem; color: var(--success); }
+
+/* Rows of five, like a ten-frame, so a pile can be counted at a glance. */
+.ma-cmp-berries {
+  display: grid;
+  grid-template-columns: repeat(5, 22px);
+  gap: 6px;
+  justify-content: center;
+}
+.ma-cmp-berries i {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, var(--accent) 45%);
+}
+
+.ma-cmp-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin: var(--spacing-md) 0 var(--spacing-lg);
+  font-family: var(--font-primary);
+  font-weight: 800;
+}
+.ma-cmp-expr {
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-md);
+  background: var(--card-soft);
+  border: 2px solid var(--border);
+  font-size: clamp(1.6rem, 6vw, 2.2rem);
+}
+.ma-cmp-hole {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 50%;
+  border: 3px dashed var(--border);
+  color: var(--primary);
+  font-size: 2rem;
+}
+.ma-cmp-hole.filled { border-style: solid; border-color: var(--success); color: var(--success); }
+
+.ma-cmp-signs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+.ma-cmp-sign { font-size: 2.6rem; }
+
+@keyframes ma-cmp-glow {
+  from { box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0); }
+  to { box-shadow: 0 0 0 8px rgba(var(--primary-rgb), 0.45); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ma-cmp-plate { transition: none; }
+  .ma-cmp-plate.reveal { animation: none; }
+}

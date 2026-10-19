@@ -96,3 +96,9 @@
   .prize-wheel { justify-content: center; text-align: center; }
   .pw-text { min-width: 100%; }
 }
+
+/* Reduced motion: no long spin, just a short turn to the prize (the reveal
+   still waits for the same moment, so the suspense is kept by the clicks). */
+@media (prefers-reduced-motion: reduce) {
+  .pw-wheel { transition-duration: 0.8s; }
+}
