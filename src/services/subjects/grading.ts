@@ -21,6 +21,21 @@ export const parseNumber = (raw: string): number | null => {
   return Number.isFinite(v) ? v : null
 }
 
+/**
+ * An expression in one plain spelling: no spaces or times signs, plain
+ * minus, and "+ (−6)" read as "− 6" — so 6(3 + 2), 6 × (3+2) and 6(3+2)
+ * all match.
+ */
+export const normExpression = (s: string): string =>
+  s
+    .toLowerCase()
+    .replace(/[−–—]/g, '-')
+    .replace(/\s+/g, '')
+    .replace(/^=/, '')
+    .replace(/[×*·x](?=\()/g, '')
+    .replace(/\((-\d+(?:\.\d+)?)\)/g, '$1')
+    .replace(/\+-/g, '-')
+
 /** "(3, -2)", "3,-2" and "3 −2" all read as [3, -2]. */
 export const parsePair = (raw: string): [number, number] | null => {
   const nums = raw.replace(/[−–—]/g, '-').match(/-?\d*\.?\d+/g)
@@ -43,6 +58,7 @@ export const isAnswered = (q: Question, r: Response): boolean => {
     case 'pair':
       return typeof r === 'string' && parsePair(r) !== null
     case 'text':
+    case 'expression':
       return typeof r === 'string' && r.trim() !== ''
     case 'multi':
       return Array.isArray(r) && r.length > 0
@@ -68,6 +84,8 @@ export const isCorrect = (q: Question, r: Response): boolean => {
       return samePoint(parsePair(r as string)!, q.answer)
     case 'text':
       return q.accept.some((ok) => normText(ok) === normText(r as string))
+    case 'expression':
+      return q.accept.some((ok) => normExpression(ok) === normExpression(r as string))
     case 'multi': {
       const got = [...new Set(r as number[])].sort((a, b) => a - b)
       const want = [...q.answers].sort((a, b) => a - b)
@@ -105,6 +123,7 @@ export const correctAnswerText = (q: Question): string => {
     case 'pair':
       return fmtPoint(q.answer)
     case 'text':
+    case 'expression':
       return q.display
     case 'multi':
       return q.answers.map((i) => q.choices[i]).join('; ')
@@ -130,6 +149,7 @@ export const givenText = (q: Question, r: Response): string => {
     case 'number':
     case 'pair':
     case 'text':
+    case 'expression':
       return (r as string).trim()
     case 'multi':
       return [...(r as number[])].sort((a, b) => a - b).map((i) => q.choices[i]).join('; ')

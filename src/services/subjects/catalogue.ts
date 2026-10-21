@@ -81,6 +81,22 @@ export const TESTS: SubjectTest[] = [
     load: () => bank(import('../../data/subjects/math/decimal-operations.json')),
   },
   {
+    id: 'gcf-lcm-distributive',
+    subject: 'math',
+    grade: '6',
+    name: 'GCF, LCM & the Distributive Property',
+    desc: 'Factors and multiples, the ladder method, GCF-or-LCM word problems, and a(b + c) = ab + ac.',
+    forms: [
+      { id: 'F', name: 'Fresh Test', desc: 'Every skill from the notes, with all-new numbers.', recommended: true },
+      { id: 'G', name: 'Greatest Common Factor', desc: 'The GCF notes and assignment, as on the sheets.' },
+      { id: 'L', name: 'Least Common Multiple', desc: 'The LCM notes and assignment, as on the sheets.' },
+      { id: 'W', name: 'Word Problems', desc: 'Is it GCF or LCM? Then solve it.' },
+      { id: 'D', name: 'Distributive Property', desc: 'Expand a(b + c), and factor a sum using its GCF.' },
+      { id: 'K', name: 'Concept Check', desc: 'True/false, matching and ordering about the big ideas.', standalone: true },
+    ],
+    load: () => bank(import('../../data/subjects/math/gcf-lcm-distributive.json')),
+  },
+  {
     id: 'grade5-unit1',
     subject: 'math',
     grade: '5',

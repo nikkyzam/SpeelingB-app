@@ -6,6 +6,8 @@ interface NumberInputProps {
   onChange: (value: string) => void
   /** Adds the keys for an ordered pair: ( , ) */
   pair?: boolean
+  /** Adds the keys for an expression: ( ) + */
+  expression?: boolean
   disabled?: boolean
   onEnter?: () => void
   label?: string
@@ -26,7 +28,7 @@ const DIGITS = ['7', '8', '9', '4', '5', '6', '1', '2', '3']
  * half of the integer questions are negative — so on touch screens the system
  * keyboard stays shut and the child taps this pad instead.
  */
-const NumberInput: React.FC<NumberInputProps> = ({ value, onChange, pair, disabled, onEnter, label }) => {
+const NumberInput: React.FC<NumberInputProps> = ({ value, onChange, pair, expression, disabled, onEnter, label }) => {
   const touch = React.useMemo(isTouch, [])
   // Two quick taps can land before the parent re-renders; build on the last value sent, not the last prop.
   const latest = React.useRef(value)
@@ -47,7 +49,7 @@ const NumberInput: React.FC<NumberInputProps> = ({ value, onChange, pair, disabl
         inputMode={touch ? 'none' : 'decimal'}
         autoComplete="off"
         aria-label={label ?? (pair ? 'Your ordered pair' : 'Your answer')}
-        placeholder={pair ? '( x , y )' : 'Your answer'}
+        placeholder={pair ? '( x , y )' : expression ? 'e.g. 6(3 + 2)' : 'Your answer'}
         disabled={disabled}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => {
@@ -56,7 +58,7 @@ const NumberInput: React.FC<NumberInputProps> = ({ value, onChange, pair, disabl
       />
       {!disabled && (
         <div className="number-pad" role="group" aria-label="Number keys">
-          {[...DIGITS, '−', '0', '.', ...(pair ? ['(', ',', ')'] : [])].map((k) => (
+          {[...DIGITS, '−', '0', '.', ...(pair ? ['(', ',', ')'] : expression ? ['(', '+', ')'] : [])].map((k) => (
             <button key={k} type="button" className={/\d/.test(k) ? undefined : 'number-pad-extra'} onClick={() => press(k)}>
               {k}
             </button>

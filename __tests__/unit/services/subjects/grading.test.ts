@@ -80,6 +80,18 @@ describe('marking each kind of question', () => {
     expect(isCorrect(q, [[0, 1], [1, 4]])).toBe(false)
   })
 
+  it('expressions ignore spacing, times signs and how a negative is written', () => {
+    const q: Question = { ...base, kind: 'expression', accept: ['6(3+2)'], display: '6(3 + 2)' }
+    expect(isCorrect(q, '6 (3 + 2)')).toBe(true)
+    expect(isCorrect(q, '6 × (3+2)')).toBe(true)
+    expect(isCorrect(q, '6(2+3)')).toBe(false)
+    const neg: Question = { ...base, kind: 'expression', accept: ['-18-6'], display: '−18 + (−6)' }
+    expect(isCorrect(neg, '−18 + (−6)')).toBe(true)
+    expect(isCorrect(neg, '-18 + -6')).toBe(true)
+    expect(isCorrect(neg, '-18 - 6')).toBe(true)
+    expect(isCorrect(neg, '18 + 6')).toBe(false)
+  })
+
   it('ordered pairs compare both coordinates', () => {
     const q: Question = { ...base, kind: 'pair', answer: [4, 2] }
     expect(isCorrect(q, '(4, 2)')).toBe(true)

@@ -58,6 +58,8 @@ export type Question = QuestionBase &
     | { kind: 'order'; items: string[] }
     | { kind: 'number'; answer: number }
     | { kind: 'text'; accept: string[]; display: string }
+    /** A short math expression such as 6(3 + 2) or 30 + 15, typed on the number pad. */
+    | { kind: 'expression'; accept: string[]; display: string }
     /** Write an ordered pair. */
     | { kind: 'pair'; answer: [number, number] }
     /** Tap points onto a grid: exactly these points, or any `need` points on y = m·x + c. */
@@ -74,7 +76,7 @@ export type QuestionKind = Question['kind']
 /**
  * What a child has entered for a question. Shape depends on the kind:
  * - choice: the chosen index · truefalse: the boolean
- * - number, text, pair: exactly what was typed (graded leniently)
+ * - number, text, pair, expression: exactly what was typed (graded leniently)
  * - multi: chosen indices · order: item indices in the order tapped
  * - match: for each row, the index of the pair whose right side was picked (-1 for none)
  * - plot: the points placed

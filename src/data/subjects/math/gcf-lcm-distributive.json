@@ -1,0 +1,1195 @@
+{
+ "F": [
+  {
+   "id": "gcf-lcm-F-83",
+   "prompt": "Find the GCF of 12 and 42.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 12: 1, 2, 3, 4, 6, 12. Factors of 42: 1, 2, 3, 6, 7, 14, 21, 42. The biggest number in every list is 6.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "gcf-lcm-F-84",
+   "prompt": "Find the GCF of 27 and 45.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 27: 1, 3, 9, 27. Factors of 45: 1, 3, 5, 9, 15, 45. The biggest number in every list is 9.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 9
+  },
+  {
+   "id": "gcf-lcm-F-85",
+   "prompt": "Find the GCF of 56 and 32.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 56: 1, 2, 4, 7, 8, 14, 28, 56. Factors of 32: 1, 2, 4, 8, 16, 32. The biggest number in every list is 8.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "gcf-lcm-F-86",
+   "prompt": "Find the GCF of 13 and 20.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 13: 1, 13. Factors of 20: 1, 2, 4, 5, 10, 20. The biggest number in every list is 1. When the only common factor is 1, the GCF is 1.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 1
+  },
+  {
+   "id": "gcf-lcm-F-87",
+   "prompt": "Find the GCF of 24, 36 and 60.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 24: 1, 2, 3, 4, 6, 8, 12, 24. Factors of 36: 1, 2, 3, 4, 6, 9, 12, 18, 36. Factors of 60: 1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60. The biggest number in every list is 12.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "gcf-lcm-F-88",
+   "prompt": "Find the LCM of 4 and 6.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 4: 4, 8, 12. Multiples of 6: 6, 12. The first number on every list is 12.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "gcf-lcm-F-89",
+   "prompt": "Find the LCM of 9 and 12.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 9: 9, 18, 27, 36. Multiples of 12: 12, 24, 36. The first number on every list is 36.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 36
+  },
+  {
+   "id": "gcf-lcm-F-90",
+   "prompt": "Find the LCM of 7 and 3.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 7: 7, 14, 21. Multiples of 3: 3, 6, 9, 12, 15, 18, 21. The first number on every list is 21.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 21
+  },
+  {
+   "id": "gcf-lcm-F-91",
+   "prompt": "Find the LCM of 12 and 18.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 12: 12, 24, 36. Multiples of 18: 18, 36. The first number on every list is 36.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 36
+  },
+  {
+   "id": "gcf-lcm-F-92",
+   "prompt": "Find the LCM of 2, 3 and 5.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 2: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30. Multiples of 3: 3, 6, 9, 12, 15, 18, 21, 24, 27, 30. Multiples of 5: 5, 10, 15, 20, 25, 30. The first number on every list is 30.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 30
+  },
+  {
+   "id": "gcf-lcm-F-93",
+   "prompt": "Two buses leave the station together. One returns every 15 minutes, the other every 20 minutes. In how many minutes will they next be back together?",
+   "category": "Word Problems",
+   "explanation": "Multiples of 15: 15, 30, 45, 60. Multiples of 20: 20, 40, 60. They meet after 60 minutes.",
+   "kind": "number",
+   "answer": 60
+  },
+  {
+   "id": "gcf-lcm-F-94",
+   "prompt": "A teacher has 24 pencils and 36 erasers to share into identical kits with nothing left over. What is the greatest number of kits?",
+   "category": "Word Problems",
+   "explanation": "The GCF of 24 and 36 is 12, so 12 kits — each with 2 pencils and 3 erasers.",
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "gcf-lcm-F-95",
+   "prompt": "Juice boxes come in packs of 6 and snack bars in packs of 9. What is the smallest number of each you can buy to have the same amount?",
+   "category": "Word Problems",
+   "explanation": "Multiples of 6: 6, 12, 18. Multiples of 9: 9, 18. The LCM is 18 — 3 packs of juice and 2 packs of snacks.",
+   "kind": "number",
+   "answer": 18
+  },
+  {
+   "id": "gcf-lcm-F-96",
+   "prompt": "30 red beads and 45 blue beads are shared into identical bracelets — is this a GCF problem or an LCM problem?",
+   "category": "GCF or LCM?",
+   "explanation": "Sharing into equal groups — the GCF.",
+   "tip": "LCM: meeting again in the future; key words least, next, lowest. GCF: splitting into equal groups; key words greatest, most, highest.",
+   "kind": "choice",
+   "choices": [
+    "GCF",
+    "LCM"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "gcf-lcm-F-97",
+   "prompt": "Expand: 4(7 + 2) = ?",
+   "category": "Distributive Property",
+   "hint": "Multiply the outside number by EACH number inside the brackets.",
+   "explanation": "4 × 7 = 28 and 4 × 2 = 8, so 4(7 + 2) = 28 + 8. Together that is 36.",
+   "tip": "a(b + c) = ab + ac — the outside number visits everyone inside.",
+   "kind": "expression",
+   "accept": [
+    "28+8",
+    "8+28"
+   ],
+   "display": "28 + 8"
+  },
+  {
+   "id": "gcf-lcm-F-98",
+   "prompt": "Expand: 9(3 + 5) = ?",
+   "category": "Distributive Property",
+   "hint": "Multiply the outside number by EACH number inside the brackets.",
+   "explanation": "9 × 3 = 27 and 9 × 5 = 45, so 9(3 + 5) = 27 + 45. Together that is 72.",
+   "tip": "a(b + c) = ab + ac — the outside number visits everyone inside.",
+   "kind": "expression",
+   "accept": [
+    "27+45",
+    "45+27"
+   ],
+   "display": "27 + 45"
+  },
+  {
+   "id": "gcf-lcm-F-99",
+   "prompt": "Expand: −2(5 + 4) = ?",
+   "category": "Distributive Property",
+   "hint": "Multiply the outside number by EACH number inside the brackets.",
+   "explanation": "−2 × 5 = −10 and −2 × 4 = −8, so −2(5 + 4) = −10 + (−8). Together that is −18.",
+   "tip": "a(b + c) = ab + ac — the outside number visits everyone inside.",
+   "kind": "expression",
+   "accept": [
+    "-10+-8",
+    "-8+-10",
+    "-10+(-8)"
+   ],
+   "display": "−10 + (−8)"
+  },
+  {
+   "id": "gcf-lcm-F-100",
+   "prompt": "Rewrite 15 + 25 using the distributive property. Take out the GCF.",
+   "category": "Distributive Property",
+   "hint": "Find the GCF first. It goes outside the brackets.",
+   "explanation": "The GCF of 15 and 25 is 5. 15 ÷ 5 = 3 and 25 ÷ 5 = 5, so 15 + 25 = 5(3 + 5). Check: 5 × 3 + 5 × 5 = 15 + 25.",
+   "tip": "Use the GREATEST common factor, so the numbers left inside share nothing but 1.",
+   "kind": "expression",
+   "accept": [
+    "5(3+5)",
+    "5(5+3)"
+   ],
+   "display": "5(3 + 5)"
+  },
+  {
+   "id": "gcf-lcm-F-101",
+   "prompt": "Rewrite 36 + 48 using the distributive property. Take out the GCF.",
+   "category": "Distributive Property",
+   "hint": "Find the GCF first. It goes outside the brackets.",
+   "explanation": "The GCF of 36 and 48 is 12. 36 ÷ 12 = 3 and 48 ÷ 12 = 4, so 36 + 48 = 12(3 + 4). Check: 12 × 3 + 12 × 4 = 36 + 48.",
+   "tip": "Use the GREATEST common factor, so the numbers left inside share nothing but 1.",
+   "kind": "expression",
+   "accept": [
+    "12(3+4)",
+    "12(4+3)"
+   ],
+   "display": "12(3 + 4)"
+  },
+  {
+   "id": "gcf-lcm-F-102",
+   "prompt": "Rewrite 56 + 42 using the distributive property. Take out the GCF.",
+   "category": "Distributive Property",
+   "hint": "Find the GCF first. It goes outside the brackets.",
+   "explanation": "The GCF of 56 and 42 is 14. 56 ÷ 14 = 4 and 42 ÷ 14 = 3, so 56 + 42 = 14(4 + 3). Check: 14 × 4 + 14 × 3 = 56 + 42.",
+   "tip": "Use the GREATEST common factor, so the numbers left inside share nothing but 1.",
+   "kind": "expression",
+   "accept": [
+    "14(4+3)",
+    "14(3+4)"
+   ],
+   "display": "14(4 + 3)"
+  }
+ ],
+ "G": [
+  {
+   "id": "gcf-lcm-G-1",
+   "prompt": "Find the GCF of 18 and 30.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 18: 1, 2, 3, 6, 9, 18. Factors of 30: 1, 2, 3, 5, 6, 10, 15, 30. The biggest number in every list is 6.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "gcf-lcm-G-2",
+   "prompt": "Find the GCF of 15 and 50.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 15: 1, 3, 5, 15. Factors of 50: 1, 2, 5, 10, 25, 50. The biggest number in every list is 5.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "gcf-lcm-G-3",
+   "prompt": "Find the GCF of 8 and 24.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 8: 1, 2, 4, 8. Factors of 24: 1, 2, 3, 4, 6, 8, 12, 24. The biggest number in every list is 8.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "gcf-lcm-G-4",
+   "prompt": "Find the GCF of 28 and 44.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 28: 1, 2, 4, 7, 14, 28. Factors of 44: 1, 2, 4, 11, 22, 44. The biggest number in every list is 4.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "gcf-lcm-G-5",
+   "prompt": "Find the GCF of 9 and 16.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 9: 1, 3, 9. Factors of 16: 1, 2, 4, 8, 16. The biggest number in every list is 1. When the only common factor is 1, the GCF is 1.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 1
+  },
+  {
+   "id": "gcf-lcm-G-6",
+   "prompt": "Find the GCF of 14 and 35.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 14: 1, 2, 7, 14. Factors of 35: 1, 5, 7, 35. The biggest number in every list is 7.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 7
+  },
+  {
+   "id": "gcf-lcm-G-7",
+   "prompt": "Find the GCF of 48 and 16.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 48: 1, 2, 3, 4, 6, 8, 12, 16, 24, 48. Factors of 16: 1, 2, 4, 8, 16. The biggest number in every list is 16.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 16
+  },
+  {
+   "id": "gcf-lcm-G-8",
+   "prompt": "Find the GCF of 24 and 18.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 24: 1, 2, 3, 4, 6, 8, 12, 24. Factors of 18: 1, 2, 3, 6, 9, 18. The biggest number in every list is 6.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "gcf-lcm-G-9",
+   "prompt": "Find the GCF of 40 and 48.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 40: 1, 2, 4, 5, 8, 10, 20, 40. Factors of 48: 1, 2, 3, 4, 6, 8, 12, 16, 24, 48. The biggest number in every list is 8.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "gcf-lcm-G-10",
+   "prompt": "Find the GCF of 22 and 33.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 22: 1, 2, 11, 22. Factors of 33: 1, 3, 11, 33. The biggest number in every list is 11.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 11
+  },
+  {
+   "id": "gcf-lcm-G-11",
+   "prompt": "Find the GCF of 20 and 25.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 20: 1, 2, 4, 5, 10, 20. Factors of 25: 1, 5, 25. The biggest number in every list is 5.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "gcf-lcm-G-12",
+   "prompt": "Find the GCF of 51 and 36.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 51: 1, 3, 17, 51. Factors of 36: 1, 2, 3, 4, 6, 9, 12, 18, 36. The biggest number in every list is 3.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "gcf-lcm-G-13",
+   "prompt": "Find the GCF of 60 and 90.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 60: 1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60. Factors of 90: 1, 2, 3, 5, 6, 9, 10, 15, 18, 30, 45, 90. The biggest number in every list is 30.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 30
+  },
+  {
+   "id": "gcf-lcm-G-14",
+   "prompt": "Find the GCF of 45 and 75.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 45: 1, 3, 5, 9, 15, 45. Factors of 75: 1, 3, 5, 15, 25, 75. The biggest number in every list is 15.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 15
+  },
+  {
+   "id": "gcf-lcm-G-15",
+   "prompt": "Find the GCF of 100 and 60.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 100: 1, 2, 4, 5, 10, 20, 25, 50, 100. Factors of 60: 1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60. The biggest number in every list is 20.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 20
+  },
+  {
+   "id": "gcf-lcm-G-16",
+   "prompt": "Find the GCF of 90 and 80.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 90: 1, 2, 3, 5, 6, 9, 10, 15, 18, 30, 45, 90. Factors of 80: 1, 2, 4, 5, 8, 10, 16, 20, 40, 80. The biggest number in every list is 10.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 10
+  },
+  {
+   "id": "gcf-lcm-G-17",
+   "prompt": "Find the GCF of 36 and 18.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 36: 1, 2, 3, 4, 6, 9, 12, 18, 36. Factors of 18: 1, 2, 3, 6, 9, 18. The biggest number in every list is 18.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 18
+  },
+  {
+   "id": "gcf-lcm-G-18",
+   "prompt": "Find the GCF of 9 and 17.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 9: 1, 3, 9. Factors of 17: 1, 17. The biggest number in every list is 1. When the only common factor is 1, the GCF is 1.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 1
+  },
+  {
+   "id": "gcf-lcm-G-19",
+   "prompt": "Find the GCF of 18 and 27.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 18: 1, 2, 3, 6, 9, 18. Factors of 27: 1, 3, 9, 27. The biggest number in every list is 9.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 9
+  },
+  {
+   "id": "gcf-lcm-G-20",
+   "prompt": "Find the GCF of 40 and 24.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 40: 1, 2, 4, 5, 8, 10, 20, 40. Factors of 24: 1, 2, 3, 4, 6, 8, 12, 24. The biggest number in every list is 8.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "gcf-lcm-G-21",
+   "prompt": "Find the GCF of 16 and 6.",
+   "category": "Greatest Common Factor",
+   "explanation": "Factors of 16: 1, 2, 4, 8, 16. Factors of 6: 1, 2, 3, 6. The biggest number in every list is 2.",
+   "tip": "Ladder method: divide every number by a factor they share, again and again, until nothing but 1 goes into all of them. Multiply the numbers down the left side — that is the GCF.",
+   "kind": "number",
+   "answer": 2
+  }
+ ],
+ "L": [
+  {
+   "id": "gcf-lcm-L-22",
+   "prompt": "Find the LCM of 3 and 4.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 3: 3, 6, 9, 12. Multiples of 4: 4, 8, 12. The first number on every list is 12.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "gcf-lcm-L-23",
+   "prompt": "Find the LCM of 6 and 10.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 6: 6, 12, 18, 24, 30. Multiples of 10: 10, 20, 30. The first number on every list is 30.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 30
+  },
+  {
+   "id": "gcf-lcm-L-24",
+   "prompt": "Find the LCM of 5 and 7.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 5: 5, 10, 15, 20, 25, 30, 35. Multiples of 7: 7, 14, 21, 28, 35. The first number on every list is 35.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 35
+  },
+  {
+   "id": "gcf-lcm-L-25",
+   "prompt": "Find the LCM of 2 and 11.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 2: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22. Multiples of 11: 11, 22. The first number on every list is 22.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 22
+  },
+  {
+   "id": "gcf-lcm-L-26",
+   "prompt": "Find the LCM of 8 and 12.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 8: 8, 16, 24. Multiples of 12: 12, 24. The first number on every list is 24.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 24
+  },
+  {
+   "id": "gcf-lcm-L-27",
+   "prompt": "Find the LCM of 4 and 9.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 4: 4, 8, 12, 16, 20, 24, 28, 32, 36. Multiples of 9: 9, 18, 27, 36. The first number on every list is 36.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 36
+  },
+  {
+   "id": "gcf-lcm-L-28",
+   "prompt": "Find the LCM of 10 and 15.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 10: 10, 20, 30. Multiples of 15: 15, 30. The first number on every list is 30.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 30
+  },
+  {
+   "id": "gcf-lcm-L-29",
+   "prompt": "Find the LCM of 16 and 20.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 16: 16, 32, 48, 64, 80. Multiples of 20: 20, 40, 60, 80. The first number on every list is 80.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 80
+  },
+  {
+   "id": "gcf-lcm-L-30",
+   "prompt": "Find the LCM of 6 and 9.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 6: 6, 12, 18. Multiples of 9: 9, 18. The first number on every list is 18.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 18
+  },
+  {
+   "id": "gcf-lcm-L-31",
+   "prompt": "Find the LCM of 18 and 15.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 18: 18, 36, 54, 72, 90. Multiples of 15: 15, 30, 45, 60, 75, 90. The first number on every list is 90.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 90
+  },
+  {
+   "id": "gcf-lcm-L-32",
+   "prompt": "Find the LCM of 15 and 6.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 15: 15, 30. Multiples of 6: 6, 12, 18, 24, 30. The first number on every list is 30.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 30
+  },
+  {
+   "id": "gcf-lcm-L-33",
+   "prompt": "Find the LCM of 8 and 20.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 8: 8, 16, 24, 32, 40. Multiples of 20: 20, 40. The first number on every list is 40.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 40
+  },
+  {
+   "id": "gcf-lcm-L-34",
+   "prompt": "Find the LCM of 18 and 5.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 18: 18, 36, 54, 72, 90. Multiples of 5: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90. The first number on every list is 90.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 90
+  },
+  {
+   "id": "gcf-lcm-L-35",
+   "prompt": "Find the LCM of 15 and 9.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 15: 15, 30, 45. Multiples of 9: 9, 18, 27, 36, 45. The first number on every list is 45.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 45
+  },
+  {
+   "id": "gcf-lcm-L-36",
+   "prompt": "Find the LCM of 15 and 20.",
+   "category": "Least Common Multiple",
+   "explanation": "Multiples of 15: 15, 30, 45, 60. Multiples of 20: 20, 40, 60. The first number on every list is 60.",
+   "tip": "Ladder method: divide by shared factors until the bottom row shares nothing. Multiply the left side AND the bottom row together — that is the LCM. (Make the L!)",
+   "kind": "number",
+   "answer": 60
+  }
+ ],
+ "W": [
+  {
+   "id": "gcf-lcm-W-37",
+   "prompt": "Dylan exercises every 12 days and Karen every 8 days. When will they next exercise together — is this a GCF problem or an LCM problem?",
+   "category": "GCF or LCM?",
+   "explanation": "They meet again in the future, so it is the LCM.",
+   "tip": "LCM: meeting again in the future; key words least, next, lowest. GCF: splitting into equal groups; key words greatest, most, highest.",
+   "kind": "choice",
+   "choices": [
+    "GCF",
+    "LCM"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "gcf-lcm-W-38",
+   "prompt": "Dylan exercises every 12 days and Karen every 8 days. If they both exercised today, how many days until they exercise together again?",
+   "category": "Word Problems",
+   "explanation": "Multiples of 12: 12, 24. Multiples of 8: 8, 16, 24. They meet on day 24.",
+   "kind": "number",
+   "answer": 24
+  },
+  {
+   "id": "gcf-lcm-W-39",
+   "prompt": "Mrs. Miller splits 112 roses, 64 daisies and 48 orchids into identical vases — is this a GCF problem or an LCM problem?",
+   "category": "GCF or LCM?",
+   "explanation": "She is splitting flowers into equal groups, so it is the GCF.",
+   "tip": "LCM: meeting again in the future; key words least, next, lowest. GCF: splitting into equal groups; key words greatest, most, highest.",
+   "kind": "choice",
+   "choices": [
+    "GCF",
+    "LCM"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "gcf-lcm-W-40",
+   "prompt": "Mrs. Miller has 112 roses, 64 daisies and 48 orchids to split into identical vases with none left over. What is the largest number of vases she can make?",
+   "category": "Word Problems",
+   "explanation": "The GCF of 112, 64 and 48 is 16, so she can make 16 vases.",
+   "kind": "number",
+   "answer": 16
+  },
+  {
+   "id": "gcf-lcm-W-41",
+   "prompt": "Mrs. Miller makes 16 identical vases from 112 roses, 64 daisies and 48 orchids. How many roses go in each vase?",
+   "category": "Word Problems",
+   "explanation": "112 ÷ 16 = 7 roses. (And 64 ÷ 16 = 4 daisies, 48 ÷ 16 = 3 orchids.)",
+   "kind": "number",
+   "answer": 7
+  },
+  {
+   "id": "gcf-lcm-W-42",
+   "prompt": "Mrs. Miller makes 16 identical vases from 112 roses, 64 daisies and 48 orchids. How many daisies go in each vase?",
+   "category": "Word Problems",
+   "explanation": "64 ÷ 16 = 4 daisies.",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "gcf-lcm-W-43",
+   "prompt": "Mrs. Miller makes 16 identical vases from 112 roses, 64 daisies and 48 orchids. How many orchids go in each vase?",
+   "category": "Word Problems",
+   "explanation": "48 ÷ 16 = 3 orchids.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "gcf-lcm-W-44",
+   "prompt": "Hot dogs come in packs of 8 and hamburgers in packs of 10, and Mr. Jones wants the same number of each — is this a GCF problem or an LCM problem?",
+   "category": "GCF or LCM?",
+   "explanation": "Be careful! It sounds like splitting, but he needs a number both packs can reach — the LCM.",
+   "tip": "LCM: meeting again in the future; key words least, next, lowest. GCF: splitting into equal groups; key words greatest, most, highest.",
+   "kind": "choice",
+   "choices": [
+    "GCF",
+    "LCM"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "gcf-lcm-W-45",
+   "prompt": "Mr. Jones wants the same number of hot dogs and hamburgers. Hot dogs come in packs of 8, hamburgers in packs of 10. What is the smallest number of each he can buy?",
+   "category": "Word Problems",
+   "explanation": "Multiples of 8: 8, 16, 24, 32, 40. Multiples of 10: 10, 20, 30, 40. The LCM is 40 — that is 5 packs of hot dogs and 4 packs of hamburgers.",
+   "kind": "number",
+   "answer": 40
+  },
+  {
+   "id": "gcf-lcm-W-46",
+   "prompt": "Stephanie fills identical party bags with 18 bouncy balls, 108 candies and 45 stickers — is this a GCF problem or an LCM problem?",
+   "category": "GCF or LCM?",
+   "explanation": "She is splitting things into equal bags, so it is the GCF.",
+   "tip": "LCM: meeting again in the future; key words least, next, lowest. GCF: splitting into equal groups; key words greatest, most, highest.",
+   "kind": "choice",
+   "choices": [
+    "GCF",
+    "LCM"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "gcf-lcm-W-47",
+   "prompt": "Stephanie has 18 bouncy balls, 108 pieces of candy and 45 stickers. What is the largest number of identical bags she can make?",
+   "category": "Word Problems",
+   "explanation": "The GCF of 18, 108 and 45 is 9. Each bag gets 2 balls, 12 candies and 5 stickers.",
+   "kind": "number",
+   "answer": 9
+  },
+  {
+   "id": "gcf-lcm-W-48",
+   "prompt": "Stephanie makes 9 identical bags from 108 pieces of candy. How many candies are in each bag?",
+   "category": "Word Problems",
+   "explanation": "108 ÷ 9 = 12 candies in each bag.",
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "gcf-lcm-W-49",
+   "prompt": "There are 40 girls and 32 boys. Every soccer team must have the same number of girls and the same number of boys. What is the greatest number of teams they can make?",
+   "category": "Word Problems",
+   "explanation": "The GCF of 40 and 32 is 8, so there are 8 teams — the most teams means the fewest players on each.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "gcf-lcm-W-50",
+   "prompt": "40 girls and 32 boys are split into 8 identical teams. How many boys are on each team?",
+   "category": "Word Problems",
+   "explanation": "32 ÷ 8 = 4 boys on each team (and 40 ÷ 8 = 5 girls).",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "gcf-lcm-W-51",
+   "prompt": "Every 100th caller wins $100 and every 20th caller wins a concert ticket. Which caller wins both — is this a GCF problem or an LCM problem?",
+   "category": "GCF or LCM?",
+   "explanation": "Two patterns meeting at a caller further on — that is the LCM.",
+   "tip": "LCM: meeting again in the future; key words least, next, lowest. GCF: splitting into equal groups; key words greatest, most, highest.",
+   "kind": "choice",
+   "choices": [
+    "GCF",
+    "LCM"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "gcf-lcm-W-52",
+   "prompt": "A radio station gives $100 to every 100th caller and a concert ticket to every 20th caller. Which caller is the first to get both prizes?",
+   "category": "Word Problems",
+   "explanation": "Every multiple of 100 is also a multiple of 20, so the 100th caller gets both.",
+   "kind": "number",
+   "answer": 100
+  },
+  {
+   "id": "gcf-lcm-W-53",
+   "prompt": "A reader’s club has 12 hardbacks, 18 paperbacks and 36 magazines. Each set is shared equally among the members. What is the greatest possible number of members?",
+   "category": "Word Problems",
+   "explanation": "The GCF of 12, 18 and 36 is 6.",
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "gcf-lcm-W-54",
+   "prompt": "Three video game villains appear every 5, 10 and 16 seconds. When do all three appear together — is this a GCF problem or an LCM problem?",
+   "category": "GCF or LCM?",
+   "explanation": "They meet again later in time, so it is the LCM.",
+   "tip": "LCM: meeting again in the future; key words least, next, lowest. GCF: splitting into equal groups; key words greatest, most, highest.",
+   "kind": "choice",
+   "choices": [
+    "GCF",
+    "LCM"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "gcf-lcm-W-55",
+   "prompt": "One villain appears every 5 seconds, a second every 10 seconds and a third every 16 seconds. How many seconds pass between the times all three appear together?",
+   "category": "Word Problems",
+   "explanation": "Be careful — 5 does not go into 16, so you cannot divide all three by 5. LCM of 5 and 10 is 10; LCM of 10 and 16 is 80. They meet every 80 seconds.",
+   "hint": "With three numbers, find the LCM of two of them first, then of that answer and the third.",
+   "kind": "number",
+   "answer": 80
+  },
+  {
+   "id": "gcf-lcm-W-56",
+   "prompt": "Emily has 6 angel fish, 12 tiger barbs and 15 guppies. Every tank must hold the same number of each kind. What is the greatest number of tanks she can set up?",
+   "category": "Word Problems",
+   "explanation": "The GCF of 6, 12 and 15 is 3. Each tank gets 2 angel fish, 4 tiger barbs and 5 guppies.",
+   "kind": "number",
+   "answer": 3
+  }
+ ],
+ "D": [
+  {
+   "id": "gcf-lcm-D-57",
+   "prompt": "Expand: 5(4 + 3) = ?",
+   "category": "Distributive Property",
+   "hint": "Multiply the outside number by EACH number inside the brackets.",
+   "explanation": "5 × 4 = 20 and 5 × 3 = 15, so 5(4 + 3) = 20 + 15. Together that is 35.",
+   "tip": "a(b + c) = ab + ac — the outside number visits everyone inside.",
+   "kind": "expression",
+   "accept": [
+    "20+15",
+    "15+20"
+   ],
+   "display": "20 + 15"
+  },
+  {
+   "id": "gcf-lcm-D-58",
+   "prompt": "Expand: 12(2 + 4) = ?",
+   "category": "Distributive Property",
+   "hint": "Multiply the outside number by EACH number inside the brackets.",
+   "explanation": "12 × 2 = 24 and 12 × 4 = 48, so 12(2 + 4) = 24 + 48. Together that is 72.",
+   "tip": "a(b + c) = ab + ac — the outside number visits everyone inside.",
+   "kind": "expression",
+   "accept": [
+    "24+48",
+    "48+24"
+   ],
+   "display": "24 + 48"
+  },
+  {
+   "id": "gcf-lcm-D-59",
+   "prompt": "Expand: −3(6 + 2) = ?",
+   "category": "Distributive Property",
+   "hint": "Multiply the outside number by EACH number inside the brackets.",
+   "explanation": "−3 × 6 = −18 and −3 × 2 = −6, so −3(6 + 2) = −18 + (−6). Together that is −24.",
+   "tip": "a(b + c) = ab + ac — the outside number visits everyone inside.",
+   "kind": "expression",
+   "accept": [
+    "-18+-6",
+    "-6+-18",
+    "-18+(-6)"
+   ],
+   "display": "−18 + (−6)"
+  },
+  {
+   "id": "gcf-lcm-D-60",
+   "prompt": "Expand: −5(−4 − 3) = ?",
+   "category": "Distributive Property",
+   "hint": "Multiply the outside number by EACH number inside the brackets.",
+   "explanation": "−5 × −4 = 20 and −5 × −3 = 15, so −5(−4 − 3) = 20 + 15. Together that is 35.",
+   "tip": "a(b + c) = ab + ac — the outside number visits everyone inside.",
+   "kind": "expression",
+   "accept": [
+    "20+15",
+    "15+20"
+   ],
+   "display": "20 + 15"
+  },
+  {
+   "id": "gcf-lcm-D-61",
+   "prompt": "Rewrite 12 + 20 using the distributive property. Take out the GCF.",
+   "category": "Distributive Property",
+   "hint": "Find the GCF first. It goes outside the brackets.",
+   "explanation": "The GCF of 12 and 20 is 4. 12 ÷ 4 = 3 and 20 ÷ 4 = 5, so 12 + 20 = 4(3 + 5). Check: 4 × 3 + 4 × 5 = 12 + 20.",
+   "tip": "Use the GREATEST common factor, so the numbers left inside share nothing but 1.",
+   "kind": "expression",
+   "accept": [
+    "4(3+5)",
+    "4(5+3)"
+   ],
+   "display": "4(3 + 5)"
+  },
+  {
+   "id": "gcf-lcm-D-62",
+   "prompt": "Rewrite 6 + 14 using the distributive property. Take out the GCF.",
+   "category": "Distributive Property",
+   "hint": "Find the GCF first. It goes outside the brackets.",
+   "explanation": "The GCF of 6 and 14 is 2. 6 ÷ 2 = 3 and 14 ÷ 2 = 7, so 6 + 14 = 2(3 + 7). Check: 2 × 3 + 2 × 7 = 6 + 14.",
+   "tip": "Use the GREATEST common factor, so the numbers left inside share nothing but 1.",
+   "kind": "expression",
+   "accept": [
+    "2(3+7)",
+    "2(7+3)"
+   ],
+   "display": "2(3 + 7)"
+  },
+  {
+   "id": "gcf-lcm-D-63",
+   "prompt": "Rewrite 20 + 55 using the distributive property. Take out the GCF.",
+   "category": "Distributive Property",
+   "hint": "Find the GCF first. It goes outside the brackets.",
+   "explanation": "The GCF of 20 and 55 is 5. 20 ÷ 5 = 4 and 55 ÷ 5 = 11, so 20 + 55 = 5(4 + 11). Check: 5 × 4 + 5 × 11 = 20 + 55.",
+   "tip": "Use the GREATEST common factor, so the numbers left inside share nothing but 1.",
+   "kind": "expression",
+   "accept": [
+    "5(4+11)",
+    "5(11+4)"
+   ],
+   "display": "5(4 + 11)"
+  },
+  {
+   "id": "gcf-lcm-D-64",
+   "prompt": "Rewrite 32 + 80 using the distributive property. Take out the GCF.",
+   "category": "Distributive Property",
+   "hint": "Find the GCF first. It goes outside the brackets.",
+   "explanation": "The GCF of 32 and 80 is 16. 32 ÷ 16 = 2 and 80 ÷ 16 = 5, so 32 + 80 = 16(2 + 5). Check: 16 × 2 + 16 × 5 = 32 + 80.",
+   "tip": "Use the GREATEST common factor, so the numbers left inside share nothing but 1.",
+   "kind": "expression",
+   "accept": [
+    "16(2+5)",
+    "16(5+2)"
+   ],
+   "display": "16(2 + 5)"
+  },
+  {
+   "id": "gcf-lcm-D-65",
+   "prompt": "Rewrite 18 + 12 using the distributive property. Take out the GCF.",
+   "category": "Distributive Property",
+   "hint": "Find the GCF first. It goes outside the brackets.",
+   "explanation": "The GCF of 18 and 12 is 6. 18 ÷ 6 = 3 and 12 ÷ 6 = 2, so 18 + 12 = 6(3 + 2). Check: 6 × 3 + 6 × 2 = 18 + 12.",
+   "tip": "Use the GREATEST common factor, so the numbers left inside share nothing but 1.",
+   "kind": "expression",
+   "accept": [
+    "6(3+2)",
+    "6(2+3)"
+   ],
+   "display": "6(3 + 2)"
+  },
+  {
+   "id": "gcf-lcm-D-66",
+   "prompt": "Rewrite 45 + 30 using the distributive property. Take out the GCF.",
+   "category": "Distributive Property",
+   "hint": "Find the GCF first. It goes outside the brackets.",
+   "explanation": "The GCF of 45 and 30 is 15. 45 ÷ 15 = 3 and 30 ÷ 15 = 2, so 45 + 30 = 15(3 + 2). Check: 15 × 3 + 15 × 2 = 45 + 30.",
+   "tip": "Use the GREATEST common factor, so the numbers left inside share nothing but 1.",
+   "kind": "expression",
+   "accept": [
+    "15(3+2)",
+    "15(2+3)"
+   ],
+   "display": "15(3 + 2)"
+  },
+  {
+   "id": "gcf-lcm-D-67",
+   "prompt": "Rewrite 28 + 21 using the distributive property. Take out the GCF.",
+   "category": "Distributive Property",
+   "hint": "Find the GCF first. It goes outside the brackets.",
+   "explanation": "The GCF of 28 and 21 is 7. 28 ÷ 7 = 4 and 21 ÷ 7 = 3, so 28 + 21 = 7(4 + 3). Check: 7 × 4 + 7 × 3 = 28 + 21.",
+   "tip": "Use the GREATEST common factor, so the numbers left inside share nothing but 1.",
+   "kind": "expression",
+   "accept": [
+    "7(4+3)",
+    "7(3+4)"
+   ],
+   "display": "7(4 + 3)"
+  },
+  {
+   "id": "gcf-lcm-D-68",
+   "prompt": "Rewrite 54 + 36 using the distributive property. Take out the GCF.",
+   "category": "Distributive Property",
+   "hint": "Find the GCF first. It goes outside the brackets.",
+   "explanation": "The GCF of 54 and 36 is 18. 54 ÷ 18 = 3 and 36 ÷ 18 = 2, so 54 + 36 = 18(3 + 2). Check: 18 × 3 + 18 × 2 = 54 + 36.",
+   "tip": "Use the GREATEST common factor, so the numbers left inside share nothing but 1.",
+   "kind": "expression",
+   "accept": [
+    "18(3+2)",
+    "18(2+3)"
+   ],
+   "display": "18(3 + 2)"
+  },
+  {
+   "id": "gcf-lcm-D-69",
+   "prompt": "Rewrite 42 + 63 using the distributive property. Take out the GCF.",
+   "category": "Distributive Property",
+   "hint": "Find the GCF first. It goes outside the brackets.",
+   "explanation": "The GCF of 42 and 63 is 21. 42 ÷ 21 = 2 and 63 ÷ 21 = 3, so 42 + 63 = 21(2 + 3). Check: 21 × 2 + 21 × 3 = 42 + 63.",
+   "tip": "Use the GREATEST common factor, so the numbers left inside share nothing but 1.",
+   "kind": "expression",
+   "accept": [
+    "21(2+3)",
+    "21(3+2)"
+   ],
+   "display": "21(2 + 3)"
+  },
+  {
+   "id": "gcf-lcm-D-70",
+   "prompt": "Rewrite 64 + 48 using the distributive property. Take out the GCF.",
+   "category": "Distributive Property",
+   "hint": "Find the GCF first. It goes outside the brackets.",
+   "explanation": "The GCF of 64 and 48 is 16. 64 ÷ 16 = 4 and 48 ÷ 16 = 3, so 64 + 48 = 16(4 + 3). Check: 16 × 4 + 16 × 3 = 64 + 48.",
+   "tip": "Use the GREATEST common factor, so the numbers left inside share nothing but 1.",
+   "kind": "expression",
+   "accept": [
+    "16(4+3)",
+    "16(3+4)"
+   ],
+   "display": "16(4 + 3)"
+  },
+  {
+   "id": "gcf-lcm-D-71",
+   "prompt": "Rewrite 72 + 108 using the distributive property. Take out the GCF.",
+   "category": "Distributive Property",
+   "hint": "Find the GCF first. It goes outside the brackets.",
+   "explanation": "The GCF of 72 and 108 is 36. 72 ÷ 36 = 2 and 108 ÷ 36 = 3, so 72 + 108 = 36(2 + 3). Check: 36 × 2 + 36 × 3 = 72 + 108.",
+   "tip": "Use the GREATEST common factor, so the numbers left inside share nothing but 1.",
+   "kind": "expression",
+   "accept": [
+    "36(2+3)",
+    "36(3+2)"
+   ],
+   "display": "36(2 + 3)"
+  },
+  {
+   "id": "gcf-lcm-D-72",
+   "prompt": "Rewrite 96 + 120 using the distributive property. Take out the GCF.",
+   "category": "Distributive Property",
+   "hint": "Find the GCF first. It goes outside the brackets.",
+   "explanation": "The GCF of 96 and 120 is 24. 96 ÷ 24 = 4 and 120 ÷ 24 = 5, so 96 + 120 = 24(4 + 5). Check: 24 × 4 + 24 × 5 = 96 + 120.",
+   "tip": "Use the GREATEST common factor, so the numbers left inside share nothing but 1.",
+   "kind": "expression",
+   "accept": [
+    "24(4+5)",
+    "24(5+4)"
+   ],
+   "display": "24(4 + 5)"
+  },
+  {
+   "id": "gcf-lcm-D-73",
+   "prompt": "Expand: 5(6 + 3) = ?",
+   "category": "Distributive Property",
+   "hint": "Multiply the outside number by EACH number inside the brackets.",
+   "explanation": "5 × 6 = 30 and 5 × 3 = 15, so 5(6 + 3) = 30 + 15. Together that is 45.",
+   "tip": "a(b + c) = ab + ac — the outside number visits everyone inside.",
+   "kind": "expression",
+   "accept": [
+    "30+15",
+    "15+30"
+   ],
+   "display": "30 + 15"
+  },
+  {
+   "id": "gcf-lcm-D-74",
+   "prompt": "Expand: 4(10 + 7) = ?",
+   "category": "Distributive Property",
+   "hint": "Multiply the outside number by EACH number inside the brackets.",
+   "explanation": "4 × 10 = 40 and 4 × 7 = 28, so 4(10 + 7) = 40 + 28. Together that is 68.",
+   "tip": "a(b + c) = ab + ac — the outside number visits everyone inside.",
+   "kind": "expression",
+   "accept": [
+    "40+28",
+    "28+40"
+   ],
+   "display": "40 + 28"
+  },
+  {
+   "id": "gcf-lcm-D-75",
+   "prompt": "Expand: 3(12 + 15) = ?",
+   "category": "Distributive Property",
+   "hint": "Multiply the outside number by EACH number inside the brackets.",
+   "explanation": "3 × 12 = 36 and 3 × 15 = 45, so 3(12 + 15) = 36 + 45. Together that is 81.",
+   "tip": "a(b + c) = ab + ac — the outside number visits everyone inside.",
+   "kind": "expression",
+   "accept": [
+    "36+45",
+    "45+36"
+   ],
+   "display": "36 + 45"
+  },
+  {
+   "id": "gcf-lcm-D-76",
+   "prompt": "Expand: 6(8 + 2) = ?",
+   "category": "Distributive Property",
+   "hint": "Multiply the outside number by EACH number inside the brackets.",
+   "explanation": "6 × 8 = 48 and 6 × 2 = 12, so 6(8 + 2) = 48 + 12. Together that is 60.",
+   "tip": "a(b + c) = ab + ac — the outside number visits everyone inside.",
+   "kind": "expression",
+   "accept": [
+    "48+12",
+    "12+48"
+   ],
+   "display": "48 + 12"
+  },
+  {
+   "id": "gcf-lcm-D-77",
+   "prompt": "Expand: 7(9 + 11) = ?",
+   "category": "Distributive Property",
+   "hint": "Multiply the outside number by EACH number inside the brackets.",
+   "explanation": "7 × 9 = 63 and 7 × 11 = 77, so 7(9 + 11) = 63 + 77. Together that is 140.",
+   "tip": "a(b + c) = ab + ac — the outside number visits everyone inside.",
+   "kind": "expression",
+   "accept": [
+    "63+77",
+    "77+63"
+   ],
+   "display": "63 + 77"
+  },
+  {
+   "id": "gcf-lcm-D-78",
+   "prompt": "Expand: 8(25 + 5) = ?",
+   "category": "Distributive Property",
+   "hint": "Multiply the outside number by EACH number inside the brackets.",
+   "explanation": "8 × 25 = 200 and 8 × 5 = 40, so 8(25 + 5) = 200 + 40. Together that is 240.",
+   "tip": "a(b + c) = ab + ac — the outside number visits everyone inside.",
+   "kind": "expression",
+   "accept": [
+    "200+40",
+    "40+200"
+   ],
+   "display": "200 + 40"
+  },
+  {
+   "id": "gcf-lcm-D-79",
+   "prompt": "Expand: 12(30 + 20) = ?",
+   "category": "Distributive Property",
+   "hint": "Multiply the outside number by EACH number inside the brackets.",
+   "explanation": "12 × 30 = 360 and 12 × 20 = 240, so 12(30 + 20) = 360 + 240. Together that is 600.",
+   "tip": "a(b + c) = ab + ac — the outside number visits everyone inside.",
+   "kind": "expression",
+   "accept": [
+    "360+240",
+    "240+360"
+   ],
+   "display": "360 + 240"
+  },
+  {
+   "id": "gcf-lcm-D-80",
+   "prompt": "Expand: 15(10 + 6) = ?",
+   "category": "Distributive Property",
+   "hint": "Multiply the outside number by EACH number inside the brackets.",
+   "explanation": "15 × 10 = 150 and 15 × 6 = 90, so 15(10 + 6) = 150 + 90. Together that is 240.",
+   "tip": "a(b + c) = ab + ac — the outside number visits everyone inside.",
+   "kind": "expression",
+   "accept": [
+    "150+90",
+    "90+150"
+   ],
+   "display": "150 + 90"
+  },
+  {
+   "id": "gcf-lcm-D-81",
+   "prompt": "Expand: 20(7 + 13) = ?",
+   "category": "Distributive Property",
+   "hint": "Multiply the outside number by EACH number inside the brackets.",
+   "explanation": "20 × 7 = 140 and 20 × 13 = 260, so 20(7 + 13) = 140 + 260. Together that is 400.",
+   "tip": "a(b + c) = ab + ac — the outside number visits everyone inside.",
+   "kind": "expression",
+   "accept": [
+    "140+260",
+    "260+140"
+   ],
+   "display": "140 + 260"
+  },
+  {
+   "id": "gcf-lcm-D-82",
+   "prompt": "Expand: 9(40 + 60) = ?",
+   "category": "Distributive Property",
+   "hint": "Multiply the outside number by EACH number inside the brackets.",
+   "explanation": "9 × 40 = 360 and 9 × 60 = 540, so 9(40 + 60) = 360 + 540. Together that is 900.",
+   "tip": "a(b + c) = ab + ac — the outside number visits everyone inside.",
+   "kind": "expression",
+   "accept": [
+    "360+540",
+    "540+360"
+   ],
+   "display": "360 + 540"
+  }
+ ],
+ "K": [
+  {
+   "id": "gcf-lcm-K-103",
+   "prompt": "The GCF of two numbers can be bigger than both numbers.",
+   "category": "Big Ideas",
+   "explanation": "A factor of a number is never bigger than the number, so the GCF is always less than or equal to the numbers.",
+   "kind": "truefalse",
+   "answer": false
+  },
+  {
+   "id": "gcf-lcm-K-104",
+   "prompt": "The LCM of two numbers is always greater than or equal to both numbers.",
+   "category": "Big Ideas",
+   "explanation": "Multiples start at the number itself and grow, so the LCM can never be smaller than either number.",
+   "kind": "truefalse",
+   "answer": true
+  },
+  {
+   "id": "gcf-lcm-K-105",
+   "prompt": "If two numbers share no factor except 1, their LCM is the two numbers multiplied together.",
+   "category": "Big Ideas",
+   "explanation": "For example 5 and 7 share only 1, and their LCM is 5 × 7 = 35.",
+   "kind": "truefalse",
+   "answer": true
+  },
+  {
+   "id": "gcf-lcm-K-106",
+   "prompt": "The GCF of 9 and 17 is 0.",
+   "category": "Big Ideas",
+   "explanation": "1 is a factor of every number, so the GCF is at least 1. For 9 and 17 it is exactly 1.",
+   "kind": "truefalse",
+   "answer": false
+  },
+  {
+   "id": "gcf-lcm-K-107",
+   "prompt": "Match each key word to the kind of problem.",
+   "category": "GCF or LCM?",
+   "explanation": "Greatest, most and splitting into groups point to the GCF. Least, next and meeting again point to the LCM.",
+   "kind": "match",
+   "pairs": [
+    [
+     "“greatest number of groups”",
+     "GCF"
+    ],
+    [
+     "“when will they next meet”",
+     "LCM"
+    ]
+   ]
+  },
+  {
+   "id": "gcf-lcm-K-108",
+   "prompt": "Which is equal to 6(3 + 5)?",
+   "category": "Distributive Property",
+   "explanation": "6 × 3 = 18 and 6 × 5 = 30, so 6(3 + 5) = 18 + 30.",
+   "kind": "choice",
+   "choices": [
+    "18 + 30",
+    "18 + 5",
+    "6 + 3 + 5",
+    "9 + 11"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "gcf-lcm-K-109",
+   "prompt": "Which shows 54 + 36 with the GREATEST common factor taken out?",
+   "category": "Distributive Property",
+   "explanation": "The GCF of 54 and 36 is 18: 54 + 36 = 18(3 + 2). 6(9 + 6) and 9(6 + 4) are equal too, but the numbers left inside still share a factor.",
+   "kind": "choice",
+   "choices": [
+    "18(3 + 2)",
+    "6(9 + 6)",
+    "9(6 + 4)",
+    "12(6 + 3)"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "gcf-lcm-K-110",
+   "prompt": "Put the ladder-method steps for the LCM in order.",
+   "category": "Big Ideas",
+   "explanation": "Divide by shared factors, stop when the bottom row shares nothing, then multiply the side and the bottom (the L).",
+   "kind": "order",
+   "items": [
+    "Divide both numbers by a factor they share",
+    "Keep going until the bottom numbers share only 1",
+    "Multiply the side numbers and the bottom numbers together"
+   ]
+  }
+ ]
+}

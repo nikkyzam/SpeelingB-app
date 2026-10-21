@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { TESTS, QUEST_GRADES, loadQuestTopic, gradeOfTopic } from '@/services/subjects/catalogue'
 import type { Question } from '@/services/subjects/types'
+import { isCorrect } from '@/services/subjects/grading'
 
 /** Every rule a question must meet to be shown and graded fairly. */
 const problems = (q: Question): string[] => {
@@ -34,6 +35,11 @@ const problems = (q: Question): string[] => {
       break
     case 'text':
       if (!q.accept.length || !q.display) out.push('nothing accepted')
+      break
+    case 'expression':
+      if (!q.accept.length || !q.display) out.push('nothing accepted')
+      // The answer shown on the review screen must itself be marked right.
+      else if (!isCorrect(q, q.display)) out.push('its own answer is not accepted')
       break
     case 'pair':
       if (q.answer.length !== 2) out.push('pair is not two numbers')
