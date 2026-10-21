@@ -81,9 +81,10 @@
   color: var(--text);
 }
 .gw-input:focus { outline: none; border-color: var(--primary); }
-.gw-input:disabled { opacity: 0.6; }
+/* Read-only (not disabled) while the word is up, so the touch keypad stays put. */
+.gw-input[readonly]:not(.ok):not(.bad) { opacity: 0.6; }
 .gw-input.ok { border-color: var(--success); background: rgba(47,191,113,0.15); }
-.gw-input.bad { border-color: var(--error); background: rgba(239,71,111,0.12); animation: shake 0.4s; }
+.gw-input.bad { border-color: var(--warning); animation: shake 0.4s; }
 
 .gw-btn {
   border: none;
@@ -101,6 +102,7 @@
 .gw-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .gw-flash {
+  position: relative;
   margin-top: var(--spacing-md);
   font-family: var(--font-primary);
   font-weight: 800;
@@ -109,10 +111,18 @@
   animation: pop-in var(--transition-normal) both;
 }
 .gw-flash.ok { background: linear-gradient(90deg, var(--success), #4EF4C5); color: #fff; }
-.gw-flash.bad { background: var(--card-soft); color: var(--text); border: 2px solid var(--error); }
-.gw-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
+.gw-flash.bad { background: var(--card-soft); color: var(--text); border: 2px dashed var(--warning); }
 
 @media (max-width: 520px) {
   .gw-header { flex-direction: column; align-items: stretch; }
   .gw-stats { justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No fade: the word simply shows, then the ghost takes its place. */
+  .gw-word.fading,
+  .gw-ghost,
+  .gw-input.bad,
+  .gw-flash { animation: none; }
+  .gw-btn:active:not(:disabled) { transform: none; }
 }

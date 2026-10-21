@@ -3,6 +3,9 @@ import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, isPlayable } from '../shared/wordTricks'
 import sfx from '../shared/sfx'
+import useCheer from '../shared/useCheer'
+import Burst from '../shared/Burst'
+import GameEmpty from '../shared/GameEmpty'
 import './ParrotParty.css'
 
 interface ParrotPartyProps {
@@ -15,16 +18,26 @@ interface ParrotPartyProps {
 type Phase = 'watch' | 'repeat' | 'good' | 'oops' | 'won' | 'over'
 
 const TILES = 6
-const BEAT_MS = 1000
+/** From this many words on, Polly only says them — the tiles stay dark. */
+export const DARK_FROM = 4
+
+/**
+ * How long Polly takes over one word: long enough to say it whole. A flat
+ * 1s beat cut "butterfly" off halfway, because each new word stopped the last.
+ */
+export const beatFor = (word: string): number => 900 + 70 * word.length
 
 /**
  * Polly says: "cake… river… bicycle". Now say it back.
  *
  * A memory game where the tokens are real words the child is learning, so each
- * replay is another look at a spelling they'll meet in tomorrow's quiz.
+ * replay is another look at a spelling they'll meet in tomorrow's quiz. Once
+ * the chain is four long the tiles no longer light up: lit tiles could be
+ * copied by position alone, without reading a word.
  */
 const ParrotParty: React.FC<ParrotPartyProps> = ({ onComplete, words: providedWords, maxRounds = 6 }) => {
   const { speak } = useAudio()
+  const cheer = useCheer()
 
   const tiles = useMemo<string[]>(() => {
     const pool = providedWords && providedWords.length > 0 ? providedWords : []
@@ -36,45 +49,65 @@ const ParrotParty: React.FC<ParrotPartyProps> = ({ onComplete, words: providedWo
 
   const [sequence, setSequence] = useState<number[]>([])
   const [lit, setLit] = useState<number | null>(null)
+  /** How many words of the chain Polly has said so far (lights the dots). */
+  const [said, setSaid] = useState(0)
   const [phase, setPhase] = useState<Phase>('watch')
   const [step, setStep] = useState(0)
   const [score, setScore] = useState(0)
   const [retry, setRetry] = useState(false)
   const [message, setMessage] = useState('Listen to Polly…')
+  const [hits, setHits] = useState(0)
   const timers = useRef<number[]>([])
+  // Taps read these through refs: two quick taps in one frame both saw the
+  // same step in state and could count one word twice.
+  const phaseRef = useRef<Phase>('watch')
+  const stepRef = useRef(0)
 
+  const goPhase = (p: Phase) => {
+    phaseRef.current = p
+    setPhase(p)
+  }
+  const goStep = (n: number) => {
+    stepRef.current = n
+    setStep(n)
+  }
+  const later = (fn: () => void, ms: number) => {
+    timers.current.push(window.setTimeout(fn, ms))
+  }
   const clearTimers = () => {
     timers.current.forEach((t) => window.clearTimeout(t))
     timers.current = []
   }
   useEffect(() => clearTimers, [])
 
-  /** Light up and say each word in turn, then hand control to the child. */
+  /** Say (and, early on, light up) each word in turn, then hand over to the child. */
   const playback = useCallback(
     (seq: number[]) => {
       clearTimers()
-      setPhase('watch')
-      setMessage('Listen to Polly…')
+      const dark = seq.length >= DARK_FROM
+      goPhase('watch')
+      setSaid(0)
+      setMessage(dark ? 'No lights now — just listen to Polly! 👂' : 'Listen to Polly…')
+      let at = 0
       seq.forEach((tile, i) => {
-        timers.current.push(
-          window.setTimeout(() => {
-            setLit(tile)
-            sfx.tap()
-            speak(tiles[tile])
-          }, i * BEAT_MS)
-        )
-        timers.current.push(
-          window.setTimeout(() => setLit(null), i * BEAT_MS + BEAT_MS * 0.6)
-        )
+        const beat = beatFor(tiles[tile])
+        later(() => {
+          if (!dark) setLit(tile)
+          setSaid(i + 1)
+          sfx.tap()
+          // Queued, so a word still being said is never cut off.
+          speak(tiles[tile], { queue: true })
+        }, at)
+        later(() => setLit(null), at + beat * 0.6)
+        at += beat
       })
-      timers.current.push(
-        window.setTimeout(() => {
-          setPhase('repeat')
-          setStep(0)
-          setMessage('Your turn — tap the words in order!')
-        }, seq.length * BEAT_MS + 200)
-      )
+      later(() => {
+        goPhase('repeat')
+        goStep(0)
+        setMessage('Your turn — tap the words in order!')
+      }, at + 200)
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [speak, tiles]
   )
 
@@ -90,8 +123,7 @@ const ParrotParty: React.FC<ParrotPartyProps> = ({ onComplete, words: providedWo
   if (tiles.length === 0) {
     return (
       <div className="parrot-party">
-        <p className="pp-empty">Polly has nothing to say yet — learn a few words! 🦜</p>
-        <button className="pp-btn" onClick={() => onComplete(0)}>Back to Games</button>
+        <GameEmpty icon="🦜">Polly has nothing to say yet — learn a few words!</GameEmpty>
       </div>
     )
   }
@@ -100,56 +132,69 @@ const ParrotParty: React.FC<ParrotPartyProps> = ({ onComplete, words: providedWo
     const grown = [...seq, Math.floor(Math.random() * tiles.length)]
     setSequence(grown)
     setRetry(false)
-    timers.current.push(window.setTimeout(() => playback(grown), 900))
+    later(() => playback(grown), 1100)
   }
 
   const tap = (tile: number) => {
-    if (phase !== 'repeat') return
+    if (phaseRef.current !== 'repeat') return
+    const at = stepRef.current
     setLit(tile)
     speak(tiles[tile])
-    window.setTimeout(() => setLit(null), 260)
+    later(() => setLit((l) => (l === tile ? null : l)), 260)
 
-    if (tile === sequence[step]) {
-      const nextStep = step + 1
+    if (tile === sequence[at]) {
+      const nextStep = at + 1
       if (nextStep < sequence.length) {
         sfx.tap()
-        setStep(nextStep)
+        goStep(nextStep)
         return
       }
 
       // Whole sequence repeated — longer chains are worth more.
       const points = 20 * sequence.length
+      goStep(nextStep)
       setScore((s) => s + points)
-      setPhase('good')
-      sfx.correct()
-      setMessage(`🎉 Perfect! +${points}`)
+      setHits((h) => h + 1)
 
       if (sequence.length >= maxRounds) {
         const total = score + points + 80
         setScore(total)
-        setPhase('won')
+        goPhase('won')
         setMessage('🦜 Polly is amazed! You remembered them all!')
         sfx.win()
-        speak('Polly is amazed!')
-        timers.current.push(window.setTimeout(() => onComplete(total), 2400))
+        speak('Polly is amazed! You remembered them all!')
+        later(() => onComplete(total), 2400)
         return
       }
+      goPhase('good')
+      const line = cheer.hit()
+      setMessage(`🎉 ${line} +${points}`)
       nextRound(sequence)
+      return
+    }
+
+    cheer.miss({ quiet: true })
+    if (!retry) {
+      // One free "listen again" before the run ends — memory needs second chances.
+      setRetry(true)
+      goPhase('oops')
+      setMessage('Ooh, not that one. Listen again! 👂')
+      speak('Ooh, not that one. Listen again!')
+      later(() => playback(sequence), 1600)
     } else {
-      sfx.wrong()
-      if (!retry) {
-        // One free "listen again" before the run ends — memory needs second chances.
-        setRetry(true)
-        setPhase('oops')
-        setMessage('Ooh, not that one. Listen again! 👂')
-        timers.current.push(window.setTimeout(() => playback(sequence), 1400))
-      } else {
-        setPhase('over')
-        setMessage(`Polly says well done — you reached ${sequence.length} words!`)
-        timers.current.push(window.setTimeout(() => onComplete(score), 2200))
-      }
+      // Show which word came next, then end on what they did manage.
+      const wanted = sequence[at]
+      goPhase('over')
+      later(() => setLit(wanted), 300)
+      setMessage(
+        `Polly says well done — you reached ${sequence.length} word${sequence.length === 1 ? '' : 's'}! “${tiles[wanted]}” came next. 🦜`
+      )
+      speak(`Polly says well done! ${tiles[wanted]} came next.`)
+      later(() => onComplete(score), 2800)
     }
   }
+
+  const dark = sequence.length >= DARK_FROM
 
   return (
     <div className="parrot-party">
@@ -162,15 +207,20 @@ const ParrotParty: React.FC<ParrotPartyProps> = ({ onComplete, words: providedWo
       </div>
 
       <div className="pp-stage">
+        {(phase === 'good' || phase === 'won') && <Burst trigger={hits} />}
         <div className={`pp-parrot ${phase === 'watch' ? 'talking' : ''} ${phase === 'won' ? 'party' : ''}`} aria-hidden>🦜</div>
         <div className="pp-dots" aria-hidden>
           {sequence.map((_, i) => (
-            <span key={i} className={`pp-dot ${phase === 'repeat' && i < step ? 'done' : ''}`} />
+            <span
+              key={i}
+              className={`pp-dot ${(phase === 'watch' && i < said) || (phase !== 'watch' && i < step) ? 'done' : ''}`}
+            />
           ))}
         </div>
+        {dark && phase === 'watch' && <div className="pp-dark" aria-hidden>🙈 No peeking at lights!</div>}
       </div>
 
-      <p className={`pp-message ${phase}`}>{message}</p>
+      <p className={`pp-message ${phase}`} role="status">{message}</p>
 
       <div className="pp-tiles">
         {tiles.map((w, i) => (

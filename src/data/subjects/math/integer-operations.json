@@ -1,0 +1,1607 @@
+{
+ "A": [
+  {
+   "id": "integer-operations-A-1",
+   "prompt": "(20) + (−44) =",
+   "category": "Add & Subtract",
+   "explanation": "Start at 20 and take away 44: 20 − 44 = −24.",
+   "tip": "Adding a negative is just subtracting. Rewrite 20 + (−44) as 20 − 44. Then ask which number is bigger ignoring signs — the answer takes that number's sign.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -24
+  },
+  {
+   "id": "integer-operations-A-2",
+   "prompt": "(−12) − (−26) =",
+   "category": "Add & Subtract",
+   "explanation": "Subtracting a negative adds: −12 + 26 = 14.",
+   "tip": "Keep–Change–Change. Keep the first number, change the minus to a plus, and change the sign of the number behind it. Two minus signs in a row always turn into a plus.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 14
+  },
+  {
+   "id": "integer-operations-A-3",
+   "prompt": "(−5) − 19(0) =",
+   "category": "Order of Operations",
+   "explanation": "Multiply first: 19(0) = 0. Then −5 − 0 = −5.",
+   "tip": "Anything times 0 is 0, so that whole chunk vanishes. Cross it out and see what's actually left.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -5
+  },
+  {
+   "id": "integer-operations-A-4",
+   "prompt": "(−7)(−4) − 4 =",
+   "category": "Order of Operations",
+   "explanation": "Multiply first: (−7)(−4) = 28 (negative × negative = positive). Then 28 − 4 = 24.",
+   "tip": "Put a box around the multiplication and do it first — it's one single number. Then the problem is just one easy add or subtract.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 24
+  },
+  {
+   "id": "integer-operations-A-5",
+   "prompt": "(−184) + (−29) =",
+   "category": "Add & Subtract",
+   "explanation": "Both are negative, so add the amounts and keep the sign: −(184 + 29) = −213.",
+   "tip": "Same signs? Add the two amounts and keep the sign. Think of it as owing money twice: owe 184, then owe 29 more, and you owe 213.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -213
+  },
+  {
+   "id": "integer-operations-A-6",
+   "prompt": "90 − (−37) + (−16) =",
+   "category": "Add & Subtract",
+   "explanation": "90 − (−37) = 90 + 37 = 127. Then 127 + (−16) = 111.",
+   "tip": "Clean up the double signs before you calculate: − (−n) becomes + n, and + (−n) becomes − n. Once the signs are tidy it's an easy left-to-right problem.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 111
+  },
+  {
+   "id": "integer-operations-A-7",
+   "prompt": "(−400) ÷ |(−80) − 20| =",
+   "category": "Absolute Value",
+   "explanation": "Inside the bars first: −80 − 20 = −100, and |−100| = 100. Then −400 ÷ 100 = −4.",
+   "tip": "Absolute value bars act like parentheses: finish everything inside first, then just drop the negative sign. |−100| is simply 100.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -4
+  },
+  {
+   "id": "integer-operations-A-8",
+   "prompt": "(−250) ÷ 5 − 100 =",
+   "category": "Order of Operations",
+   "explanation": "Divide first: −250 ÷ 5 = −50. Then −50 − 100 = −150.",
+   "tip": "Division happens before adding and subtracting. Do the division by itself first, then deal with the rest.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -150
+  },
+  {
+   "id": "integer-operations-A-9",
+   "prompt": "(−12) + 7(−4) =",
+   "category": "Order of Operations",
+   "explanation": "Multiply first: 7(−4) = −28. Then −12 + (−28) = −40.",
+   "tip": "Put a box around the multiplication and do it first — it's one single number. Then the problem is just one easy add or subtract.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -40
+  },
+  {
+   "id": "integer-operations-A-10",
+   "prompt": "34 − |−73 + 12| =",
+   "category": "Absolute Value",
+   "explanation": "Inside the bars first: −73 + 12 = −61, and |−61| = 61. Then 34 − 61 = −27.",
+   "tip": "Absolute value bars act like parentheses: finish everything inside first, then just drop the negative sign. |−100| is simply 100.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -27
+  },
+  {
+   "id": "integer-operations-A-11",
+   "prompt": "(−18) + 51 ÷ (−3) =",
+   "category": "Order of Operations",
+   "explanation": "Divide first: 51 ÷ (−3) = −17. Then −18 + (−17) = −35.",
+   "tip": "Division happens before adding and subtracting. Do the division by itself first, then deal with the rest.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -35
+  },
+  {
+   "id": "integer-operations-A-12",
+   "prompt": "(−56)(−10)(−2) =",
+   "category": "Multiply & Divide",
+   "explanation": "(−56)(−10) = 560 (two negatives make a positive). Then 560 × (−2) = −1120.",
+   "tip": "Count the negative signs being multiplied. Even number of negatives = positive answer, odd number = negative. Multiply the plain numbers, then stick that sign on.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -1120
+  },
+  {
+   "id": "integer-operations-A-13",
+   "prompt": "(−92) − 36(−2) =",
+   "category": "Order of Operations",
+   "explanation": "Multiply first: 36(−2) = −72. Then −92 − (−72) = −92 + 72 = −20.",
+   "tip": "Put a box around the multiplication and do it first — it's one single number. Then the problem is just one easy add or subtract.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -20
+  },
+  {
+   "id": "integer-operations-A-14",
+   "prompt": "(−165) − (−6 + 90) =",
+   "category": "Order of Operations",
+   "explanation": "Parentheses first: −6 + 90 = 84. Then −165 − 84 = −249.",
+   "tip": "Parentheses are a package. Squash everything inside down to one single number before you touch anything outside.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -249
+  },
+  {
+   "id": "integer-operations-A-15",
+   "prompt": "−(−9) − 12(−6) =",
+   "category": "Order of Operations",
+   "explanation": "Multiply first: 12(−6) = −72. And −(−9) = 9. So 9 − (−72) = 9 + 72 = 81.",
+   "tip": "Put a box around the multiplication and do it first — it's one single number. Then the problem is just one easy add or subtract.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 81
+  },
+  {
+   "id": "integer-operations-A-16",
+   "prompt": "−2 − 8(−5) =",
+   "category": "Order of Operations",
+   "explanation": "Multiply before subtracting: 8(−5) = −40. Then −2 − (−40) = −2 + 40 = 38.",
+   "tip": "Put a box around the multiplication and do it first — it's one single number. Then the problem is just one easy add or subtract.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 38
+  },
+  {
+   "id": "integer-operations-A-17",
+   "prompt": "(−92) ÷ (−4) =",
+   "category": "Multiply & Divide",
+   "explanation": "Negative ÷ negative = positive: 92 ÷ 4 = 23.",
+   "tip": "Decide the sign first, then divide the plain numbers. Same signs make a positive, different signs make a negative.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 23
+  },
+  {
+   "id": "integer-operations-A-18",
+   "prompt": "(−32) + 7 − 10(−2) =",
+   "category": "Order of Operations",
+   "explanation": "Multiply first: 10(−2) = −20. Then −32 + 7 = −25, and −25 − (−20) = −25 + 20 = −5.",
+   "tip": "Do multiplying and dividing first, then work whatever is left strictly left to right — don't jump around.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -5
+  },
+  {
+   "id": "integer-operations-A-19",
+   "prompt": "(−24) − (−59 + 5) =",
+   "category": "Order of Operations",
+   "explanation": "Parentheses first: −59 + 5 = −54. Then −24 − (−54) = −24 + 54 = 30.",
+   "tip": "Parentheses are a package. Squash everything inside down to one single number before you touch anything outside.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 30
+  },
+  {
+   "id": "integer-operations-A-20",
+   "prompt": "−4 − <span class=\"frac\"><span class=\"num\">−35</span><span class=\"den\">7</span></span> =",
+   "category": "Order of Operations",
+   "explanation": "The fraction bar means divide: −35 ÷ 7 = −5. Then −4 − (−5) = −4 + 5 = 1.",
+   "tip": "A fraction bar just means divide. Turn the fraction into one number first, then the rest is a normal subtraction.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 1
+  },
+  {
+   "id": "integer-operations-A-21",
+   "prompt": "The temperature in Hawaii is 85°F. The temperature in Antarctica is −23°F. What is the difference in the two temperatures?",
+   "category": "Word Problem",
+   "explanation": "Difference means subtract: 85 − (−23) = 85 + 23 = 108°F.",
+   "tip": "Difference means subtract, but the easy check is to walk the number line: count up from the negative number to 0, then from 0 up to the other number, and add those two jumps.",
+   "hint": "Answer in degrees Fahrenheit — just the number.",
+   "kind": "number",
+   "answer": 108
+  },
+  {
+   "id": "integer-operations-A-22",
+   "prompt": "Carla is on a game show with a score of −10. Maria's score is 22. What is the difference of the two scores?",
+   "category": "Word Problem",
+   "explanation": "22 − (−10) = 22 + 10 = 32 points apart.",
+   "tip": "Difference means subtract, but the easy check is to walk the number line: count up from the negative number to 0, then from 0 up to the other number, and add those two jumps.",
+   "hint": "Answer in points — just the number.",
+   "kind": "number",
+   "answer": 32
+  },
+  {
+   "id": "integer-operations-A-23",
+   "prompt": "Grant owes his friend $20. If he pays his friend $12, how much does he still owe?",
+   "category": "Word Problem",
+   "explanation": "He owes 20 and pays back 12: 20 − 12 = 8. He still owes $8.",
+   "tip": "No negatives needed here — it's plain subtraction. Read it as \"started with this, took that away.\"",
+   "hint": "Answer in dollars — just the number.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "integer-operations-A-24",
+   "prompt": "The temperature in Yakutsk, Russia is 5°C. The temperature decreases at a constant rate of 14 degrees every 2 hours. What will the temperature be in 6 hours?",
+   "category": "Word Problem",
+   "explanation": "It drops 14° every TWO hours, not every hour. In 6 hours there are 6 ÷ 2 = 3 drops, so it falls 3 × 14 = 42 degrees. Then 5 − 42 = −37°C.",
+   "tip": "Find how many chunks of time there are BEFORE you multiply. Divide the total time by the time per change — that's the step that's easy to skip.",
+   "hint": "Answer in degrees Celsius, with a minus sign if it is below zero.",
+   "kind": "number",
+   "answer": -37
+  },
+  {
+   "id": "integer-operations-A-25",
+   "prompt": "A diver is 40 feet below sea level. If the diver dives 20 feet deeper, then rises 5 feet, what is his new depth?",
+   "category": "Word Problem",
+   "explanation": "Below sea level is negative: −40 + (−20) + 5 = −55 feet.",
+   "tip": "Write every move as a signed number — down/deeper/descends is negative, up/rises is positive — then add them all in one line.",
+   "hint": "Answer in feet, using a negative number for below sea level.",
+   "kind": "number",
+   "answer": -55
+  },
+  {
+   "id": "integer-operations-A-26",
+   "prompt": "Mark deposits $40 in his bank account each month. He started with $150 in his bank account. <strong>How much will his bank account change by after 6 months?</strong>",
+   "category": "Word Problem",
+   "explanation": "The change is only the deposits: 40 × 6 = $240. The starting $150 is not part of the change.",
+   "tip": "\"Change by\" means only the movement, so leave the starting balance out of it. You only add the starting amount when the question asks for the balance.",
+   "hint": "Answer in dollars — the amount of change, just the number.",
+   "kind": "number",
+   "answer": 240
+  },
+  {
+   "id": "integer-operations-A-27",
+   "prompt": "Mark started with $150 and deposits $40 each month. <strong>What will the balance of Mark's bank account be after 6 months?</strong>",
+   "category": "Word Problem",
+   "explanation": "Starting amount plus the change: 150 + 240 = $390.",
+   "tip": "Balance = what you started with + the total change. You already worked out the change, so just add it on.",
+   "hint": "Answer in dollars — just the number.",
+   "label": "26b",
+   "kind": "number",
+   "answer": 390
+  },
+  {
+   "id": "integer-operations-A-28",
+   "prompt": "Mark deposits $40 each month. <strong>If Mark's account changed by $480, how many months did he deposit $40?</strong>",
+   "category": "Word Problem",
+   "explanation": "Divide the total change by the monthly deposit: 480 ÷ 40 = 12 months.",
+   "tip": "When you know a total and the size of each step, divide: total ÷ size of one step.",
+   "hint": "Answer in months — just the number.",
+   "label": "26c",
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "integer-operations-A-29",
+   "prompt": "A construction company is digging a trench to put a pipe under the ground. The company needs to build a hole that is 42 feet deep. It digs 3 feet each day. How many days will it take for the construction company to finish?",
+   "category": "Word Problem",
+   "explanation": "42 ÷ 3 = 14 days.",
+   "tip": "When you know a total and the size of each step, divide: total ÷ size of one step.",
+   "hint": "Answer in days — just the number.",
+   "label": "27",
+   "kind": "number",
+   "answer": 14
+  },
+  {
+   "id": "integer-operations-A-30",
+   "prompt": "A submarine starts at sea level and descends 15 feet every minute. After 8 minutes, what is the location of the submarine relative to sea level?",
+   "category": "Word Problem",
+   "explanation": "Descending is negative: (−15)(8) = −120 feet, or 120 feet below sea level.",
+   "tip": "Rate × time, with the rate signed. Going down is negative, so the answer comes out negative.",
+   "hint": "Answer in feet, using a negative number for below sea level.",
+   "label": "28",
+   "kind": "number",
+   "answer": -120
+  },
+  {
+   "id": "integer-operations-A-31",
+   "prompt": "−6<sup>2</sup> =",
+   "category": "Exponents",
+   "explanation": "With no parentheses, the exponent applies only to the 6: −(6 × 6) = −36.",
+   "tip": "No parentheses means the exponent grabs only the number, not the minus sign. Do the power first, then put the minus back on the front.",
+   "hint": "Write the number only.",
+   "label": "29",
+   "mono": true,
+   "kind": "number",
+   "answer": -36
+  },
+  {
+   "id": "integer-operations-A-32",
+   "prompt": "(−6)<sup>2</sup> =",
+   "category": "Exponents",
+   "explanation": "The parentheses mean the negative gets squared too: (−6)(−6) = 36.",
+   "tip": "Parentheses around the negative mean the whole negative number gets multiplied by itself, so the two negatives cancel into a positive.",
+   "hint": "Write the number only.",
+   "label": "30",
+   "mono": true,
+   "kind": "number",
+   "answer": 36
+  },
+  {
+   "id": "integer-operations-A-33",
+   "prompt": "13<sup>0</sup> =",
+   "category": "Exponents",
+   "explanation": "Any nonzero number raised to the zero power is 1.",
+   "tip": "Any number except 0 raised to the zero power is 1. There's nothing to calculate — just write 1.",
+   "hint": "Write the number only.",
+   "label": "31",
+   "mono": true,
+   "kind": "number",
+   "answer": 1
+  },
+  {
+   "id": "integer-operations-A-34",
+   "prompt": "−8<sup>2</sup> =",
+   "category": "Exponents",
+   "explanation": "The exponent applies only to the 8: −(8 × 8) = −64.",
+   "tip": "No parentheses means the exponent grabs only the number, not the minus sign. Do the power first, then put the minus back on the front.",
+   "hint": "Write the number only.",
+   "label": "32",
+   "mono": true,
+   "kind": "number",
+   "answer": -64
+  }
+ ],
+ "B": [
+  {
+   "id": "integer-operations-B-1",
+   "prompt": "(30) + (−52) =",
+   "category": "Add & Subtract",
+   "explanation": "Adding a negative is subtracting: 30 − 52 = −22.",
+   "tip": "Adding a negative is just subtracting. Rewrite 20 + (−44) as 20 − 44. Then ask which number is bigger ignoring signs — the answer takes that number's sign.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -22
+  },
+  {
+   "id": "integer-operations-B-2",
+   "prompt": "(−15) − (−34) =",
+   "category": "Add & Subtract",
+   "explanation": "Subtracting a negative adds: −15 + 34 = 19.",
+   "tip": "Keep–Change–Change. Keep the first number, change the minus to a plus, and change the sign of the number behind it. Two minus signs in a row always turn into a plus.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 19
+  },
+  {
+   "id": "integer-operations-B-3",
+   "prompt": "(−8) − 27(0) =",
+   "category": "Order of Operations",
+   "explanation": "27(0) = 0, so the problem is just −8 − 0 = −8.",
+   "tip": "Anything times 0 is 0, so that whole chunk vanishes. Cross it out and see what's actually left.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -8
+  },
+  {
+   "id": "integer-operations-B-4",
+   "prompt": "(−9)(−3) − 6 =",
+   "category": "Order of Operations",
+   "explanation": "Multiply first: (−9)(−3) = 27. Then 27 − 6 = 21.",
+   "tip": "Put a box around the multiplication and do it first — it's one single number. Then the problem is just one easy add or subtract.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 21
+  },
+  {
+   "id": "integer-operations-B-5",
+   "prompt": "(−236) + (−47) =",
+   "category": "Add & Subtract",
+   "explanation": "Both negative, so add and keep the sign: −(236 + 47) = −283.",
+   "tip": "Same signs? Add the two amounts and keep the sign. Think of it as owing money twice: owe 184, then owe 29 more, and you owe 213.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -283
+  },
+  {
+   "id": "integer-operations-B-6",
+   "prompt": "75 − (−48) + (−21) =",
+   "category": "Add & Subtract",
+   "explanation": "75 − (−48) = 75 + 48 = 123. Then 123 + (−21) = 102.",
+   "tip": "Clean up the double signs before you calculate: − (−n) becomes + n, and + (−n) becomes − n. Once the signs are tidy it's an easy left-to-right problem.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 102
+  },
+  {
+   "id": "integer-operations-B-7",
+   "prompt": "(−540) ÷ |(−70) − 20| =",
+   "category": "Absolute Value",
+   "explanation": "Inside the bars: −70 − 20 = −90, and |−90| = 90. Then −540 ÷ 90 = −6.",
+   "tip": "Absolute value bars act like parentheses: finish everything inside first, then just drop the negative sign. |−100| is simply 100.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -6
+  },
+  {
+   "id": "integer-operations-B-8",
+   "prompt": "(−360) ÷ 6 − 80 =",
+   "category": "Order of Operations",
+   "explanation": "Divide first: −360 ÷ 6 = −60. Then −60 − 80 = −140.",
+   "tip": "Division happens before adding and subtracting. Do the division by itself first, then deal with the rest.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -140
+  },
+  {
+   "id": "integer-operations-B-9",
+   "prompt": "(−15) + 6(−7) =",
+   "category": "Order of Operations",
+   "explanation": "Multiply first: 6(−7) = −42. Then −15 + (−42) = −57.",
+   "tip": "Put a box around the multiplication and do it first — it's one single number. Then the problem is just one easy add or subtract.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -57
+  },
+  {
+   "id": "integer-operations-B-10",
+   "prompt": "45 − |−82 + 15| =",
+   "category": "Absolute Value",
+   "explanation": "Inside the bars: −82 + 15 = −67, and |−67| = 67. Then 45 − 67 = −22.",
+   "tip": "Absolute value bars act like parentheses: finish everything inside first, then just drop the negative sign. |−100| is simply 100.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -22
+  },
+  {
+   "id": "integer-operations-B-11",
+   "prompt": "(−24) + 72 ÷ (−4) =",
+   "category": "Order of Operations",
+   "explanation": "Divide first: 72 ÷ (−4) = −18. Then −24 + (−18) = −42.",
+   "tip": "Division happens before adding and subtracting. Do the division by itself first, then deal with the rest.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -42
+  },
+  {
+   "id": "integer-operations-B-12",
+   "prompt": "(−48)(−10)(−3) =",
+   "category": "Multiply & Divide",
+   "explanation": "(−48)(−10) = 480, then 480 × (−3) = −1440. Three negatives, so the answer is negative.",
+   "tip": "Count the negative signs being multiplied. Even number of negatives = positive answer, odd number = negative. Multiply the plain numbers, then stick that sign on.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -1440
+  },
+  {
+   "id": "integer-operations-B-13",
+   "prompt": "(−85) − 24(−3) =",
+   "category": "Order of Operations",
+   "explanation": "Multiply first: 24(−3) = −72. Then −85 − (−72) = −85 + 72 = −13.",
+   "tip": "Put a box around the multiplication and do it first — it's one single number. Then the problem is just one easy add or subtract.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -13
+  },
+  {
+   "id": "integer-operations-B-14",
+   "prompt": "(−148) − (−9 + 70) =",
+   "category": "Order of Operations",
+   "explanation": "Parentheses first: −9 + 70 = 61. Then −148 − 61 = −209.",
+   "tip": "Parentheses are a package. Squash everything inside down to one single number before you touch anything outside.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -209
+  },
+  {
+   "id": "integer-operations-B-15",
+   "prompt": "−(−7) − 11(−5) =",
+   "category": "Order of Operations",
+   "explanation": "11(−5) = −55, and −(−7) = 7. So 7 − (−55) = 7 + 55 = 62.",
+   "tip": "Put a box around the multiplication and do it first — it's one single number. Then the problem is just one easy add or subtract.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 62
+  },
+  {
+   "id": "integer-operations-B-16",
+   "prompt": "−3 − 9(−4) =",
+   "category": "Order of Operations",
+   "explanation": "9(−4) = −36. Then −3 − (−36) = −3 + 36 = 33.",
+   "tip": "Put a box around the multiplication and do it first — it's one single number. Then the problem is just one easy add or subtract.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 33
+  },
+  {
+   "id": "integer-operations-B-17",
+   "prompt": "(−126) ÷ (−6) =",
+   "category": "Multiply & Divide",
+   "explanation": "Negative ÷ negative = positive: 126 ÷ 6 = 21.",
+   "tip": "Decide the sign first, then divide the plain numbers. Same signs make a positive, different signs make a negative.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 21
+  },
+  {
+   "id": "integer-operations-B-18",
+   "prompt": "(−41) + 9 − 10(−3) =",
+   "category": "Order of Operations",
+   "explanation": "10(−3) = −30. Then −41 + 9 = −32, and −32 − (−30) = −32 + 30 = −2.",
+   "tip": "Do multiplying and dividing first, then work whatever is left strictly left to right — don't jump around.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -2
+  },
+  {
+   "id": "integer-operations-B-19",
+   "prompt": "(−31) − (−74 + 9) =",
+   "category": "Order of Operations",
+   "explanation": "Parentheses first: −74 + 9 = −65. Then −31 − (−65) = −31 + 65 = 34.",
+   "tip": "Parentheses are a package. Squash everything inside down to one single number before you touch anything outside.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 34
+  },
+  {
+   "id": "integer-operations-B-20",
+   "prompt": "−6 − <span class=\"frac\"><span class=\"num\">−48</span><span class=\"den\">8</span></span> =",
+   "category": "Order of Operations",
+   "explanation": "The fraction bar means divide: −48 ÷ 8 = −6. Then −6 − (−6) = −6 + 6 = 0.",
+   "tip": "A fraction bar just means divide. Turn the fraction into one number first, then the rest is a normal subtraction.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 0
+  },
+  {
+   "id": "integer-operations-B-21",
+   "prompt": "The temperature in Death Valley is 118°F. The temperature in Siberia is −29°F. What is the difference in the two temperatures?",
+   "category": "Word Problem",
+   "explanation": "118 − (−29) = 118 + 29 = 147°F.",
+   "tip": "Difference means subtract, but the easy check is to walk the number line: count up from the negative number to 0, then from 0 up to the other number, and add those two jumps.",
+   "hint": "Answer in degrees Fahrenheit — just the number.",
+   "kind": "number",
+   "answer": 147
+  },
+  {
+   "id": "integer-operations-B-22",
+   "prompt": "Devon is on a game show with a score of −15. Priya's score is 27. What is the difference of the two scores?",
+   "category": "Word Problem",
+   "explanation": "27 − (−15) = 27 + 15 = 42 points apart.",
+   "tip": "Difference means subtract, but the easy check is to walk the number line: count up from the negative number to 0, then from 0 up to the other number, and add those two jumps.",
+   "hint": "Answer in points — just the number.",
+   "kind": "number",
+   "answer": 42
+  },
+  {
+   "id": "integer-operations-B-23",
+   "prompt": "Rosa owes her brother $35. If she pays him $18, how much does she still owe?",
+   "category": "Word Problem",
+   "explanation": "35 − 18 = 17. She still owes $17.",
+   "tip": "No negatives needed here — it's plain subtraction. Read it as \"started with this, took that away.\"",
+   "hint": "Answer in dollars — just the number.",
+   "kind": "number",
+   "answer": 17
+  },
+  {
+   "id": "integer-operations-B-24",
+   "prompt": "The temperature in Fairbanks, Alaska is 8°C. The temperature decreases at a constant rate of 12 degrees every 3 hours. What will the temperature be in 9 hours?",
+   "category": "Word Problem",
+   "explanation": "It drops 12° every THREE hours. In 9 hours there are 9 ÷ 3 = 3 drops, so it falls 3 × 12 = 36 degrees. Then 8 − 36 = −28°C.",
+   "tip": "Find how many chunks of time there are BEFORE you multiply. Divide the total time by the time per change — that's the step that's easy to skip.",
+   "hint": "Answer in degrees Celsius, with a minus sign if it is below zero.",
+   "kind": "number",
+   "answer": -28
+  },
+  {
+   "id": "integer-operations-B-25",
+   "prompt": "A diver is 25 feet below sea level. If the diver dives 30 feet deeper, then rises 8 feet, what is her new depth?",
+   "category": "Word Problem",
+   "explanation": "−25 + (−30) + 8 = −47 feet.",
+   "tip": "Write every move as a signed number — down/deeper/descends is negative, up/rises is positive — then add them all in one line.",
+   "hint": "Answer in feet, using a negative number for below sea level.",
+   "kind": "number",
+   "answer": -47
+  },
+  {
+   "id": "integer-operations-B-26",
+   "prompt": "Lena deposits $35 in her bank account each month. She started with $210 in her account. <strong>How much will her bank account change by after 8 months?</strong>",
+   "category": "Word Problem",
+   "explanation": "Only the deposits count as the change: 35 × 8 = $280.",
+   "tip": "\"Change by\" means only the movement, so leave the starting balance out of it. You only add the starting amount when the question asks for the balance.",
+   "hint": "Answer in dollars — the amount of change, just the number.",
+   "kind": "number",
+   "answer": 280
+  },
+  {
+   "id": "integer-operations-B-27",
+   "prompt": "Lena started with $210 and deposits $35 each month. <strong>What will the balance of her account be after 8 months?</strong>",
+   "category": "Word Problem",
+   "explanation": "Starting amount plus the change: 210 + 280 = $490.",
+   "tip": "Balance = what you started with + the total change. You already worked out the change, so just add it on.",
+   "hint": "Answer in dollars — just the number.",
+   "label": "26b",
+   "kind": "number",
+   "answer": 490
+  },
+  {
+   "id": "integer-operations-B-28",
+   "prompt": "Lena deposits $35 each month. <strong>If her account changed by $560, how many months did she deposit $35?</strong>",
+   "category": "Word Problem",
+   "explanation": "560 ÷ 35 = 16 months.",
+   "tip": "When you know a total and the size of each step, divide: total ÷ size of one step.",
+   "hint": "Answer in months — just the number.",
+   "label": "26c",
+   "kind": "number",
+   "answer": 16
+  },
+  {
+   "id": "integer-operations-B-29",
+   "prompt": "A crew is digging a well that needs to be 96 feet deep. They dig 6 feet each day. How many days will it take the crew to finish?",
+   "category": "Word Problem",
+   "explanation": "96 ÷ 6 = 16 days.",
+   "tip": "When you know a total and the size of each step, divide: total ÷ size of one step.",
+   "hint": "Answer in days — just the number.",
+   "label": "27",
+   "kind": "number",
+   "answer": 16
+  },
+  {
+   "id": "integer-operations-B-30",
+   "prompt": "A submarine starts at sea level and descends 18 feet every minute. After 7 minutes, what is the location of the submarine relative to sea level?",
+   "category": "Word Problem",
+   "explanation": "Descending is negative: (−18)(7) = −126 feet.",
+   "tip": "Rate × time, with the rate signed. Going down is negative, so the answer comes out negative.",
+   "hint": "Answer in feet, using a negative number for below sea level.",
+   "label": "28",
+   "kind": "number",
+   "answer": -126
+  },
+  {
+   "id": "integer-operations-B-31",
+   "prompt": "−9<sup>2</sup> =",
+   "category": "Exponents",
+   "explanation": "No parentheses, so the exponent only applies to the 9: −(9 × 9) = −81.",
+   "tip": "No parentheses means the exponent grabs only the number, not the minus sign. Do the power first, then put the minus back on the front.",
+   "hint": "Write the number only.",
+   "label": "29",
+   "mono": true,
+   "kind": "number",
+   "answer": -81
+  },
+  {
+   "id": "integer-operations-B-32",
+   "prompt": "(−9)<sup>2</sup> =",
+   "category": "Exponents",
+   "explanation": "(−9)(−9) = 81. The parentheses mean the negative is squared too.",
+   "tip": "Parentheses around the negative mean the whole negative number gets multiplied by itself, so the two negatives cancel into a positive.",
+   "hint": "Write the number only.",
+   "label": "30",
+   "mono": true,
+   "kind": "number",
+   "answer": 81
+  },
+  {
+   "id": "integer-operations-B-33",
+   "prompt": "27<sup>0</sup> =",
+   "category": "Exponents",
+   "explanation": "Any nonzero number to the zero power is 1.",
+   "tip": "Any number except 0 raised to the zero power is 1. There's nothing to calculate — just write 1.",
+   "hint": "Write the number only.",
+   "label": "31",
+   "mono": true,
+   "kind": "number",
+   "answer": 1
+  },
+  {
+   "id": "integer-operations-B-34",
+   "prompt": "−7<sup>2</sup> =",
+   "category": "Exponents",
+   "explanation": "The exponent applies only to the 7: −(7 × 7) = −49.",
+   "tip": "No parentheses means the exponent grabs only the number, not the minus sign. Do the power first, then put the minus back on the front.",
+   "hint": "Write the number only.",
+   "label": "32",
+   "mono": true,
+   "kind": "number",
+   "answer": -49
+  }
+ ],
+ "C": [
+  {
+   "id": "integer-operations-C-1",
+   "prompt": "(−3)<sup>3</sup> =",
+   "category": "Exponents",
+   "explanation": "(−3)(−3) = 9, then 9 × (−3) = −27. Three negative factors make a negative answer.",
+   "tip": "Count the negative signs being multiplied. Even number of negatives = positive answer, odd number = negative. Multiply the plain numbers, then stick that sign on.",
+   "hint": "Write the number only.",
+   "label": "C1",
+   "mono": true,
+   "kind": "number",
+   "answer": -27
+  },
+  {
+   "id": "integer-operations-C-2",
+   "prompt": "−2<sup>4</sup> =",
+   "category": "Exponents",
+   "explanation": "No parentheses, so the exponent applies only to the 2: 2⁴ = 16, then the minus in front gives −16.",
+   "tip": "No parentheses means the exponent grabs only the number, not the minus sign. Do the power first, then put the minus back on the front.",
+   "hint": "Write the number only.",
+   "label": "C2",
+   "mono": true,
+   "kind": "number",
+   "answer": -16
+  },
+  {
+   "id": "integer-operations-C-3",
+   "prompt": "(−2)<sup>4</sup> =",
+   "category": "Exponents",
+   "explanation": "(−2)(−2)(−2)(−2): the four negatives pair off into positives, so the answer is 16.",
+   "tip": "Parentheses around the negative mean the whole negative number gets multiplied by itself, so the two negatives cancel into a positive.",
+   "hint": "Write the number only.",
+   "label": "C3",
+   "mono": true,
+   "kind": "number",
+   "answer": 16
+  },
+  {
+   "id": "integer-operations-C-4",
+   "prompt": "|−15 + 7| − |9 − 20| =",
+   "category": "Absolute Value",
+   "explanation": "|−15 + 7| = |−8| = 8, and |9 − 20| = |−11| = 11. Then 8 − 11 = −3.",
+   "tip": "Absolute value bars act like parentheses: finish everything inside first, then just drop the negative sign. |−100| is simply 100.",
+   "hint": "Write the number only.",
+   "label": "C4",
+   "mono": true,
+   "kind": "number",
+   "answer": -3
+  },
+  {
+   "id": "integer-operations-C-5",
+   "prompt": "(−48) ÷ |−6| × (−2) =",
+   "category": "Order of Operations",
+   "explanation": "|−6| = 6. Now go strictly left to right: −48 ÷ 6 = −8, then −8 × (−2) = 16.",
+   "tip": "Do multiplying and dividing first, then work whatever is left strictly left to right — don't jump around.",
+   "hint": "Write the number only.",
+   "label": "C5",
+   "mono": true,
+   "kind": "number",
+   "answer": 16
+  },
+  {
+   "id": "integer-operations-C-6",
+   "prompt": "−5<sup>2</sup> + (−5)<sup>2</sup> =",
+   "category": "Exponents",
+   "explanation": "−5² = −25 (the exponent grabs only the 5), and (−5)² = 25 (the whole −5 is the base). −25 + 25 = 0.",
+   "tip": "No parentheses means the exponent grabs only the number, not the minus sign. Do the power first, then put the minus back on the front.",
+   "hint": "Write the number only.",
+   "label": "C6",
+   "mono": true,
+   "kind": "number",
+   "answer": 0
+  },
+  {
+   "id": "integer-operations-C-7",
+   "prompt": "3(−4)<sup>2</sup> − 10 =",
+   "category": "Order of Operations",
+   "explanation": "Exponent before multiplying: (−4)² = 16. Then 3 × 16 = 48, and 48 − 10 = 38.",
+   "tip": "Parentheses around the negative mean the whole negative number gets multiplied by itself, so the two negatives cancel into a positive.",
+   "hint": "Write the number only.",
+   "label": "C7",
+   "mono": true,
+   "kind": "number",
+   "answer": 38
+  },
+  {
+   "id": "integer-operations-C-8",
+   "prompt": "(−72) ÷ (−8) − 5(−3) =",
+   "category": "Order of Operations",
+   "explanation": "−72 ÷ (−8) = 9 and 5(−3) = −15. Then 9 − (−15) = 9 + 15 = 24.",
+   "tip": "Put a box around the multiplication and do it first — it's one single number. Then the problem is just one easy add or subtract.",
+   "hint": "Write the number only.",
+   "label": "C8",
+   "mono": true,
+   "kind": "number",
+   "answer": 24
+  },
+  {
+   "id": "integer-operations-C-9",
+   "prompt": "|(−7)(3)| ÷ (−7) =",
+   "category": "Absolute Value",
+   "explanation": "Inside the bars: (−7)(3) = −21, so |−21| = 21. Then 21 ÷ (−7) = −3.",
+   "tip": "Absolute value bars act like parentheses: finish everything inside first, then just drop the negative sign. |−100| is simply 100.",
+   "hint": "Write the number only.",
+   "label": "C9",
+   "mono": true,
+   "kind": "number",
+   "answer": -3
+  },
+  {
+   "id": "integer-operations-C-10",
+   "prompt": "−6 − [2(−9) + 4] =",
+   "category": "Order of Operations",
+   "explanation": "Inside the brackets: 2(−9) = −18, then −18 + 4 = −14. Then −6 − (−14) = −6 + 14 = 8.",
+   "tip": "Work from the inside out. Finish everything inside the brackets down to one number, then handle the outside.",
+   "hint": "Write the number only.",
+   "label": "C10",
+   "mono": true,
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "integer-operations-C-11",
+   "prompt": "A submarine sits at −80 feet. It rises 15 feet every minute for 4 minutes, then dives 25 feet. Where is the submarine relative to sea level?",
+   "category": "Word Problem",
+   "explanation": "Rising is positive: 15 × 4 = +60, so −80 + 60 = −20. Then diving 25: −20 − 25 = −45 feet.",
+   "tip": "Write every move as a signed number — down/deeper/descends is negative, up/rises is positive — then add them all in one line.",
+   "hint": "Answer in feet, using a negative number for below sea level.",
+   "label": "C11",
+   "kind": "number",
+   "answer": -45
+  },
+  {
+   "id": "integer-operations-C-12",
+   "prompt": "At 6 a.m. the temperature is −7°C. It rises 4 degrees every 2 hours until noon, then falls 3 degrees every hour until 3 p.m. What is the temperature at 3 p.m.?",
+   "category": "Word Problem",
+   "explanation": "6 a.m. to noon is 6 hours = 6 ÷ 2 = 3 rises of 4°, so +12: −7 + 12 = 5°C at noon. Noon to 3 p.m. is 3 hours falling 3° each: 5 − 9 = −4°C.",
+   "tip": "Find how many chunks of time there are BEFORE you multiply. Divide the total time by the time per change — that's the step that's easy to skip.",
+   "hint": "Answer in degrees Celsius, with a minus sign if it is below zero.",
+   "label": "C12",
+   "kind": "number",
+   "answer": -4
+  }
+ ],
+ "D": [
+  {
+   "id": "integer-operations-D-1",
+   "prompt": "(45) + (−63) =",
+   "category": "Add & Subtract",
+   "explanation": "Adding a negative is subtracting: 45 − 63 = −18.",
+   "tip": "Adding a negative is just subtracting. Rewrite 20 + (−44) as 20 − 44. Then ask which number is bigger ignoring signs — the answer takes that number's sign.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -18
+  },
+  {
+   "id": "integer-operations-D-2",
+   "prompt": "(−21) − (−48) =",
+   "category": "Add & Subtract",
+   "explanation": "Subtracting a negative adds: −21 + 48 = 27.",
+   "tip": "Keep–Change–Change. Keep the first number, change the minus to a plus, and change the sign of the number behind it. Two minus signs in a row always turn into a plus.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 27
+  },
+  {
+   "id": "integer-operations-D-3",
+   "prompt": "(−9) − 34(0) =",
+   "category": "Order of Operations",
+   "explanation": "34(0) = 0, so the problem is just −9 − 0 = −9.",
+   "tip": "Anything times 0 is 0, so that whole chunk vanishes. Cross it out and see what's actually left.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -9
+  },
+  {
+   "id": "integer-operations-D-4",
+   "prompt": "(−8)(−6) − 5 =",
+   "category": "Order of Operations",
+   "explanation": "Multiply first: (−8)(−6) = 48. Then 48 − 5 = 43.",
+   "tip": "Put a box around the multiplication and do it first — it's one single number. Then the problem is just one easy add or subtract.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 43
+  },
+  {
+   "id": "integer-operations-D-5",
+   "prompt": "(−318) + (−54) =",
+   "category": "Add & Subtract",
+   "explanation": "Both negative, so add and keep the sign: −(318 + 54) = −372.",
+   "tip": "Same signs? Add the two amounts and keep the sign. Think of it as owing money twice: owe 184, then owe 29 more, and you owe 213.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -372
+  },
+  {
+   "id": "integer-operations-D-6",
+   "prompt": "82 − (−39) + (−27) =",
+   "category": "Add & Subtract",
+   "explanation": "82 − (−39) = 82 + 39 = 121. Then 121 + (−27) = 94.",
+   "tip": "Clean up the double signs before you calculate: − (−n) becomes + n, and + (−n) becomes − n. Once the signs are tidy it's an easy left-to-right problem.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 94
+  },
+  {
+   "id": "integer-operations-D-7",
+   "prompt": "(−630) ÷ |(−55) − 15| =",
+   "category": "Absolute Value",
+   "explanation": "Inside the bars: −55 − 15 = −70, and |−70| = 70. Then −630 ÷ 70 = −9.",
+   "tip": "Absolute value bars act like parentheses: finish everything inside first, then just drop the negative sign. |−100| is simply 100.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -9
+  },
+  {
+   "id": "integer-operations-D-8",
+   "prompt": "(−480) ÷ 8 − 70 =",
+   "category": "Order of Operations",
+   "explanation": "Divide first: −480 ÷ 8 = −60. Then −60 − 70 = −130.",
+   "tip": "Division happens before adding and subtracting. Do the division by itself first, then deal with the rest.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -130
+  },
+  {
+   "id": "integer-operations-D-9",
+   "prompt": "(−19) + 8(−5) =",
+   "category": "Order of Operations",
+   "explanation": "Multiply first: 8(−5) = −40. Then −19 + (−40) = −59.",
+   "tip": "Put a box around the multiplication and do it first — it's one single number. Then the problem is just one easy add or subtract.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -59
+  },
+  {
+   "id": "integer-operations-D-10",
+   "prompt": "52 − |−91 + 24| =",
+   "category": "Absolute Value",
+   "explanation": "Inside the bars: −91 + 24 = −67, and |−67| = 67. Then 52 − 67 = −15.",
+   "tip": "Absolute value bars act like parentheses: finish everything inside first, then just drop the negative sign. |−100| is simply 100.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -15
+  },
+  {
+   "id": "integer-operations-D-11",
+   "prompt": "(−35) + 96 ÷ (−8) =",
+   "category": "Order of Operations",
+   "explanation": "Divide first: 96 ÷ (−8) = −12. Then −35 + (−12) = −47.",
+   "tip": "Division happens before adding and subtracting. Do the division by itself first, then deal with the rest.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -47
+  },
+  {
+   "id": "integer-operations-D-12",
+   "prompt": "(−35)(−10)(−4) =",
+   "category": "Multiply & Divide",
+   "explanation": "(−35)(−10) = 350, then 350 × (−4) = −1400. Three negatives, so the answer is negative.",
+   "tip": "Count the negative signs being multiplied. Even number of negatives = positive answer, odd number = negative. Multiply the plain numbers, then stick that sign on.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -1400
+  },
+  {
+   "id": "integer-operations-D-13",
+   "prompt": "(−74) − 29(−4) =",
+   "category": "Order of Operations",
+   "explanation": "Multiply first: 29(−4) = −116. Then −74 − (−116) = −74 + 116 = 42.",
+   "tip": "Put a box around the multiplication and do it first — it's one single number. Then the problem is just one easy add or subtract.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 42
+  },
+  {
+   "id": "integer-operations-D-14",
+   "prompt": "(−203) − (−8 + 60) =",
+   "category": "Order of Operations",
+   "explanation": "Parentheses first: −8 + 60 = 52. Then −203 − 52 = −255.",
+   "tip": "Parentheses are a package. Squash everything inside down to one single number before you touch anything outside.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -255
+  },
+  {
+   "id": "integer-operations-D-15",
+   "prompt": "−(−12) − 9(−7) =",
+   "category": "Order of Operations",
+   "explanation": "9(−7) = −63, and −(−12) = 12. So 12 − (−63) = 12 + 63 = 75.",
+   "tip": "Put a box around the multiplication and do it first — it's one single number. Then the problem is just one easy add or subtract.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 75
+  },
+  {
+   "id": "integer-operations-D-16",
+   "prompt": "−5 − 7(−6) =",
+   "category": "Order of Operations",
+   "explanation": "7(−6) = −42. Then −5 − (−42) = −5 + 42 = 37.",
+   "tip": "Put a box around the multiplication and do it first — it's one single number. Then the problem is just one easy add or subtract.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 37
+  },
+  {
+   "id": "integer-operations-D-17",
+   "prompt": "(−144) ÷ (−8) =",
+   "category": "Multiply & Divide",
+   "explanation": "Negative ÷ negative = positive: 144 ÷ 8 = 18.",
+   "tip": "Decide the sign first, then divide the plain numbers. Same signs make a positive, different signs make a negative.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 18
+  },
+  {
+   "id": "integer-operations-D-18",
+   "prompt": "(−53) + 12 − 10(−4) =",
+   "category": "Order of Operations",
+   "explanation": "10(−4) = −40. Then −53 + 12 = −41, and −41 − (−40) = −41 + 40 = −1.",
+   "tip": "Do multiplying and dividing first, then work whatever is left strictly left to right — don't jump around.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -1
+  },
+  {
+   "id": "integer-operations-D-19",
+   "prompt": "(−47) − (−82 + 15) =",
+   "category": "Order of Operations",
+   "explanation": "Parentheses first: −82 + 15 = −67. Then −47 − (−67) = −47 + 67 = 20.",
+   "tip": "Parentheses are a package. Squash everything inside down to one single number before you touch anything outside.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": 20
+  },
+  {
+   "id": "integer-operations-D-20",
+   "prompt": "−9 − <span class=\"frac\"><span class=\"num\">−56</span><span class=\"den\">8</span></span> =",
+   "category": "Order of Operations",
+   "explanation": "The fraction bar means divide: −56 ÷ 8 = −7. Then −9 − (−7) = −9 + 7 = −2.",
+   "tip": "A fraction bar just means divide. Turn the fraction into one number first, then the rest is a normal subtraction.",
+   "hint": "Write the number only.",
+   "mono": true,
+   "kind": "number",
+   "answer": -2
+  },
+  {
+   "id": "integer-operations-D-21",
+   "prompt": "The temperature in Phoenix is 109°F. The temperature in Fairbanks is −31°F. What is the difference in the two temperatures?",
+   "category": "Word Problem",
+   "explanation": "109 − (−31) = 109 + 31 = 140°F.",
+   "tip": "Difference means subtract, but the easy check is to walk the number line: count up from the negative number to 0, then from 0 up to the other number, and add those two jumps.",
+   "hint": "Answer in degrees Fahrenheit — just the number.",
+   "kind": "number",
+   "answer": 140
+  },
+  {
+   "id": "integer-operations-D-22",
+   "prompt": "Jaden is on a game show with a score of −18. Tessa's score is 25. What is the difference of the two scores?",
+   "category": "Word Problem",
+   "explanation": "25 − (−18) = 25 + 18 = 43 points apart.",
+   "tip": "Difference means subtract, but the easy check is to walk the number line: count up from the negative number to 0, then from 0 up to the other number, and add those two jumps.",
+   "hint": "Answer in points — just the number.",
+   "kind": "number",
+   "answer": 43
+  },
+  {
+   "id": "integer-operations-D-23",
+   "prompt": "Marcus owes his cousin $60. If he pays his cousin $37, how much does he still owe?",
+   "category": "Word Problem",
+   "explanation": "60 − 37 = 23. He still owes $23.",
+   "tip": "No negatives needed here — it's plain subtraction. Read it as \"started with this, took that away.\"",
+   "hint": "Answer in dollars — just the number.",
+   "kind": "number",
+   "answer": 23
+  },
+  {
+   "id": "integer-operations-D-24",
+   "prompt": "The temperature in Reykjavik, Iceland is 6°C. The temperature decreases at a constant rate of 9 degrees every 3 hours. What will the temperature be in 12 hours?",
+   "category": "Word Problem",
+   "explanation": "It drops 9° every THREE hours. In 12 hours there are 12 ÷ 3 = 4 drops, so it falls 4 × 9 = 36 degrees. Then 6 − 36 = −30°C.",
+   "tip": "Find how many chunks of time there are BEFORE you multiply. Divide the total time by the time per change — that's the step that's easy to skip.",
+   "hint": "Answer in degrees Celsius, with a minus sign if it is below zero.",
+   "kind": "number",
+   "answer": -30
+  },
+  {
+   "id": "integer-operations-D-25",
+   "prompt": "A diver is 30 feet below sea level. If the diver dives 25 feet deeper, then rises 12 feet, what is her new depth?",
+   "category": "Word Problem",
+   "explanation": "−30 + (−25) + 12 = −43 feet.",
+   "tip": "Write every move as a signed number — down/deeper/descends is negative, up/rises is positive — then add them all in one line.",
+   "hint": "Answer in feet, using a negative number for below sea level.",
+   "kind": "number",
+   "answer": -43
+  },
+  {
+   "id": "integer-operations-D-26",
+   "prompt": "Priya deposits $45 in her bank account each month. She started with $180 in her account. <strong>How much will her bank account change by after 7 months?</strong>",
+   "category": "Word Problem",
+   "explanation": "Only the deposits count as the change: 45 × 7 = $315.",
+   "tip": "\"Change by\" means only the movement, so leave the starting balance out of it. You only add the starting amount when the question asks for the balance.",
+   "hint": "Answer in dollars — the amount of change, just the number.",
+   "kind": "number",
+   "answer": 315
+  },
+  {
+   "id": "integer-operations-D-27",
+   "prompt": "Priya started with $180 and deposits $45 each month. <strong>What will the balance of her account be after 7 months?</strong>",
+   "category": "Word Problem",
+   "explanation": "Starting amount plus the change: 180 + 315 = $495.",
+   "tip": "Balance = what you started with + the total change. You already worked out the change, so just add it on.",
+   "hint": "Answer in dollars — just the number.",
+   "label": "26b",
+   "kind": "number",
+   "answer": 495
+  },
+  {
+   "id": "integer-operations-D-28",
+   "prompt": "Priya deposits $45 each month. <strong>If her account changed by $630, how many months did she deposit $45?</strong>",
+   "category": "Word Problem",
+   "explanation": "630 ÷ 45 = 14 months.",
+   "tip": "When you know a total and the size of each step, divide: total ÷ size of one step.",
+   "hint": "Answer in months — just the number.",
+   "label": "26c",
+   "kind": "number",
+   "answer": 14
+  },
+  {
+   "id": "integer-operations-D-29",
+   "prompt": "A crew is digging a tunnel that needs to be 84 feet long. They dig 7 feet each day. How many days will it take the crew to finish?",
+   "category": "Word Problem",
+   "explanation": "84 ÷ 7 = 12 days.",
+   "tip": "When you know a total and the size of each step, divide: total ÷ size of one step.",
+   "hint": "Answer in days — just the number.",
+   "label": "27",
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "integer-operations-D-30",
+   "prompt": "A submarine starts at sea level and descends 12 feet every minute. After 9 minutes, what is the location of the submarine relative to sea level?",
+   "category": "Word Problem",
+   "explanation": "Descending is negative: (−12)(9) = −108 feet.",
+   "tip": "Rate × time, with the rate signed. Going down is negative, so the answer comes out negative.",
+   "hint": "Answer in feet, using a negative number for below sea level.",
+   "label": "28",
+   "kind": "number",
+   "answer": -108
+  },
+  {
+   "id": "integer-operations-D-31",
+   "prompt": "−11<sup>2</sup> =",
+   "category": "Exponents",
+   "explanation": "No parentheses, so the exponent only applies to the 11: −(11 × 11) = −121.",
+   "tip": "No parentheses means the exponent grabs only the number, not the minus sign. Do the power first, then put the minus back on the front.",
+   "hint": "Write the number only.",
+   "label": "29",
+   "mono": true,
+   "kind": "number",
+   "answer": -121
+  },
+  {
+   "id": "integer-operations-D-32",
+   "prompt": "(−11)<sup>2</sup> =",
+   "category": "Exponents",
+   "explanation": "(−11)(−11) = 121. The parentheses mean the negative is squared too.",
+   "tip": "Parentheses around the negative mean the whole negative number gets multiplied by itself, so the two negatives cancel into a positive.",
+   "hint": "Write the number only.",
+   "label": "30",
+   "mono": true,
+   "kind": "number",
+   "answer": 121
+  },
+  {
+   "id": "integer-operations-D-33",
+   "prompt": "45<sup>0</sup> =",
+   "category": "Exponents",
+   "explanation": "Any nonzero number to the zero power is 1.",
+   "tip": "Any number except 0 raised to the zero power is 1. There's nothing to calculate — just write 1.",
+   "hint": "Write the number only.",
+   "label": "31",
+   "mono": true,
+   "kind": "number",
+   "answer": 1
+  },
+  {
+   "id": "integer-operations-D-34",
+   "prompt": "−12<sup>2</sup> =",
+   "category": "Exponents",
+   "explanation": "The exponent applies only to the 12: −(12 × 12) = −144.",
+   "tip": "No parentheses means the exponent grabs only the number, not the minus sign. Do the power first, then put the minus back on the front.",
+   "hint": "Write the number only.",
+   "label": "32",
+   "mono": true,
+   "kind": "number",
+   "answer": -144
+  }
+ ],
+ "K": [
+  {
+   "id": "integer-operations-K-1",
+   "prompt": "Match each expression to its value.",
+   "category": "Sign Rules",
+   "explanation": "Same signs multiply or divide to a positive; different signs give a negative. So (−7)(−3) = 21, (−7)(3) = −21, (−21) ÷ (−7) = 3 and 21 ÷ (−7) = −3.",
+   "tip": "Same signs → positive. Different signs → negative. Work out the sign first, then the size.",
+   "kind": "match",
+   "pairs": [
+    [
+     "(−7)(−3)",
+     "21"
+    ],
+    [
+     "(−7)(3)",
+     "−21"
+    ],
+    [
+     "(−21) ÷ (−7)",
+     "3"
+    ],
+    [
+     "21 ÷ (−7)",
+     "−3"
+    ]
+   ]
+  },
+  {
+   "id": "integer-operations-K-2",
+   "prompt": "The sum of two negative integers is always negative.",
+   "category": "Sign Rules",
+   "explanation": "True. Adding two negatives moves you further below zero each time, so the total is always negative — for example −3 + (−4) = −7.",
+   "tip": "Think of debts: owing $3 and then owing $4 more means you owe $7. Debts add up to more debt.",
+   "kind": "truefalse",
+   "answer": true
+  },
+  {
+   "id": "integer-operations-K-3",
+   "prompt": "Subtracting a negative number gives the same result as adding its opposite.",
+   "category": "Sign Rules",
+   "explanation": "True. 8 − (−5) = 8 + 5 = 13. Subtracting −5 is the same as adding the opposite of −5, which is 5.",
+   "tip": "Two minus signs in a row turn into a plus. Keep – Change – Change.",
+   "kind": "truefalse",
+   "answer": true
+  },
+  {
+   "id": "integer-operations-K-4",
+   "prompt": "The product of three negative integers is positive.",
+   "category": "Sign Rules",
+   "explanation": "False. Each pair of negatives cancels into a positive, but the third negative is left over, so the answer is negative: (−2)(−3)(−4) = −24.",
+   "tip": "Count the negative signs. Even number → positive. Odd number → negative.",
+   "kind": "truefalse",
+   "answer": false
+  },
+  {
+   "id": "integer-operations-K-5",
+   "prompt": "Which expression has a <strong>negative</strong> answer?",
+   "category": "Sign Rules",
+   "explanation": "(−8)(5) = −40 because the signs are different. The others work out to 36, 6 and 7 — all positive.",
+   "tip": "You only need the sign here, not the number. Different signs multiplied → negative.",
+   "kind": "choice",
+   "choices": [
+    "(−4)(−9)",
+    "(−36) ÷ (−6)",
+    "(−8) − (−15)",
+    "(−8)(5)"
+   ],
+   "answer": 3
+  },
+  {
+   "id": "integer-operations-K-6",
+   "prompt": "Select <strong>ALL</strong> the expressions that equal 12.",
+   "category": "Sign Rules",
+   "explanation": "(−3)(−4) = 12, (−48) ÷ (−4) = 12 and −3 − (−15) = −3 + 15 = 12. But (−6) + (−6) = −12, which is the opposite.",
+   "tip": "Check each one on its own. The last one adds two negatives, so it can never come out positive.",
+   "kind": "multi",
+   "choices": [
+    "(−3)(−4)",
+    "(−48) ÷ (−4)",
+    "−3 − (−15)",
+    "(−6) + (−6)"
+   ],
+   "answers": [
+    0,
+    1,
+    2
+   ]
+  },
+  {
+   "id": "integer-operations-K-7",
+   "prompt": "|−23| =",
+   "category": "Absolute Value",
+   "explanation": "Absolute value is the distance from zero, and distance is never negative. −23 is 23 units from zero, so |−23| = 23.",
+   "tip": "Absolute value bars just strip off the negative sign — the size stays the same.",
+   "hint": "Write the number only.",
+   "kind": "number",
+   "answer": 23
+  },
+  {
+   "id": "integer-operations-K-8",
+   "prompt": "|−7| = −7",
+   "category": "Absolute Value",
+   "explanation": "False. |−7| = 7. Absolute value measures distance from zero, and a distance cannot be negative.",
+   "tip": "If an answer in absolute value bars comes out negative, something went wrong.",
+   "kind": "truefalse",
+   "answer": false
+  },
+  {
+   "id": "integer-operations-K-9",
+   "prompt": "Put these in order from <strong>least to greatest</strong>.",
+   "category": "Absolute Value",
+   "explanation": "Work each one out first: |−2| = 2, |5| = 5, |−8| = 8, |−11| = 11. In order: 2, 5, 8, 11.",
+   "tip": "Strip the signs first, then compare. A big negative number has a big absolute value.",
+   "kind": "order",
+   "items": [
+    "|−2|",
+    "|5|",
+    "|−8|",
+    "|−11|"
+   ]
+  },
+  {
+   "id": "integer-operations-K-10",
+   "prompt": "Which pair of numbers has the <strong>same</strong> absolute value?",
+   "category": "Absolute Value",
+   "explanation": "−9 and 9 are both 9 units from zero, just on opposite sides, so their absolute values match.",
+   "tip": "Opposites always share an absolute value — they sit the same distance from zero.",
+   "kind": "choice",
+   "choices": [
+    "−9 and 9",
+    "−9 and −8",
+    "9 and 0",
+    "−9 and 18"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "integer-operations-K-11",
+   "prompt": "|−15 + 6| =",
+   "category": "Absolute Value",
+   "explanation": "Work inside the bars first: −15 + 6 = −9. Then |−9| = 9.",
+   "tip": "Bars act like parentheses: finish the inside, then drop the negative sign.",
+   "hint": "Write the number only.",
+   "kind": "number",
+   "answer": 9
+  },
+  {
+   "id": "integer-operations-K-12",
+   "prompt": "Put these integers in order from <strong>least to greatest</strong>.",
+   "category": "Comparing Integers",
+   "explanation": "Negatives are below zero, and the further below zero, the smaller the number: −12 < −5 < 0 < 3 < 8.",
+   "tip": "On a number line, left is less. −12 is further left than −5, so it is smaller even though 12 looks bigger.",
+   "kind": "order",
+   "items": [
+    "−12",
+    "−5",
+    "0",
+    "3",
+    "8"
+   ]
+  },
+  {
+   "id": "integer-operations-K-13",
+   "prompt": "Which temperature is the <strong>coldest</strong>?",
+   "category": "Comparing Integers",
+   "explanation": "The coldest is the smallest number. −18 is furthest below zero, so −18°F is coldest.",
+   "tip": "With negatives, the bigger the number after the minus sign, the colder (smaller) it is.",
+   "kind": "choice",
+   "choices": [
+    "−3°F",
+    "−18°F",
+    "0°F",
+    "−9°F"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "integer-operations-K-14",
+   "prompt": "−15 is greater than −2.",
+   "category": "Comparing Integers",
+   "explanation": "False. −15 is further below zero than −2, so −15 < −2.",
+   "tip": "Picture the number line: −2 sits to the right of −15, and right means greater.",
+   "kind": "truefalse",
+   "answer": false
+  },
+  {
+   "id": "integer-operations-K-15",
+   "prompt": "Match each expression to its value.",
+   "category": "Exponents",
+   "explanation": "−5² has no parentheses, so only the 5 is squared: −25. (−5)² squares the whole −5: 25. (−2)³ = −8 (three negatives), and (−2)⁴ = 16 (four negatives pair off).",
+   "tip": "Parentheses around the negative → the negative is part of the base. No parentheses → the minus waits until the end.",
+   "kind": "match",
+   "pairs": [
+    [
+     "−5<sup>2</sup>",
+     "−25"
+    ],
+    [
+     "(−5)<sup>2</sup>",
+     "25"
+    ],
+    [
+     "(−2)<sup>3</sup>",
+     "−8"
+    ],
+    [
+     "(−2)<sup>4</sup>",
+     "16"
+    ]
+   ]
+  },
+  {
+   "id": "integer-operations-K-16",
+   "prompt": "Select <strong>ALL</strong> the expressions that equal 16.",
+   "category": "Exponents",
+   "explanation": "4² = 16, (−4)² = 16 and 2⁴ = 16. But −4² = −16, because the exponent only applies to the 4 and the minus stays out front.",
+   "tip": "The trap is the minus with no parentheses: −4² means −(4 × 4), not (−4)(−4).",
+   "kind": "multi",
+   "choices": [
+    "4<sup>2</sup>",
+    "(−4)<sup>2</sup>",
+    "−4<sup>2</sup>",
+    "2<sup>4</sup>"
+   ],
+   "answers": [
+    0,
+    1,
+    3
+   ]
+  },
+  {
+   "id": "integer-operations-K-17",
+   "prompt": "29<sup>0</sup> =",
+   "category": "Exponents",
+   "explanation": "Any nonzero number raised to the zero power equals 1.",
+   "tip": "Nothing to calculate — just write 1.",
+   "hint": "Write the number only.",
+   "kind": "number",
+   "answer": 1
+  },
+  {
+   "id": "integer-operations-K-18",
+   "prompt": "(−3)<sup>3</sup> is a positive number.",
+   "category": "Exponents",
+   "explanation": "False. (−3)(−3)(−3) = −27. An odd number of negative factors gives a negative answer.",
+   "tip": "Odd power of a negative → negative. Even power of a negative → positive.",
+   "kind": "truefalse",
+   "answer": false
+  },
+  {
+   "id": "integer-operations-K-19",
+   "prompt": "Put the order of operations in order, <strong>first to last</strong>.",
+   "category": "Order of Operations",
+   "explanation": "Work parentheses (and absolute value bars) first, then exponents, then multiply and divide left to right, then add and subtract left to right.",
+   "tip": "PEMDAS: Parentheses, Exponents, Multiply/Divide, Add/Subtract — with bars counting as parentheses.",
+   "kind": "order",
+   "items": [
+    "Parentheses and absolute value bars",
+    "Exponents",
+    "Multiplication and division, left to right",
+    "Addition and subtraction, left to right"
+   ]
+  },
+  {
+   "id": "integer-operations-K-20",
+   "prompt": "In −3 + 4(−2), what should you do <strong>first</strong>?",
+   "category": "Order of Operations",
+   "explanation": "Multiplication comes before addition. 4(−2) = −8, and then −3 + (−8) = −11.",
+   "tip": "Box the multiplication first. Adding left to right is the mistake — it gives 1 × (−2) = −2.",
+   "kind": "choice",
+   "choices": [
+    "Multiply 4 by −2",
+    "Add −3 and 4",
+    "Subtract 2",
+    "Square −2"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "integer-operations-K-21",
+   "prompt": "A student works out 10 − 3² and gets 49. What is the <strong>correct</strong> answer?",
+   "category": "Order of Operations",
+   "explanation": "Exponents come before subtraction: 3² = 9, then 10 − 9 = 1. The student subtracted first (10 − 3 = 7) and then squared (7² = 49).",
+   "tip": "Exponents beat subtraction. Do the power first, then the minus.",
+   "kind": "choice",
+   "choices": [
+    "1",
+    "49",
+    "−1",
+    "−59"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "integer-operations-K-22",
+   "prompt": "Match each term to its meaning.",
+   "category": "Vocabulary",
+   "explanation": "Integers are the whole numbers and their opposites; opposites sit the same distance from zero on either side; absolute value is that distance; and an exponent counts how many times a base is multiplied by itself.",
+   "tip": "Opposites and absolute value are linked: opposites always share the same absolute value.",
+   "kind": "match",
+   "pairs": [
+    [
+     "Integer",
+     "A whole number or its opposite (…, −2, −1, 0, 1, 2, …)"
+    ],
+    [
+     "Opposite",
+     "The number the same distance from 0 on the other side"
+    ],
+    [
+     "Absolute value",
+     "A number's distance from 0 on the number line"
+    ],
+    [
+     "Exponent",
+     "Tells how many times to use the base as a factor"
+    ]
+   ]
+  },
+  {
+   "id": "integer-operations-K-23",
+   "prompt": "The opposite of −14 is ______.",
+   "category": "Vocabulary",
+   "explanation": "Opposites are the same distance from zero on opposite sides, so the opposite of −14 is 14.",
+   "tip": "To find an opposite, just flip the sign.",
+   "hint": "Write the number only.",
+   "kind": "number",
+   "answer": 14
+  },
+  {
+   "id": "integer-operations-K-24",
+   "prompt": "0 is neither positive nor negative.",
+   "category": "Vocabulary",
+   "explanation": "True. Zero sits right between the positive and negative integers, so it is neither one.",
+   "tip": "Zero is the dividing line of the number line — it belongs to neither side.",
+   "kind": "truefalse",
+   "answer": true
+  }
+ ]
+}

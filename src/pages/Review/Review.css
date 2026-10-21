@@ -15,6 +15,17 @@
   -webkit-text-fill-color: transparent;
 }
 .review-header p { color: var(--text-soft); }
+.review-gate {
+  width: fit-content;
+  margin: 0 auto;
+  padding: 6px 16px;
+  border-radius: var(--radius-round);
+  background: color-mix(in srgb, var(--secondary) 18%, var(--card));
+  border: 2px solid var(--secondary);
+  color: var(--text);
+  font-family: var(--font-primary);
+  font-weight: 900;
+}
 
 .review-empty {
   text-align: center;

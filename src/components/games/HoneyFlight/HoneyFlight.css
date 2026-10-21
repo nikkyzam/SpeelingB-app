@@ -1,0 +1,191 @@
+.honey-flight {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  text-align: center;
+}
+
+.hf-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  border-bottom: 2px dashed var(--border);
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  text-align: left;
+}
+.hf-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.hf-stats { display: flex; gap: var(--spacing-lg); }
+.hf-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
+.hf-stat strong { font-size: 1.15rem; color: var(--text); }
+
+.hf-btn {
+  border: none;
+  border-radius: var(--radius-round);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  padding: 0.45rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.hf-btn.ghost { background: var(--card); color: var(--text); border: 2px solid var(--border); }
+.hf-meaning { margin: var(--spacing-sm) auto 0; max-width: 34rem; color: var(--text-soft); }
+
+/* --- the honey pot: the word so far ------------------------------------------------ */
+
+.hf-pot {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: var(--spacing-md) 0;
+}
+.hf-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.4rem;
+  border-bottom: 4px solid var(--border);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.4rem;
+}
+.hf-slot.got { color: var(--primary); border-color: var(--primary); }
+.hf-slot.told { color: var(--warning); border-color: var(--warning); }
+.hf-pot.won .hf-slot { color: var(--success); border-color: var(--success); }
+
+/* --- the sky --------------------------------------------------------------------- */
+
+.hf-play { display: flex; gap: var(--spacing-md); align-items: stretch; }
+.hf-sky {
+  position: relative;
+  flex: 1;
+  height: clamp(13rem, 42vw, 17rem);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: linear-gradient(180deg, #BDE8FF 0%, #E4F6FF 70%, #C9F2C7 100%);
+  border: 2px solid var(--border);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.hf-lane {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  border: none;
+  border-bottom: 2px dashed rgba(255, 255, 255, 0.8);
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.hf-lane:last-of-type { border-bottom: none; }
+.hf-lane.here { background: rgba(255, 255, 255, 0.35); }
+
+/* Flowers, the bee and the notices sit over the lanes; taps go through to them. */
+.hf-flower,
+.hf-bee,
+.hf-overlay { pointer-events: none; }
+
+.hf-flower {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.4rem;
+  height: 3.4rem;
+  transition: left 50ms linear;
+}
+.hf-petals { position: absolute; font-size: 3.2rem; line-height: 1; }
+.hf-letter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: #fff;
+  color: #4A3200;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.3rem;
+  line-height: 1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.hf-bee {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 2.6rem;
+  line-height: 1;
+  transition: top 160ms ease-out;
+}
+.hf-bee.bump { animation: hf-bump 0.5s ease; }
+.hf-bee.happy { animation: hf-happy 0.8s ease infinite; }
+@keyframes hf-bump {
+  0%, 100% { transform: translate(-50%, -50%); }
+  30% { transform: translate(-80%, -50%) rotate(-20deg); }
+  60% { transform: translate(-40%, -50%) rotate(10deg); }
+}
+@keyframes hf-happy {
+  0%, 100% { transform: translate(-50%, -50%); }
+  50% { transform: translate(-50%, -70%); }
+}
+
+.hf-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: var(--spacing-sm);
+  background: rgba(255, 255, 255, 0.85);
+  color: #4A3200;
+  font-family: var(--font-primary);
+  font-weight: 800;
+}
+
+.hf-pad { display: flex; flex-direction: column; justify-content: center; gap: var(--spacing-sm); }
+.hf-arrow {
+  width: 3.4rem;
+  height: 3.4rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card-soft);
+  font-size: 1.5rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.hf-arrow:disabled { opacity: 0.5; cursor: default; }
+
+.hf-lives { margin-top: var(--spacing-sm); font-size: 1.3rem; letter-spacing: 0.2em; }
+.hf-lives .off { opacity: 0.25; }
+.hf-hint { min-height: 1.3em; margin: var(--spacing-xs) 0; color: var(--text-soft); }
+
+.hf-flash {
+  position: relative;
+  margin-top: var(--spacing-sm);
+  font-family: var(--font-primary);
+  font-weight: 800;
+}
+.hf-flash.ok { color: var(--success); }
+.hf-flash.bad { color: var(--error); }
+
+.hf-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hf-bee.bump,
+  .hf-bee.happy { animation: none; }
+  .hf-bee,
+  .hf-flower { transition: none; }
+}

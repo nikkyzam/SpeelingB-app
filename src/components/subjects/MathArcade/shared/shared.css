@@ -1,0 +1,201 @@
+/* Shared Math Arcade furniture: start card, header, track, finish card,
+   answer buttons and the feedback line. Every game's own CSS builds on these. */
+
+.ma-card {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  font-family: var(--font-primary);
+  text-align: center;
+}
+
+.ma-title { margin: 0; font-weight: 800; font-size: clamp(1.5rem, 5vw, 2rem); color: var(--primary); }
+.ma-blurb { margin: var(--spacing-sm) auto; max-width: 30rem; color: var(--text-soft); font-size: 1.05rem; }
+
+/* --- start ---------------------------------------------------------------- */
+
+.ma-start-icon { font-size: 3.5rem; line-height: 1; margin-bottom: var(--spacing-sm); }
+.ma-pick-head { margin: var(--spacing-lg) 0 var(--spacing-sm); color: var(--text); font-size: 1.15rem; }
+
+.ma-hear {
+  min-height: 44px;
+  padding: 0.4rem 1.1rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-round);
+  background: var(--card-soft);
+  color: var(--text);
+  font-family: var(--font-primary);
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.ma-levels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+.ma-level {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  min-height: 120px;
+  padding: var(--spacing-md) var(--spacing-sm);
+  border: 3px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card-soft);
+  box-shadow: var(--shadow-pop);
+  color: var(--text);
+  font-family: var(--font-primary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform var(--transition-fast);
+}
+.ma-level:active { transform: translateY(3px); }
+.ma-level.suggested { border-color: var(--secondary); background: var(--card); }
+.ma-level-icon { font-size: 2.4rem; line-height: 1; }
+.ma-level-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--on-primary);
+  background: var(--secondary);
+  border-radius: var(--radius-round);
+  padding: 0.1rem 0.5rem;
+}
+
+@media (max-width: 480px) {
+  .ma-levels { grid-template-columns: 1fr; }
+  .ma-level { min-height: 72px; flex-direction: row; gap: var(--spacing-md); }
+}
+
+/* --- in play -------------------------------------------------------------- */
+
+.ma-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  border-bottom: 2px dashed var(--border);
+}
+.ma-header-title { font-weight: 800; font-size: 1.3rem; color: var(--primary); }
+.ma-hud { display: flex; gap: var(--spacing-sm); flex-wrap: wrap; }
+.ma-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-round);
+  background: var(--card-soft);
+  border: 2px solid var(--border);
+  font-weight: 800;
+  color: var(--text);
+}
+.ma-chip.low { border-color: var(--warning); }
+
+.ma-track {
+  height: 10px;
+  border-radius: var(--radius-round);
+  background: var(--card-soft);
+  overflow: hidden;
+  margin-bottom: var(--spacing-md);
+}
+.ma-fill {
+  height: 100%;
+  background: var(--secondary);
+  border-radius: var(--radius-round);
+  transition: width 0.25s linear;
+}
+.ma-fill.low { background: var(--warning); }
+
+/* Big tap-only answer buttons, shared by most of the games. */
+.ma-opts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+.ma-opt {
+  min-height: 80px;
+  border: 3px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card-soft);
+  box-shadow: var(--shadow-pop);
+  color: var(--text);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: clamp(1.6rem, 6vw, 2.2rem);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+.ma-opt:active { transform: translateY(3px); }
+.ma-opt:disabled { cursor: default; }
+.ma-opt.right,
+.ma-opt.reveal { background: var(--success); border-color: var(--success); color: var(--on-primary); }
+.ma-opt.reveal { animation: ma-glow 0.9s ease-in-out infinite alternate; }
+/* A miss is quiet: faded, never red. */
+.ma-opt.wrong { opacity: 0.45; }
+
+.ma-flash {
+  min-height: 2.6rem;
+  margin: var(--spacing-md) 0 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-soft);
+}
+.ma-flash.ok { color: var(--success); }
+.ma-flash.bad { color: var(--accent); }
+
+@keyframes ma-glow {
+  from { box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0.0); }
+  to { box-shadow: 0 0 0 8px rgba(var(--primary-rgb), 0.45); }
+}
+
+/* --- finish --------------------------------------------------------------- */
+
+.ma-finish-burst { position: relative; }
+.ma-stars { display: inline-flex; gap: 0.2rem; font-size: 2.6rem; color: var(--card-soft); -webkit-text-stroke: 2px var(--border); }
+.ma-stars .lit { color: var(--warning); }
+.ma-bigscore { font-size: clamp(2.4rem, 9vw, 3.4rem); font-weight: 800; color: var(--text); }
+.ma-bigscore small { font-size: 1rem; color: var(--text-soft); }
+
+.ma-endbtns {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  margin-top: var(--spacing-md);
+}
+.ma-btn {
+  min-height: 56px;
+  min-width: 140px;
+  padding: 0.5rem 1.4rem;
+  border: none;
+  border-radius: var(--radius-round);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.15rem;
+  box-shadow: var(--shadow-pop);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.ma-btn.ghost { background: var(--card-soft); color: var(--text); border: 2px solid var(--border); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ma-opt.reveal { animation: none; }
+  .ma-opt,
+  .ma-level,
+  .ma-fill { transition: none; }
+}

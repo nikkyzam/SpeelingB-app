@@ -1,0 +1,117 @@
+.practice-runner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 16px);
+}
+
+.pr-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pr-head h2 {
+  margin: 0;
+  font-family: var(--font-primary, 'Baloo 2', cursive);
+}
+
+.pr-count {
+  font-weight: 800;
+  color: var(--text-soft, #8a6d2f);
+}
+
+.pr-track {
+  height: 12px;
+  border-radius: var(--radius-round, 999px);
+  background: var(--card-soft, #fff8e1);
+  overflow: hidden;
+}
+
+.pr-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary, #f5a623), var(--primary-2, #ff7a00));
+  transition: width var(--transition-normal, 0.3s);
+}
+
+.pr-card {
+  background: var(--card, #fff);
+  border-radius: var(--radius-lg, 18px);
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.08));
+  padding: var(--spacing-md, 16px);
+}
+
+.pr-verdict {
+  margin-top: var(--spacing-md, 16px);
+  border-radius: var(--radius-md, 12px);
+  padding: 10px 14px;
+}
+
+.pr-verdict p {
+  margin: 4px 0;
+}
+
+.pr-right {
+  background: rgba(47, 191, 113, 0.12);
+}
+
+.pr-retry,
+.pr-shown {
+  background: rgba(255, 176, 32, 0.14);
+}
+
+.pr-line {
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.pr-why {
+  color: var(--text-soft, #8a6d2f);
+}
+
+.pr-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.pr-leave {
+  align-self: center;
+  border: none;
+  background: none;
+  color: var(--text-soft, #8a6d2f);
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+}
+
+.pr-done {
+  text-align: center;
+}
+
+.pr-done h2 {
+  font-family: var(--font-primary, 'Baloo 2', cursive);
+  margin: 4px 0;
+}
+
+.pr-done-icon {
+  font-size: 3.5rem;
+}
+
+.pr-reward {
+  font-weight: 800;
+  color: var(--primary-2, #ff7a00);
+}
+
+.pr-empty {
+  text-align: center;
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pr-fill {
+    transition: none;
+  }
+}

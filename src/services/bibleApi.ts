@@ -191,13 +191,13 @@ class BibleApiService {
       return dailyVerse
     } catch (error) {
       console.error('Error getting daily verse:', error)
-      // Fallback
-      const randomVerse = POPULAR_VERSES[Math.floor(Math.random() * POPULAR_VERSES.length)]
+      // Offline fallback. The text is John 3:16, so the reference must be too —
+      // it used to borrow a random verse's reference and misquote Scripture.
       return {
-        reference: randomVerse.reference,
+        reference: 'John 3:16',
         text: 'For God so loved the world that he gave his one and only Son...',
         date: today,
-        theme: randomVerse.category
+        theme: 'love'
       }
     }
   }

@@ -1,0 +1,47 @@
+.ma-frac { color: var(--text); }
+
+.ma-frac-q {
+  margin: 0 0 var(--spacing-sm);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--text);
+}
+
+.ma-frac-fig { display: flex; justify-content: center; margin-bottom: var(--spacing-md); }
+.ma-frac-pizza { width: min(220px, 60vw); height: auto; }
+
+.ma-frac-plate { fill: var(--card-soft); stroke: var(--border); stroke-width: 3; }
+.ma-frac-slice {
+  fill: var(--warning);
+  stroke: var(--primary-2);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  transition: fill var(--transition-slow);
+}
+.ma-frac-slice.eaten {
+  fill: var(--card);
+  stroke: var(--border);
+  stroke-dasharray: 6 5;
+}
+
+.ma-frac-opts .ma-opt { min-height: 96px; }
+
+.ma-frac-stack {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  gap: 0.15rem;
+}
+.ma-frac-bar {
+  display: block;
+  width: 1.6em;
+  height: 4px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ma-frac-slice { transition: none; }
+}

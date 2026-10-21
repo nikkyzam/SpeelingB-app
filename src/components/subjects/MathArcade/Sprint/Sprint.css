@@ -1,0 +1,33 @@
+.ma-sprint { color: var(--text); }
+
+.ma-sprint-q {
+  margin: var(--spacing-md) 0 var(--spacing-lg);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 10vw, 3.6rem);
+  color: var(--text);
+}
+.ma-sprint-hole {
+  display: inline-block;
+  min-width: 1.6em;
+  padding: 0 0.2em;
+  border-radius: var(--radius-sm);
+  background: var(--card-soft);
+  color: var(--primary);
+}
+
+.ma-sprint-double {
+  display: inline-block;
+  margin-left: 0.3rem;
+  color: var(--primary-2);
+  animation: ma-sprint-pulse 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes ma-sprint-pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ma-sprint-double { animation: none; }
+}

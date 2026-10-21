@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import type { MatchProps } from '../index'
-import SpellTurn from './SpellTurn'
+import SpellTurn, { PLAYER_ICONS } from './SpellTurn'
 import sfx from '../../../components/games/shared/sfx'
 
 /** How far the rope must be pulled to win. */
@@ -16,12 +16,13 @@ const MAX_TURNS = 20
  * behind, and one good word pulls it back. A running score does not do that —
  * a rope does, which is why a losing player keeps playing.
  */
-const TugOfWar: React.FC<MatchProps> = ({ names, words, onFinish }) => {
+const TugOfWar: React.FC<MatchProps> = ({ names, words, onFinish, first = 0 }) => {
   const [rope, setRope] = useState(0) // negative = player 1 winning
   const [turn, setTurn] = useState(0)
   const [pulls, setPulls] = useState<[number, number]>([0, 0])
 
-  const player = turn % 2
+  // Whoever went second last match goes first this time.
+  const player = ((turn + first) % 2) as 0 | 1
   const round = Math.floor(turn / 2)
   const word = words[player][round % words[player].length]
 
@@ -34,6 +35,7 @@ const TugOfWar: React.FC<MatchProps> = ({ names, words, onFinish }) => {
     let next = rope
     if (correct) {
       next = rope + dir
+      sfx.whoosh()
     } else {
       // A miss gives back ground you had gained, and nothing more. If the rope
       // is already on your rival's side there is nothing of yours to give back,
@@ -49,7 +51,7 @@ const TugOfWar: React.FC<MatchProps> = ({ names, words, onFinish }) => {
     const decided = Math.abs(next) >= TO_WIN
     const outOfTurns = turn + 1 >= MAX_TURNS
     if (decided || outOfTurns) {
-      if (decided) sfx.fanfare()
+      // The page plays the fanfare for the result — once.
       onFinish(scores)
       return
     }
@@ -58,25 +60,39 @@ const TugOfWar: React.FC<MatchProps> = ({ names, words, onFinish }) => {
   }
 
   const pct = 50 + (rope / TO_WIN) * 40
+  // Words, not "1.5 of 4": a six-year-old reads who is winning, not a decimal.
+  const status =
+    rope === 0 ? 'Neck and neck!' : `${rope < 0 ? names[0] : names[1]} is pulling ahead!`
 
   return (
     <div className="tug">
       <div className="tug-scores">
-        <span className={rope < 0 ? 'ahead' : ''}>{names[0]}</span>
-        <span className={rope > 0 ? 'ahead' : ''}>{names[1]}</span>
+        {[0, 1].map((i) => (
+          <span key={i} className={`tug-side p${i} ${(i === 0 ? rope < 0 : rope > 0) ? 'ahead' : ''}`}>
+            <span aria-hidden>{PLAYER_ICONS[i]}</span> {names[i]} <strong>{pulls[i]}</strong>
+          </span>
+        ))}
       </div>
 
-      <div className="tug-rope" role="img" aria-label={`Rope is ${Math.abs(rope)} from ${rope < 0 ? names[0] : names[1]}'s win`}>
+      <div
+        className="tug-rope"
+        role="img"
+        aria-label={rope === 0 ? 'The rope is in the middle' : `The rope is on ${rope < 0 ? names[0] : names[1]}'s side`}
+      >
+        <div className="tug-home p0" aria-hidden />
+        <div className="tug-home p1" aria-hidden />
         <div className="tug-line" />
         <div className="tug-centre" aria-hidden />
         <div className="tug-knot" style={{ left: `${pct}%` }} aria-hidden>🪢</div>
       </div>
+      <p className="tug-status">{status}</p>
 
       <SpellTurn
         key={turn}
         who={names[player]}
+        player={player}
         word={word}
-        label={`Pull the rope! ${Math.abs(rope).toFixed(1)} of ${TO_WIN}`}
+        label="Spell it to pull the rope your way!"
         onAnswer={answer}
       />
     </div>

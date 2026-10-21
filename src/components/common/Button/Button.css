@@ -12,6 +12,9 @@
   text-decoration: none;
   position: relative;
   overflow: hidden;
+  /* Every button a finger can find: small hands, shared iPad (44px). The
+     small size used to come out 35px tall. */
+  min-height: 44px;
 }
 
 .btn::after {

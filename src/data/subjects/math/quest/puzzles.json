@@ -1,0 +1,138 @@
+[
+  {
+    "id": "pz-triangles",
+    "title": "How Many Triangles?",
+    "difficulty": 1,
+    "topic": "k-2d",
+    "prompt": "A big triangle is split by lines from each corner to the middle of the opposite side. Counting every size, how many triangles can you find?",
+    "accept": [
+      16
+    ],
+    "answer": "16",
+    "hints": [
+      "Start with the smallest triangles and count those first.",
+      "Now look for triangles made of two small ones joined together, then three.",
+      "Do not forget the whole big triangle itself."
+    ],
+    "solution": "There are 6 small triangles, 3 made of two small ones, 6 made of three small ones (each half of the big triangle), and the big one itself: 6 + 3 + 6 + 1 = 16."
+  },
+  {
+    "id": "pz-handshakes",
+    "title": "Everyone Shakes Hands",
+    "difficulty": 2,
+    "topic": "g3-multprin",
+    "prompt": "Six people are in a room and everyone shakes hands with everyone else exactly once. How many handshakes happen altogether?",
+    "accept": [
+      15
+    ],
+    "answer": "15",
+    "hints": [
+      "Each person shakes five hands. What does that give you?",
+      "Six people times five handshakes counts every handshake twice.",
+      "Divide your total by two, because a handshake needs two people."
+    ],
+    "solution": "Each of the 6 people shakes 5 hands: 6 × 5 = 30. That counts every handshake twice, so 30 ÷ 2 = 15."
+  },
+  {
+    "id": "pz-coins",
+    "title": "Making Thirty",
+    "difficulty": 2,
+    "topic": "g2-money",
+    "prompt": "Using only 5¢ and 2¢ coins, how many different ways can you make exactly 30¢? (Using none of one kind still counts as a way.)",
+    "accept": [
+      4
+    ],
+    "answer": "4",
+    "hints": [
+      "Try starting with as many 5¢ coins as possible, then work down.",
+      "Six 5¢ coins works. Now what if you use five?",
+      "Only some numbers of 5¢ coins leave an amount the 2¢ coins can finish."
+    ],
+    "solution": "The 5¢ coins have to leave an even amount for the 2¢ coins, so you can use 0, 2, 4 or 6 of them. That is 4 ways."
+  },
+  {
+    "id": "pz-digits",
+    "title": "The Mystery Number",
+    "difficulty": 2,
+    "topic": "g1-tensones",
+    "prompt": "I am a two-digit number. My digits add to 11, and my tens digit is 3 more than my ones digit. What number am I?",
+    "accept": [
+      74
+    ],
+    "answer": "74",
+    "hints": [
+      "Which two digits add to 11?",
+      "List them: 2 and 9, 3 and 8, 4 and 7, 5 and 6.",
+      "Now find the pair that differs by exactly 3."
+    ],
+    "solution": "The digits 7 and 4 add to 11, and 7 is 3 more than 4. So the number is 74."
+  },
+  {
+    "id": "pz-rectangles",
+    "title": "Same Area, Different Shape",
+    "difficulty": 3,
+    "topic": "g3-area",
+    "prompt": "A rectangle has an area of 36 square units and whole-number sides. What is the SMALLEST perimeter it could have?",
+    "accept": [
+      24
+    ],
+    "answer": "24",
+    "hints": [
+      "List the pairs of whole numbers that multiply to 36.",
+      "Work out the perimeter for each pair.",
+      "The closer the two sides are to each other, the smaller the perimeter."
+    ],
+    "solution": "Sides 6 and 6 give 6 + 6 + 6 + 6 = 24. Sides 4 and 9 give 26, 3 and 12 give 30, and the others are bigger still."
+  },
+  {
+    "id": "pz-crossing",
+    "title": "The Careful Crossing",
+    "difficulty": 3,
+    "topic": "g1-grid",
+    "prompt": "Four people must cross a bridge at night with one torch. They take 1, 2, 5 and 10 minutes. At most two cross at a time, and the torch must come back. What is the shortest total time?",
+    "accept": [
+      17
+    ],
+    "answer": "17",
+    "hints": [
+      "Sending the fastest person back every time is not the best plan.",
+      "Try sending the two slowest across together at some point.",
+      "Someone quick needs to already be waiting on the far side when they arrive."
+    ],
+    "solution": "1 and 2 cross (2), 1 comes back (1), 5 and 10 cross (10), 2 comes back (2), 1 and 2 cross (2): 2 + 1 + 10 + 2 + 2 = 17 minutes."
+  },
+  {
+    "id": "pz-remainders",
+    "title": "Leftovers",
+    "difficulty": 4,
+    "topic": "g5-congru",
+    "prompt": "What is the smallest number greater than 1 that leaves a remainder of 1 when divided by 2, 3, 4, 5 and 6?",
+    "accept": [
+      61
+    ],
+    "answer": "61",
+    "hints": [
+      "A number that leaves remainder 1 is one more than a multiple.",
+      "Find the smallest number divisible by 2, 3, 4, 5 and 6.",
+      "That least common multiple is 60. Now add the leftover."
+    ],
+    "solution": "The smallest number that 2, 3, 4, 5 and 6 all divide is 60. One more is 61."
+  },
+  {
+    "id": "pz-pigeonhole",
+    "title": "Socks in the Dark",
+    "difficulty": 4,
+    "topic": "g5-inclexcl",
+    "prompt": "A drawer holds red, blue and green socks, plenty of each. Taking socks out in the dark, how many must you take to be CERTAIN of a matching pair?",
+    "accept": [
+      4
+    ],
+    "answer": "4",
+    "hints": [
+      "Think about the worst possible luck, not the best.",
+      "You could take three socks and get one of every colour.",
+      "The next sock has to match one you already hold."
+    ],
+    "solution": "With the worst luck your first three socks are all different colours. The fourth sock has to match one of them."
+  }
+]

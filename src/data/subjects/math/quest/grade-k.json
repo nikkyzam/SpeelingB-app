@@ -1,0 +1,1091 @@
+{
+ "k-count": [
+  {
+   "id": "k-count-1",
+   "prompt": "What number comes right after 7?",
+   "category": "Number",
+   "explanation": "Counting up: 6, 7, then 8. So 8 comes right after 7.",
+   "hint": "Count on from 7.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "k-count-2",
+   "prompt": "What number comes right after 15?",
+   "category": "Number",
+   "explanation": "After 15 comes 16.",
+   "hint": "Count on from 15.",
+   "kind": "number",
+   "answer": 16
+  },
+  {
+   "id": "k-count-3",
+   "prompt": "Which number is missing?  4, 5, __, 7",
+   "category": "Number",
+   "explanation": "Counting 4, 5, 6, 7 — the missing number is 6.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "6",
+    "8",
+    "3",
+    "9"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-count-4",
+   "prompt": "How many is 10 and 1 more?",
+   "category": "Number",
+   "explanation": "One more than 10 is 11.",
+   "hint": "Count on one from 10.",
+   "kind": "number",
+   "answer": 11
+  },
+  {
+   "id": "k-count-5",
+   "prompt": "Which number is missing?  17, 18, __, 20",
+   "category": "Number",
+   "explanation": "Counting 17, 18, 19, 20 — the missing number is 19.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "19",
+    "16",
+    "21",
+    "15"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-count-6",
+   "prompt": "What number comes right after 29?",
+   "category": "Number",
+   "explanation": "After 29 the next ten starts, so it is 30.",
+   "hint": "A new ten begins.",
+   "level": 2,
+   "kind": "number",
+   "answer": 30
+  },
+  {
+   "id": "k-count-7",
+   "prompt": "Put these numbers in order, smallest first.",
+   "category": "Number",
+   "explanation": "Counting up: 8, then 12, then 15, then 20.",
+   "level": 2,
+   "kind": "order",
+   "items": [
+    "8",
+    "12",
+    "15",
+    "20"
+   ]
+  },
+  {
+   "id": "k-count-8",
+   "prompt": "Start at 10 and count on 5 more. Where do you land?",
+   "category": "Number",
+   "explanation": "10, then 11, 12, 13, 14, 15. You land on 15.",
+   "hint": "11, 12, 13...",
+   "level": 3,
+   "kind": "number",
+   "answer": 15
+  }
+ ],
+ "k-countback": [
+  {
+   "id": "k-countback-1",
+   "prompt": "What number comes right before 9?",
+   "category": "Number",
+   "explanation": "Counting back from 9 gives 8.",
+   "hint": "Count back one.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "k-countback-2",
+   "prompt": "Count back: 20, 19, 18, __",
+   "category": "Number",
+   "explanation": "Counting back one from 18 gives 17.",
+   "kind": "number",
+   "answer": 17
+  },
+  {
+   "id": "k-countback-3",
+   "prompt": "Which number is missing?  12, 11, __, 9",
+   "category": "Number",
+   "explanation": "Counting back 12, 11, 10, 9 — the missing number is 10.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "10",
+    "13",
+    "8",
+    "7"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-countback-4",
+   "prompt": "Start at 15 and count back 3. Where do you land?",
+   "category": "Number",
+   "explanation": "15, then 14, 13, 12. You land on 12.",
+   "hint": "14, 13...",
+   "level": 2,
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "k-countback-5",
+   "prompt": "Put these in order, largest first.",
+   "category": "Number",
+   "explanation": "Counting down: 19, then 13, then 7, then 2.",
+   "level": 3,
+   "kind": "order",
+   "items": [
+    "19",
+    "13",
+    "7",
+    "2"
+   ]
+  }
+ ],
+ "k-add10": [
+  {
+   "id": "k-add10-1",
+   "prompt": "3 + 2 = ?",
+   "category": "Number",
+   "explanation": "3 and 2 more makes 5.",
+   "hint": "Hold up 3 fingers, then 2 more.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "k-add10-2",
+   "prompt": "4 + 4 = ?",
+   "category": "Number",
+   "explanation": "4 and 4 more makes 8. This one is a double.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "k-add10-3",
+   "prompt": "6 + 1 = ?",
+   "category": "Number",
+   "explanation": "Adding 1 just counts on once: 7.",
+   "hint": "One more than 6.",
+   "kind": "number",
+   "answer": 7
+  },
+  {
+   "id": "k-add10-4",
+   "prompt": "5 + 3 = ?",
+   "category": "Number",
+   "explanation": "Start at 5 and count on 3: 6, 7, 8.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "k-add10-5",
+   "prompt": "Which makes 10?",
+   "category": "Number",
+   "explanation": "7 + 3 = 10. The others give 9, 9 and 12.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "7 + 3",
+    "7 + 2",
+    "6 + 3",
+    "8 + 4"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-add10-6",
+   "prompt": "2 + 3 + 4 = ?",
+   "category": "Number",
+   "explanation": "2 + 3 = 5, then 5 + 4 = 9.",
+   "hint": "Add two of them first.",
+   "level": 2,
+   "kind": "number",
+   "answer": 9
+  },
+  {
+   "id": "k-add10-7",
+   "prompt": "Select EVERY pair that makes 8.",
+   "category": "Number",
+   "explanation": "5 + 3, 4 + 4 and 2 + 6 all make 8. 6 + 1 makes 7.",
+   "level": 2,
+   "kind": "multi",
+   "choices": [
+    "5 + 3",
+    "4 + 4",
+    "6 + 1",
+    "2 + 6"
+   ],
+   "answers": [
+    0,
+    1,
+    3
+   ]
+  },
+  {
+   "id": "k-add10-8",
+   "prompt": "I have 4 apples. My friend gives me some more and now I have 9. How many did my friend give me?",
+   "category": "Number",
+   "explanation": "4 + 5 = 9, so the friend gave 5 apples.",
+   "hint": "What do you add to 4 to reach 9?",
+   "level": 3,
+   "kind": "number",
+   "answer": 5
+  }
+ ],
+ "k-sub10": [
+  {
+   "id": "k-sub10-1",
+   "prompt": "7 − 2 = ?",
+   "category": "Number",
+   "explanation": "7, then 6, 5. So 7 − 2 = 5.",
+   "hint": "Start at 7 and count back 2.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "k-sub10-2",
+   "prompt": "9 − 4 = ?",
+   "category": "Number",
+   "explanation": "Counting back 4 from 9: 8, 7, 6, 5.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "k-sub10-3",
+   "prompt": "6 − 6 = ?",
+   "category": "Number",
+   "explanation": "Taking all 6 away leaves nothing, which is 0.",
+   "hint": "Take away all of them.",
+   "kind": "number",
+   "answer": 0
+  },
+  {
+   "id": "k-sub10-4",
+   "prompt": "You have 8 grapes and eat 3. How many are left?",
+   "category": "Number",
+   "explanation": "8 − 3 = 5 grapes left.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "k-sub10-5",
+   "prompt": "10 − 4 = ?",
+   "category": "Number",
+   "explanation": "Counting back 4 from 10 gives 6.",
+   "level": 2,
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "k-sub10-6",
+   "prompt": "Which one leaves 3?",
+   "category": "Number",
+   "explanation": "8 − 5 = 3. The others give 4, 2 and 4.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "8 − 5",
+    "9 − 5",
+    "7 − 5",
+    "6 − 2"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-sub10-7",
+   "prompt": "There were some birds on a branch. 3 flew away and 4 are left. How many were there at first?",
+   "category": "Number",
+   "explanation": "4 left plus the 3 that flew away makes 7 at the start.",
+   "hint": "Put the ones that left back.",
+   "level": 3,
+   "kind": "number",
+   "answer": 7
+  }
+ ],
+ "k-evenodd": [
+  {
+   "id": "k-evenodd-1",
+   "prompt": "Is 6 even or odd?",
+   "category": "Number",
+   "explanation": "6 counters pair up exactly with none left over, so 6 is even.",
+   "kind": "choice",
+   "choices": [
+    "Even",
+    "Odd"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-evenodd-2",
+   "prompt": "Is 9 even or odd?",
+   "category": "Number",
+   "explanation": "9 counters make 4 pairs with 1 left over, so 9 is odd.",
+   "kind": "choice",
+   "choices": [
+    "Odd",
+    "Even"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-evenodd-3",
+   "prompt": "Select EVERY even number.",
+   "category": "Number",
+   "explanation": "2, 8 and 10 pair up exactly. 5 and 11 each leave one over.",
+   "kind": "multi",
+   "choices": [
+    "2",
+    "5",
+    "8",
+    "11",
+    "10"
+   ],
+   "answers": [
+    0,
+    2,
+    4
+   ]
+  },
+  {
+   "id": "k-evenodd-4",
+   "prompt": "You have 7 socks. Can every sock find a partner?",
+   "category": "Number",
+   "explanation": "7 is odd, so after 3 pairs there is 1 sock with no partner.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "No, one is left over",
+    "Yes, all of them"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-evenodd-5",
+   "prompt": "Is the number of legs on 3 cats even or odd?",
+   "category": "Number",
+   "explanation": "Each cat has 4 legs, so 3 cats have 12 legs. 12 pairs up exactly, so it is even.",
+   "level": 3,
+   "kind": "choice",
+   "choices": [
+    "Even",
+    "Odd"
+   ],
+   "answer": 0
+  }
+ ],
+ "k-2d": [
+  {
+   "id": "k-2d-1",
+   "prompt": "How many sides does a triangle have?",
+   "category": "Geometry & Measure",
+   "explanation": "A triangle has 3 straight sides and 3 corners.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "3",
+    "4",
+    "5",
+    "2"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-2d-2",
+   "prompt": "How many corners does a square have?",
+   "category": "Geometry & Measure",
+   "explanation": "A square has 4 corners and 4 sides, all the same length.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "4",
+    "3",
+    "5",
+    "0"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-2d-3",
+   "prompt": "Which shape has no straight sides at all?",
+   "category": "Geometry & Measure",
+   "explanation": "A circle is one curved line all the way round — no straight sides and no corners.",
+   "kind": "choice",
+   "choices": [
+    "Circle",
+    "Square",
+    "Triangle",
+    "Hexagon"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-2d-4",
+   "prompt": "How many sides does a hexagon have?",
+   "category": "Geometry & Measure",
+   "explanation": "A hexagon has 6 sides. 'Hex' means six.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "6",
+    "5",
+    "7",
+    "4"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-2d-5",
+   "prompt": "Select EVERY shape that has 4 sides.",
+   "category": "Geometry & Measure",
+   "explanation": "Squares, rectangles and rhombuses all have 4 sides. A triangle has 3.",
+   "level": 2,
+   "kind": "multi",
+   "choices": [
+    "Square",
+    "Rectangle",
+    "Triangle",
+    "Rhombus"
+   ],
+   "answers": [
+    0,
+    1,
+    3
+   ]
+  },
+  {
+   "id": "k-2d-6",
+   "prompt": "A triangle and a square are put side by side. How many corners are there altogether?",
+   "category": "Geometry & Measure",
+   "explanation": "A triangle has 3 corners and a square has 4. Together that is 3 + 4 = 7.",
+   "hint": "Count each shape's corners, then add.",
+   "level": 3,
+   "kind": "number",
+   "answer": 7
+  }
+ ],
+ "k-compose": [
+  {
+   "id": "k-compose-1",
+   "prompt": "5 is made of 2 and ___. What number completes it?",
+   "category": "Number",
+   "explanation": "2 and 3 together make 5.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "k-compose-2",
+   "prompt": "How many more do you need to make 10, if you have 6?",
+   "category": "Number",
+   "explanation": "6 and 4 more make 10.",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "k-compose-3",
+   "prompt": "Which pair makes 7?",
+   "category": "Number",
+   "explanation": "3 and 4 together make 7.",
+   "kind": "choice",
+   "choices": [
+    "3 and 4",
+    "2 and 4",
+    "5 and 3",
+    "6 and 2"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-compose-4",
+   "prompt": "8 is made of 5 and ___.",
+   "category": "Number",
+   "explanation": "5 and 3 together make 8.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "k-compose-5",
+   "prompt": "Which pair makes 10?",
+   "category": "Number",
+   "explanation": "6 and 4 together make 10.",
+   "kind": "choice",
+   "choices": [
+    "6 and 4",
+    "5 and 4",
+    "7 and 2",
+    "8 and 3"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-compose-6",
+   "prompt": "One way to make 6 is 1 and 5. Another way is 2 and ___.",
+   "category": "Number",
+   "explanation": "2 and 4 together also make 6.",
+   "level": 2,
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "k-compose-7",
+   "prompt": "9 is made of 4 and ___.",
+   "category": "Number",
+   "explanation": "4 and 5 together make 9.",
+   "level": 2,
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "k-compose-8",
+   "prompt": "You have 10 counters split into two groups. One group has 2 more than the other. How many are in the SMALLER group?",
+   "category": "Number",
+   "explanation": "4 and 6 add to 10, and 6 is 2 more than 4. The smaller group has 4.",
+   "hint": "Try two numbers that differ by 2 and add to 10.",
+   "level": 3,
+   "kind": "number",
+   "answer": 4
+  }
+ ],
+ "k-3d": [
+  {
+   "id": "k-3d-1",
+   "prompt": "Which shape is a SOLID shape you could hold?",
+   "category": "Geometry & Measure",
+   "explanation": "A cube is a solid you can pick up. Circles, triangles and squares are flat.",
+   "kind": "choice",
+   "choices": [
+    "A cube",
+    "A circle",
+    "A triangle",
+    "A square"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-3d-2",
+   "prompt": "A ball is shaped like a ___.",
+   "category": "Geometry & Measure",
+   "explanation": "A sphere is perfectly round all the way around, like a ball.",
+   "kind": "choice",
+   "choices": [
+    "sphere",
+    "cube",
+    "cylinder",
+    "cone"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-3d-3",
+   "prompt": "A can of soup is shaped like a ___.",
+   "category": "Geometry & Measure",
+   "explanation": "A cylinder has two flat circle ends and a curved side, like a can.",
+   "kind": "choice",
+   "choices": [
+    "cylinder",
+    "sphere",
+    "cube",
+    "cone"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-3d-4",
+   "prompt": "Which of these is FLAT, not solid?",
+   "category": "Geometry & Measure",
+   "explanation": "A circle is flat. The others are all solid shapes you could hold.",
+   "kind": "choice",
+   "choices": [
+    "A circle",
+    "A cube",
+    "A sphere",
+    "A cylinder"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-3d-5",
+   "prompt": "An ice cream cone shape is called a ___.",
+   "category": "Geometry & Measure",
+   "explanation": "A cone has one point and a flat circle base, like an ice cream cone.",
+   "kind": "choice",
+   "choices": [
+    "cone",
+    "cube",
+    "sphere",
+    "cylinder"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-3d-6",
+   "prompt": "A box shaped like a square on every side is a ___.",
+   "category": "Geometry & Measure",
+   "explanation": "A cube has 6 square faces, all the same size.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "cube",
+    "sphere",
+    "cone",
+    "cylinder"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-3d-7",
+   "prompt": "Which solid shape can roll AND stack, like a can?",
+   "category": "Geometry & Measure",
+   "explanation": "A cylinder's flat ends let it stack, and its curved side lets it roll.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "Cylinder",
+    "Sphere",
+    "Cube",
+    "Cone"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-3d-8",
+   "prompt": "Which shape has NO flat faces at all?",
+   "category": "Geometry & Measure",
+   "explanation": "A sphere is curved all over — it has no flat parts anywhere.",
+   "level": 3,
+   "kind": "choice",
+   "choices": [
+    "Sphere",
+    "Cube",
+    "Cylinder",
+    "Cone"
+   ],
+   "answer": 0
+  }
+ ],
+ "k-combine": [
+  {
+   "id": "k-combine-1",
+   "prompt": "Two matching triangles put together can make a ___.",
+   "category": "Geometry & Measure",
+   "explanation": "Two matching triangles joined along one side can make a square or rectangle.",
+   "kind": "choice",
+   "choices": [
+    "square",
+    "circle",
+    "one triangle",
+    "nothing"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-combine-2",
+   "prompt": "Putting two shapes together to make a new shape is called ___.",
+   "category": "Geometry & Measure",
+   "explanation": "Building a new shape from smaller ones is putting shapes together.",
+   "kind": "choice",
+   "choices": [
+    "putting them together",
+    "taking them apart",
+    "coloring them",
+    "erasing them"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-combine-3",
+   "prompt": "Which two shapes can join to make a rectangle?",
+   "category": "Geometry & Measure",
+   "explanation": "Two matching triangles joined along their longest side fit together into a rectangle.",
+   "kind": "choice",
+   "choices": [
+    "Two matching triangles",
+    "Two circles",
+    "Two ovals",
+    "Two dots"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-combine-4",
+   "prompt": "You join a small triangle to the top of a square. What could you build?",
+   "category": "Geometry & Measure",
+   "explanation": "A triangle roof on a square makes a house shape.",
+   "kind": "choice",
+   "choices": [
+    "A house shape",
+    "A circle",
+    "A dot",
+    "A line"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-combine-5",
+   "prompt": "Which is an example of combining shapes?",
+   "category": "Geometry & Measure",
+   "explanation": "Combining means joining pieces together to build something new.",
+   "kind": "choice",
+   "choices": [
+    "Joining two shapes to build a new one",
+    "Coloring in a shape",
+    "Naming a shape",
+    "Erasing a shape"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-combine-6",
+   "prompt": "A big triangle is split evenly into 4 small ones. How many small triangles are there?",
+   "category": "Geometry & Measure",
+   "explanation": "Splitting one triangle evenly into 4 parts makes 4 small triangles.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "4",
+    "2",
+    "3",
+    "1"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-combine-7",
+   "prompt": "Which combination makes a bigger square from 4 smaller squares?",
+   "category": "Geometry & Measure",
+   "explanation": "Arranging 4 small squares as 2 rows of 2 builds one bigger square.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "2 rows of 2 squares",
+    "1 row of 4 squares",
+    "3 triangles",
+    "2 circles"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-combine-8",
+   "prompt": "You build one shape from 2 triangles and 1 square. How many shapes did you combine in total?",
+   "category": "Geometry & Measure",
+   "explanation": "2 triangles plus 1 square is 3 shapes combined.",
+   "level": 3,
+   "kind": "choice",
+   "choices": [
+    "3",
+    "2",
+    "1",
+    "4"
+   ],
+   "answer": 0
+  }
+ ],
+ "k-compare": [
+  {
+   "id": "k-compare-1",
+   "prompt": "Which is BIGGER?",
+   "category": "Measurement",
+   "explanation": "An elephant is much bigger than the other three.",
+   "kind": "choice",
+   "choices": [
+    "An elephant",
+    "A mouse",
+    "A pencil",
+    "A coin"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-compare-2",
+   "prompt": "Which is HEAVIER?",
+   "category": "Measurement",
+   "explanation": "A rock weighs far more than a feather, leaf or paper.",
+   "kind": "choice",
+   "choices": [
+    "A rock",
+    "A feather",
+    "A leaf",
+    "A piece of paper"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-compare-3",
+   "prompt": "Which is LONGER?",
+   "category": "Measurement",
+   "explanation": "A snake is much longer than the other three small objects.",
+   "kind": "choice",
+   "choices": [
+    "A snake",
+    "A coin",
+    "A button",
+    "A paperclip"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-compare-4",
+   "prompt": "Which is SMALLER?",
+   "category": "Measurement",
+   "explanation": "An ant is far smaller than the other three.",
+   "kind": "choice",
+   "choices": [
+    "An ant",
+    "A dog",
+    "A car",
+    "A house"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-compare-5",
+   "prompt": "Which is LIGHTER?",
+   "category": "Measurement",
+   "explanation": "A feather weighs far less than the other three.",
+   "kind": "choice",
+   "choices": [
+    "A feather",
+    "A brick",
+    "A rock",
+    "A book"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-compare-6",
+   "prompt": "You lift two boxes. The one that is harder to lift is ___.",
+   "category": "Measurement",
+   "explanation": "A box that is harder to lift weighs more — it is heavier.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "heavier",
+    "lighter",
+    "smaller",
+    "the same"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-compare-7",
+   "prompt": "Which word means 'has more length'?",
+   "category": "Measurement",
+   "explanation": "'Longer' compares length, not weight or sound.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "longer",
+    "heavier",
+    "bigger in weight",
+    "louder"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-compare-8",
+   "prompt": "A feather, a rock and a leaf are compared. Order them from LIGHTEST to heaviest.",
+   "category": "Measurement",
+   "explanation": "A feather is lightest, a leaf is a bit heavier, and a rock is heaviest.",
+   "level": 3,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "Feather, leaf, rock",
+    "Rock, leaf, feather",
+    "Leaf, rock, feather",
+    "Rock, feather, leaf"
+   ],
+   "answer": 0
+  }
+ ],
+ "k-sort": [
+  {
+   "id": "k-sort-1",
+   "prompt": "You sort a pile of buttons by color. Which is a good rule?",
+   "category": "Measurement",
+   "explanation": "Sorting by color groups buttons that share a real feature.",
+   "kind": "choice",
+   "choices": [
+    "Red buttons together, blue buttons together",
+    "Buttons named Sam",
+    "Buttons that fly",
+    "Buttons made of cheese"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-sort-2",
+   "prompt": "You sort 10 shapes into circles and squares. There are 6 circles. How many squares?",
+   "category": "Measurement",
+   "explanation": "10 − 6 = 4 squares.",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "k-sort-3",
+   "prompt": "Which is a good sorting rule for animals?",
+   "category": "Measurement",
+   "explanation": "Number of legs is a real, observable feature you can sort by.",
+   "kind": "choice",
+   "choices": [
+    "Animals with 4 legs vs animals without",
+    "Animals that like pizza",
+    "Animals that are Tuesdays",
+    "Animals that are numbers"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-sort-4",
+   "prompt": "You sort toys into 2 groups: cars (7) and blocks (5). How many toys in total?",
+   "category": "Measurement",
+   "explanation": "7 + 5 = 12 toys.",
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "k-sort-5",
+   "prompt": "After sorting objects into groups, what do you usually do next?",
+   "category": "Measurement",
+   "explanation": "Sorting is usually followed by counting each group to compare them.",
+   "kind": "choice",
+   "choices": [
+    "Count each group's objects",
+    "Throw the objects away",
+    "Paint the objects",
+    "Hide the objects"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-sort-6",
+   "prompt": "You sort 15 buttons into 3 equal color groups. How many buttons in each group?",
+   "category": "Measurement",
+   "explanation": "15 ÷ 3 = 5 buttons per group.",
+   "level": 2,
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "k-sort-7",
+   "prompt": "Which category has the MOST, if red = 4, blue = 7, green = 3?",
+   "category": "Measurement",
+   "explanation": "7 is more than 4 or 3, so blue has the most.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "Blue",
+    "Red",
+    "Green",
+    "They're equal"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-sort-8",
+   "prompt": "You sort 20 objects into two groups. One group has 8 more than the other. How many are in the SMALLER group?",
+   "category": "Measurement",
+   "explanation": "6 and 14 add to 20, and 14 is 8 more than 6. The smaller group has 6.",
+   "hint": "Try two numbers that differ by 8 and add to 20.",
+   "level": 3,
+   "kind": "number",
+   "answer": 6
+  }
+ ],
+ "k-picgraph": [
+  {
+   "id": "k-picgraph-1",
+   "prompt": "A picture graph shows 3 pictures of suns. Each picture equals 1 day. How many days?",
+   "category": "Measurement",
+   "explanation": "3 pictures, 1 day each, means 3 days.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "k-picgraph-2",
+   "prompt": "A picture graph shows: apples = 4 pictures, bananas = 2 pictures. How many MORE apple pictures?",
+   "category": "Measurement",
+   "explanation": "4 − 2 = 2 more apple pictures.",
+   "kind": "number",
+   "answer": 2
+  },
+  {
+   "id": "k-picgraph-3",
+   "prompt": "In a picture graph, more pictures in a row means ___.",
+   "category": "Measurement",
+   "explanation": "Each picture stands for one, so more pictures means a bigger amount.",
+   "kind": "choice",
+   "choices": [
+    "a bigger count",
+    "a smaller count",
+    "nothing",
+    "it never changes"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-picgraph-4",
+   "prompt": "A picture graph shows cats = 5, dogs = 3. How many pets in total?",
+   "category": "Measurement",
+   "explanation": "5 + 3 = 8 pets.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "k-picgraph-5",
+   "prompt": "Which question can a picture graph answer?",
+   "category": "Measurement",
+   "explanation": "A picture graph compares groups by count, so it can show which has more.",
+   "kind": "choice",
+   "choices": [
+    "Which group has more?",
+    "What color is it?",
+    "How old are you?",
+    "What day is it?"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "k-picgraph-6",
+   "prompt": "A picture graph shows 3 categories: 2, 5, and 3 pictures. What is the total?",
+   "category": "Measurement",
+   "explanation": "2 + 5 + 3 = 10.",
+   "level": 2,
+   "kind": "number",
+   "answer": 10
+  },
+  {
+   "id": "k-picgraph-7",
+   "prompt": "A picture graph shows fish = 6, birds = 2. How many MORE fish than birds?",
+   "category": "Measurement",
+   "explanation": "6 − 2 = 4 more fish.",
+   "level": 2,
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "k-picgraph-8",
+   "prompt": "A picture graph shows 4 fruits: apples = 3, pears = 5, grapes = 2, plums = 6. Which two fruits add up to exactly 7?",
+   "category": "Measurement",
+   "explanation": "Grapes (2) + pears (5) = 7. The other pairs add to 9, 8 and 11.",
+   "level": 3,
+   "kind": "choice",
+   "choices": [
+    "Grapes and pears",
+    "Apples and plums",
+    "Apples and pears",
+    "Plums and pears"
+   ],
+   "answer": 0
+  }
+ ]
+}

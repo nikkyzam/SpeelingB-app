@@ -3,7 +3,9 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import QuizMode from '@/components/learning/QuizMode'
 import { ProgressProvider, useProgress } from '@/contexts/ProgressContext' // Import useProgress
 import { AudioProvider } from '@/contexts/AudioContext'
+import { ThemeProvider } from '@/contexts/ThemeContext'
 import React from 'react'
+import { MemoryRouter } from 'react-router-dom'
 import { LearningFlowController } from '@/services/progress/LearningFlow'
 
 // Mock wordBank
@@ -60,11 +62,16 @@ describe('QuizMode Component', () => {
 
   const renderWithProviders = (ui: React.ReactElement) => {
     return render(
-      <AudioProvider>
-        <ProgressProvider>
-          {ui}
-        </ProgressProvider>
-      </AudioProvider>
+      <MemoryRouter>
+        {/* The word trail hops the world's mascot along. */}
+        <ThemeProvider>
+          <AudioProvider>
+            <ProgressProvider>
+              {ui}
+            </ProgressProvider>
+          </AudioProvider>
+        </ThemeProvider>
+      </MemoryRouter>
     )
   }
 
@@ -87,56 +94,54 @@ describe('QuizMode Component', () => {
     vi.useRealTimers()
   })
 
+  const optionButtons = () =>
+    screen.getAllByRole('button').filter(b => b.className.includes('option-button'))
+
   it('renders a vocabulary quiz correctly', () => {
     renderWithProviders(<QuizMode type="vocab" words={TWO_WORDS} />)
-    
+
     expect(screen.getByText('📚 Vocabulary Quiz')).toBeInTheDocument()
-    expect(screen.getByText('What is the meaning of apple?')).toBeInTheDocument()
-    // Should have 4 options
-    const options = screen.getAllByRole('button').filter(b => b.className.includes('option-button'))
-    expect(options.length).toBe(4)
+    expect(screen.getByText('What does “apple” mean?')).toBeInTheDocument()
+    // Three meanings to choose from, each with its own button to hear it.
+    expect(optionButtons().length).toBe(3)
+    expect(screen.getAllByRole('button', { name: /Hear answer/ })).toHaveLength(3)
   })
 
   it('handles correct answers in vocab quiz', () => {
     renderWithProviders(<QuizMode type="vocab" words={TWO_WORDS} />)
-    
-    const correctOption = screen.getByText('a red fruit')
-    fireEvent.click(correctOption)
-    
-    // Use a function with `getByText` to match text content across nodes
-    expect(screen.getByText((content, element) => content.startsWith('Score:') && element?.tagName.toLowerCase() === 'span')).toBeInTheDocument()
-    expect(screen.getByText('10')).toBeInTheDocument()
-    
+
+    fireEvent.click(screen.getByText('a red fruit'))
+
+    // A star and a line of praise — no pretend score.
+    expect(screen.getByRole('status')).toHaveTextContent('⭐')
+    expect(screen.queryByText(/Score:/)).not.toBeInTheDocument()
+    expect(screen.getByLabelText('1 stars')).toBeInTheDocument()
+
     act(() => {
       vi.advanceTimersByTime(2000)
     })
-    
+
     // Should move to next question (banana)
-    expect(screen.getByText('What is the meaning of banana?')).toBeInTheDocument()
+    expect(screen.getByText('What does “banana” mean?')).toBeInTheDocument()
     expect(mockLearningFlow.completeVocabQuiz).not.toHaveBeenCalled() // Should not be called until quiz complete
   })
 
-  it('handles incorrect answers in vocab quiz', () => {
+  it('handles incorrect answers in vocab quiz gently', () => {
     renderWithProviders(<QuizMode type="vocab" words={TWO_WORDS} />)
-    
-    // Find an incorrect option
-    const options = screen.getAllByRole('button').filter(b => b.className.includes('option-button'))
-    const incorrectOption = options.find(o => !o.textContent?.includes('a red fruit'))
-    
-    if (incorrectOption) {
-      fireEvent.click(incorrectOption)
-    }
-    
-    // Use a function with `getByText` to match text content across nodes
-    expect(screen.getByText((content, element) => content.startsWith('Score:') && element?.tagName.toLowerCase() === 'span')).toBeInTheDocument()
-    expect(screen.getByText('0')).toBeInTheDocument()
-    
+
+    const incorrectOption = optionButtons().find(o => !o.textContent?.includes('a red fruit'))!
+    fireEvent.click(incorrectOption)
+
+    // The right meaning, shown softly: no counter of misses, no cross.
+    expect(screen.getByRole('status')).toHaveTextContent(/It’s a red fruit/)
+    expect(screen.queryByText(/Wrong/)).not.toBeInTheDocument()
+
     act(() => {
-      vi.advanceTimersByTime(2000)
+      vi.advanceTimersByTime(3500)
     })
-    
+
     // Should move to next question
-    expect(screen.getByText('What is the meaning of banana?')).toBeInTheDocument()
+    expect(screen.getByText('What does “banana” mean?')).toBeInTheDocument()
     expect(mockLearningFlow.completeVocabQuiz).not.toHaveBeenCalled() // Should not be called until quiz complete
   })
 
@@ -152,8 +157,8 @@ describe('QuizMode Component', () => {
     fireEvent.click(screen.getByText('a yellow fruit'))
     act(() => { vi.advanceTimersByTime(2000) })
 
-    expect(screen.getByText('🎯 Quiz Complete!')).toBeInTheDocument()
-    expect(screen.getByText('20')).toBeInTheDocument() // Final score
+    expect(screen.getByText('🎉 Quiz done!')).toBeInTheDocument()
+    expect(screen.getByText('⭐ +2 stars')).toBeInTheDocument()
     // Completion is finalized once, via onComplete (score, wrongAnswers, wordIds).
     expect(onComplete).toHaveBeenCalledWith(20, 0, ['1', '2'])
   })

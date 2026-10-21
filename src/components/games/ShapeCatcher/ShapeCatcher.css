@@ -539,3 +539,9 @@
     border-bottom: 50px solid;
   }
 }
+
+/* Its own copy: it used to borrow this from SpellSprint's stylesheet, which no longer has it. */
+@keyframes comboPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}

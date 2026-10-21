@@ -1,0 +1,1859 @@
+{
+ "g4-multcomp": [
+  {
+   "id": "g4-multcomp-1",
+   "prompt": "Write the number: 4 times as many as 9.",
+   "category": "Number",
+   "explanation": "4 times 9 is 4 × 9 = 36.",
+   "kind": "number",
+   "answer": 36
+  },
+  {
+   "id": "g4-multcomp-2",
+   "prompt": "Which sentence describes 6 × 8 = 48?",
+   "category": "Number",
+   "explanation": "A multiplication comparison reads the factors as a 'times as many' relationship: 48 is 6 times as many as 8.",
+   "kind": "choice",
+   "choices": [
+    "48 is 6 times as many as 8",
+    "48 is 8 more than 6",
+    "6 is 8 times as many as 48",
+    "8 is 6 more than 48"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-multcomp-3",
+   "prompt": "Sarah has 5 stickers. Tom has 4 times as many. How many does Tom have?",
+   "category": "Number",
+   "explanation": "4 times 5 is 4 × 5 = 20.",
+   "kind": "number",
+   "answer": 20
+  },
+  {
+   "id": "g4-multcomp-4",
+   "prompt": "36 is 4 times as many as ___.",
+   "category": "Number",
+   "explanation": "36 ÷ 4 = 9, so 36 is 4 times as many as 9.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "9",
+    "32",
+    "144",
+    "4"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-multcomp-5",
+   "prompt": "A rope is 6 times as long as a 3-foot rope. How long is it, in feet?",
+   "category": "Number",
+   "explanation": "6 times 3 feet is 6 × 3 = 18 feet.",
+   "kind": "number",
+   "answer": 18
+  },
+  {
+   "id": "g4-multcomp-6",
+   "prompt": "Twice a number is 4 times as many as 7. What is the number?",
+   "category": "Number",
+   "explanation": "4 × 7 = 28. If twice the number is 28, the number is 28 ÷ 2 = 14.",
+   "hint": "Work out 4 times 7 first.",
+   "level": 2,
+   "kind": "number",
+   "answer": 14
+  },
+  {
+   "id": "g4-multcomp-7",
+   "prompt": "Which equation matches: '32 is 4 times as many as 8'?",
+   "category": "Number",
+   "explanation": "'4 times as many as 8' means multiply: 4 × 8 = 32.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "32 = 4 × 8",
+    "32 = 4 + 8",
+    "8 = 4 × 32",
+    "4 = 32 × 8"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-multcomp-8",
+   "prompt": "A number is 5 times as many as 6. That result is 3 times as many as what number?",
+   "category": "Number",
+   "explanation": "5 × 6 = 30, and 30 = 3 × 10, so the number is 10.",
+   "hint": "Find the first result, then work backwards.",
+   "level": 3,
+   "kind": "number",
+   "answer": 10
+  }
+ ],
+ "g4-placemil": [
+  {
+   "id": "g4-placemil-1",
+   "prompt": "What is the value of the 7 in 372,000? Type the value, like 7000.",
+   "category": "Number",
+   "explanation": "The 7 is in the ten-thousands place, so its value is 70,000.",
+   "hint": "Find which place the 7 sits in.",
+   "kind": "number",
+   "answer": 70000
+  },
+  {
+   "id": "g4-placemil-2",
+   "prompt": "How many ten-thousands are in 250,000?",
+   "category": "Number",
+   "explanation": "250,000 ÷ 10,000 = 25 ten-thousands.",
+   "kind": "number",
+   "answer": 25
+  },
+  {
+   "id": "g4-placemil-3",
+   "prompt": "Which number is the largest?",
+   "category": "Number",
+   "explanation": "Compare hundred-thousands first: 5 beats 1 and 2. Then compare ten-thousands: 2 beats 1, so 521,000 is largest.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "512,000",
+    "521,000",
+    "125,000",
+    "215,000"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "g4-placemil-4",
+   "prompt": "What number is 4 hundred-thousands, 2 ten-thousands, and 5 ones?",
+   "category": "Number",
+   "explanation": "400,000 + 20,000 + 5 = 420,005.",
+   "hint": "Add the place values together.",
+   "kind": "number",
+   "answer": 420005
+  },
+  {
+   "id": "g4-placemil-5",
+   "prompt": "Put these numbers in order, smallest first.",
+   "category": "Number",
+   "explanation": "Compare the hundred-thousands digit first (3 vs 4), then the next digit.",
+   "kind": "order",
+   "items": [
+    "304,000",
+    "340,000",
+    "403,000",
+    "430,000"
+   ]
+  },
+  {
+   "id": "g4-placemil-6",
+   "prompt": "What is 10,000 more than 785,000?",
+   "category": "Number",
+   "explanation": "785,000 + 10,000 = 795,000.",
+   "level": 2,
+   "kind": "number",
+   "answer": 795000
+  },
+  {
+   "id": "g4-placemil-7",
+   "prompt": "Round 648,392 to the nearest ten-thousand.",
+   "category": "Number",
+   "explanation": "The thousands digit is 8, which rounds up. 648,392 rounds to 650,000.",
+   "hint": "Look at the thousands digit to decide which way to round.",
+   "level": 2,
+   "kind": "number",
+   "answer": 650000
+  },
+  {
+   "id": "g4-placemil-8",
+   "prompt": "What is 999,999 rounded to the nearest million?",
+   "category": "Number",
+   "explanation": "999,999 is only 1 away from 1,000,000 and 999,999 away from 0, so it rounds up to 1,000,000.",
+   "hint": "Which is closer: 0 or 1,000,000?",
+   "level": 3,
+   "kind": "number",
+   "answer": 1000000
+  }
+ ],
+ "g4-fracadd": [
+  {
+   "id": "g4-fracadd-1",
+   "prompt": "3/8 + 2/8 = ?",
+   "category": "Fractions",
+   "explanation": "With the same denominator, add the numerators: 3 + 2 = 5, so 5/8.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "5/8",
+    "5/16",
+    "6/8",
+    "1/8"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-fracadd-2",
+   "prompt": "7/10 − 4/10 = ?",
+   "category": "Fractions",
+   "explanation": "Subtract the numerators: 7 − 4 = 3, so 3/10.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "3/10",
+    "11/10",
+    "3/20",
+    "4/10"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-fracadd-3",
+   "prompt": "5/6 + 2/6 = ?",
+   "category": "Fractions",
+   "explanation": "5 + 2 = 7 sixths, which is more than a whole: 7/6 = 1 1/6.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "1 1/6",
+    "7/12",
+    "1/6",
+    "6/6"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-fracadd-4",
+   "prompt": "Which pair of fractions has the SAME denominator?",
+   "category": "Fractions",
+   "explanation": "3/9 and 5/9 both have 9 on the bottom — the same denominator.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "3/9 and 5/9",
+    "1/2 and 1/3",
+    "2/5 and 3/10",
+    "4/6 and 4/8"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-fracadd-5",
+   "prompt": "4/9 + 3/9 = ?",
+   "category": "Fractions",
+   "explanation": "4 + 3 = 7 ninths, so 7/9.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "7/9",
+    "7/18",
+    "1/9",
+    "12/9"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-fracadd-6",
+   "prompt": "7/8 − 3/8 = ?",
+   "category": "Fractions",
+   "explanation": "7 − 3 = 4 eighths, so 4/8.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "4/8",
+    "3/16",
+    "10/8",
+    "1/16"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-fracadd-7",
+   "prompt": "A pie is cut into 12 equal slices. You eat 5/12 and your friend eats 3/12. What fraction of the pie is left?",
+   "category": "Fractions",
+   "explanation": "Together you ate 5/12 + 3/12 = 8/12, so 12/12 − 8/12 = 4/12 is left.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "4/12",
+    "8/12",
+    "5/12",
+    "7/12"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-fracadd-8",
+   "prompt": "3/5 + 1/5 − 2/5 = ?",
+   "category": "Fractions",
+   "explanation": "3 + 1 − 2 = 2 fifths, so 2/5.",
+   "level": 3,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "2/5",
+    "4/5",
+    "6/5",
+    "1/5"
+   ],
+   "answer": 0
+  }
+ ],
+ "g4-areaform": [
+  {
+   "id": "g4-areaform-1",
+   "prompt": "A rectangle is 9 units long and 4 units wide. What is its area, in square units?",
+   "category": "Geometry & Measure",
+   "explanation": "Area = length × width = 9 × 4 = 36.",
+   "kind": "number",
+   "answer": 36
+  },
+  {
+   "id": "g4-areaform-2",
+   "prompt": "A rectangle has length 12 and width 5. What is its perimeter, in units?",
+   "category": "Geometry & Measure",
+   "explanation": "Perimeter = 2 × (12 + 5) = 2 × 17 = 34.",
+   "kind": "number",
+   "answer": 34
+  },
+  {
+   "id": "g4-areaform-3",
+   "prompt": "Which formula finds the perimeter of a rectangle?",
+   "category": "Geometry & Measure",
+   "explanation": "Perimeter is the distance all the way around, which is twice the sum of the two different side lengths.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "2 × (length + width)",
+    "length × width",
+    "length + width",
+    "length × width × 2"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-areaform-4",
+   "prompt": "A square has a side of 7 units. What is its area, in square units?",
+   "category": "Geometry & Measure",
+   "explanation": "A square's area is side × side = 7 × 7 = 49.",
+   "kind": "number",
+   "answer": 49
+  },
+  {
+   "id": "g4-areaform-5",
+   "prompt": "A square has a perimeter of 20 units. What is the length of one side?",
+   "category": "Geometry & Measure",
+   "explanation": "20 ÷ 4 = 5 units per side.",
+   "hint": "A square has 4 equal sides.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g4-areaform-6",
+   "prompt": "A rectangle has an area of 48 square units and a width of 6 units. What is its length?",
+   "category": "Geometry & Measure",
+   "explanation": "48 ÷ 6 = 8.",
+   "hint": "What times 6 makes 48?",
+   "level": 2,
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g4-areaform-7",
+   "prompt": "A rectangular garden is 15 m by 8 m. What is its perimeter, in meters?",
+   "category": "Geometry & Measure",
+   "explanation": "Perimeter = 2 × (15 + 8) = 2 × 23 = 46.",
+   "level": 2,
+   "kind": "number",
+   "answer": 46
+  },
+  {
+   "id": "g4-areaform-8",
+   "prompt": "A rectangle's perimeter is 30 units and its length is twice its width. What is its area, in square units?",
+   "category": "Geometry & Measure",
+   "explanation": "2 × (2w + w) = 30, so 6w = 30 and w = 5. Length is 10. Area = 10 × 5 = 50.",
+   "hint": "Let the width be w and the length 2w — write an equation for the perimeter.",
+   "level": 3,
+   "kind": "number",
+   "answer": 50
+  }
+ ],
+ "g4-multistep": [
+  {
+   "id": "g4-multistep-1",
+   "prompt": "A school orders 8 boxes of pencils with 24 pencils in each box, then gives away 50 pencils. How many pencils are left?",
+   "category": "Word Problems",
+   "explanation": "8 × 24 = 192, then 192 − 50 = 142.",
+   "hint": "Find the total first.",
+   "kind": "number",
+   "answer": 142
+  },
+  {
+   "id": "g4-multistep-2",
+   "prompt": "Tickets cost $6 each. A family buys 5 tickets and pays with a $50 bill. How much change do they get?",
+   "category": "Word Problems",
+   "explanation": "5 × $6 = $30, and $50 − $30 = $20.",
+   "kind": "number",
+   "answer": 20
+  },
+  {
+   "id": "g4-multistep-3",
+   "prompt": "Which expression matches: 'Buy 4 packs of 6 apples, then eat 3 apples'?",
+   "category": "Word Problems",
+   "explanation": "Find the total apples first (4 × 6), then subtract the 3 eaten.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "4 × 6 − 3",
+    "4 × 6 + 3",
+    "4 + 6 − 3",
+    "4 − 6 × 3"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-multistep-4",
+   "prompt": "A theater has 12 rows of 15 seats. 18 seats are empty. How many seats are filled?",
+   "category": "Word Problems",
+   "explanation": "12 × 15 = 180 seats total, and 180 − 18 = 162 filled.",
+   "kind": "number",
+   "answer": 162
+  },
+  {
+   "id": "g4-multistep-5",
+   "prompt": "A farmer picks 9 baskets of 20 apples each, then sells 45 apples. How many apples are left?",
+   "category": "Word Problems",
+   "explanation": "9 × 20 = 180 apples, and 180 − 45 = 135.",
+   "kind": "number",
+   "answer": 135
+  },
+  {
+   "id": "g4-multistep-6",
+   "prompt": "A store has 6 shelves with 24 books each. 3 shelves are emptied completely. How many books are left on shelves?",
+   "category": "Word Problems",
+   "explanation": "6 × 24 = 144 total. Emptying 3 shelves removes 3 × 24 = 72, leaving 144 − 72 = 72.",
+   "hint": "Find the total, then the amount removed.",
+   "level": 2,
+   "kind": "number",
+   "answer": 72
+  },
+  {
+   "id": "g4-multistep-7",
+   "prompt": "A bus holds 48 passengers. 5 full buses take a class trip, plus one more bus with only 20 passengers. How many passengers total?",
+   "category": "Word Problems",
+   "explanation": "5 × 48 = 240, plus 20 more makes 260.",
+   "level": 2,
+   "kind": "number",
+   "answer": 260
+  },
+  {
+   "id": "g4-multistep-8",
+   "prompt": "A bakery bakes 15 trays of 24 cookies each, then packs the cookies into boxes of 18. How many FULL boxes can it fill?",
+   "category": "Word Problems",
+   "explanation": "15 × 24 = 360 cookies, and 360 ÷ 18 = 20 full boxes.",
+   "hint": "Find the total cookies first.",
+   "level": 3,
+   "kind": "number",
+   "answer": 20
+  }
+ ],
+ "g4-factorpair": [
+  {
+   "id": "g4-factorpair-1",
+   "prompt": "Which pair of factors multiplies to 24?",
+   "category": "Number",
+   "explanation": "4 × 6 = 24.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "4 and 6",
+    "5 and 5",
+    "3 and 9",
+    "2 and 10"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-factorpair-2",
+   "prompt": "12 has these factor pairs: 1×12, 2×6, 3×4. How many factor pairs does 12 have?",
+   "category": "Number",
+   "explanation": "1×12, 2×6 and 3×4 make 3 pairs.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g4-factorpair-3",
+   "prompt": "Which number is PRIME?",
+   "category": "Number",
+   "explanation": "13 has only two factors, 1 and 13. The others all have more factors.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "13",
+    "12",
+    "15",
+    "21"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-factorpair-4",
+   "prompt": "Which number is COMPOSITE?",
+   "category": "Number",
+   "explanation": "18 has factors besides 1 and itself (like 2, 3, 6, 9). The others are prime.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "18",
+    "17",
+    "19",
+    "23"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-factorpair-5",
+   "prompt": "What is the smallest factor of 45 that is greater than 1?",
+   "category": "Number",
+   "explanation": "45 is not even, so 2 is not a factor. But 45 ÷ 3 = 15, so 3 is the smallest factor above 1.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g4-factorpair-6",
+   "prompt": "How many factors does 16 have in total, including 1 and 16?",
+   "category": "Number",
+   "explanation": "1, 2, 4, 8 and 16 — that is 5 factors.",
+   "level": 2,
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g4-factorpair-7",
+   "prompt": "Which number has EXACTLY two factors, making it prime?",
+   "category": "Number",
+   "explanation": "29's only factors are 1 and 29. The others all have more factors.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "29",
+    "28",
+    "27",
+    "26"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-factorpair-8",
+   "prompt": "A number between 40 and 50 is prime AND one more than a multiple of 6. What is it?",
+   "category": "Number",
+   "explanation": "43 − 1 = 42, which is a multiple of 6, and 43 is prime. 41 and 47 do not fit the 'one more than a multiple of 6' rule.",
+   "hint": "Check 41, 43 and 47.",
+   "level": 3,
+   "kind": "number",
+   "answer": 43
+  }
+ ],
+ "g4-multidig": [
+  {
+   "id": "g4-multidig-1",
+   "prompt": "23 × 4 = ?",
+   "category": "Number",
+   "explanation": "23 × 4 = 92.",
+   "kind": "number",
+   "answer": 92
+  },
+  {
+   "id": "g4-multidig-2",
+   "prompt": "56 × 3 = ?",
+   "category": "Number",
+   "explanation": "56 × 3 = 168.",
+   "kind": "number",
+   "answer": 168
+  },
+  {
+   "id": "g4-multidig-3",
+   "prompt": "34 × 12 = ?",
+   "category": "Number",
+   "explanation": "34 × 12 = 408.",
+   "kind": "number",
+   "answer": 408
+  },
+  {
+   "id": "g4-multidig-4",
+   "prompt": "What is 45 × 6?",
+   "category": "Number",
+   "explanation": "45 × 6 = 270.",
+   "kind": "choice",
+   "choices": [
+    "270",
+    "260",
+    "280",
+    "250"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-multidig-5",
+   "prompt": "108 × 5 = ?",
+   "category": "Number",
+   "explanation": "108 × 5 = 540.",
+   "kind": "number",
+   "answer": 540
+  },
+  {
+   "id": "g4-multidig-6",
+   "prompt": "126 × 4 = ?",
+   "category": "Number",
+   "explanation": "126 × 4 = 504.",
+   "level": 2,
+   "kind": "number",
+   "answer": 504
+  },
+  {
+   "id": "g4-multidig-7",
+   "prompt": "A theater sells 235 tickets a day for 6 days. How many tickets total?",
+   "category": "Number",
+   "explanation": "235 × 6 = 1410.",
+   "level": 2,
+   "kind": "number",
+   "answer": 1410
+  },
+  {
+   "id": "g4-multidig-8",
+   "prompt": "A number times 8 equals 976. What is the number?",
+   "category": "Number",
+   "explanation": "976 ÷ 8 = 122.",
+   "hint": "Divide to undo the multiplication.",
+   "level": 3,
+   "kind": "number",
+   "answer": 122
+  },
+  {
+   "id": "g4-multidig-9",
+   "prompt": "Using the Standard Algorithm: 184 × 28 = ?",
+   "category": "Number",
+   "explanation": "184 × 8 = 1,472. 184 × 20 = 3,680 (that placeholder zero holds the ones place). Add them: 1,472 + 3,680 = 5,152.",
+   "kind": "number",
+   "answer": 5152
+  },
+  {
+   "id": "g4-multidig-10",
+   "prompt": "In the Standard Algorithm, why do you write a placeholder zero before multiplying by the tens digit?",
+   "category": "Number",
+   "explanation": "That zero holds the ones place so the tens-digit product lines up correctly before you add it to the first row.",
+   "kind": "choice",
+   "choices": [
+    "Because you're now multiplying by a TENS digit, not ones",
+    "Because the answer must end in zero",
+    "It's just a rule with no reason",
+    "To make the number look bigger"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-multidig-11",
+   "prompt": "Using Partial Products: 21,876 × 9 = ?",
+   "category": "Number",
+   "explanation": "9×20,000=180,000, 9×1,000=9,000, 9×800=7,200, 9×70=630, 9×6=54. Add them: 180,000+9,000+7,200+630+54 = 196,884.",
+   "level": 2,
+   "kind": "number",
+   "answer": 196884
+  },
+  {
+   "id": "g4-multidig-12",
+   "prompt": "Using the Distributive Property on 7 × 3,098, first decompose 3,098 into 3,000 + 90 + 8. What is 7 × 90?",
+   "category": "Number",
+   "explanation": "That's the middle partial product: 7 × 90 = 630.",
+   "level": 2,
+   "kind": "number",
+   "answer": 630
+  },
+  {
+   "id": "g4-multidig-13",
+   "prompt": "Finish it: 7 × 3,098 = (7×3,000) + (7×90) + (7×8) = 21,000 + 630 + 56. What's the final product?",
+   "category": "Number",
+   "explanation": "21,000 + 630 + 56 = 21,686 — adding the partial products together.",
+   "level": 2,
+   "kind": "number",
+   "answer": 21686
+  },
+  {
+   "id": "g4-multidig-14",
+   "prompt": "Open Area Model for 7 × 40,823 splits it into 7×40,000, 7×0, 7×800, 7×20, and 7×3. What is 7 × 800?",
+   "category": "Number",
+   "explanation": "7 × 800 = 5,600 — one column of the area model. (The full model adds up to 285,761.)",
+   "level": 3,
+   "kind": "number",
+   "answer": 5600
+  },
+  {
+   "id": "g4-multidig-15",
+   "prompt": "To ESTIMATE 289 × 6, you round 289 to the nearest hundred first. What do you round it to?",
+   "category": "Number",
+   "explanation": "289 is closer to 300 than to 200, so it rounds to 300. Then 300 × 6 = 1,800 is your reasonable estimate.",
+   "kind": "choice",
+   "choices": [
+    "200",
+    "280",
+    "290",
+    "300"
+   ],
+   "answer": 3
+  },
+  {
+   "id": "g4-multidig-16",
+   "prompt": "Which is the best ESTIMATE for 412 × 7?",
+   "category": "Number",
+   "explanation": "Round 412 to 400 (nearest hundred), then 400 × 7 = 2,800.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "700",
+    "2,800",
+    "3,000",
+    "4,200"
+   ],
+   "answer": 1
+  }
+ ],
+ "g4-divide": [
+  {
+   "id": "g4-divide-1",
+   "prompt": "27 ÷ 4 = ? Type just the whole-number quotient (ignore the remainder).",
+   "category": "Number",
+   "explanation": "4 × 6 = 24, which fits into 27 with 3 left over. The quotient is 6.",
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "g4-divide-2",
+   "prompt": "What is the REMAINDER when 27 is divided by 4?",
+   "category": "Number",
+   "explanation": "4 × 6 = 24, and 27 − 24 = 3 left over.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g4-divide-3",
+   "prompt": "83 ÷ 9 gives a quotient of 9. What is the remainder?",
+   "category": "Number",
+   "explanation": "9 × 9 = 81, and 83 − 81 = 2.",
+   "kind": "number",
+   "answer": 2
+  },
+  {
+   "id": "g4-divide-4",
+   "prompt": "58 ÷ 7 = ? Type just the whole-number quotient.",
+   "category": "Number",
+   "explanation": "7 × 8 = 56, which fits into 58. The quotient is 8.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g4-divide-5",
+   "prompt": "96 counters are put into groups of 7. How many FULL groups are there?",
+   "category": "Number",
+   "explanation": "7 × 13 = 91, which fits into 96 with 5 left over. That is 13 full groups.",
+   "kind": "number",
+   "answer": 13
+  },
+  {
+   "id": "g4-divide-6",
+   "prompt": "A baker has 100 rolls to pack into boxes of 8. How many FULL boxes can be packed?",
+   "category": "Number",
+   "explanation": "8 × 12 = 96, which fits into 100. That is 12 full boxes.",
+   "level": 2,
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "g4-divide-7",
+   "prompt": "After packing full boxes of 8 from 100 rolls, how many rolls are left over?",
+   "category": "Number",
+   "explanation": "12 boxes use 96 rolls, and 100 − 96 = 4 left over.",
+   "hint": "12 full boxes use how many rolls?",
+   "level": 2,
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "g4-divide-8",
+   "prompt": "A number divided by 6 gives a quotient of 14 and a remainder of 3. What is the number?",
+   "category": "Number",
+   "explanation": "6 × 14 = 84, and 84 + 3 = 87.",
+   "hint": "Multiply the quotient by 6, then add the remainder.",
+   "level": 3,
+   "kind": "number",
+   "answer": 87
+  }
+ ],
+ "g4-mixed": [
+  {
+   "id": "g4-mixed-1",
+   "prompt": "Which mixed number equals 7/2?",
+   "category": "Fractions",
+   "explanation": "7 ÷ 2 = 3 remainder 1, so 7/2 = 3 1/2.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "3 1/2",
+    "2 1/2",
+    "3 1/3",
+    "7 1/2"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-mixed-2",
+   "prompt": "Which improper fraction equals 2 3/4?",
+   "category": "Fractions",
+   "explanation": "2 × 4 + 3 = 11, so 2 3/4 = 11/4.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "11/4",
+    "10/4",
+    "9/4",
+    "2/4"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-mixed-3",
+   "prompt": "2 1/4 + 1 1/4 = ? Type just the whole-number part of the answer.",
+   "category": "Fractions",
+   "explanation": "2 1/4 + 1 1/4 = 3 2/4 = 3 1/2. The whole-number part is 3.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g4-mixed-4",
+   "prompt": "Which is GREATER: 3 1/4 or 13/4?",
+   "category": "Fractions",
+   "explanation": "13/4 = 3 1/4 exactly — they are the same amount written two ways.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "They are equal",
+    "3 1/4 is greater",
+    "13/4 is greater",
+    "Cannot compare"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-mixed-5",
+   "prompt": "How many halves are in 4 1/2? Type just the number.",
+   "category": "Fractions",
+   "explanation": "4 1/2 = 9/2, so there are 9 halves.",
+   "kind": "number",
+   "answer": 9
+  },
+  {
+   "id": "g4-mixed-6",
+   "prompt": "5 3/4 − 2 1/4 = ?",
+   "category": "Fractions",
+   "explanation": "5 3/4 − 2 1/4 = 3 2/4 = 3 1/2.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "3 1/2",
+    "3 1/4",
+    "7",
+    "3"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-mixed-7",
+   "prompt": "Convert 17/5 to a mixed number. Type just the whole-number part.",
+   "category": "Fractions",
+   "explanation": "17 ÷ 5 = 3 remainder 2, so 17/5 = 3 2/5. The whole-number part is 3.",
+   "level": 2,
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g4-mixed-8",
+   "prompt": "1 2/3 + 2 1/3 = ?",
+   "category": "Fractions",
+   "explanation": "The whole numbers add to 3, and 2/3 + 1/3 = 1 more whole, making 4.",
+   "level": 3,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "4",
+    "3",
+    "5",
+    "4 1/3"
+   ],
+   "answer": 0
+  }
+ ],
+ "g4-decnot": [
+  {
+   "id": "g4-decnot-1",
+   "prompt": "Write 3 tenths as a decimal.",
+   "category": "Decimals",
+   "explanation": "3 tenths = 0.3.",
+   "kind": "number",
+   "answer": 0.3
+  },
+  {
+   "id": "g4-decnot-2",
+   "prompt": "Write 7 hundredths as a decimal.",
+   "category": "Decimals",
+   "explanation": "7 hundredths = 0.07.",
+   "kind": "number",
+   "answer": 0.07
+  },
+  {
+   "id": "g4-decnot-3",
+   "prompt": "Which is the same as 0.5?",
+   "category": "Decimals",
+   "explanation": "0.5 means 5 tenths, which is 5/10.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "5/10",
+    "5/100",
+    "1/5",
+    "1/50"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-decnot-4",
+   "prompt": "Write 0.4 as tenths — type just the numerator over 10.",
+   "category": "Decimals",
+   "explanation": "0.4 is 4 tenths, so the numerator is 4.",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "g4-decnot-5",
+   "prompt": "Which decimal is the same as 25/100?",
+   "category": "Decimals",
+   "explanation": "25 hundredths is written 0.25.",
+   "kind": "choice",
+   "choices": [
+    "0.25",
+    "0.025",
+    "2.5",
+    "0.0025"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-decnot-6",
+   "prompt": "Write 'three and six tenths' as a decimal.",
+   "category": "Decimals",
+   "explanation": "3 and 6 tenths = 3.6.",
+   "level": 2,
+   "kind": "number",
+   "answer": 3.6
+  },
+  {
+   "id": "g4-decnot-7",
+   "prompt": "Which is the same as 0.08?",
+   "category": "Decimals",
+   "explanation": "The second decimal place is the hundredths place, so 0.08 is 8 hundredths.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "8 hundredths",
+    "8 tenths",
+    "8 thousandths",
+    "8 ones"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-decnot-8",
+   "prompt": "Write 'five and two hundredths' as a decimal.",
+   "category": "Decimals",
+   "explanation": "5 and 2 hundredths = 5.02.",
+   "level": 3,
+   "kind": "number",
+   "answer": 5.02
+  }
+ ],
+ "g4-deccomp": [
+  {
+   "id": "g4-deccomp-1",
+   "prompt": "Which symbol makes this true?  0.4 ◯ 0.25",
+   "category": "Decimals",
+   "explanation": "0.4 = 0.40, and 40 hundredths is more than 25 hundredths.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    ">",
+    "<",
+    "="
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-deccomp-2",
+   "prompt": "Which symbol makes this true?  0.09 ◯ 0.9",
+   "category": "Decimals",
+   "explanation": "0.09 is 9 hundredths, far less than 0.9, which is 90 hundredths.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "<",
+    ">",
+    "="
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-deccomp-3",
+   "prompt": "Order from smallest to largest.",
+   "category": "Decimals",
+   "explanation": "Compare as hundredths: 5, 15, 50, 55.",
+   "kind": "order",
+   "items": [
+    "0.05",
+    "0.15",
+    "0.5",
+    "0.55"
+   ]
+  },
+  {
+   "id": "g4-deccomp-4",
+   "prompt": "Which decimal is LARGEST?",
+   "category": "Decimals",
+   "explanation": "0.7 = 0.700, which beats all the others.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "0.7",
+    "0.65",
+    "0.599",
+    "0.699"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-deccomp-5",
+   "prompt": "Which symbol makes this true?  1.2 ◯ 1.20",
+   "category": "Decimals",
+   "explanation": "Adding a zero at the end of a decimal does not change its value.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "=",
+    "<",
+    ">"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-deccomp-6",
+   "prompt": "Order from LARGEST to smallest.",
+   "category": "Decimals",
+   "explanation": "As hundredths: 250, 215, 210, 205.",
+   "level": 2,
+   "kind": "order",
+   "items": [
+    "2.5",
+    "2.15",
+    "2.1",
+    "2.05"
+   ]
+  },
+  {
+   "id": "g4-deccomp-7",
+   "prompt": "Which symbol makes this true?  0.3 ◯ 0.30000",
+   "category": "Decimals",
+   "explanation": "Extra trailing zeros never change a decimal's value.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "=",
+    "<",
+    ">"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-deccomp-8",
+   "prompt": "Which decimal is between 0.45 and 0.5?",
+   "category": "Decimals",
+   "explanation": "0.47 sits between 0.45 and 0.50. The others fall outside that range.",
+   "level": 3,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "0.47",
+    "0.4",
+    "0.55",
+    "0.51"
+   ],
+   "answer": 0
+  }
+ ],
+ "g4-linesrays": [
+  {
+   "id": "g4-linesrays-1",
+   "prompt": "A ___ has two endpoints.",
+   "category": "Geometry & Measure",
+   "explanation": "A line segment is the part of a line between two fixed endpoints.",
+   "kind": "choice",
+   "choices": [
+    "line segment",
+    "line",
+    "ray",
+    "point"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-linesrays-2",
+   "prompt": "A ___ has one endpoint and goes on forever in one direction.",
+   "category": "Geometry & Measure",
+   "explanation": "A ray starts at an endpoint and extends forever in only one direction.",
+   "kind": "choice",
+   "choices": [
+    "ray",
+    "line",
+    "segment",
+    "point"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-linesrays-3",
+   "prompt": "Which angle measures LESS than 90°?",
+   "category": "Geometry & Measure",
+   "explanation": "An acute angle is any angle smaller than a right angle (90°).",
+   "kind": "choice",
+   "choices": [
+    "Acute",
+    "Obtuse",
+    "Straight",
+    "Right"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-linesrays-4",
+   "prompt": "Two lines that never meet and stay the same distance apart are called ___.",
+   "category": "Geometry & Measure",
+   "explanation": "Parallel lines run in the same direction and never cross.",
+   "kind": "choice",
+   "choices": [
+    "parallel",
+    "perpendicular",
+    "intersecting",
+    "rays"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-linesrays-5",
+   "prompt": "Two lines that cross at a right angle are called ___.",
+   "category": "Geometry & Measure",
+   "explanation": "Perpendicular lines meet to form a 90° angle.",
+   "kind": "choice",
+   "choices": [
+    "perpendicular",
+    "parallel",
+    "rays",
+    "segments"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-linesrays-6",
+   "prompt": "An angle that measures exactly 180° is called a ___ angle.",
+   "category": "Geometry & Measure",
+   "explanation": "A straight angle forms a straight line: 180°.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "straight",
+    "right",
+    "acute",
+    "obtuse"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-linesrays-7",
+   "prompt": "Which describes a right angle?",
+   "category": "Geometry & Measure",
+   "explanation": "A right angle is exactly 90°, no more and no less.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "Exactly 90°",
+    "Less than 90°",
+    "More than 90° but less than 180°",
+    "Exactly 180°"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-linesrays-8",
+   "prompt": "Two rays share an endpoint and form a 45° angle. What TYPE of angle is this?",
+   "category": "Geometry & Measure",
+   "explanation": "45° is less than 90°, so it is acute.",
+   "level": 3,
+   "kind": "choice",
+   "choices": [
+    "Acute",
+    "Obtuse",
+    "Right",
+    "Straight"
+   ],
+   "answer": 0
+  }
+ ],
+ "g4-classify": [
+  {
+   "id": "g4-classify-1",
+   "prompt": "Which shape has 4 equal sides but does not necessarily have right angles?",
+   "category": "Geometry & Measure",
+   "explanation": "A rhombus requires 4 equal sides, but its angles can be any measure — a square is a special rhombus with right angles too.",
+   "kind": "choice",
+   "choices": [
+    "Rhombus",
+    "Square",
+    "Rectangle",
+    "Circle"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-classify-2",
+   "prompt": "Which is true of ALL rectangles?",
+   "category": "Geometry & Measure",
+   "explanation": "Every rectangle has 4 right angles by definition, but its sides need not all be equal.",
+   "kind": "choice",
+   "choices": [
+    "4 right angles",
+    "4 equal sides",
+    "No parallel sides",
+    "3 sides"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-classify-3",
+   "prompt": "A triangle with all 3 sides equal is called ___.",
+   "category": "Geometry & Measure",
+   "explanation": "'Equilateral' means all sides are the same length.",
+   "kind": "choice",
+   "choices": [
+    "equilateral",
+    "isosceles",
+    "scalene",
+    "right"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-classify-4",
+   "prompt": "A triangle with exactly 2 equal sides is called ___.",
+   "category": "Geometry & Measure",
+   "explanation": "'Isosceles' means exactly two sides match.",
+   "kind": "choice",
+   "choices": [
+    "isosceles",
+    "equilateral",
+    "scalene",
+    "right"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-classify-5",
+   "prompt": "A triangle with NO equal sides is called ___.",
+   "category": "Geometry & Measure",
+   "explanation": "'Scalene' means every side is a different length.",
+   "kind": "choice",
+   "choices": [
+    "scalene",
+    "isosceles",
+    "equilateral",
+    "right"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-classify-6",
+   "prompt": "Which shape ALWAYS has 4 right angles?",
+   "category": "Geometry & Measure",
+   "explanation": "A rectangle is defined by having 4 right angles. The others do not require it.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "Rectangle",
+    "Rhombus",
+    "Parallelogram",
+    "Trapezoid"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-classify-7",
+   "prompt": "A right triangle has ONE angle that measures ___.",
+   "category": "Geometry & Measure",
+   "explanation": "'Right triangle' means one of its angles is exactly 90°.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "90°",
+    "180°",
+    "45°",
+    "60°"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-classify-8",
+   "prompt": "A shape has 4 sides, 4 right angles, and 4 equal sides. What is the MOST specific name?",
+   "category": "Geometry & Measure",
+   "explanation": "It qualifies as all four, but 'square' is the most specific — it requires every one of those properties at once.",
+   "level": 3,
+   "kind": "choice",
+   "choices": [
+    "Square",
+    "Rectangle",
+    "Rhombus",
+    "Quadrilateral"
+   ],
+   "answer": 0
+  }
+ ],
+ "g4-symmetry": [
+  {
+   "id": "g4-symmetry-1",
+   "prompt": "A shape has a line of symmetry if ___.",
+   "category": "Geometry & Measure",
+   "explanation": "A line of symmetry is a fold line where the two halves land exactly on top of each other.",
+   "kind": "choice",
+   "choices": [
+    "folding on the line makes both halves match up",
+    "it has exactly 4 sides total",
+    "it is a perfectly round circle",
+    "it has zero sides at all"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-symmetry-2",
+   "prompt": "How many lines of symmetry does a square have?",
+   "category": "Geometry & Measure",
+   "explanation": "A square can be folded along 2 diagonals and 2 through the midpoints of its sides — 4 lines in total.",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "g4-symmetry-3",
+   "prompt": "How many lines of symmetry does a regular (equilateral) triangle have?",
+   "category": "Geometry & Measure",
+   "explanation": "Each line runs from a corner to the midpoint of the opposite side — 3 in total.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g4-symmetry-4",
+   "prompt": "Which letter has a VERTICAL line of symmetry?",
+   "category": "Geometry & Measure",
+   "explanation": "Folding the letter A down the middle makes both halves match.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "A",
+    "F",
+    "G",
+    "R"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-symmetry-5",
+   "prompt": "How many lines of symmetry does a non-square rectangle have?",
+   "category": "Geometry & Measure",
+   "explanation": "One line through the middle horizontally, and one vertically — 2 in total.",
+   "kind": "number",
+   "answer": 2
+  },
+  {
+   "id": "g4-symmetry-6",
+   "prompt": "How many lines of symmetry does a regular hexagon have?",
+   "category": "Geometry & Measure",
+   "explanation": "A regular hexagon has one line of symmetry through each pair of opposite corners or sides — 6 in total.",
+   "level": 2,
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "g4-symmetry-7",
+   "prompt": "Which shape has NO lines of symmetry?",
+   "category": "Geometry & Measure",
+   "explanation": "A scalene triangle has no matching sides, so no fold line makes the halves match.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "A scalene triangle",
+    "A square",
+    "A circle",
+    "An isosceles triangle"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-symmetry-8",
+   "prompt": "A shape has exactly 1 line of symmetry. Which is it most likely to be?",
+   "category": "Geometry & Measure",
+   "explanation": "An isosceles (non-equilateral) triangle folds evenly only down its single line from the peak to the base's midpoint.",
+   "level": 3,
+   "kind": "choice",
+   "choices": [
+    "An isosceles triangle that is not equilateral",
+    "A square with 4 equal sides",
+    "A regular hexagon shape",
+    "A perfectly round circle"
+   ],
+   "answer": 0
+  }
+ ],
+ "g4-seq": [
+  {
+   "id": "g4-seq-1",
+   "prompt": "What is the next number: 2, 5, 8, 11, ___?",
+   "category": "Number",
+   "explanation": "The rule is 'add 3', so 11 + 3 = 14.",
+   "kind": "number",
+   "answer": 14
+  },
+  {
+   "id": "g4-seq-2",
+   "prompt": "What is the RULE for 3, 9, 27, 81?",
+   "category": "Number",
+   "explanation": "Each number is 3 times the one before it.",
+   "kind": "choice",
+   "choices": [
+    "Multiply by 3",
+    "Add 6",
+    "Add 3",
+    "Multiply by 9"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-seq-3",
+   "prompt": "A pattern starts at 5 and the rule is 'add 6'. What is the 4th number?",
+   "category": "Number",
+   "explanation": "5, 11, 17, 23 — the 4th number is 23.",
+   "hint": "List them: 5, 11, 17, 23.",
+   "kind": "number",
+   "answer": 23
+  },
+  {
+   "id": "g4-seq-4",
+   "prompt": "Which rule matches the shape pattern: square, pentagon, hexagon, ...?",
+   "category": "Number",
+   "explanation": "4 sides, then 5, then 6 — each shape gains one more side.",
+   "kind": "choice",
+   "choices": [
+    "Add one side each time",
+    "Add one color each time",
+    "Remove a side each time",
+    "No pattern"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-seq-5",
+   "prompt": "What is the next number: 100, 90, 80, 70, ___?",
+   "category": "Number",
+   "explanation": "The rule is 'subtract 10', so 70 − 10 = 60.",
+   "kind": "number",
+   "answer": 60
+  },
+  {
+   "id": "g4-seq-6",
+   "prompt": "A pattern is 2, 6, 18, 54, ___. What is next?",
+   "category": "Number",
+   "explanation": "The rule is 'multiply by 3': 54 × 3 = 162.",
+   "level": 2,
+   "kind": "number",
+   "answer": 162
+  },
+  {
+   "id": "g4-seq-7",
+   "prompt": "Which rule describes 1, 3, 6, 10, 15?",
+   "category": "Number",
+   "explanation": "The gaps grow: +2, +3, +4, +5 — each add is one bigger than the last.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "Add one more than the last add (add 2, then 3, then 4...)",
+    "Multiply by 2 each time",
+    "Subtract 1 each time",
+    "Add the same number each time"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-seq-8",
+   "prompt": "A pattern follows 'double, then add 1': 2, 5, 11, 23, ___. What is next?",
+   "category": "Number",
+   "explanation": "23 × 2 = 46, then 46 + 1 = 47.",
+   "level": 3,
+   "kind": "number",
+   "answer": 47
+  }
+ ],
+ "g4-fracmultw": [
+  {
+   "id": "g4-fracmultw-1",
+   "prompt": "3 × 1/4 = ? Type just the numerator (the denominator stays 4).",
+   "category": "Fractions",
+   "explanation": "3 × 1/4 = 3/4, so the numerator is 3.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g4-fracmultw-2",
+   "prompt": "2/3 × 4 = ?",
+   "category": "Fractions",
+   "explanation": "Multiply the numerator by the whole number: 2 × 4 = 8, so 8/3.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "8/3",
+    "6/3",
+    "2/12",
+    "4/3"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-fracmultw-3",
+   "prompt": "5 × 2/5 = ?",
+   "category": "Fractions",
+   "explanation": "5 × 2/5 = 10/5 = 2.",
+   "kind": "number",
+   "answer": 2
+  },
+  {
+   "id": "g4-fracmultw-4",
+   "prompt": "Which expression equals 3/8 × 2?",
+   "category": "Fractions",
+   "explanation": "3 × 2 = 6, so 3/8 × 2 = 6/8.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "6/8",
+    "3/16",
+    "5/8",
+    "2/8"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-fracmultw-5",
+   "prompt": "4 × 3/4 = ?",
+   "category": "Fractions",
+   "explanation": "4 × 3/4 = 12/4 = 3.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g4-fracmultw-6",
+   "prompt": "A recipe needs 3/4 cup of sugar per batch. How much sugar for 5 batches?",
+   "category": "Fractions",
+   "explanation": "3/4 × 5 = 15/4 cups.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "15/4 cups",
+    "8/4 cups",
+    "15/20 cups",
+    "3/20 cups"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-fracmultw-7",
+   "prompt": "6 × 5/6 = ?",
+   "category": "Fractions",
+   "explanation": "6 × 5/6 = 30/6 = 5.",
+   "level": 2,
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g4-fracmultw-8",
+   "prompt": "A runner covers 2/3 mile each lap. After 9 laps, how many miles total?",
+   "category": "Fractions",
+   "explanation": "2/3 × 9 = 18/3 = 6 miles.",
+   "level": 3,
+   "kind": "number",
+   "answer": 6
+  }
+ ],
+ "g4-units": [
+  {
+   "id": "g4-units-1",
+   "prompt": "How many inches are in 2 feet? (12 in = 1 ft)",
+   "category": "Measurement",
+   "explanation": "2 × 12 = 24 inches.",
+   "kind": "number",
+   "answer": 24
+  },
+  {
+   "id": "g4-units-2",
+   "prompt": "How many minutes are in 2 hours?",
+   "category": "Measurement",
+   "explanation": "2 × 60 = 120 minutes.",
+   "kind": "number",
+   "answer": 120
+  },
+  {
+   "id": "g4-units-3",
+   "prompt": "Which is bigger, a meter or a centimeter?",
+   "category": "Measurement",
+   "explanation": "A meter is 100 centimeters — much bigger than one centimeter.",
+   "kind": "choice",
+   "choices": [
+    "A meter",
+    "A centimeter",
+    "They are equal",
+    "Cannot tell"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-units-4",
+   "prompt": "How many ounces are in 3 pounds? (16 oz = 1 lb)",
+   "category": "Measurement",
+   "explanation": "3 × 16 = 48 ounces.",
+   "kind": "number",
+   "answer": 48
+  },
+  {
+   "id": "g4-units-5",
+   "prompt": "How many seconds are in 3 minutes?",
+   "category": "Measurement",
+   "explanation": "3 × 60 = 180 seconds.",
+   "kind": "number",
+   "answer": 180
+  },
+  {
+   "id": "g4-units-6",
+   "prompt": "A ribbon is 3 feet long. How many inches is that?",
+   "category": "Measurement",
+   "explanation": "3 × 12 = 36 inches.",
+   "level": 2,
+   "kind": "number",
+   "answer": 36
+  },
+  {
+   "id": "g4-units-7",
+   "prompt": "A recipe takes 2 hours and 15 minutes. How many minutes total?",
+   "category": "Measurement",
+   "explanation": "2 × 60 = 120, plus 15 more = 135 minutes.",
+   "level": 2,
+   "kind": "number",
+   "answer": 135
+  },
+  {
+   "id": "g4-units-8",
+   "prompt": "A race is 5000 meters. How many kilometers is that? (1000 m = 1 km)",
+   "category": "Measurement",
+   "explanation": "5000 ÷ 1000 = 5 kilometers.",
+   "level": 3,
+   "kind": "number",
+   "answer": 5
+  }
+ ],
+ "g4-lineplot": [
+  {
+   "id": "g4-lineplot-1",
+   "prompt": "A line plot shows: 2 X's at 1/4 inch, 3 X's at 1/2 inch, 1 X at 3/4 inch. How many data points in total?",
+   "category": "Measurement",
+   "explanation": "2 + 3 + 1 = 6 data points.",
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "g4-lineplot-2",
+   "prompt": "Using that plot, what is the total length of the three 1/2-inch measurements added together? Type as a decimal.",
+   "category": "Measurement",
+   "explanation": "3 × 0.5 = 1.5 inches.",
+   "kind": "number",
+   "answer": 1.5
+  },
+  {
+   "id": "g4-lineplot-3",
+   "prompt": "On a line plot with fraction measurements, each X on the line usually represents ___.",
+   "category": "Measurement",
+   "explanation": "Each X marks one measurement, often to the nearest fraction of an inch.",
+   "kind": "choice",
+   "choices": [
+    "a fraction of a unit, like 1/4 inch",
+    "a whole mile",
+    "a whole day",
+    "nothing measurable"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-lineplot-4",
+   "prompt": "A line plot has 4 X's at 1/2 inch and 2 X's at 1 inch. What is the TOTAL length in inches? Type as a decimal.",
+   "category": "Measurement",
+   "explanation": "4 × 0.5 = 2, and 2 × 1 = 2. Together: 2 + 2 = 4 inches.",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "g4-lineplot-5",
+   "prompt": "Which fraction is the smallest measurement typically marked on a ruler line plot?",
+   "category": "Measurement",
+   "explanation": "1/8 inch is the finest, smallest division listed.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "1/8 inch",
+    "1 inch",
+    "1/2 inch",
+    "2 inches"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-lineplot-6",
+   "prompt": "A line plot: 3 X's at 1/4 inch, 2 X's at 3/4 inch. What is the total length in inches? Type as a decimal.",
+   "category": "Measurement",
+   "explanation": "3 × 0.25 = 0.75, and 2 × 0.75 = 1.5. Together: 0.75 + 1.5 = 2.25 inches.",
+   "level": 2,
+   "kind": "number",
+   "answer": 2.25
+  },
+  {
+   "id": "g4-lineplot-7",
+   "prompt": "Using that same plot (3 X's at 1/4 inch, 2 X's at 3/4 inch), how many data points are there in total?",
+   "category": "Measurement",
+   "explanation": "3 + 2 = 5 data points.",
+   "level": 2,
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g4-lineplot-8",
+   "prompt": "A line plot has data points at 1/4, 1/4, 1/2, 3/4, 3/4, 3/4 inch. What is the total length in inches? Type as a decimal.",
+   "category": "Measurement",
+   "explanation": "0.25 + 0.25 + 0.5 + 0.75 + 0.75 + 0.75 = 3.25 inches.",
+   "level": 3,
+   "kind": "number",
+   "answer": 3.25
+  }
+ ],
+ "g4-protract": [
+  {
+   "id": "g4-protract-1",
+   "prompt": "An angle measures 45°. What type of angle is it?",
+   "category": "Geometry & Measure",
+   "explanation": "An angle under 90° is acute.",
+   "kind": "choice",
+   "choices": [
+    "Acute",
+    "Right",
+    "Obtuse",
+    "Straight"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-protract-2",
+   "prompt": "Two angles together make a straight line (180°). One angle is 110°. What is the other?",
+   "category": "Geometry & Measure",
+   "explanation": "180 − 110 = 70°.",
+   "kind": "number",
+   "answer": 70
+  },
+  {
+   "id": "g4-protract-3",
+   "prompt": "Which angle measure is OBTUSE?",
+   "category": "Geometry & Measure",
+   "explanation": "An obtuse angle is more than 90° and less than 180°: 120° fits.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "120°",
+    "45°",
+    "90°",
+    "30°"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-protract-4",
+   "prompt": "An angle of 35° and an angle of 55° are placed together with no overlap. What is their combined measure?",
+   "category": "Geometry & Measure",
+   "explanation": "35 + 55 = 90°.",
+   "kind": "number",
+   "answer": 90
+  },
+  {
+   "id": "g4-protract-5",
+   "prompt": "A right angle measures exactly ___.",
+   "category": "Geometry & Measure",
+   "explanation": "A right angle is always exactly 90°.",
+   "kind": "choice",
+   "choices": [
+    "90°",
+    "180°",
+    "45°",
+    "360°"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-protract-6",
+   "prompt": "Two angles combine to make a right angle (90°). One is 34°. What is the other?",
+   "category": "Geometry & Measure",
+   "explanation": "90 − 34 = 56°.",
+   "level": 2,
+   "kind": "number",
+   "answer": 56
+  },
+  {
+   "id": "g4-protract-7",
+   "prompt": "An angle measures 150°. What type of angle is it?",
+   "category": "Geometry & Measure",
+   "explanation": "150° is more than 90° and less than 180° — obtuse.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "Obtuse",
+    "Acute",
+    "Right",
+    "Straight"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g4-protract-8",
+   "prompt": "Three angles around a point add up to 360°. Two of them are 110° and 140°. What is the third?",
+   "category": "Geometry & Measure",
+   "explanation": "360 − 110 − 140 = 110°.",
+   "level": 3,
+   "kind": "number",
+   "answer": 110
+  }
+ ]
+}

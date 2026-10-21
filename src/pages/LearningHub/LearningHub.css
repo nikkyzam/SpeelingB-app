@@ -99,7 +99,6 @@
 .path-step.active {
   border-color: var(--primary);
   background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 142, 142, 0.1));
-  animation: pulse 2s infinite;
 }
 
 .step-icon {
@@ -150,20 +149,6 @@
   color: var(--primary);
 }
 
-.learning-modes {
-  margin-bottom: var(--spacing-xl);
-  padding: var(--spacing-xl);
-  background: var(--card);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-}
-
-.learning-modes h2 {
-  color: var(--primary);
-  margin-bottom: var(--spacing-lg);
-  text-align: center;
-}
-
 .modes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -209,25 +194,56 @@
   flex: 1;
 }
 
-.lock-message {
-  font-size: 0.8rem;
-  color: var(--error);
-  font-weight: bold;
-  margin-top: var(--spacing-xs);
+.next-up {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin: 0 auto var(--spacing-xl);
+  padding: var(--spacing-lg);
+  max-width: 560px;
+  background: var(--card);
+  border: 3px solid var(--primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  animation: pop-in var(--transition-normal) both;
 }
+.next-up-label {
+  font-family: var(--font-primary);
+  font-weight: 900;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+.next-up-btn { width: 100%; font-size: 1.3rem; min-height: 64px; }
 
-.quick-actions {
+.hub-more {
   margin-bottom: var(--spacing-xl);
+  text-align: center;
+}
+.hub-more-toggle {
+  border: 2px solid var(--border);
+  background: var(--card);
+  color: var(--text-soft);
+  border-radius: var(--radius-round);
+  padding: 0.5rem 1.6rem;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.hub-more-body {
+  margin-top: var(--spacing-lg);
   padding: var(--spacing-xl);
   background: var(--card);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
-}
-
-.quick-actions h2 {
-  color: var(--primary);
-  margin-bottom: var(--spacing-lg);
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  text-align: left;
 }
 
 .action-buttons {
@@ -445,34 +461,6 @@
   margin-top: 4px;
 }
 
-.missed-days-calendar {
-  background: #fff3f3;
-  border: 1px solid #ffcccc;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 24px;
-}
-
-.missed-days-calendar h3 {
-  margin-top: 0;
-  color: #cc0000;
-}
-
-.missed-days-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.missed-day-badge {
-  background: #ffcccc;
-  color: #990000;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.9rem;
-}
-
 .step-progress-mini {
   height: 6px;
   background: #eee;
@@ -506,3 +494,19 @@
 .seasonal-hub-icon { font-size: 2.4rem; line-height: 1; }
 .seasonal-hub-banner h2 { margin: 0 0 2px; font-size: 1.2rem; }
 .seasonal-hub-banner p { margin: 0; font-size: 0.9rem; opacity: 0.95; }
+
+/* Every word in the child's level has been met. */
+.level-finished {
+  margin: var(--spacing-md) 0;
+  padding: var(--spacing-md);
+  border: 2px solid var(--success);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--success) 14%, var(--card));
+  color: var(--text);
+  font-weight: 700;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .next-up { animation: none; }
+}

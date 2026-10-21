@@ -1,7 +1,9 @@
-# SpeelingB-app
+# BrightHive
 
-A spelling and reading app for kids: learn words, spell them, earn stars, and
-unlock a shelf full of word games.
+A faith-based learning hive for kids. Spelling is the daily core: learn words,
+spell them, earn stars, and unlock a shelf full of word games. Beside it sit
+Math (practice tests, Math Quest K–8, an arcade, puzzles and proofs), Social
+Studies, Language Arts, Reading and Bible — all under **Subjects** (`/subjects`).
 
 ## Getting started
 

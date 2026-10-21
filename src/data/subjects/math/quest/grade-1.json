@@ -1,0 +1,1416 @@
+{
+ "g1-add20": [
+  {
+   "id": "g1-add20-1",
+   "prompt": "8 + 5 = ?",
+   "category": "Number",
+   "explanation": "Split the 5 into 2 and 3. 8 + 2 = 10, then 10 + 3 = 13.",
+   "hint": "Make ten first: 8 + 2 = 10.",
+   "kind": "number",
+   "answer": 13
+  },
+  {
+   "id": "g1-add20-2",
+   "prompt": "9 + 6 = ?",
+   "category": "Number",
+   "explanation": "9 + 1 = 10, and 5 remains, so 10 + 5 = 15.",
+   "hint": "Make ten first.",
+   "kind": "number",
+   "answer": 15
+  },
+  {
+   "id": "g1-add20-3",
+   "prompt": "7 + 7 = ?",
+   "category": "Number",
+   "explanation": "A double: 7 + 7 = 14.",
+   "kind": "number",
+   "answer": 14
+  },
+  {
+   "id": "g1-add20-4",
+   "prompt": "12 + 4 = ?",
+   "category": "Number",
+   "explanation": "Count on 4 from 12: 13, 14, 15, 16.",
+   "kind": "number",
+   "answer": 16
+  },
+  {
+   "id": "g1-add20-5",
+   "prompt": "Which one makes 20?",
+   "category": "Number",
+   "explanation": "13 + 7 = 20. The others give 19, 19 and 19.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "13 + 7",
+    "13 + 6",
+    "12 + 7",
+    "14 + 5"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-add20-6",
+   "prompt": "6 + 7 + 4 = ?",
+   "category": "Number",
+   "explanation": "6 + 4 = 10 first, then 10 + 7 = 17. Reordering makes it easier.",
+   "hint": "Look for a pair that makes ten.",
+   "level": 2,
+   "kind": "number",
+   "answer": 17
+  },
+  {
+   "id": "g1-add20-7",
+   "prompt": "Select EVERY sum that equals 15.",
+   "category": "Number",
+   "explanation": "8 + 7 = 15 and 9 + 6 = 15. But 7 + 9 = 16 and 10 + 4 = 14.",
+   "level": 2,
+   "kind": "multi",
+   "choices": [
+    "8 + 7",
+    "9 + 6",
+    "7 + 9",
+    "10 + 4"
+   ],
+   "answers": [
+    0,
+    1
+   ]
+  },
+  {
+   "id": "g1-add20-8",
+   "prompt": "Ana has 9 stickers. Ben has 4 more than Ana. How many do they have altogether?",
+   "category": "Number",
+   "explanation": "Ben has 9 + 4 = 13. Together: 9 + 13 = 22 stickers.",
+   "hint": "Work out Ben's first.",
+   "level": 3,
+   "kind": "number",
+   "answer": 22
+  }
+ ],
+ "g1-tensones": [
+  {
+   "id": "g1-tensones-1",
+   "prompt": "How many tens are in 47?",
+   "category": "Number",
+   "explanation": "47 is 4 tens and 7 ones, so there are 4 tens.",
+   "hint": "Look at the first digit.",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "g1-tensones-2",
+   "prompt": "How many ones are in 63?",
+   "category": "Number",
+   "explanation": "63 is 6 tens and 3 ones.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g1-tensones-3",
+   "prompt": "What number is 5 tens and 2 ones?",
+   "category": "Number",
+   "explanation": "5 tens is 50, plus 2 ones makes 52.",
+   "kind": "number",
+   "answer": 52
+  },
+  {
+   "id": "g1-tensones-4",
+   "prompt": "Which number has 8 tens?",
+   "category": "Number",
+   "explanation": "83 is 8 tens and 3 ones. In 38 the 8 is the ones digit.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "83",
+    "38",
+    "8",
+    "18"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-tensones-5",
+   "prompt": "What number is 3 tens and 14 ones?",
+   "category": "Number",
+   "explanation": "14 ones is 1 ten and 4 ones, so altogether 4 tens and 4 ones — that is 44.",
+   "hint": "14 ones is more than a ten.",
+   "level": 2,
+   "kind": "number",
+   "answer": 44
+  },
+  {
+   "id": "g1-tensones-6",
+   "prompt": "I am a two-digit number. My tens digit is 2 more than my ones digit, and my digits add to 10. What number am I?",
+   "category": "Number",
+   "explanation": "6 and 4 add to 10 and differ by 2. The tens digit is the bigger one, so the number is 64.",
+   "hint": "Which two digits add to 10 and differ by 2?",
+   "level": 3,
+   "kind": "number",
+   "answer": 64
+  }
+ ],
+ "g1-sub20": [
+  {
+   "id": "g1-sub20-1",
+   "prompt": "15 − 6 = ?",
+   "category": "Number",
+   "explanation": "15 − 5 = 10, then one more back: 10 − 1 = 9.",
+   "hint": "Count back, or find the ten first.",
+   "kind": "number",
+   "answer": 9
+  },
+  {
+   "id": "g1-sub20-2",
+   "prompt": "12 − 5 = ?",
+   "category": "Number",
+   "explanation": "12 − 2 = 10, then 10 − 3 = 7.",
+   "kind": "number",
+   "answer": 7
+  },
+  {
+   "id": "g1-sub20-3",
+   "prompt": "18 − 9 = ?",
+   "category": "Number",
+   "explanation": "18 − 9 = 9 — taking away 9 from 18 leaves 9.",
+   "kind": "number",
+   "answer": 9
+  },
+  {
+   "id": "g1-sub20-4",
+   "prompt": "14 − 8 = ?",
+   "category": "Number",
+   "explanation": "14 − 4 = 10, then 10 − 4 = 6.",
+   "hint": "Make ten first.",
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "g1-sub20-5",
+   "prompt": "Which is the same as 16 − 7?",
+   "category": "Number",
+   "explanation": "16 − 7 = 9. The others come from different subtractions.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "9",
+    "8",
+    "10",
+    "7"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-sub20-6",
+   "prompt": "9 + 7 − 3 = ?",
+   "category": "Number",
+   "explanation": "9 + 7 = 16, then 16 − 3 = 13.",
+   "hint": "Add first, then subtract.",
+   "level": 2,
+   "kind": "number",
+   "answer": 13
+  },
+  {
+   "id": "g1-sub20-7",
+   "prompt": "Select EVERY problem that equals 8.",
+   "category": "Number",
+   "explanation": "15 − 7 = 8, 12 − 4 = 8 and 16 − 8 = 8. But 11 − 4 = 7.",
+   "level": 2,
+   "kind": "multi",
+   "choices": [
+    "15 − 7",
+    "12 − 4",
+    "11 − 4",
+    "16 − 8"
+   ],
+   "answers": [
+    0,
+    1,
+    3
+   ]
+  },
+  {
+   "id": "g1-sub20-8",
+   "prompt": "Maya had 17 candies. She gave away 9. Then she got 4 more. How many does she have now?",
+   "category": "Word Problems",
+   "explanation": "17 − 9 = 8, then 8 + 4 = 12.",
+   "hint": "Subtract first, then add.",
+   "level": 3,
+   "kind": "number",
+   "answer": 12
+  }
+ ],
+ "g1-equals": [
+  {
+   "id": "g1-equals-1",
+   "prompt": "What number makes this true?  5 + 3 = 4 + __",
+   "category": "Patterns & Algebra",
+   "explanation": "5 + 3 = 8, so the other side needs to make 8 too: 4 + 4 = 8.",
+   "kind": "choice",
+   "choices": [
+    "4",
+    "3",
+    "8",
+    "5"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-equals-2",
+   "prompt": "6 + 2 = __ + 5",
+   "category": "Patterns & Algebra",
+   "explanation": "6 + 2 = 8, and 8 = __ + 5 means __ = 3.",
+   "hint": "Work out the left side first.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g1-equals-3",
+   "prompt": "Which of these is a TRUE equation?",
+   "category": "Patterns & Algebra",
+   "explanation": "3 + 4 = 7, so that one is true. The others make 8.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "7 = 3 + 4",
+    "7 = 3 + 5",
+    "7 = 2 + 6",
+    "7 = 1 + 7"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-equals-4",
+   "prompt": "9 = __ + 4",
+   "category": "Patterns & Algebra",
+   "explanation": "9 = 5 + 4, so the missing number is 5.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g1-equals-5",
+   "prompt": "The equal sign (=) means ___.",
+   "category": "Patterns & Algebra",
+   "explanation": "An equal sign says the amount on the left is the same as the amount on the right — it is a balance, not just 'here comes the answer'.",
+   "kind": "choice",
+   "choices": [
+    "both sides have the same value",
+    "the answer comes next",
+    "add the numbers",
+    "the bigger number wins"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-equals-6",
+   "prompt": "8 + 6 = 10 + __",
+   "category": "Patterns & Algebra",
+   "explanation": "8 + 6 = 14, and 10 + 4 = 14, so the missing number is 4.",
+   "hint": "Work out the left side first.",
+   "level": 2,
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "g1-equals-7",
+   "prompt": "Which equation is FALSE?",
+   "category": "Patterns & Algebra",
+   "explanation": "7 + 1 = 8, not 9 — that one is false. The rest all make 9.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "9 = 5 + 4",
+    "9 = 6 + 3",
+    "9 = 7 + 1",
+    "9 = 2 + 7"
+   ],
+   "answer": 2
+  },
+  {
+   "id": "g1-equals-8",
+   "prompt": "A balance shows 12 + 5 on one side. What number balances it on 9 + __?",
+   "category": "Patterns & Algebra",
+   "explanation": "12 + 5 = 17, and 9 + 8 = 17, so the missing number is 8.",
+   "hint": "Work out 12 + 5 first.",
+   "level": 3,
+   "kind": "number",
+   "answer": 8
+  }
+ ],
+ "g1-wordprob": [
+  {
+   "id": "g1-wordprob-1",
+   "prompt": "Sam has 8 apples. He gets some more and now has 13. How many did he get?",
+   "category": "Word Problems",
+   "explanation": "13 − 8 = 5 more apples.",
+   "hint": "Think about what was added.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g1-wordprob-2",
+   "prompt": "There are 15 birds in a tree. 6 fly away. How many are left?",
+   "category": "Word Problems",
+   "explanation": "15 − 6 = 9 birds left.",
+   "kind": "number",
+   "answer": 9
+  },
+  {
+   "id": "g1-wordprob-3",
+   "prompt": "Which number sentence matches: 'Lily had some stickers, gave away 4, and has 9 left'?",
+   "category": "Word Problems",
+   "explanation": "She started with an unknown amount, 4 were taken away, and 9 remained: __ − 4 = 9.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "__ − 4 = 9",
+    "__ + 4 = 9",
+    "9 − 4 = __",
+    "4 − __ = 9"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-wordprob-4",
+   "prompt": "A box had some pencils. 7 were added, making 16. How many were in the box at the start?",
+   "category": "Word Problems",
+   "explanation": "16 − 7 = 9 pencils to start.",
+   "hint": "Work backwards.",
+   "kind": "number",
+   "answer": 9
+  },
+  {
+   "id": "g1-wordprob-5",
+   "prompt": "Which shows the unknown correctly for: 'I have 6 red marbles and some blue marbles, 14 in total. How many blue?'",
+   "category": "Word Problems",
+   "explanation": "The two amounts must add to the total: 6 + __ = 14.",
+   "kind": "choice",
+   "choices": [
+    "6 + __ = 14",
+    "__ + 14 = 6",
+    "14 + 6 = __",
+    "6 − __ = 14"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-wordprob-6",
+   "prompt": "There were 20 fish in a tank. Some swam into a net, leaving 12. How many swam into the net?",
+   "category": "Word Problems",
+   "explanation": "20 − 12 = 8 fish.",
+   "level": 2,
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g1-wordprob-7",
+   "prompt": "Emma had 9 crayons. She got 6 more, then gave 4 away. How many does she have now?",
+   "category": "Word Problems",
+   "explanation": "9 + 6 = 15, then 15 − 4 = 11.",
+   "hint": "Do it in order: add, then subtract.",
+   "level": 2,
+   "kind": "number",
+   "answer": 11
+  },
+  {
+   "id": "g1-wordprob-8",
+   "prompt": "A farmer had some chickens. 8 hatched, then 3 were sold, leaving 19. How many did the farmer start with?",
+   "category": "Word Problems",
+   "explanation": "Undo the sale first: 19 + 3 = 22. Then undo the hatching: 22 − 8 = 14.",
+   "hint": "Work backwards from 19.",
+   "level": 3,
+   "kind": "number",
+   "answer": 14
+  }
+ ],
+ "g1-compare2": [
+  {
+   "id": "g1-compare2-1",
+   "prompt": "Which symbol makes this true?  47 ◯ 52",
+   "category": "Number",
+   "explanation": "47 has fewer tens than 52, so 47 < 52.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "<",
+    ">",
+    "="
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-compare2-2",
+   "prompt": "Which symbol makes this true?  63 ◯ 36",
+   "category": "Number",
+   "explanation": "63 has 6 tens and 36 has 3 tens, so 63 > 36.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "<",
+    ">",
+    "="
+   ],
+   "answer": 1
+  },
+  {
+   "id": "g1-compare2-3",
+   "prompt": "Which number is greater than 45 but less than 50?",
+   "category": "Number",
+   "explanation": "47 sits between 45 and 50. The others are outside that range.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "47",
+    "44",
+    "51",
+    "40"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-compare2-4",
+   "prompt": "Put these numbers in order, smallest first.",
+   "category": "Number",
+   "explanation": "Compare the tens digit first: 1, 2, 8, 9 tens gives this order.",
+   "kind": "order",
+   "items": [
+    "19",
+    "28",
+    "82",
+    "91"
+   ]
+  },
+  {
+   "id": "g1-compare2-5",
+   "prompt": "Which symbol makes this true?  70 ◯ 69 + 1",
+   "category": "Number",
+   "explanation": "69 + 1 = 70, and 70 equals 70, so the symbol is =.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "<",
+    ">",
+    "="
+   ],
+   "answer": 2
+  },
+  {
+   "id": "g1-compare2-6",
+   "prompt": "These numbers all have 5 tens. Put them in order, smallest first.",
+   "category": "Number",
+   "explanation": "All have 5 tens, so compare the ones digit: 1, 3, 5, 8.",
+   "level": 2,
+   "kind": "order",
+   "items": [
+    "51",
+    "53",
+    "55",
+    "58"
+   ]
+  },
+  {
+   "id": "g1-compare2-7",
+   "prompt": "Which number is between 34 and 41, and greater than 38?",
+   "category": "Number",
+   "explanation": "39 is bigger than 34 and smaller than 41, and it is also bigger than 38.",
+   "level": 3,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "39",
+    "34",
+    "41",
+    "33"
+   ],
+   "answer": 0
+  }
+ ],
+ "g1-length": [
+  {
+   "id": "g1-length-1",
+   "prompt": "Which is the BEST tool to measure the length of your pencil?",
+   "category": "Measurement",
+   "explanation": "A ruler measures length. A scale measures weight, a clock measures time.",
+   "kind": "choice",
+   "choices": [
+    "a ruler",
+    "a scale",
+    "a clock",
+    "a thermometer"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-length-2",
+   "prompt": "A crayon is 6 cubes long. Another is 4 cubes long. How many MORE cubes long is the first crayon?",
+   "category": "Measurement",
+   "explanation": "6 − 4 = 2 cubes longer.",
+   "kind": "number",
+   "answer": 2
+  },
+  {
+   "id": "g1-length-3",
+   "prompt": "Which object is LONGER?",
+   "category": "Measurement",
+   "explanation": "A school bus is far longer than a shoe.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "a school bus",
+    "a shoe",
+    "they are the same",
+    "you cannot tell"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-length-4",
+   "prompt": "You measure a book using paperclips laid end to end. It takes 8 paperclips. How many paperclips long is the book?",
+   "category": "Measurement",
+   "explanation": "The book is 8 paperclips long — that is what 'measuring with paperclips' means.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g1-length-5",
+   "prompt": "Order these pencils from SHORTEST to longest, by their length in cubes.",
+   "category": "Measurement",
+   "explanation": "Compare the numbers: 1, 3, 6, 9 cubes, smallest first.",
+   "kind": "order",
+   "items": [
+    "1 cube",
+    "3 cubes",
+    "6 cubes",
+    "9 cubes"
+   ]
+  },
+  {
+   "id": "g1-length-6",
+   "prompt": "Table A is 12 spans long. Table B is 15 spans long. How many spans LONGER is Table B?",
+   "category": "Measurement",
+   "explanation": "15 − 12 = 3 spans longer.",
+   "level": 2,
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g1-length-7",
+   "prompt": "Why might two people measure the same desk and get a different number of spans?",
+   "category": "Measurement",
+   "explanation": "A hand-span is not a fixed unit — bigger hands mean fewer spans are needed, so the count changes person to person.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "Their hands are different sizes",
+    "The desk changed size",
+    "One of them cannot count",
+    "Desks cannot be measured"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-length-8",
+   "prompt": "A ribbon is 14 paperclips long. A longer clip is twice as long as a paperclip. How many long clips measure the same ribbon?",
+   "category": "Measurement",
+   "explanation": "Each long clip covers 2 paperclip-lengths, so 14 ÷ 2 = 7 long clips.",
+   "hint": "A bigger unit means a smaller count.",
+   "level": 3,
+   "kind": "number",
+   "answer": 7
+  }
+ ],
+ "g1-props": [
+  {
+   "id": "g1-props-1",
+   "prompt": "Which shows that ADDITION can be done in any order?",
+   "category": "Patterns & Algebra",
+   "explanation": "Swapping the order of the numbers being added never changes the sum.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "3 + 5 = 5 + 3",
+    "3 + 5 = 8",
+    "3 − 5",
+    "3 × 5"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-props-2",
+   "prompt": "If 4 + 6 = 10, what is 6 + 4?",
+   "category": "Patterns & Algebra",
+   "explanation": "Addition works the same in either order, so 6 + 4 is also 10.",
+   "kind": "number",
+   "answer": 10
+  },
+  {
+   "id": "g1-props-3",
+   "prompt": "Which shows grouping numbers differently without changing the sum?",
+   "category": "Patterns & Algebra",
+   "explanation": "Changing how the numbers are grouped with parentheses does not change the total.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "(2+3)+4 = 2+(3+4)",
+    "2+3 = 3+2",
+    "2+0 = 2",
+    "2+2 = 4"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-props-4",
+   "prompt": "3 + 7 = 10. What is 7 + 3?",
+   "category": "Patterns & Algebra",
+   "explanation": "Swapping the order keeps the sum the same: 10.",
+   "kind": "number",
+   "answer": 10
+  },
+  {
+   "id": "g1-props-5",
+   "prompt": "Adding zero to any number gives ___.",
+   "category": "Patterns & Algebra",
+   "explanation": "Adding 0 never changes the value of a number.",
+   "kind": "choice",
+   "choices": [
+    "the same number",
+    "zero",
+    "a number twice as big",
+    "one more"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-props-6",
+   "prompt": "If (2 + 3) + 5 = 10, what is 2 + (3 + 5)?",
+   "category": "Patterns & Algebra",
+   "explanation": "Regrouping the addends does not change the total.",
+   "level": 2,
+   "kind": "number",
+   "answer": 10
+  },
+  {
+   "id": "g1-props-7",
+   "prompt": "Which pair of additions always gives the SAME answer, whatever the numbers?",
+   "category": "Patterns & Algebra",
+   "explanation": "a + b and b + a always match — that is what the commutative property means.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "a + b and b + a",
+    "a + b and a − b",
+    "a + 1 and a",
+    "a + 0 and a + 1"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-props-8",
+   "prompt": "Using properties, if 8 + 6 + 2 = 16, what is 2 + 6 + 8?",
+   "category": "Patterns & Algebra",
+   "explanation": "Reordering the same three addends never changes their sum.",
+   "level": 3,
+   "kind": "number",
+   "answer": 16
+  }
+ ],
+ "g1-add100": [
+  {
+   "id": "g1-add100-1",
+   "prompt": "34 + 5 = ?",
+   "category": "Number",
+   "explanation": "34 + 5 = 39.",
+   "kind": "number",
+   "answer": 39
+  },
+  {
+   "id": "g1-add100-2",
+   "prompt": "48 − 6 = ?",
+   "category": "Number",
+   "explanation": "48 − 6 = 42.",
+   "kind": "number",
+   "answer": 42
+  },
+  {
+   "id": "g1-add100-3",
+   "prompt": "50 + 20 = ?",
+   "category": "Number",
+   "explanation": "50 + 20 = 70.",
+   "kind": "number",
+   "answer": 70
+  },
+  {
+   "id": "g1-add100-4",
+   "prompt": "What is 62 + 7?",
+   "category": "Number",
+   "explanation": "62 + 7 = 69.",
+   "kind": "choice",
+   "choices": [
+    "69",
+    "70",
+    "68",
+    "72"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-add100-5",
+   "prompt": "90 − 30 = ?",
+   "category": "Number",
+   "explanation": "90 − 30 = 60.",
+   "kind": "number",
+   "answer": 60
+  },
+  {
+   "id": "g1-add100-6",
+   "prompt": "37 + 25 = ?",
+   "category": "Number",
+   "explanation": "37 + 25 = 62.",
+   "level": 2,
+   "kind": "number",
+   "answer": 62
+  },
+  {
+   "id": "g1-add100-7",
+   "prompt": "76 − 19 = ?",
+   "category": "Number",
+   "explanation": "76 − 19 = 57.",
+   "level": 2,
+   "kind": "number",
+   "answer": 57
+  },
+  {
+   "id": "g1-add100-8",
+   "prompt": "A number plus 15 equals 82. What is the number?",
+   "category": "Number",
+   "explanation": "82 − 15 = 67.",
+   "level": 3,
+   "kind": "number",
+   "answer": 67
+  }
+ ],
+ "g1-tenmore": [
+  {
+   "id": "g1-tenmore-1",
+   "prompt": "What is 10 more than 34?",
+   "category": "Number",
+   "explanation": "34 + 10 = 44.",
+   "kind": "number",
+   "answer": 44
+  },
+  {
+   "id": "g1-tenmore-2",
+   "prompt": "What is 10 less than 67?",
+   "category": "Number",
+   "explanation": "67 − 10 = 57.",
+   "kind": "number",
+   "answer": 57
+  },
+  {
+   "id": "g1-tenmore-3",
+   "prompt": "What is 10 more than 89?",
+   "category": "Number",
+   "explanation": "89 + 10 = 99.",
+   "kind": "number",
+   "answer": 99
+  },
+  {
+   "id": "g1-tenmore-4",
+   "prompt": "What is 10 less than 40?",
+   "category": "Number",
+   "explanation": "40 − 10 = 30.",
+   "kind": "choice",
+   "choices": [
+    "30",
+    "50",
+    "41",
+    "39"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-tenmore-5",
+   "prompt": "What is 10 more than 95?",
+   "category": "Number",
+   "explanation": "95 + 10 = 105.",
+   "kind": "number",
+   "answer": 105
+  },
+  {
+   "id": "g1-tenmore-6",
+   "prompt": "What is 20 more than 47? (think: 10 more, twice)",
+   "category": "Number",
+   "explanation": "47 + 10 = 57, then 57 + 10 = 67.",
+   "level": 2,
+   "kind": "number",
+   "answer": 67
+  },
+  {
+   "id": "g1-tenmore-7",
+   "prompt": "A number is 10 less than 82. What is it?",
+   "category": "Number",
+   "explanation": "82 − 10 = 72.",
+   "level": 2,
+   "kind": "number",
+   "answer": 72
+  },
+  {
+   "id": "g1-tenmore-8",
+   "prompt": "Start at 56. Add 10, then subtract 10, then add 10. What is the result?",
+   "category": "Number",
+   "explanation": "56 + 10 = 66, 66 − 10 = 56, 56 + 10 = 66.",
+   "level": 3,
+   "kind": "number",
+   "answer": 66
+  }
+ ],
+ "g1-time": [
+  {
+   "id": "g1-time-1",
+   "prompt": "The short hand on a clock shows the ___.",
+   "category": "Measurement",
+   "explanation": "The short hand points to the current hour.",
+   "kind": "choice",
+   "choices": [
+    "hour",
+    "minute",
+    "second",
+    "day"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-time-2",
+   "prompt": "The long hand on a clock shows the ___.",
+   "category": "Measurement",
+   "explanation": "The long hand sweeps around to show the minutes.",
+   "kind": "choice",
+   "choices": [
+    "minutes",
+    "hour",
+    "day",
+    "month"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-time-3",
+   "prompt": "The minute hand points straight up, at 12. What do you read to find the hour?",
+   "category": "Measurement",
+   "explanation": "Minute hand on 12 means exactly on the hour — read the short hand for which hour.",
+   "kind": "choice",
+   "choices": [
+    "The short hand's position",
+    "The color of the clock",
+    "The date",
+    "The day of the week"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-time-4",
+   "prompt": "Which time shows 'half past 3'?",
+   "category": "Measurement",
+   "explanation": "'Half past' means 30 minutes after the hour.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "3:30",
+    "3:15",
+    "3:45",
+    "3:00"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-time-5",
+   "prompt": "The short hand is between 7 and 8, and the long hand is on 12. What time is it?",
+   "category": "Measurement",
+   "explanation": "The short hand between 7 and 8 with the minute hand at 12 means it is exactly 7:00 — the hour just started.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "7:00",
+    "8:00",
+    "7:30",
+    "12:07"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-time-6",
+   "prompt": "Which is EARLIER: 2:00 or 2:30?",
+   "category": "Measurement",
+   "explanation": "2:00 comes before 2:30 in the same hour.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "2:00",
+    "2:30",
+    "They are the same",
+    "Cannot tell"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-time-7",
+   "prompt": "The long hand points to 6. What does that mean?",
+   "category": "Measurement",
+   "explanation": "The 6 is halfway around the clock face, marking 30 minutes past the hour.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "Half past the hour",
+    "The exact hour",
+    "Quarter past",
+    "Quarter to"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-time-8",
+   "prompt": "It is half past 5. In one hour, what time will it be?",
+   "category": "Measurement",
+   "explanation": "Adding one hour to 5:30 gives 6:30 — half past 6.",
+   "level": 3,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "Half past 6",
+    "6:00",
+    "5:30",
+    "Half past 4"
+   ],
+   "answer": 0
+  }
+ ],
+ "g1-graphs": [
+  {
+   "id": "g1-graphs-1",
+   "prompt": "A bar graph shows 5 apples and 3 bananas. How many more apples than bananas?",
+   "category": "Measurement",
+   "explanation": "5 − 3 = 2 more apples.",
+   "kind": "number",
+   "answer": 2
+  },
+  {
+   "id": "g1-graphs-2",
+   "prompt": "A picture graph shows 4 pictures of cats, and each picture stands for 1 cat. How many cats?",
+   "category": "Measurement",
+   "explanation": "4 pictures, 1 cat each, means 4 cats.",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "g1-graphs-3",
+   "prompt": "In a bar graph, a TALLER bar means ___.",
+   "category": "Measurement",
+   "explanation": "Bar height shows the amount being counted — taller means more.",
+   "kind": "choice",
+   "choices": [
+    "a bigger amount",
+    "a smaller amount",
+    "the same amount always",
+    "nothing important"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-graphs-4",
+   "prompt": "A graph shows: red = 6, blue = 4, green = 2. How many in total?",
+   "category": "Measurement",
+   "explanation": "6 + 4 + 2 = 12.",
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "g1-graphs-5",
+   "prompt": "Which question can a bar graph answer?",
+   "category": "Measurement",
+   "explanation": "A bar graph compares categories, so it can show which one has the most.",
+   "kind": "choice",
+   "choices": [
+    "Which category has the most?",
+    "What color is the sky?",
+    "How old are you?",
+    "What is your name?"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-graphs-6",
+   "prompt": "A graph shows dogs = 7, cats = 5. How many MORE dogs than cats?",
+   "category": "Measurement",
+   "explanation": "7 − 5 = 2 more dogs.",
+   "level": 2,
+   "kind": "number",
+   "answer": 2
+  },
+  {
+   "id": "g1-graphs-7",
+   "prompt": "A graph shows 3 categories with 4, 6, and 2. What is the total?",
+   "category": "Measurement",
+   "explanation": "4 + 6 + 2 = 12.",
+   "level": 2,
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "g1-graphs-8",
+   "prompt": "A graph shows 4 fruits: apples = 5, pears = 3, grapes = 8, plums = 2. Which two fruits add up to exactly 10?",
+   "category": "Measurement",
+   "explanation": "Grapes (8) + plums (2) = 10. The other pairs add to 8, 7 and 5.",
+   "level": 3,
+   "kind": "choice",
+   "choices": [
+    "Grapes and plums",
+    "Apples and pears",
+    "Apples and plums",
+    "Pears and plums"
+   ],
+   "answer": 0
+  }
+ ],
+ "g1-attrib": [
+  {
+   "id": "g1-attrib-1",
+   "prompt": "Which is a defining fact about a triangle?",
+   "category": "Geometry & Measure",
+   "explanation": "Having 3 sides is what makes a shape a triangle — color and size do not matter.",
+   "kind": "choice",
+   "choices": [
+    "It has 3 sides",
+    "It is red",
+    "It is big",
+    "It is drawn on paper"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-attrib-2",
+   "prompt": "Which of these can change WITHOUT a square stopping being a square?",
+   "category": "Geometry & Measure",
+   "explanation": "Color has nothing to do with what shape something is — the sides and angles do.",
+   "kind": "choice",
+   "choices": [
+    "Its color",
+    "Having 4 equal sides",
+    "Having 4 right angles",
+    "Being a quadrilateral"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-attrib-3",
+   "prompt": "Which shape ALWAYS has exactly 4 sides?",
+   "category": "Geometry & Measure",
+   "explanation": "'Quad' means four — every quadrilateral has exactly 4 sides.",
+   "kind": "choice",
+   "choices": [
+    "A quadrilateral",
+    "A triangle",
+    "A pentagon",
+    "A circle"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-attrib-4",
+   "prompt": "Two shapes both have 3 sides and 3 corners. What must be true?",
+   "category": "Geometry & Measure",
+   "explanation": "3 sides and 3 corners is the definition of a triangle, no matter the size or color.",
+   "kind": "choice",
+   "choices": [
+    "Both are triangles",
+    "Both are the same size",
+    "Both are the same color",
+    "Both are squares"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-attrib-5",
+   "prompt": "Which of these tells you something about the shape itself, not just how it looks on the page?",
+   "category": "Geometry & Measure",
+   "explanation": "The number of corners stays the same no matter how the shape is turned, colored or placed.",
+   "kind": "choice",
+   "choices": [
+    "Number of corners",
+    "How it is rotated",
+    "Its color",
+    "Where it sits on the page"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-attrib-6",
+   "prompt": "A shape has 4 sides but they are not all equal. Could it still be a quadrilateral?",
+   "category": "Geometry & Measure",
+   "explanation": "A quadrilateral only needs 4 sides — nothing requires them to be equal.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "Yes, any 4-sided shape is a quadrilateral",
+    "No, sides must be equal",
+    "No, it needs right angles",
+    "Only if it's a square"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-attrib-7",
+   "prompt": "Which pair of shapes share a defining fact?",
+   "category": "Geometry & Measure",
+   "explanation": "Both a square and a rectangle always have 4 right angles.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "A square and a rectangle both have 4 right angles",
+    "A triangle and a circle both have 3 sides",
+    "A pentagon and a square have the same number of sides",
+    "A hexagon and a triangle have the same number of corners"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-attrib-8",
+   "prompt": "A shape has exactly 3 sides and 3 angles that are ALL different sizes. What could it be?",
+   "category": "Geometry & Measure",
+   "explanation": "A scalene triangle has 3 sides and 3 angles that are all different from each other.",
+   "level": 3,
+   "kind": "choice",
+   "choices": [
+    "A scalene triangle",
+    "A square",
+    "An equilateral triangle",
+    "A quadrilateral"
+   ],
+   "answer": 0
+  }
+ ],
+ "g1-compose": [
+  {
+   "id": "g1-compose-1",
+   "prompt": "Two matching triangles put side by side can make a ___.",
+   "category": "Geometry & Measure",
+   "explanation": "Two matching triangles joined along one side can form a rectangle.",
+   "kind": "choice",
+   "choices": [
+    "square or rectangle",
+    "circle",
+    "single triangle only",
+    "pentagon always"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-compose-2",
+   "prompt": "Putting shapes together to build one new shape is called ___.",
+   "category": "Geometry & Measure",
+   "explanation": "Joining small shapes together to build a new, bigger one is how shapes get composed.",
+   "kind": "choice",
+   "choices": [
+    "building with shapes",
+    "cutting a shape",
+    "coloring a shape",
+    "naming a shape"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-compose-3",
+   "prompt": "Which two shapes can join to make a rectangle?",
+   "category": "Geometry & Measure",
+   "explanation": "Two matching triangles, joined along their longest side, fit together into a rectangle.",
+   "kind": "choice",
+   "choices": [
+    "Two matching triangles",
+    "Two circles",
+    "A circle and a triangle",
+    "Two pentagons"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-compose-4",
+   "prompt": "You put a triangle on top of a square, side to side. What new shape do you get?",
+   "category": "Geometry & Measure",
+   "explanation": "A triangle roof on a square base makes a 5-sided house shape.",
+   "kind": "choice",
+   "choices": [
+    "A house shape with 5 sides",
+    "A circle",
+    "A single square",
+    "Nothing new"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-compose-5",
+   "prompt": "Building a new shape out of smaller shapes is called ___.",
+   "category": "Geometry & Measure",
+   "explanation": "Putting pieces together to build something new is what it means to compose shapes.",
+   "kind": "choice",
+   "choices": [
+    "putting shapes together",
+    "taking a shape apart",
+    "coloring a shape",
+    "measuring a shape"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-compose-6",
+   "prompt": "A big triangle is split evenly into 4 small ones. How many small triangles are there?",
+   "category": "Geometry & Measure",
+   "explanation": "Splitting one triangle evenly into 4 parts gives 4 small triangles.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "4",
+    "2",
+    "3",
+    "6"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-compose-7",
+   "prompt": "6 matching triangles are placed point to point around one center dot. What shape do they make?",
+   "category": "Geometry & Measure",
+   "explanation": "6 matching triangles placed around one center point form a hexagon.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "A hexagon",
+    "A single triangle",
+    "A square",
+    "A line"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-compose-8",
+   "prompt": "You build one big square from 4 small matching squares, 2 rows of 2. Each small square's side is 2 units. What is the big square's side?",
+   "category": "Geometry & Measure",
+   "explanation": "Two small squares side by side span 2 + 2 = 4 units — the big square's side.",
+   "level": 3,
+   "kind": "choice",
+   "choices": [
+    "4",
+    "2",
+    "8",
+    "6"
+   ],
+   "answer": 0
+  }
+ ],
+ "g1-shares": [
+  {
+   "id": "g1-shares-1",
+   "prompt": "Cutting a shape into 2 EQUAL parts gives ___.",
+   "category": "Fractions",
+   "explanation": "Two equal parts are called halves.",
+   "kind": "choice",
+   "choices": [
+    "halves",
+    "thirds",
+    "fourths",
+    "wholes"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-shares-2",
+   "prompt": "Cutting a shape into 4 EQUAL parts gives ___.",
+   "category": "Fractions",
+   "explanation": "Four equal parts are called fourths.",
+   "kind": "choice",
+   "choices": [
+    "fourths",
+    "halves",
+    "thirds",
+    "wholes"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-shares-3",
+   "prompt": "How many halves make one whole?",
+   "category": "Fractions",
+   "explanation": "1/2 + 1/2 = 1 whole, so 2 halves.",
+   "kind": "number",
+   "answer": 2
+  },
+  {
+   "id": "g1-shares-4",
+   "prompt": "Which shows a shape split into EQUAL halves?",
+   "category": "Fractions",
+   "explanation": "Halves must be the same size — that is what makes them equal shares.",
+   "kind": "choice",
+   "choices": [
+    "Two same-size pieces",
+    "Two different-size pieces",
+    "Three pieces",
+    "Four pieces"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-shares-5",
+   "prompt": "How many fourths make one whole?",
+   "category": "Fractions",
+   "explanation": "1/4 four times makes 4/4, or 1 whole.",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "g1-shares-6",
+   "prompt": "A sandwich is cut into 2 pieces, but one is bigger than the other. Are these halves?",
+   "category": "Fractions",
+   "explanation": "'Halves' specifically means equal parts — unequal pieces are not halves, even if there are 2 of them.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "No, halves must be equal",
+    "Yes, any 2 pieces are halves",
+    "Yes, if there are 2 pieces",
+    "Cannot tell"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-shares-7",
+   "prompt": "Which shows a fair, equal share of one pizza among 4 friends?",
+   "category": "Fractions",
+   "explanation": "A fair share among 4 means everyone gets an equal fourth.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "Each friend gets 1/4 of the pizza",
+    "One friend gets the whole pizza",
+    "Each friend gets a different-sized piece",
+    "Only 2 friends get pizza"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g1-shares-8",
+   "prompt": "Two same-size shapes are shared differently: one cut into fourths, one into halves. Which single piece is BIGGER?",
+   "category": "Fractions",
+   "explanation": "Fewer, bigger pieces (2 instead of 4) means each piece is larger — a half beats a fourth.",
+   "level": 3,
+   "kind": "choice",
+   "choices": [
+    "A half",
+    "A fourth",
+    "They are the same",
+    "Cannot tell"
+   ],
+   "answer": 0
+  }
+ ]
+}

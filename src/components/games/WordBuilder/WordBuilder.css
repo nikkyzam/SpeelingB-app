@@ -62,7 +62,14 @@
 }
 .wb-slot.filled { border-style: solid; border-color: var(--primary); animation: pop-in 200ms both; }
 .wb-slot.filled.ok { border-color: var(--success); background: rgba(47,191,113,0.15); }
-.wb-slot.filled.bad { border-color: var(--error); background: rgba(239,71,111,0.15); animation: shake 0.5s; }
+/* The right letters, shown after a miss: calm, not alarm-red. */
+.wb-slot.filled.show { border-color: var(--secondary); background: color-mix(in srgb, var(--secondary) 15%, transparent); color: var(--secondary); }
+.wb-slots.wb-shake { animation: wb-shake 0.4s ease; }
+@keyframes wb-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
 
 /* Scrambled letter tiles */
 .wb-tiles {
@@ -73,6 +80,7 @@
   margin-bottom: var(--spacing-lg);
 }
 .wb-tile {
+  touch-action: manipulation;
   width: 3.1rem;
   height: 3.4rem;
   border: none;
@@ -115,12 +123,36 @@
   padding: 0.7rem 1rem;
   border-radius: var(--radius-md);
   animation: pop-in var(--transition-normal) both;
+  position: relative;
 }
 .wb-flash.ok { background: linear-gradient(90deg, var(--success), #4EF4C5); color: #fff; }
-.wb-flash.bad { background: var(--card-soft); color: var(--text); border: 2px solid var(--error); }
+.wb-flash.bad { background: var(--card-soft); color: var(--text); border: 2px solid var(--warning); }
+
+.wb-skip-row { display: flex; justify-content: flex-end; margin-top: var(--spacing-xl); }
+.wb-skip {
+  /* A finger-sized target for a small child (44px). */
+  min-width: 44px;
+  min-height: 44px;
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: none;
+  background: transparent;
+  color: var(--text-soft);
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  text-decoration: underline;
+  touch-action: manipulation;
+}
+.wb-skip:disabled { opacity: 0.4; cursor: default; }
 
 @media (max-width: 600px) {
   .wb-header { flex-direction: column; align-items: stretch; text-align: center; }
   .wb-stats { justify-content: center; }
   .wb-slot, .wb-tile { width: 2.6rem; height: 3rem; font-size: 1.3rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wb-slots.wb-shake { animation: none; }
+  .wb-tile { transition: none; }
 }

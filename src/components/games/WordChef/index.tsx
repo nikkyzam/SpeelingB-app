@@ -1,6 +1,12 @@
-import React, { useMemo, useState, useEffect } from 'react'
+import React, { useMemo, useState, useEffect, useRef } from 'react'
 import { wordBank, Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
+import { shuffle, isPlayable } from '../shared/wordTricks'
+import { useCheer } from '../shared/useCheer'
+import { useLater } from '../shared/useLater'
+import sfx from '../shared/sfx'
+import Burst from '../shared/Burst'
+import GameEmpty from '../shared/GameEmpty'
 import { COMMON_WORDS, COMMON_WORD_SET } from './commonWords'
 import './WordChef.css'
 
@@ -10,7 +16,12 @@ interface WordChefProps {
   duration?: number
 }
 
-const MAX_TARGETS = 10
+/** Real words to cook before the menu is done. */
+export const GOAL = 6
+/** Bonus for finishing the menu before the clock. */
+const MENU_BONUS = 30
+/** Base words worth weighing up — enough to find a good one, few enough to be quick. */
+const BASE_TRIES = 12
 
 const letterCounts = (s: string): Record<string, number> => {
   const m: Record<string, number> = {}
@@ -18,78 +29,139 @@ const letterCounts = (s: string): Record<string, number> => {
   return m
 }
 
-const canForm = (word: string, base: Record<string, number>): boolean => {
+export const canForm = (word: string, base: string): boolean => {
+  const have = letterCounts(base)
   const need = letterCounts(word)
-  return Object.keys(need).every((k) => (base[k] || 0) >= need[k])
+  return Object.keys(need).every((k) => (have[k] || 0) >= need[k])
 }
 
-const shuffle = <T,>(a: T[]): T[] => {
-  const arr = [...a]
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[arr[i], arr[j]] = [arr[j], arr[i]]
-  }
-  return arr
+/**
+ * Real words, but not ones to set as a blank on a child's menu. They still
+ * count if a child cooks one; they just never sit there as a target.
+ */
+const NOT_ON_THE_MENU = new Set([
+  'beer', 'gin', 'rum', 'vodka', 'wine', 'die', 'gun', 'tumor', 'toxic', 'viral', 'virus', 'widow', 'hate', 'evil',
+  'fat', 'ugly', 'war',
+])
+
+/** Common words (3+ letters) hiding inside `base`, the base itself included. */
+const commonInside = (base: string): string[] =>
+  COMMON_WORDS.filter((w) => w.length >= 3 && w.length <= base.length && canForm(w, base))
+
+export interface Kitchen {
+  base: string
+  /** The menu: blank chips the child fills in — the base word plus familiar words in it. */
+  targets: string[]
+  /** How many real words finish the game. Never more than can be found. */
+  goal: number
 }
+
+/**
+ * Pick the base word — always one of the child's own — and lay out the menu.
+ * Longer words hide more words, so 5–8 letters are tried first, but a child
+ * whose list is all 4-letter (or 9–10-letter) words still gets a kitchen. The menu shows only
+ * familiar words: the bank is full of spelling-bee words like "tael", and a
+ * blank waiting for one could never be filled.
+ */
+export const makeKitchen = (childWords: string[], bankWords: string[] = []): Kitchen => {
+  const preferred = (w: string) => (w.length >= 5 && w.length <= 8 ? 0 : 1)
+  // Stable sort: still shuffled within each group.
+  const candidates = shuffle(
+    Array.from(new Set(childWords.map((w) => w.toLowerCase()))).filter((w) => /^[a-z]{4,10}$/.test(w))
+  ).sort((a, b) => preferred(a) - preferred(b))
+  if (!candidates.length) return { base: '', targets: [], goal: 0 }
+
+  let base = candidates[0]
+  let best = -1
+  for (const c of candidates.slice(0, BASE_TRIES)) {
+    const n = commonInside(c).length
+    if (n > best) {
+      best = n
+      base = c
+    }
+  }
+
+  const inside = commonInside(base)
+  const familiar = shuffle(inside.filter((w) => w !== base && !NOT_ON_THE_MENU.has(w)))
+    .sort((a, b) => a.length - b.length)
+    .slice(0, GOAL - 1)
+  const targets = [base, ...familiar]
+  // Any real word counts towards the goal, so it can be as big as all the
+  // real words in there — but no bigger, or the menu could never be finished.
+  const findable = new Set([
+    ...targets,
+    ...inside,
+    ...bankWords.filter((w) => w.length >= 3 && w.length <= base.length && canForm(w, base)),
+  ])
+  return { base, targets, goal: Math.min(GOAL, findable.size) }
+}
+
+/** Is this a real word? Common words, then the word bank — a dictionary check only. */
+const isRealWord = (w: string): boolean => COMMON_WORD_SET.has(w) || !!wordBank.getWordByWord(w)
 
 /** Cook up as many real words as you can from the letters before time runs out. */
-const WordChef: React.FC<WordChefProps> = ({ onComplete, words: providedWords, duration = 90 }) => {
+const WordChef: React.FC<WordChefProps> = ({ onComplete, words: providedWords, duration = 120 }) => {
   const { speak } = useAudio()
+  const cheer = useCheer()
+  const later = useLater()
 
-  const { base, targets } = useMemo(() => {
-    const pool = providedWords && providedWords.length > 0 ? providedWords : []
-    const candidates = pool
-      .map((w) => w.word.toLowerCase())
-      .filter((w) => /^[a-z]+$/.test(w) && w.length >= 5 && w.length <= 8)
-    // The base word is always one of the child's own; no word, no kitchen.
-    const chosen = candidates.length ? shuffle(candidates)[0] : ''
-    if (!chosen) return { base: '', targets: new Set<string>() }
-
-    const baseCount = letterCounts(chosen)
-    // Validate against common kid words AND the word bank: the bank alone is
-    // mostly long spelling-bee words, so few short words would be findable.
-    const dictionary = [
-      ...COMMON_WORDS,
-      ...wordBank.getAllWords().map((w) => w.word.toLowerCase()),
-    ]
-    const all = dictionary.filter(
-      (w) => /^[a-z]+$/.test(w) && w.length >= 3 && w.length <= chosen.length && canForm(w, baseCount)
-    )
-
-    const unique = Array.from(new Set(all))
-    // Always include the full word as the star prize, plus a sample of the rest.
-    const others = shuffle(unique.filter((w) => w !== chosen)).slice(0, MAX_TARGETS - 1)
-    return { base: chosen, targets: new Set<string>([chosen, ...others]) }
+  const kitchen = useMemo<Kitchen>(() => {
+    const mine = (providedWords || []).filter((w) => isPlayable(w, 4)).map((w) => w.word.toLowerCase())
+    if (!mine.length) return { base: '', targets: [], goal: 0 }
+    // The bank only sizes the goal (how many real words are in there); it
+    // never supplies a word to play.
+    const bank = wordBank.getAllWords().map((w) => w.word.toLowerCase()).filter((w) => /^[a-z]+$/.test(w))
+    return makeKitchen(mine, bank)
   }, [providedWords])
+  const { base, targets, goal } = kitchen
 
-  const tiles = useMemo(() => shuffle(base.split('')), [base])
+  const tiles = useMemo(() => {
+    const t = shuffle(base.split(''))
+    // Laid out in order, the tiles would spell the star word for free.
+    return base.length > 1 && t.join('') === base ? t.reverse() : t
+  }, [base])
 
   const [used, setUsed] = useState<number[]>([]) // tile indices in build order
   const [found, setFound] = useState<string[]>([])
   const [score, setScore] = useState(0)
   const [timeLeft, setTimeLeft] = useState(duration)
-  const [flash, setFlash] = useState<{ kind: 'ok' | 'bad'; msg: string } | null>(null)
+  const [flash, setFlash] = useState<{ kind: 'ok' | 'bad'; msg: string; id: number } | null>(null)
+  const [hits, setHits] = useState(0)
+  const [over, setOver] = useState(false)
+  // Ends the game once — whether the menu or the clock gets there first.
+  const ended = useRef(false)
+  const flashId = useRef(0)
 
   const build = used.map((i) => tiles[i]).join('')
-  const finished = !!base && found.length >= targets.size
+
+  const finish = (finalScore: number) => {
+    if (ended.current) return
+    ended.current = true
+    setOver(true)
+    // A moment to see the menu filled in (and any words they missed).
+    later(() => onComplete(finalScore), 2600)
+  }
 
   useEffect(() => {
-    if (timeLeft <= 0 || finished) {
-      const t = setTimeout(() => onComplete(score), 600)
-      return () => clearTimeout(t)
+    if (!base || ended.current) return
+    if (timeLeft <= 0) {
+      finish(score)
+      return
     }
-    const t = setTimeout(() => setTimeLeft((s) => s - 1), 1000)
-    return () => clearTimeout(t)
+    const t = window.setTimeout(() => setTimeLeft((s) => s - 1), 1000)
+    return () => window.clearTimeout(t)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeLeft, finished])
+  }, [timeLeft, base])
 
   const say = (kind: 'ok' | 'bad', msg: string) => {
-    setFlash({ kind, msg })
-    setTimeout(() => setFlash(null), 1200)
+    const id = ++flashId.current
+    setFlash({ kind, msg, id })
+    later(() => setFlash((f) => (f && f.id === id ? null : f)), 1600)
   }
 
   const tapTile = (i: number) => {
-    if (timeLeft <= 0) return
+    if (ended.current) return
+    sfx.tap()
     // Functional update so quick successive taps can't drop letters.
     setUsed((prev) => (prev.includes(i) ? prev : [...prev, i]))
   }
@@ -97,92 +169,132 @@ const WordChef: React.FC<WordChefProps> = ({ onComplete, words: providedWords, d
   const clear = () => setUsed([])
 
   const submit = () => {
+    if (ended.current) return
     const word = build
     if (word.length < 3) {
       say('bad', 'Words need at least 3 letters')
       return
     }
+    clear()
     if (found.includes(word)) {
-      say('bad', `You already found "${word}"`)
-      clear()
+      sfx.tap()
+      say('bad', `You already cooked “${word}” — try another!`)
       return
     }
-    if (targets.has(word)) {
-      const points = word.length * 5 + (word === base ? 25 : 0)
-      setScore((s) => s + points)
-      setFound((f) => [...f, word])
-      say('ok', word === base ? `⭐ The whole word! +${points}` : `Yum! "${word}" +${points}`)
-      speak(word)
-    } else if (COMMON_WORD_SET.has(word) || wordBank.getWordByWord(word)) {
-      // A real word, just not on today's list — still give a small treat.
-      setScore((s) => s + 3)
-      say('ok', `Nice word! +3`)
-    } else {
-      say('bad', `"${word}" isn't on the menu`)
+    if (!isRealWord(word)) {
+      say('bad', cheer.miss({ quiet: true }) + ` “${word}” isn’t on the menu.`)
+      return
     }
-    clear()
+    // Every real word counts, on the menu or not.
+    const points = word.length * 5 + (word === base ? 25 : 0)
+    const nextFound = [...found, word]
+    setFound(nextFound)
+    setHits((h) => h + 1)
+    const line = cheer.hit({ say: word })
+    say('ok', word === base ? `⭐ The whole word! +${points}` : `${line} “${word}” +${points}`)
+    if (nextFound.length >= goal) {
+      const total = score + points + MENU_BONUS
+      setScore(total)
+      finish(total)
+    } else {
+      setScore((s) => s + points)
+    }
   }
+
+  // Said once at the start, for a child who can't read the instructions yet.
+  useEffect(() => {
+    if (base) speak(`Let's cook! Make ${goal} little words from the letters of ${base}.`)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (!base) {
     return (
       <div className="word-chef">
-        <p className="wc-none">The kitchen is bare — learn a few longer words first! 👨‍🍳</p>
-        <button className="wc-btn" onClick={() => onComplete(0)}>Back to Games</button>
+        <GameEmpty icon="👨‍🍳">The kitchen is bare — learn a few longer words, then come back and cook!</GameEmpty>
       </div>
     )
   }
 
+  const extras = found.filter((w) => !targets.includes(w))
+  const menuDone = found.length >= goal
+
   return (
     <div className="word-chef">
-      <div className="wc-header">
-        <div className="wc-title">🍲 Word Chef</div>
-        <div className="wc-stats">
-          <div className="wc-stat"><span>Time</span><strong className={timeLeft <= 15 ? 'low' : ''}>{timeLeft}s</strong></div>
-          <div className="wc-stat"><span>Score</span><strong>{score}</strong></div>
-          <div className="wc-stat"><span>Found</span><strong>{found.length}/{targets.size}</strong></div>
+      <div className="wch-header">
+        <div className="wch-title">🍲 Word Chef</div>
+        <div className="wch-stats">
+          <div className="wch-stat"><span>Time</span><strong>{timeLeft}s</strong></div>
+          <div className="wch-stat"><span>Score</span><strong>{score}</strong></div>
+          <div className="wch-stat"><span>Cooked</span><strong>{Math.min(found.length, goal)}/{goal}</strong></div>
         </div>
       </div>
 
-      <p className="wc-hint">Cook up words using these letters! Tap letters, then <strong>Cook it!</strong></p>
+      <p className="wch-hint">Make {goal} real words from these letters, then tap <strong>Cook it!</strong></p>
 
-      <div className="wc-build">
+      <div className="wch-build">
         {Array.from({ length: base.length }).map((_, i) => (
-          <span key={i} className={`wc-slot ${build[i] ? 'filled' : ''}`}>{build[i]?.toUpperCase() || ''}</span>
+          <span key={i} className={`wch-slot ${build[i] ? 'filled' : ''}`}>{build[i]?.toUpperCase() || ''}</span>
         ))}
       </div>
 
-      <div className="wc-tiles">
+      <div className="wch-tiles">
         {tiles.map((ch, i) => (
           <button
             key={i}
-            className={`wc-tile ${used.includes(i) ? 'used' : ''}`}
+            className={`wch-tile ${used.includes(i) ? 'used' : ''}`}
             onClick={() => tapTile(i)}
-            disabled={used.includes(i) || timeLeft <= 0}
+            disabled={used.includes(i) || over}
+            aria-label={ch}
           >
             {ch.toUpperCase()}
           </button>
         ))}
       </div>
 
-      <div className="wc-actions">
-        <button className="wc-btn ghost" onClick={undo} disabled={!used.length}>⬅ Undo</button>
-        <button className="wc-btn" onClick={submit} disabled={used.length < 3}>🍳 Cook it!</button>
-        <button className="wc-btn ghost" onClick={clear} disabled={!used.length}>Clear</button>
+      <div className="wch-actions">
+        <button className="wch-btn ghost" onClick={undo} disabled={!used.length || over}>⬅ Undo</button>
+        <button className="wch-btn" onClick={submit} disabled={used.length < 3 || over}>🍳 Cook it!</button>
+        <button className="wch-btn ghost" onClick={clear} disabled={!used.length || over}>Clear</button>
       </div>
 
-      {flash && <div className={`wc-flash ${flash.kind}`}>{flash.msg}</div>}
+      <div className="wch-flash-row">
+        {flash && (
+          <div key={flash.id} className={`wch-flash ${flash.kind}`} role="status">
+            {flash.msg}
+            {flash.kind === 'ok' && <Burst trigger={hits} emoji={['🍳', '⭐', '✨', '🧁']} />}
+          </div>
+        )}
+      </div>
 
-      <div className="wc-found">
-        <div className="wc-found-label">Your dishes:</div>
-        <div className="wc-found-list">
-          {found.length === 0 && <span className="wc-empty">Nothing cooked yet…</span>}
-          {found.map((w) => (
-            <span key={w} className={`wc-chip ${w === base ? 'star' : ''}`}>{w}</span>
+      <div className="wch-found">
+        <div className="wch-found-label">On the menu:</div>
+        <div className="wch-found-list" aria-label="Words on the menu">
+          {targets.map((w) => {
+            const got = found.includes(w)
+            // Blank until cooked — one dash per letter, so the size is a clue
+            // but the word isn't. Shown at the end, so nothing stays a mystery.
+            if (got || over) {
+              return (
+                <span key={w} className={`wch-chip ${got ? 'got' : 'missed'} ${w === base ? 'star' : ''}`}>{w}</span>
+              )
+            }
+            return (
+              <span key={w} className={`wch-chip blank ${w === base ? 'star' : ''}`} aria-label={`A ${w.length}-letter word`}>
+                {'_ '.repeat(w.length).trim()}
+              </span>
+            )
+          })}
+          {extras.map((w) => (
+            <span key={w} className="wch-chip got bonus">{w}</span>
           ))}
         </div>
       </div>
 
-      {finished && <div className="wc-win">🎉 You found them all, chef!</div>}
+      {over && (
+        <div className="wch-win" role="status">
+          {menuDone ? '🎉 Menu complete, chef!' : `⏰ Time’s up — you cooked ${found.length}!`}
+        </div>
+      )}
     </div>
   )
 }

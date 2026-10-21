@@ -96,7 +96,7 @@ const Settings: React.FC = () => {
       <section className="settings-section">
         <h2>About</h2>
         <div className="settings-info-card">
-          <p>Kids Spelling Bee v1.0.0</p>
+          <p>BrightHive v1.0.0</p>
           <p>A faith-based learning adventure! 💛</p>
         </div>
       </section>

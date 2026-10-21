@@ -1,0 +1,202 @@
+.criss-cross {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  text-align: center;
+}
+
+.cx-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  border-bottom: 2px dashed var(--border);
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  text-align: left;
+}
+.cx-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.cx-stats { display: flex; gap: var(--spacing-lg); }
+.cx-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
+.cx-stat strong { font-size: 1.15rem; color: var(--text); }
+
+/* --- the grid ---------------------------------------------------------------- */
+
+.cx-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cx-cols), minmax(0, 1fr));
+  gap: 3px;
+  /* Small puzzles stay a comfortable size instead of stretching to fill. */
+  width: min(100%, calc(var(--cx-cols) * 2.9rem));
+  margin: 0 auto;
+}
+.cx-void { aspect-ratio: 1; }
+
+.cx-square {
+  position: relative;
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 0;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--text);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: clamp(0.8rem, 3.6vw, 1.45rem);
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+.cx-num {
+  position: absolute;
+  top: 1px;
+  left: 3px;
+  font-size: 0.5em;
+  font-weight: 700;
+  color: var(--text-soft);
+}
+.cx-letter { display: inline-block; transform: translateY(0.06em); }
+
+.cx-square.active { background: color-mix(in srgb, var(--primary) 16%, var(--card)); }
+.cx-square.selected {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 2px var(--primary);
+  background: color-mix(in srgb, var(--primary) 30%, var(--card));
+}
+.cx-square.ok {
+  border-color: var(--success);
+  background: color-mix(in srgb, var(--success) 20%, var(--card));
+  color: var(--success);
+}
+.cx-square.shown {
+  border-color: var(--warning);
+  background: color-mix(in srgb, var(--warning) 20%, var(--card));
+}
+.cx-square.ok.selected,
+.cx-square.shown.selected { box-shadow: inset 0 0 0 2px var(--primary); }
+.cx-square.shake { animation: cx-shake 0.4s ease; }
+@keyframes cx-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.cx-flash {
+  position: relative;
+  margin: var(--spacing-sm) 0 0;
+  min-height: 1.3em;
+  font-family: var(--font-primary);
+  font-weight: 800;
+}
+.cx-flash.ok { color: var(--success); }
+.cx-flash.bad { color: var(--error); }
+
+/* --- the clue in hand ------------------------------------------------------------- */
+
+.cx-clue-bar {
+  margin: var(--spacing-sm) auto var(--spacing-md);
+  max-width: 36rem;
+  padding: var(--spacing-md);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card-soft);
+}
+.cx-clue-tag {
+  font-family: var(--font-primary);
+  font-weight: 800;
+  color: var(--primary);
+}
+.cx-clue-text { margin: var(--spacing-xs) 0 var(--spacing-sm); font-size: 1.05rem; }
+.cx-clue-actions { display: flex; justify-content: center; gap: var(--spacing-sm); flex-wrap: wrap; }
+.cx-bonus { margin: var(--spacing-sm) 0 0; font-size: 0.8rem; color: var(--text-soft); }
+
+.cx-btn {
+  border: none;
+  border-radius: var(--radius-round);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  padding: 0.45rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.cx-btn:disabled { opacity: 0.5; cursor: default; }
+.cx-btn.ghost { background: var(--card); color: var(--text); border: 2px solid var(--border); }
+
+/* --- the keypad ------------------------------------------------------------------- */
+
+.cx-pad { display: flex; flex-direction: column; gap: 0.35rem; align-items: center; }
+.cx-row { display: flex; gap: 0.35rem; justify-content: center; width: 100%; max-width: 27rem; }
+.cx-key {
+  flex: 1 1 0;
+  min-width: 2rem;
+  max-width: 3.4rem;
+  height: 2.9rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card-soft);
+  color: var(--text);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+.cx-key.wide { flex-grow: 1.6; max-width: 5rem; }
+.cx-key:active { transform: scale(0.9); background: var(--primary); color: var(--on-primary); }
+
+/* --- every clue --------------------------------------------------------------------- */
+
+.cx-clues {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+  text-align: left;
+}
+.cx-clue-col h3 {
+  margin: 0 0 var(--spacing-xs);
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  color: var(--text);
+}
+.cx-clue-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
+.cx-clue {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.45rem 0.65rem;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--card-soft);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.88rem;
+  text-align: left;
+  cursor: pointer;
+}
+.cx-clue strong { color: var(--primary); font-family: var(--font-primary); }
+.cx-clue-words { flex: 1; }
+.cx-clue.on { border-color: var(--primary); }
+.cx-clue.done .cx-clue-words { color: var(--text-soft); text-decoration: line-through; }
+
+.cx-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cx-square.shake { animation: none; }
+  .cx-square,
+  .cx-key { transition: none; }
+}

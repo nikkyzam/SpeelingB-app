@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import LearnMode from '@/components/learning/LearnMode'
 import { useProgress } from '@/contexts/ProgressContext' // Import useProgress
 import { AudioProvider } from '@/contexts/AudioContext'
+import { ThemeProvider } from '@/contexts/ThemeContext'
 import React from 'react'
 import { LearningFlowController } from '@/services/progress/LearningFlow'
 import { wordBank } from '@/services/wordBank' // Import wordBank to mock its methods
@@ -56,11 +57,14 @@ const createMockLearningFlow = (overrides: Partial<LearningFlowController> = {})
   ...overrides,
 } as any)
 
+// The word trail hops the world's mascot along, so the theme is needed.
 const renderWithProviders = (ui: React.ReactElement) => {
   return render(
-    <AudioProvider>
-      {ui}
-    </AudioProvider>
+    <ThemeProvider>
+      <AudioProvider>
+        {ui}
+      </AudioProvider>
+    </ThemeProvider>
   )
 }
 
@@ -187,5 +191,53 @@ describe('LearnMode Component', () => {
 
     expect(screen.getByText('You did it! 🌟')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Let's Spell!/i })).toBeInTheDocument()
+  })
+
+  const goalOnWord = (n: number) => {
+    // The goal is crossed by the nth word finished in this test.
+    const reached = vi.fn()
+    for (let i = 0; i < 2 * n - 1; i++) reached.mockReturnValueOnce(false)
+    reached.mockReturnValue(true)
+    mockLearningFlow = createMockLearningFlow({
+      isDailyGoalReached: reached,
+      getWordsLearnedToday: vi.fn().mockReturnValue(['w1', 'w2']),
+    })
+    mockedUseProgress.mockReturnValue({ learningFlow: mockLearningFlow, refreshProgress: vi.fn() })
+  }
+
+  it('keeps going through this set when the goal is met with words still left in it', async () => {
+    // "More Words" used to jump to the next group here, and the rest of this
+    // group was never met.
+    goalOnWord(1)
+    const onMoreWords = vi.fn()
+    await act(async () => {
+      renderWithProviders(<LearnMode words={TWO_WORDS} onMoreWords={onMoreWords} />)
+    })
+
+    await finishWord()
+    expect(screen.getByText('You did it! 🌟')).toBeInTheDocument()
+    expect(screen.getByText(/you learned 2 words today/)).toBeInTheDocument()
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'More Words' }))
+    })
+
+    expect(onMoreWords).not.toHaveBeenCalled()
+    expect(screen.getByText('banana')).toBeInTheDocument()
+  })
+
+  it('moves on to new words when the goal is met on the last word of the set', async () => {
+    goalOnWord(2)
+    const onMoreWords = vi.fn()
+    await act(async () => {
+      renderWithProviders(<LearnMode words={TWO_WORDS} onMoreWords={onMoreWords} />)
+    })
+
+    await finishWord()
+    await finishWord()
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'More Words' }))
+    })
+
+    expect(onMoreWords).toHaveBeenCalledTimes(1)
   })
 })

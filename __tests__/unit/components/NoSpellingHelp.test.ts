@@ -35,6 +35,7 @@ const SPELLING_FILES = [
   'components/games/DragonDuel/index.tsx',
   'components/games/SpellingAdventure/index.tsx',
   'components/games/StoryBuilder/index.tsx',
+  'components/games/SpellTacToe/index.tsx',
   'components/learning/TestAll/index.tsx',
 ]
 
@@ -58,6 +59,7 @@ const NOT_SPELLING: Record<string, string> = {
   'components/games/SiblingShowdown/index.tsx': 'player names (its spelling box is a SpellingInput)',
   'pages/SiblingChallenge/index.tsx': 'player names',
   'pages/WordCollection/index.tsx': 'searching their own words',
+  'components/subjects/NumberInput/index.tsx': 'a number or ordered pair for a math answer, never a word',
 }
 
 /** Inputs that cannot carry a word at all. */

@@ -15,7 +15,9 @@
   flex-wrap: wrap;
 }
 .bee-header h1 { margin: 0; font-family: var(--font-primary); font-size: 1.7rem; color: var(--primary-2); text-shadow: 0 2px 0 rgba(255,255,255,0.6); }
-.bee-wings { font-size: 1.2rem; letter-spacing: 0.1rem; }
+.bee-wings { font-size: 1.6rem; letter-spacing: 0.1rem; }
+/* A lost wing stays as a pale feather: you can see what is left, nothing flashes red. */
+.bee-wing-lost { opacity: 0.35; filter: grayscale(1); }
 .bee-empty { color: var(--text-soft); }
 
 /* --- The stage ------------------------------------------------------------
@@ -131,11 +133,11 @@
   letter-spacing: 0.06em;
 }
 .bee-input.right { border-color: var(--success); }
-.bee-input.wrong { border-color: var(--error); }
+.bee-input.wrong { border-color: var(--warning); }
 
 .bee-verdict { font-family: var(--font-primary); font-weight: 800; font-size: 1.1rem; position: relative; }
 .bee-verdict.right { color: var(--success); }
-.bee-verdict.wrong { color: var(--error); }
+.bee-verdict.wrong { color: var(--text); }
 .bee-tally { font-size: 0.85rem; color: var(--text-soft); position: relative; }
 
 @media (prefers-reduced-motion: reduce) {

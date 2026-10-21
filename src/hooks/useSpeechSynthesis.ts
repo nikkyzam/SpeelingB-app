@@ -5,6 +5,8 @@ interface SpeechOptions {
   pitch?: number
   volume?: number
   voice?: SpeechSynthesisVoice
+  /** Wait for what is already being said instead of cutting it off. */
+  queue?: boolean
 }
 
 export const useSpeechSynthesis = () => {
@@ -39,8 +41,8 @@ export const useSpeechSynthesis = () => {
         return
       }
 
-      // Cancel any ongoing speech
-      window.speechSynthesis.cancel()
+      // Cancel any ongoing speech — unless this line is meant to follow it.
+      if (!options.queue) window.speechSynthesis.cancel()
 
       const utterance = new SpeechSynthesisUtterance(text)
 

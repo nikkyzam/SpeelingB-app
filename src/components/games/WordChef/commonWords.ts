@@ -6,7 +6,7 @@
  * validates against this list as well, which is what makes the game fun:
  * there are always several small words hiding inside the big one.
  */
-export const COMMON_WORDS: string[] = [
+const LISTED: string[] = [
   // 3 letters
   'ace','act','add','age','ago','aid','aim','air','all','and','ant','any','ape','arm','art','ash','ask','ate',
   'bad','bag','ban','bar','bat','bay','bed','bee','beg','bet','bib','bid','big','bin','bit','boa','bob','bog',
@@ -169,4 +169,6 @@ export const COMMON_WORDS: string[] = [
   'yacht','yield','young','yours','youth','zebra',
 ]
 
+/** Each word once: a few were listed twice, and showed up twice on Word Chef's menu. */
+export const COMMON_WORDS: string[] = [...new Set(LISTED)]
 export const COMMON_WORD_SET = new Set(COMMON_WORDS)

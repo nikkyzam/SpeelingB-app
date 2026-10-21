@@ -27,6 +27,7 @@
 .mp-stat strong { font-size: 1.15rem; color: var(--text); }
 
 .mp-grid {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
@@ -88,7 +89,12 @@
 }
 .mp-input:focus { outline: none; border-color: var(--primary); }
 .mp-input.right { border-color: var(--success); background: rgba(47,191,113,0.15); }
-.mp-input.wrong { border-color: var(--error); background: rgba(239,71,111,0.12); animation: shake 0.4s; }
+/* A miss is a soft wobble, never an alarm. */
+.mp-input.nearly { border-color: var(--warning); animation: shake 0.4s; }
+.mp-input.shown { border-color: var(--secondary); color: var(--primary-2); }
+
+.mp-tries { display: flex; justify-content: center; gap: 4px; margin-top: var(--spacing-sm); font-size: 1rem; }
+.mp-tries .off { opacity: 0.25; }
 
 .mp-btn {
   border: none;
@@ -113,7 +119,8 @@
   animation: pop-in var(--transition-normal) both;
 }
 .mp-flash.ok { background: linear-gradient(90deg, var(--success), #4EF4C5); color: #fff; }
-.mp-flash.bad { background: var(--card-soft); color: var(--text); border: 2px solid var(--error); }
+.mp-flash.nearly { background: var(--card-soft); color: var(--text); border: 2px dashed var(--warning); }
+.mp-flash.shown { background: var(--card-soft); color: var(--text); border: 2px solid var(--secondary); }
 
 .mp-win {
   margin: var(--spacing-md) 0;
@@ -123,9 +130,16 @@
   color: var(--success);
   animation: pop-in var(--transition-normal) both;
 }
-.mp-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
 
 @media (max-width: 520px) {
   .mp-header { flex-direction: column; align-items: stretch; }
   .mp-stats { justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mp-tile { transition: none; }
+  .mp-tile.shown,
+  .mp-input.nearly,
+  .mp-flash,
+  .mp-win { animation: none; }
 }

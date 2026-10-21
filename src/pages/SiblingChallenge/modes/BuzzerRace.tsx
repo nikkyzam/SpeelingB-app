@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import type { MatchProps } from '../index'
 import { useAudio } from '../../../contexts/AudioContext'
-import SpellTurn from './SpellTurn'
+import SpellTurn, { PLAYER_ICONS } from './SpellTurn'
 import Button from '../../../components/common/Button'
 import sfx from '../../../components/games/shared/sfx'
 
@@ -15,16 +15,29 @@ const ROUNDS = 6
  * buzzing fast is only worth it if you actually know the word, so the child
  * who listens carefully can beat the child with the quicker thumb.
  */
-const BuzzerRace: React.FC<MatchProps> = ({ names, words, onFinish }) => {
+const BuzzerRace: React.FC<MatchProps> = ({ names, words, onFinish, first = 0 }) => {
   const { speak } = useAudio()
   const [round, setRound] = useState(0)
   const [scores, setScores] = useState<[number, number]>([0, 0])
   const [buzzed, setBuzzed] = useState<number | null>(null)
   const [stealer, setStealer] = useState<number | null>(null)
+  // Two thumbs land on two buzzers at once: the first one in wins the round.
+  // A state check let the second tap overwrite the first.
+  const buzzLock = useRef(false)
 
-  // Both race for the same word, so it comes from the harder of the two lists
-  // — otherwise the easier player's words would decide every round.
-  const word = words[0][round % words[0].length]
+  // Rounds take turns between the two lists. Every word used to come from
+  // player 1's list — so with different word lengths picked, one child's level
+  // decided every round of the race.
+  const list = words[(round + first) % 2]
+  const word = list[Math.floor(round / 2) % list.length]
+
+  // Say the word as the round opens. It used to wait in silence until someone
+  // found the "Hear the word" button.
+  useEffect(() => {
+    buzzLock.current = false
+    speak(`Round ${round + 1}! Listen. ${word.word}.`, { queue: true })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [round])
 
   const nextRound = (next: [number, number]) => {
     setScores(next)
@@ -35,6 +48,13 @@ const BuzzerRace: React.FC<MatchProps> = ({ names, words, onFinish }) => {
       return
     }
     setRound((r) => r + 1)
+  }
+
+  const buzz = (i: number) => {
+    if (buzzLock.current) return
+    buzzLock.current = true
+    setBuzzed(i)
+    sfx.pop()
   }
 
   const answer = (correct: boolean) => {
@@ -48,30 +68,38 @@ const BuzzerRace: React.FC<MatchProps> = ({ names, words, onFinish }) => {
     if (stealer === null) {
       // Missed it — the other player gets the chance.
       sfx.whoosh()
-      const other = who === 0 ? 1 : 0
-      speak(`${names[other]}, you can steal it!`)
-      setStealer(other)
+      setStealer(who === 0 ? 1 : 0)
       return
     }
     nextRound(next) // both missed
   }
 
+  const scoreboard = (
+    <div className="buzz-score">
+      {[0, 1].map((i) => (
+        <span key={i} className={`chal-chip p${i}`}>
+          <span aria-hidden>{PLAYER_ICONS[i]}</span> {names[i]} <strong>{scores[i]}</strong>
+        </span>
+      ))}
+    </div>
+  )
+
   if (buzzed === null) {
     return (
       <div className="buzz">
-        <div className="buzz-score">{names[0]} {scores[0]} — {scores[1]} {names[1]}</div>
-        <h3>Round {round + 1} of {ROUNDS}</h3>
+        {scoreboard}
+        <h3 className="buzz-round">Round {round + 1} of {ROUNDS}</h3>
         <Button variant="secondary" icon="🔊" onClick={() => speak(word.word)}>Hear the word</Button>
-        <p className="buzz-hint">Listen, then hit your buzzer — but only if you know it!</p>
+        <p className="buzz-hint">Know it? Hit your buzzer first!</p>
         <div className="buzz-pads">
           {[0, 1].map((i) => (
             <button
               key={i}
               className={`buzz-pad p${i}`}
-              onClick={() => { setBuzzed(i); sfx.pop() }}
+              onClick={() => buzz(i)}
               aria-label={`${names[i]} buzz in`}
             >
-              <span aria-hidden>🔔</span>
+              <span aria-hidden>{PLAYER_ICONS[i]}🔔</span>
               {names[i]}
             </button>
           ))}
@@ -80,17 +108,23 @@ const BuzzerRace: React.FC<MatchProps> = ({ names, words, onFinish }) => {
     )
   }
 
+  const active = (stealer ?? buzzed) as 0 | 1
   return (
     <div className="buzz">
-      <div className="buzz-score">{names[0]} {scores[0]} — {scores[1]} {names[1]}</div>
-      {stealer !== null && <div className="buzz-steal">🥷 {names[stealer]} is stealing!</div>}
+      {scoreboard}
+      {stealer !== null && <div className="buzz-steal">🥷 {names[stealer]} gets a go!</div>}
       <SpellTurn
-        key={`${round}-${stealer ?? buzzed}`}
-        who={names[stealer ?? buzzed]}
+        key={`${round}-${active}`}
+        who={names[active]}
+        player={active}
         word={word}
         label={`Round ${round + 1} of ${ROUNDS}`}
         onAnswer={answer}
+        // The first miss stays secret, because the same word goes straight to
+        // the sibling; after the steal it is shown and spelled out.
         reveal={stealer !== null}
+        passTo={names[active === 0 ? 1 : 0]}
+        intro={stealer !== null ? `${names[stealer]}, you can steal it!` : undefined}
       />
     </div>
   )

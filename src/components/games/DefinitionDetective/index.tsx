@@ -1,9 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import ReviewSchedule from '../../../services/progress/ReviewSchedule'
 import { shuffle, isPlayable } from '../shared/wordTricks'
-import sfx from '../shared/sfx'
+import { maskClue } from '../shared/clues'
+import useCheer from '../shared/useCheer'
+import useLater from '../shared/useLater'
+import Burst from '../shared/Burst'
+import GameEmpty from '../shared/GameEmpty'
 import './DefinitionDetective.css'
 
 interface DefinitionDetectiveProps {
@@ -26,28 +30,41 @@ interface Case {
  * meaning is the question and the word is the answer, which is what "knowing a
  * word" actually looks like.
  */
+/** A blanked-out clue read aloud: "a ____ of bees" → "a blank of bees". */
+const spokenClue = (clue: string) => clue.replace(/_{2,}/g, 'blank')
+
 const DefinitionDetective: React.FC<DefinitionDetectiveProps> = ({
   onComplete,
   words: providedWords,
   rounds = 6,
 }) => {
   const { speak } = useAudio()
+  const cheer = useCheer()
+  const later = useLater()
 
   const cases = useMemo<Case[]>(() => {
     const pool = providedWords && providedWords.length > 0 ? providedWords : []
-    // Only words that actually carry a meaning can be a case.
-    const withMeaning = pool.filter((w) => isPlayable(w) && (w.meaning || '').trim().length > 8)
-    // Suspects and culprits alike are drawn only from words they've met.
-    const usable = withMeaning
+    // Only words that actually carry a meaning can be a case. One per
+    // spelling: two "bear"s on the buttons would make a right tap look wrong.
+    const seen = new Set<string>()
+    const usable = pool.filter((w) => {
+      const key = w.word.toLowerCase()
+      if (!isPlayable(w) || (w.meaning || '').trim().length <= 8 || seen.has(key)) return false
+      seen.add(key)
+      return true
+    })
 
     return shuffle(usable)
       .slice(0, rounds)
       .map((word) => {
-        // Suspects: the real word plus two others that aren't it.
+        // Suspects: the real word plus two others that aren't it, drawn only
+        // from words they've met.
         const others = shuffle(usable.filter((w) => w.id !== word.id)).slice(0, 2)
         return {
           word,
-          clue: (word.meaning || '').split('.')[0],
+          // A definition can name its own word ("a tag is a label tagged…"),
+          // which turns the case into copying. Blank it out.
+          clue: maskClue((word.meaning || '').split('.')[0], word.word),
           options: shuffle([word, ...others]),
         }
       })
@@ -58,29 +75,39 @@ const DefinitionDetective: React.FC<DefinitionDetectiveProps> = ({
   const [picked, setPicked] = useState<string | null>(null)
   const [score, setScore] = useState(0)
   const [solved, setSolved] = useState(0)
+  const [streak, setStreak] = useState(0)
+  const [line, setLine] = useState('')
+  const [hits, setHits] = useState(0)
+
+  // A state guard loses to a fast double tap: both taps read `picked` as
+  // null, so the word was recorded twice and a case was skipped. A ref
+  // settles at once.
+  const locked = useRef(false)
 
   const current = cases[index]
 
   useEffect(() => {
-    if (current) speak(current.clue)
+    if (!current) return
+    locked.current = false
+    speak(spokenClue(current.clue))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index])
+  }, [index, cases])
 
   if (!current) {
     return (
       <div className="definition-detective">
-        <p className="dd2-empty">No cases to solve yet — learn a few words first! 🕵️</p>
-        <button className="dd2-btn" onClick={() => onComplete(0)}>Back to Games</button>
+        <GameEmpty icon="🕵️">No cases to solve yet — learn a few words first, then come back!</GameEmpty>
       </div>
     )
   }
 
   const choose = (option: Word) => {
-    if (picked) return
+    if (locked.current) return
+    locked.current = true
     setPicked(option.id)
 
     const correct = option.id === current.word.id
-    // Recognising a word from its meaning is real recall — it counts.
+    // Recognising a word from its meaning is real recall — it counts, once.
     ReviewSchedule.record(current.word.id, correct)
 
     let points = 0
@@ -88,23 +115,26 @@ const DefinitionDetective: React.FC<DefinitionDetectiveProps> = ({
       points = 30
       setScore((s) => s + points)
       setSolved((n) => n + 1)
-      sfx.correct()
-      speak(`${current.word.word}. Case closed!`)
+      setStreak((n) => n + 1)
+      setHits((h) => h + 1)
+      setLine(cheer.hit({ say: `${current.word.word}. Case closed!` }))
     } else {
-      sfx.wrong()
-      speak(`It was ${current.word.word}`)
+      setStreak(0)
+      setLine(cheer.miss({ say: `It was ${current.word.word}.` }))
     }
 
-    setTimeout(() => {
+    later(() => {
       if (index < cases.length - 1) {
-        setIndex((i) => i + 1)
+        // Cleared in the same update, so the next case never shows this verdict.
         setPicked(null)
+        setIndex((i) => i + 1)
       } else {
-        sfx.win()
         onComplete(score + points)
       }
     }, correct ? 1800 : 2600)
   }
+
+  const right = picked === current.word.id
 
   return (
     <div className="definition-detective">
@@ -117,12 +147,15 @@ const DefinitionDetective: React.FC<DefinitionDetectiveProps> = ({
         </div>
       </div>
 
-      <p className="dd2-brief">Which word fits the clue?</p>
+      <p className="dd2-brief">
+        Which word fits the clue?
+        {streak >= 2 && <span className="dd2-streak"> 🔥 {streak} in a row</span>}
+      </p>
 
       <div className="dd2-clue">
         <span className="dd2-clue-mark" aria-hidden>“</span>
         <span className="dd2-clue-text">{current.clue}</span>
-        <button className="dd2-speak" onClick={() => speak(current.clue)} aria-label="Hear the clue again">🔊</button>
+        <button className="dd2-speak" onClick={() => speak(spokenClue(current.clue))} aria-label="Hear the clue again">🔊</button>
       </div>
 
       <div className="dd2-suspects">
@@ -142,10 +175,11 @@ const DefinitionDetective: React.FC<DefinitionDetectiveProps> = ({
       </div>
 
       {picked && (
-        <div className={`dd2-verdict ${picked === current.word.id ? 'ok' : 'bad'}`}>
-          {picked === current.word.id
-            ? `🎉 Case closed — it was “${current.word.word}”!`
-            : `The answer was “${current.word.word}”. ${current.word.sentence || ''}`}
+        <div className={`dd2-verdict ${right ? 'ok' : 'bad'}`} role="status">
+          {right && <Burst trigger={hits} emoji={['🔍', '⭐', '✨', '🕵️']} />}
+          {right
+            ? `🎉 ${line} Case closed — it was “${current.word.word}”!`
+            : `${line} It was “${current.word.word}”. ${current.word.sentence || ''}`}
         </div>
       )}
     </div>

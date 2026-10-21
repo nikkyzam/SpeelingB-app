@@ -1,0 +1,69 @@
+.ma-bonds { color: var(--text); }
+
+.ma-bonds-eq {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-md) 0 var(--spacing-lg);
+  font-family: var(--font-primary);
+  font-weight: 800;
+}
+.ma-bonds-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4.2rem;
+  height: 4.2rem;
+  padding: 0 0.4rem;
+  border-radius: var(--radius-round);
+  background: var(--card-soft);
+  border: 3px solid var(--border);
+  font-size: clamp(1.8rem, 7vw, 2.4rem);
+}
+.ma-bonds-num.target { background: var(--secondary); border-color: var(--secondary); color: var(--on-primary); }
+.ma-bonds-num.hole { border-style: dashed; color: var(--primary); }
+.ma-bonds-num.hole.filled { border-style: solid; border-color: var(--success); color: var(--success); }
+.ma-bonds-op { font-size: 2rem; color: var(--text-soft); }
+
+.ma-bonds-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+.ma-bonds-bubble {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  background: radial-gradient(circle at 32% 30%, #ffffff 0%, var(--card-soft) 30%, var(--secondary-2) 100%);
+  box-shadow: var(--shadow-md);
+  color: var(--text);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 2rem;
+  cursor: pointer;
+  touch-action: manipulation;
+  animation: ma-bonds-float 2.4s ease-in-out infinite alternate;
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+.ma-bonds-bubble:nth-child(2) { animation-delay: 0.4s; }
+.ma-bonds-bubble:nth-child(3) { animation-delay: 0.8s; }
+.ma-bonds-bubble:nth-child(4) { animation-delay: 1.2s; }
+.ma-bonds-bubble:disabled { cursor: default; }
+.ma-bonds-bubble.right,
+.ma-bonds-bubble.reveal { background: var(--success); color: var(--on-primary); border-color: var(--success); }
+.ma-bonds-bubble.right { transform: scale(1.12); }
+.ma-bonds-bubble.reveal { box-shadow: 0 0 0 6px rgba(var(--primary-rgb), 0.45); }
+.ma-bonds-bubble.wrong { opacity: 0.45; }
+
+@keyframes ma-bonds-float {
+  from { translate: 0 0; }
+  to { translate: 0 -8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ma-bonds-bubble { animation: none; transition: none; }
+}

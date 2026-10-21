@@ -3,6 +3,11 @@ import SpellingInput from '../../common/SpellingInput'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, isPlayable } from '../shared/wordTricks'
+import { spellOut } from '../../../services/words/praise'
+import useCheer from '../shared/useCheer'
+import useLater from '../shared/useLater'
+import Burst from '../shared/Burst'
+import GameEmpty from '../shared/GameEmpty'
 import sfx from '../shared/sfx'
 import './StoryBuilder.css'
 
@@ -72,6 +77,10 @@ const TEMPLATES: Template[] = [
 
 type Phase = 'filling' | 'story' | 'bonus' | 'done'
 
+/** Points for each word put in the story, and for spelling the star word at the end. */
+const PER_BLANK = 20
+const BONUS = 50
+
 /**
  * A fill-in-the-blanks story machine.
  *
@@ -81,6 +90,8 @@ type Phase = 'filling' | 'story' | 'bonus' | 'done'
  */
 const StoryBuilder: React.FC<StoryBuilderProps> = ({ onComplete, words: providedWords }) => {
   const { speak } = useAudio()
+  const cheer = useCheer()
+  const later = useLater()
 
   const template = useMemo(() => TEMPLATES[Math.floor(Math.random() * TEMPLATES.length)], [])
   const blanks = template.parts.length - 1
@@ -88,17 +99,27 @@ const StoryBuilder: React.FC<StoryBuilderProps> = ({ onComplete, words: provided
   const pool = useMemo<string[]>(() => {
     const base = providedWords && providedWords.length > 0 ? providedWords : []
     const usable = shuffle(base).filter((w) => isPlayable(w)).map((w) => w.word.toLowerCase())
-    const unique = [...new Set(usable)]
     // The story is theirs because *their* words are in it.
-    return unique
-  }, [providedWords, blanks])
+    return [...new Set(usable)]
+  }, [providedWords])
 
   const [filled, setFilled] = useState<string[]>([])
   const [phase, setPhase] = useState<Phase>('filling')
   const [score, setScore] = useState(0)
   const [spellInput, setSpellInput] = useState('')
   const [bonusResult, setBonusResult] = useState<'right' | 'wrong' | null>(null)
+  const [line, setLine] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
+
+  // Taps and Enter settle through refs. A state guard loses to a double tap:
+  // Enter twice paid the bonus twice and started two finishing timers, and a
+  // double tap on a choice filled two blanks with one word.
+  const picks = useRef<string[]>([])
+  const pickLocked = useRef(false)
+  const settled = useRef(false)
+  useEffect(() => {
+    pickLocked.current = false
+  }, [filled.length])
 
   // Three fresh choices for whichever blank we're on.
   const choices = useMemo(() => {
@@ -108,6 +129,9 @@ const StoryBuilder: React.FC<StoryBuilderProps> = ({ onComplete, words: provided
   }, [filled.length, pool])
 
   const bonusWord = filled[0] || ''
+  // While the star word is being spelled it is hidden from the story —
+  // otherwise "spell the first word" is copying it off the page.
+  const hideBonus = phase === 'bonus'
 
   const storyText = useMemo(
     () => template.parts.reduce((out, part, i) => out + part + (filled[i] ? filled[i] : ''), ''),
@@ -119,38 +143,53 @@ const StoryBuilder: React.FC<StoryBuilderProps> = ({ onComplete, words: provided
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase])
 
+  // Said once at the start, for a child who can't read the instructions yet.
+  useEffect(() => {
+    if (pool.length > 0) speak(`Let's make a silly story! Pick a word: ${template.prompts[0]}.`)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   if (pool.length === 0) {
     return (
       <div className="story-builder">
-        <p className="ss-empty">No words for the story yet — learn a few first! 📜</p>
-        <button className="ss-btn" onClick={() => onComplete(0)}>Back to Games</button>
+        <GameEmpty icon="📜">No words for the story yet — learn a few first, then come back and write one!</GameEmpty>
       </div>
     )
   }
 
   const pick = (word: string) => {
-    if (phase !== 'filling') return
-    const next = [...filled, word]
-    setFilled(next)
-    setScore((s) => s + 20)
+    if (phase !== 'filling' || pickLocked.current || picks.current.length >= blanks) return
+    pickLocked.current = true
+    picks.current = [...picks.current, word]
+    setFilled(picks.current)
+    setScore((s) => s + PER_BLANK)
     sfx.star()
     speak(word)
-    if (next.length >= blanks) setTimeout(() => setPhase('story'), 500)
+    if (picks.current.length >= blanks) later(() => setPhase('story'), 600)
+  }
+
+  const startBonus = () => {
+    if (phase !== 'story') return
+    setPhase('bonus')
+    speak(`Can you spell ${bonusWord}? ${bonusWord}.`)
+    later(() => inputRef.current?.focus(), 100)
   }
 
   const checkBonus = () => {
-    if (!spellInput.trim()) return
-    if (spellInput.trim().toLowerCase() === bonusWord) {
+    const tried = spellInput.trim().toLowerCase()
+    if (!tried || settled.current || phase !== 'bonus') return
+    settled.current = true
+    const total = picks.current.length * PER_BLANK
+    if (tried === bonusWord) {
       setBonusResult('right')
-      setScore((s) => s + 50)
+      setScore((s) => s + BONUS)
+      setLine(cheer.hit({ say: 'Bonus stars!' }))
       sfx.win()
-      speak('Bonus stars!')
-      setTimeout(() => onComplete(score + 50), 1900)
+      later(() => onComplete(total + BONUS), 1900)
     } else {
       setBonusResult('wrong')
-      sfx.wrong()
-      speak(`It was ${bonusWord}`)
-      setTimeout(() => onComplete(score), 2100)
+      setLine(cheer.miss({ say: `It's spelled ${spellOut(bonusWord)}. ${bonusWord}.` }))
+      later(() => onComplete(total), 2600)
     }
     setPhase('done')
   }
@@ -173,7 +212,9 @@ const StoryBuilder: React.FC<StoryBuilderProps> = ({ onComplete, words: provided
               {part}
               {i < blanks && (
                 filled[i]
-                  ? <span className="ss-word">{filled[i]}</span>
+                  ? hideBonus && filled[i] === bonusWord
+                    ? <span className="ss-word secret" aria-label="the star word, hidden">⭐ ? ⭐</span>
+                    : <span className="ss-word">{filled[i]}</span>
                   : <span className={`ss-blank ${i === filled.length ? 'active' : ''}`}>_____</span>
               )}
             </React.Fragment>
@@ -197,15 +238,8 @@ const StoryBuilder: React.FC<StoryBuilderProps> = ({ onComplete, words: provided
           <div className="ss-cheer">🎉 What a story! Read it out loud!</div>
           <div className="ss-finale-actions">
             <button className="ss-btn ghost" onClick={() => speak(storyText)}>🔊 Tell it again</button>
-            <button
-              className="ss-btn"
-              onClick={() => {
-                setPhase('bonus')
-                speak(bonusWord)
-                setTimeout(() => inputRef.current?.focus(), 100)
-              }}
-            >
-              ⭐ Bonus round!
+            <button className="ss-btn" onClick={startBonus}>
+              Finish ⭐
             </button>
           </div>
         </div>
@@ -213,7 +247,7 @@ const StoryBuilder: React.FC<StoryBuilderProps> = ({ onComplete, words: provided
 
       {(phase === 'bonus' || phase === 'done') && (
         <div className="ss-bonus">
-          <p className="ss-prompt">Spell the first word from your story for 50 bonus points!</p>
+          <p className="ss-prompt">Last step! Spell the ⭐ word from your story for {BONUS} bonus points.</p>
           <div className="ss-bonus-row">
             <button className="ss-btn ghost" onClick={() => speak(bonusWord)} aria-label="Hear the word">🔊</button>
             <SpellingInput
@@ -227,8 +261,17 @@ const StoryBuilder: React.FC<StoryBuilderProps> = ({ onComplete, words: provided
             />
             <button className="ss-btn" onClick={checkBonus} disabled={phase === 'done' || !spellInput.trim()}>Check</button>
           </div>
-          {bonusResult === 'right' && <div className="ss-flash ok">⭐ Bonus stars! Perfect spelling!</div>}
-          {bonusResult === 'wrong' && <div className="ss-flash bad">It was “{bonusWord}” — great story though! 📚</div>}
+          {bonusResult === 'right' && (
+            <div className="ss-flash ok" role="status">
+              <Burst trigger={1} />
+              ⭐ {line} Perfect spelling!
+            </div>
+          )}
+          {bonusResult === 'wrong' && (
+            <div className="ss-flash bad" role="status">
+              {line} It was “{bonusWord}” — great story though! 📚
+            </div>
+          )}
         </div>
       )}
     </div>

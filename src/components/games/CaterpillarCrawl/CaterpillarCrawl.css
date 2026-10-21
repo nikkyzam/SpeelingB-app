@@ -1,0 +1,269 @@
+.caterpillar-crawl {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  text-align: center;
+}
+
+.cc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  border-bottom: 2px dashed var(--border);
+  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  text-align: left;
+}
+.cc-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.cc-stats { display: flex; gap: var(--spacing-lg); }
+.cc-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
+.cc-stat strong { font-size: 1.15rem; color: var(--text); }
+
+.cc-meaning {
+  margin: var(--spacing-sm) 0 0;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+/* --- the word so far: one blank per letter ------------------------------ */
+
+.cc-word {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: var(--spacing-md) 0;
+}
+.cc-slot {
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: clamp(1.3rem, 5.5vw, 2rem);
+  line-height: 1.2;
+  min-width: 1em;
+  border-bottom: 4px solid var(--border);
+  border-radius: 3px;
+  color: var(--text);
+}
+.cc-slot.got { color: var(--success); border-bottom-color: var(--success); }
+.cc-slot.told { color: var(--warning); border-bottom-color: var(--warning); }
+
+/* --- the garden ------------------------------------------------------------ */
+
+.cc-play {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+@media (min-width: 760px) {
+  .cc-play { flex-direction: row; justify-content: center; align-items: center; }
+}
+
+.cc-board {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(7, 1fr);
+  width: min(100%, 480px);
+  aspect-ratio: 9 / 7;
+  border: 4px solid #5E9E3A;
+  border-radius: var(--radius-md);
+  background: linear-gradient(160deg, #C8EFA0 0%, #9ED870 100%);
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.25), var(--shadow-md);
+  overflow: hidden;
+  /* The board is the steering wheel: a swipe on it must not scroll the page. */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+
+.cc-square {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+}
+/* Nine columns is odd, so alternate squares make a checkerboard by themselves. */
+.cc-square:nth-child(odd) { background: rgba(255, 255, 255, 0.16); }
+
+.cc-head {
+  position: relative;
+  width: 94%;
+  height: 94%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #8BE05A, #3F8F22 75%);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+/* Two eyes, looking the way it is going. */
+.cc-head::before,
+.cc-head::after {
+  content: '';
+  position: absolute;
+  width: 28%;
+  height: 28%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #1B2A10 38%, #FFFFFF 40%);
+}
+.cc-head[data-dir='right']::before { left: 56%; top: 16%; }
+.cc-head[data-dir='right']::after  { left: 56%; top: 56%; }
+.cc-head[data-dir='left']::before  { left: 16%; top: 16%; }
+.cc-head[data-dir='left']::after   { left: 16%; top: 56%; }
+.cc-head[data-dir='up']::before    { left: 16%; top: 16%; }
+.cc-head[data-dir='up']::after     { left: 56%; top: 16%; }
+.cc-head[data-dir='down']::before  { left: 16%; top: 56%; }
+.cc-head[data-dir='down']::after   { left: 56%; top: 56%; }
+
+/* A whole word: it turns into a butterfly. */
+.cc-head.flying {
+  background: none;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1.4rem, 6vw, 2.4rem);
+  animation: cc-flutter 0.7s ease-in-out infinite;
+}
+.cc-head.flying::before,
+.cc-head.flying::after { display: none; }
+@keyframes cc-flutter {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-12%) scale(1.15); }
+}
+
+.cc-seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 84%;
+  height: 84%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #B4F08A, #58B032 80%);
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.12);
+  color: #FFFFFF;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: clamp(0.8rem, 3.2vw, 1.3rem);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.cc-leaf {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 88%;
+  height: 88%;
+  color: #24500E;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: clamp(0.95rem, 3.8vw, 1.5rem);
+  animation: cc-sway 2.4s ease-in-out infinite;
+}
+.cc-leaf::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid #5E9E3A;
+  border-radius: 12% 78%;
+  background: linear-gradient(135deg, #F6FFDD, #BDE77E);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+}
+.cc-leaf span { position: relative; }
+@keyframes cc-sway {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+
+.cc-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+  background: rgba(255, 255, 255, 0.68);
+  color: #24500E;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.05rem;
+  /* Taps fall through to the garden, which is what steers. */
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* --- the arrow pad --------------------------------------------------------- */
+
+.cc-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 3.4rem);
+  grid-template-rows: repeat(3, 3.4rem);
+  grid-template-areas:
+    '. up .'
+    'left pause right'
+    '. down .';
+  gap: 0.35rem;
+}
+.cc-arrow {
+  border: 3px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card-soft);
+  color: var(--text);
+  font-size: 1.4rem;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+.cc-arrow.up { grid-area: up; }
+.cc-arrow.down { grid-area: down; }
+.cc-arrow.left { grid-area: left; }
+.cc-arrow.right { grid-area: right; }
+.cc-arrow.pause { grid-area: pause; font-size: 1.1rem; }
+.cc-arrow:active:not(:disabled) { transform: scale(0.92); background: var(--primary); }
+.cc-arrow:disabled { opacity: 0.45; cursor: default; }
+
+.cc-lives { margin-top: var(--spacing-md); font-size: 1.1rem; letter-spacing: 0.2rem; }
+.cc-lives .off { opacity: 0.25; filter: grayscale(1); }
+
+.cc-hint { margin: var(--spacing-sm) 0 0; font-size: 0.85rem; color: var(--text-soft); min-height: 1.2em; }
+
+.cc-btn {
+  border: none;
+  border-radius: var(--radius-round);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  padding: 0.5rem 1.1rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.cc-btn.hear { background: var(--card-soft); color: var(--text); border: 2px solid var(--border); }
+
+.cc-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
+
+.cc-flash {
+  position: relative;
+  margin-top: var(--spacing-md);
+  font-family: var(--font-primary);
+  font-weight: 800;
+}
+.cc-flash.ok { color: var(--success); }
+.cc-flash.bad { color: var(--error); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-leaf,
+  .cc-head.flying { animation: none; }
+  .cc-arrow { transition: none; }
+}

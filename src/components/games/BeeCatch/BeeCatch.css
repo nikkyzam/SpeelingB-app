@@ -25,7 +25,6 @@
 .bc-stats { display: flex; gap: var(--spacing-md); }
 .bc-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .bc-stat strong { font-size: 1.15rem; color: var(--text); }
-.bc-stat strong.low { color: var(--error); animation: pulse 0.8s infinite; }
 
 .bc-word {
   display: flex;
@@ -43,13 +42,27 @@
   color: var(--text-soft);
 }
 .bc-slot.done { color: var(--success); }
-.bc-slot.next { color: var(--primary-2); text-decoration: underline; }
+/* The next letter is a glowing blank — the child finds it, the slot doesn't say. */
+.bc-slot.next {
+  color: var(--primary-2);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--warning) 18%, transparent);
+  animation: bc-glow 1.2s ease-in-out infinite;
+}
+/* After two wrong bees the slot shows the letter, so nobody is stuck. */
+.bc-slot.next.help { color: var(--secondary); }
+@keyframes bc-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+.bc-word.done .bc-slot { animation: pop-in 260ms both; }
 .bc-hear {
   border: none;
   background: var(--card-soft);
   border-radius: 50%;
-  width: 2.2rem;
-  height: 2.2rem;
+  /* A finger-sized target for a small child (44px). */
+  width: 2.75rem;
+  height: 2.75rem;
   font-size: 1.1rem;
   cursor: pointer;
   margin-left: 0.4rem;
@@ -69,6 +82,7 @@
 }
 
 .bc-bee {
+  touch-action: manipulation;
   position: absolute;
   width: 3.4rem;
   height: 3.4rem;
@@ -98,7 +112,32 @@
 }
 .bc-bee:hover { filter: brightness(1.05); }
 .bc-bee:active { transform: scale(0.9); }
-.bc-bee.wrong { animation: shake 0.3s; }
+.bc-bee.wrong { animation: bc-shake 0.4s ease; }
+@keyframes bc-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+.bc-flash {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.4rem;
+  padding: 0.6rem 1.3rem;
+  border-radius: var(--radius-round);
+  box-shadow: var(--shadow-md);
+  animation: bc-pop 260ms ease-out both;
+}
+.bc-flash.ok { background: linear-gradient(90deg, var(--success), #4EF4C5); color: #fff; }
+@keyframes bc-pop {
+  0% { transform: translate(-50%, -50%) scale(0.6); opacity: 0; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
 
 @media (max-width: 520px) {
   .bc-header { flex-direction: column; align-items: stretch; }
@@ -106,4 +145,11 @@
   .bc-field { height: 300px; }
   .bc-bee { width: 3rem; height: 3rem; }
   .bc-bee-emoji { font-size: 2.7rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bc-slot.next,
+  .bc-bee,
+  .bc-bee.wrong,
+  .bc-flash { animation: none; }
 }

@@ -1,0 +1,1400 @@
+{
+ "g5-express": [
+  {
+   "id": "g5-express-1",
+   "prompt": "Evaluate: 3 + 4 × 2",
+   "category": "Patterns & Algebra",
+   "explanation": "Do 4 × 2 = 8 first, then 3 + 8 = 11.",
+   "hint": "Multiply before you add.",
+   "kind": "number",
+   "answer": 11
+  },
+  {
+   "id": "g5-express-2",
+   "prompt": "Evaluate: (5 + 3) × 2",
+   "category": "Patterns & Algebra",
+   "explanation": "Parentheses first: 5 + 3 = 8, then 8 × 2 = 16.",
+   "kind": "number",
+   "answer": 16
+  },
+  {
+   "id": "g5-express-3",
+   "prompt": "Which expression equals 20?",
+   "category": "Patterns & Algebra",
+   "explanation": "4 × (3 + 2) = 4 × 5 = 20. The others give 14, 10 and 10.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "4 × (3 + 2)",
+    "4 × 3 + 2",
+    "4 + 3 × 2",
+    "4 × 3 − 2"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-express-4",
+   "prompt": "Evaluate: 18 − 2 × 5",
+   "category": "Patterns & Algebra",
+   "explanation": "2 × 5 = 10 first, then 18 − 10 = 8.",
+   "hint": "Multiply before you subtract.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g5-express-5",
+   "prompt": "Evaluate: (10 − 4) × (3 + 1)",
+   "category": "Patterns & Algebra",
+   "explanation": "Each parenthesis first: 10 − 4 = 6 and 3 + 1 = 4, then 6 × 4 = 24.",
+   "kind": "number",
+   "answer": 24
+  },
+  {
+   "id": "g5-express-6",
+   "prompt": "Evaluate: 2 × (6 + 4) − 5",
+   "category": "Patterns & Algebra",
+   "explanation": "6 + 4 = 10, then 2 × 10 = 20, then 20 − 5 = 15.",
+   "level": 2,
+   "kind": "number",
+   "answer": 15
+  },
+  {
+   "id": "g5-express-7",
+   "prompt": "Which expression represents 'add 5 and 3, then double the result'?",
+   "category": "Patterns & Algebra",
+   "explanation": "'Then double the result' means the addition happens first, inside parentheses, before multiplying by 2.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "2 × (5 + 3)",
+    "2 × 5 + 3",
+    "5 + 3 × 2",
+    "(2 × 5) + 3"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-express-8",
+   "prompt": "Evaluate: 3 × [(8 − 2) + (5 × 2)]",
+   "category": "Patterns & Algebra",
+   "explanation": "8 − 2 = 6 and 5 × 2 = 10, so inside the brackets: 6 + 10 = 16. Then 3 × 16 = 48.",
+   "hint": "Work the innermost parts first.",
+   "level": 3,
+   "kind": "number",
+   "answer": 48
+  }
+ ],
+ "g5-decops": [
+  {
+   "id": "g5-decops-1",
+   "prompt": "3.4 + 2.8 = ?",
+   "category": "Decimals",
+   "explanation": "3.4 + 2.8 = 6.2.",
+   "kind": "number",
+   "answer": 6.2
+  },
+  {
+   "id": "g5-decops-2",
+   "prompt": "7.5 − 3.2 = ?",
+   "category": "Decimals",
+   "explanation": "7.5 − 3.2 = 4.3.",
+   "kind": "number",
+   "answer": 4.3
+  },
+  {
+   "id": "g5-decops-3",
+   "prompt": "0.6 × 5 = ?",
+   "category": "Decimals",
+   "explanation": "0.6 × 5 = 3.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g5-decops-4",
+   "prompt": "Which is 4.25 + 1.5?",
+   "category": "Decimals",
+   "explanation": "4.25 + 1.50 = 5.75.",
+   "kind": "choice",
+   "choices": [
+    "5.75",
+    "5.65",
+    "4.4",
+    "5.25"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-decops-5",
+   "prompt": "12.6 ÷ 3 = ?",
+   "category": "Decimals",
+   "explanation": "12.6 ÷ 3 = 4.2.",
+   "kind": "number",
+   "answer": 4.2
+  },
+  {
+   "id": "g5-decops-6",
+   "prompt": "2.35 × 4 = ?",
+   "category": "Decimals",
+   "explanation": "2.35 × 4 = 9.4.",
+   "level": 2,
+   "kind": "number",
+   "answer": 9.4
+  },
+  {
+   "id": "g5-decops-7",
+   "prompt": "A ribbon is 8.4 m long. It is cut into pieces 1.2 m each. How many pieces are there?",
+   "category": "Decimals",
+   "explanation": "8.4 ÷ 1.2 = 7 pieces.",
+   "level": 2,
+   "kind": "number",
+   "answer": 7
+  },
+  {
+   "id": "g5-decops-8",
+   "prompt": "A runner's three times were 12.45, 11.9 and 12.05 seconds. What is the total time, in seconds?",
+   "category": "Decimals",
+   "explanation": "12.45 + 11.9 + 12.05 = 36.4 seconds.",
+   "level": 3,
+   "kind": "number",
+   "answer": 36.4
+  }
+ ],
+ "g5-unlike": [
+  {
+   "id": "g5-unlike-1",
+   "prompt": "1/2 + 1/3 = ?",
+   "category": "Fractions",
+   "explanation": "The LCD of 2 and 3 is 6: 3/6 + 2/6 = 5/6.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "5/6",
+    "2/5",
+    "1/6",
+    "2/6"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-unlike-2",
+   "prompt": "3/4 − 1/6 = ?",
+   "category": "Fractions",
+   "explanation": "The LCD of 4 and 6 is 12: 9/12 − 2/12 = 7/12.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "7/12",
+    "2/12",
+    "5/12",
+    "1/12"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-unlike-3",
+   "prompt": "Which is the LCD of 1/4 and 1/6?",
+   "category": "Fractions",
+   "explanation": "The smallest number both 4 and 6 divide into evenly is 12.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "12",
+    "24",
+    "10",
+    "6"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-unlike-4",
+   "prompt": "2/3 + 1/4 = ?",
+   "category": "Fractions",
+   "explanation": "The LCD of 3 and 4 is 12: 8/12 + 3/12 = 11/12.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "11/12",
+    "3/7",
+    "9/12",
+    "1/12"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-unlike-5",
+   "prompt": "5/6 − 1/2 = ?",
+   "category": "Fractions",
+   "explanation": "The LCD of 6 and 2 is 6: 5/6 − 3/6 = 2/6, which simplifies to 1/3.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "1/3",
+    "1/6",
+    "2/3",
+    "1/2"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-unlike-6",
+   "prompt": "3/5 + 1/4 = ?",
+   "category": "Fractions",
+   "explanation": "The LCD of 5 and 4 is 20: 12/20 + 5/20 = 17/20.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "17/20",
+    "4/9",
+    "13/20",
+    "1/20"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-unlike-7",
+   "prompt": "7/8 − 2/3 = ?",
+   "category": "Fractions",
+   "explanation": "The LCD of 8 and 3 is 24: 21/24 − 16/24 = 5/24.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "5/24",
+    "9/24",
+    "5/11",
+    "1/24"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-unlike-8",
+   "prompt": "1/2 + 1/3 + 1/6 = ?",
+   "category": "Fractions",
+   "explanation": "The LCD of 2, 3 and 6 is 6: 3/6 + 2/6 + 1/6 = 6/6, which equals 1 whole.",
+   "level": 3,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "1",
+    "5/6",
+    "1/6",
+    "2"
+   ],
+   "answer": 0
+  }
+ ],
+ "g5-thousandth": [
+  {
+   "id": "g5-thousandth-1",
+   "prompt": "What is the value of the 5 in 3.256? Type as a decimal, like 0.05.",
+   "category": "Number",
+   "explanation": "The 5 sits in the hundredths place: 5 hundredths = 0.05.",
+   "kind": "number",
+   "answer": 0.05
+  },
+  {
+   "id": "g5-thousandth-2",
+   "prompt": "Write 'four and seven thousandths' as a decimal.",
+   "category": "Number",
+   "explanation": "4 and 7 thousandths = 4.007.",
+   "kind": "number",
+   "answer": 4.007
+  },
+  {
+   "id": "g5-thousandth-3",
+   "prompt": "Which decimal is the SAME as 2.400?",
+   "category": "Number",
+   "explanation": "Trailing zeros after the last meaningful digit do not change a decimal's value.",
+   "kind": "choice",
+   "choices": [
+    "2.4",
+    "2.04",
+    "24",
+    "0.24"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-thousandth-4",
+   "prompt": "Round 5.678 to the nearest hundredth.",
+   "category": "Number",
+   "explanation": "The thousandths digit is 8, which rounds the hundredths digit up: 5.68.",
+   "kind": "number",
+   "answer": 5.68
+  },
+  {
+   "id": "g5-thousandth-5",
+   "prompt": "Which number has a digit in the thousandths place?",
+   "category": "Number",
+   "explanation": "0.125 has three decimal places: tenths, hundredths, and thousandths (the 5).",
+   "kind": "choice",
+   "choices": [
+    "0.125",
+    "1.25",
+    "12.5",
+    "125"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-thousandth-6",
+   "prompt": "Round 3.4562 to the nearest thousandth.",
+   "category": "Number",
+   "explanation": "The ten-thousandths digit is 2, which rounds down: 3.456.",
+   "level": 2,
+   "kind": "number",
+   "answer": 3.456
+  },
+  {
+   "id": "g5-thousandth-7",
+   "prompt": "Which symbol makes this true?  0.5 ◯ 0.500",
+   "category": "Number",
+   "explanation": "Trailing zeros do not change the value: 0.5 and 0.500 are equal.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "=",
+    "<",
+    ">"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-thousandth-8",
+   "prompt": "What is 10 times 0.045?",
+   "category": "Number",
+   "explanation": "Multiplying by 10 moves the decimal point one place right: 0.045 × 10 = 0.45.",
+   "hint": "Multiplying by 10 shifts every digit one place value to the left.",
+   "level": 3,
+   "kind": "number",
+   "answer": 0.45
+  },
+  {
+   "id": "g5-thousandth-9",
+   "prompt": "What is 10³ written in standard form?",
+   "category": "Number",
+   "explanation": "The exponent tells you how many zeros to write: 10³ = 10 × 10 × 10 = 1,000.",
+   "kind": "choice",
+   "choices": [
+    "100",
+    "1,000",
+    "10,000",
+    "30"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "g5-thousandth-10",
+   "prompt": "How many zeros are in the standard form of 10⁵?",
+   "category": "Number",
+   "explanation": "The exponent IS the zero counter — 10⁵ has exactly 5 zeros: 100,000.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g5-thousandth-11",
+   "prompt": "Solve: 7 × 10²",
+   "category": "Number",
+   "explanation": "10² = 100, and 7 × 100 = 700. Multiplying by a power of 10 shifts every digit that many places to the left.",
+   "kind": "number",
+   "answer": 700
+  },
+  {
+   "id": "g5-thousandth-12",
+   "prompt": "The value of the 5 in a number is 500,000. If that digit moves 2 places to the RIGHT on a place value chart, what is its NEW value?",
+   "category": "Number",
+   "explanation": "Moving right divides by 10 each place: 500,000 ÷ 10 ÷ 10 = 5,000.",
+   "level": 2,
+   "kind": "number",
+   "answer": 5000
+  },
+  {
+   "id": "g5-thousandth-13",
+   "prompt": "A number is multiplied by 10³ and the result is 47,000. What was the original number?",
+   "category": "Number",
+   "explanation": "47,000 ÷ 10³ = 47,000 ÷ 1,000 = 47.",
+   "hint": "Undo the shift by dividing back.",
+   "level": 2,
+   "kind": "number",
+   "answer": 47
+  },
+  {
+   "id": "g5-thousandth-14",
+   "prompt": "10² × 10³ = ?",
+   "category": "Number",
+   "explanation": "10² = 100 and 10³ = 1,000. 100 × 1,000 = 100,000.",
+   "hint": "Work out each power of 10 first, then multiply.",
+   "level": 3,
+   "kind": "number",
+   "answer": 100000
+  }
+ ],
+ "g5-fracmult": [
+  {
+   "id": "g5-fracmult-1",
+   "prompt": "1/2 × 1/3 = ?",
+   "category": "Fractions",
+   "explanation": "Multiply numerators and denominators: (1×1)/(2×3) = 1/6.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "1/6",
+    "1/5",
+    "2/5",
+    "1/3"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-fracmult-2",
+   "prompt": "2/3 × 3/4 = ?",
+   "category": "Fractions",
+   "explanation": "(2×3)/(3×4) = 6/12, which simplifies to 1/2.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "1/2",
+    "5/7",
+    "6/7",
+    "3/4"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-fracmult-3",
+   "prompt": "3/4 of 8 = ?",
+   "category": "Fractions",
+   "explanation": "3/4 × 8 = 24/4 = 6.",
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "g5-fracmult-4",
+   "prompt": "Multiplying a whole number by a fraction less than 1 makes the result ___.",
+   "category": "Fractions",
+   "explanation": "Taking a fraction of something less than the whole always gives less than the original amount.",
+   "kind": "choice",
+   "choices": [
+    "smaller than the whole number",
+    "larger than the whole number",
+    "always 1",
+    "always 0"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-fracmult-5",
+   "prompt": "1/2 × 10 = ?",
+   "category": "Fractions",
+   "explanation": "1/2 × 10 = 10/2 = 5.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g5-fracmult-6",
+   "prompt": "3/5 × 2/3 = ?",
+   "category": "Fractions",
+   "explanation": "(3×2)/(5×3) = 6/15, which simplifies to 2/5.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "2/5",
+    "5/8",
+    "6/8",
+    "1/2"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-fracmult-7",
+   "prompt": "2/3 of 18 = ?",
+   "category": "Fractions",
+   "explanation": "2/3 × 18 = 36/3 = 12.",
+   "level": 2,
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "g5-fracmult-8",
+   "prompt": "1/4 × 2/3 × 3/2 = ?",
+   "category": "Fractions",
+   "explanation": "Multiply straight across: (1×2×3)/(4×3×2) = 6/24, which simplifies to 1/4.",
+   "level": 3,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "1/4",
+    "1/2",
+    "1/8",
+    "3/4"
+   ],
+   "answer": 0
+  }
+ ],
+ "g5-fracdiv": [
+  {
+   "id": "g5-fracdiv-1",
+   "prompt": "1/2 ÷ 4 = ? Type just the denominator of the answer (the numerator is 1).",
+   "category": "Fractions",
+   "explanation": "1/2 ÷ 4 = 1/8, so the denominator is 8.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g5-fracdiv-2",
+   "prompt": "1/3 ÷ 2 = ? Type just the denominator of the answer.",
+   "category": "Fractions",
+   "explanation": "1/3 ÷ 2 = 1/6, so the denominator is 6.",
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "g5-fracdiv-3",
+   "prompt": "6 ÷ 1/3 = ?",
+   "category": "Fractions",
+   "explanation": "Dividing by a fraction multiplies by its reciprocal: 6 × 3 = 18.",
+   "kind": "choice",
+   "choices": [
+    "18",
+    "2",
+    "3",
+    "6"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-fracdiv-4",
+   "prompt": "4 ÷ 1/2 = ?",
+   "category": "Fractions",
+   "explanation": "4 × 2 = 8.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g5-fracdiv-5",
+   "prompt": "Which expression equals 1/5 ÷ 3?",
+   "category": "Fractions",
+   "explanation": "1/5 ÷ 3 = 1/5 × 1/3 = 1/15.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "1/15",
+    "3/5",
+    "5/3",
+    "1/8"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-fracdiv-6",
+   "prompt": "1/4 ÷ 5 = ? Type just the denominator of the answer.",
+   "category": "Fractions",
+   "explanation": "1/4 ÷ 5 = 1/20, so the denominator is 20.",
+   "level": 2,
+   "kind": "number",
+   "answer": 20
+  },
+  {
+   "id": "g5-fracdiv-7",
+   "prompt": "8 ÷ 1/4 = ?",
+   "category": "Fractions",
+   "explanation": "8 × 4 = 32.",
+   "level": 2,
+   "kind": "number",
+   "answer": 32
+  },
+  {
+   "id": "g5-fracdiv-8",
+   "prompt": "A ribbon that is 1/3 yard long is cut into pieces that are 1/9 yard each. How many pieces?",
+   "category": "Fractions",
+   "explanation": "(1/3) ÷ (1/9) = 1/3 × 9 = 3 pieces.",
+   "hint": "Dividing by a fraction multiplies by its reciprocal.",
+   "level": 3,
+   "kind": "number",
+   "answer": 3
+  }
+ ],
+ "g5-convert": [
+  {
+   "id": "g5-convert-1",
+   "prompt": "How many centimeters are in 5 meters? (100 cm = 1 m)",
+   "category": "Measurement",
+   "explanation": "5 × 100 = 500 centimeters.",
+   "kind": "number",
+   "answer": 500
+  },
+  {
+   "id": "g5-convert-2",
+   "prompt": "How many grams are in 3 kilograms? (1000 g = 1 kg)",
+   "category": "Measurement",
+   "explanation": "3 × 1000 = 3000 grams.",
+   "kind": "number",
+   "answer": 3000
+  },
+  {
+   "id": "g5-convert-3",
+   "prompt": "Which is equal to 2.5 liters?",
+   "category": "Measurement",
+   "explanation": "1 liter = 1000 mL, so 2.5 liters = 2500 mL.",
+   "kind": "choice",
+   "choices": [
+    "2500 mL",
+    "250 mL",
+    "25 mL",
+    "25000 mL"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-convert-4",
+   "prompt": "How many minutes are in 3 hours?",
+   "category": "Measurement",
+   "explanation": "3 × 60 = 180 minutes.",
+   "kind": "number",
+   "answer": 180
+  },
+  {
+   "id": "g5-convert-5",
+   "prompt": "How many millimeters are in 4 centimeters? (10 mm = 1 cm)",
+   "category": "Measurement",
+   "explanation": "4 × 10 = 40 millimeters.",
+   "kind": "number",
+   "answer": 40
+  },
+  {
+   "id": "g5-convert-6",
+   "prompt": "A ribbon is 250 cm long. How many meters is that?",
+   "category": "Measurement",
+   "explanation": "250 ÷ 100 = 2.5 meters.",
+   "level": 2,
+   "kind": "number",
+   "answer": 2.5
+  },
+  {
+   "id": "g5-convert-7",
+   "prompt": "A recipe needs 1500 mL of water. How many liters is that?",
+   "category": "Measurement",
+   "explanation": "1500 ÷ 1000 = 1.5 liters.",
+   "level": 2,
+   "kind": "number",
+   "answer": 1.5
+  },
+  {
+   "id": "g5-convert-8",
+   "prompt": "A runner covers 3.2 kilometers. How many meters is that?",
+   "category": "Measurement",
+   "explanation": "3.2 × 1000 = 3200 meters.",
+   "level": 3,
+   "kind": "number",
+   "answer": 3200
+  }
+ ],
+ "g5-patterns": [
+  {
+   "id": "g5-patterns-1",
+   "prompt": "Pattern A starts at 0, rule 'add 2': 0, 2, 4, 6. What is the 4th term?",
+   "category": "Number",
+   "explanation": "0, 2, 4, 6 — the 4th term listed is 6.",
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "g5-patterns-2",
+   "prompt": "Pattern B starts at 0, rule 'add 4': 0, 4, 8, 12. What is the 3rd term?",
+   "category": "Number",
+   "explanation": "0, 4, 8 — the 3rd term is 8.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g5-patterns-3",
+   "prompt": "Pattern A's terms are 0, 2, 4, 6, 8. Pattern B's are 0, 4, 8, 12, 16. What is true about matching terms?",
+   "category": "Number",
+   "explanation": "Each B term (4, 8, 12, 16) is exactly double the matching A term (2, 4, 6, 8).",
+   "kind": "choice",
+   "choices": [
+    "B's term is always twice A's term",
+    "They are always equal",
+    "A's term is always bigger",
+    "There is no relationship"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-patterns-4",
+   "prompt": "Pattern A starts at 0 and adds 2. What is its 3rd term?",
+   "category": "Number",
+   "explanation": "0, 2, 4 — the 3rd term is 4.",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "g5-patterns-5",
+   "prompt": "Two patterns start at 0: one adds 3, one adds 6. What is always true of matching terms?",
+   "category": "Number",
+   "explanation": "Since 6 is double 3, every term in the second pattern is double the matching term in the first.",
+   "kind": "choice",
+   "choices": [
+    "The 'adds 6' term is double the 'adds 3' term",
+    "They are equal",
+    "There is no relation",
+    "The 'adds 3' term is bigger"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-patterns-6",
+   "prompt": "Pattern X starts at 1, rule 'add 3': 1, 4, 7, 10. What is the 5th term?",
+   "category": "Number",
+   "explanation": "1, 4, 7, 10, 13 — the 5th term is 13.",
+   "level": 2,
+   "kind": "number",
+   "answer": 13
+  },
+  {
+   "id": "g5-patterns-7",
+   "prompt": "Pattern Y starts at 2, rule 'add 5': 2, 7, 12, 17. What is the 4th term?",
+   "category": "Number",
+   "explanation": "2, 7, 12, 17 — the 4th term is 17.",
+   "level": 2,
+   "kind": "number",
+   "answer": 17
+  },
+  {
+   "id": "g5-patterns-8",
+   "prompt": "At the 3rd term, Pattern A (add 2 from 0) is 4 and Pattern B (add 3 from 0) is 6. What is the DIFFERENCE between them?",
+   "category": "Number",
+   "explanation": "6 − 4 = 2.",
+   "level": 3,
+   "kind": "number",
+   "answer": 2
+  }
+ ],
+ "g5-twodigit": [
+  {
+   "id": "g5-twodigit-1",
+   "prompt": "252 ÷ 12 = ?",
+   "category": "Number",
+   "explanation": "252 ÷ 12 = 21.",
+   "kind": "number",
+   "answer": 21
+  },
+  {
+   "id": "g5-twodigit-2",
+   "prompt": "180 ÷ 15 = ?",
+   "category": "Number",
+   "explanation": "180 ÷ 15 = 12.",
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "g5-twodigit-3",
+   "prompt": "364 ÷ 26 = ?",
+   "category": "Number",
+   "explanation": "364 ÷ 26 = 14.",
+   "kind": "number",
+   "answer": 14
+  },
+  {
+   "id": "g5-twodigit-4",
+   "prompt": "What is 480 ÷ 24?",
+   "category": "Number",
+   "explanation": "480 ÷ 24 = 20.",
+   "kind": "choice",
+   "choices": [
+    "20",
+    "18",
+    "24",
+    "16"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-twodigit-5",
+   "prompt": "675 ÷ 27 = ?",
+   "category": "Number",
+   "explanation": "675 ÷ 27 = 25.",
+   "kind": "number",
+   "answer": 25
+  },
+  {
+   "id": "g5-twodigit-6",
+   "prompt": "A school orders 936 pencils in boxes of 24. How many boxes?",
+   "category": "Number",
+   "explanation": "936 ÷ 24 = 39 boxes.",
+   "level": 2,
+   "kind": "number",
+   "answer": 39
+  },
+  {
+   "id": "g5-twodigit-7",
+   "prompt": "812 ÷ 28 = ?",
+   "category": "Number",
+   "explanation": "812 ÷ 28 = 29.",
+   "level": 2,
+   "kind": "number",
+   "answer": 29
+  },
+  {
+   "id": "g5-twodigit-8",
+   "prompt": "A number divided by 35 gives 18 with no remainder. What is the number?",
+   "category": "Number",
+   "explanation": "18 × 35 = 630.",
+   "level": 3,
+   "kind": "number",
+   "answer": 630
+  },
+  {
+   "id": "g5-twodigit-9",
+   "prompt": "Partial Quotients lets you subtract friendly chunks of the divisor at a time, using multiples like ×10, ×20, ×50. Why is this helpful?",
+   "category": "Number",
+   "explanation": "A 'think box' of easy facts (like 17×10, 17×90) lets you chip away at the dividend using multiplication you're already confident with.",
+   "kind": "choice",
+   "choices": [
+    "It breaks a hard division into easier multiplication facts you already know",
+    "It is always faster than every other method",
+    "It only works when the numbers are even",
+    "It guarantees there is never a remainder"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-twodigit-10",
+   "prompt": "Using Partial Quotients: 1,564 ÷ 17 = ?",
+   "category": "Number",
+   "explanation": "17 × 90 = 1,530, leaving 34. Then 34 ÷ 17 = 2. Add the parts: 90 + 2 = 92.",
+   "hint": "Try subtracting 17×90 first, then see what's left.",
+   "kind": "number",
+   "answer": 92
+  },
+  {
+   "id": "g5-twodigit-11",
+   "prompt": "\"Does McDonald's Serve Burgers?\" is a mnemonic for the steps of long division. What does the S stand for?",
+   "category": "Number",
+   "explanation": "D-M-S-B = Divide, Multiply, Subtract, Bring down — the four repeating steps of long division.",
+   "kind": "choice",
+   "choices": [
+    "Solve",
+    "Sum",
+    "Subtract",
+    "Start"
+   ],
+   "answer": 2
+  },
+  {
+   "id": "g5-twodigit-12",
+   "prompt": "In that same mnemonic, what does the B stand for?",
+   "category": "Number",
+   "explanation": "After subtracting, you Bring Down the next digit and repeat the cycle: Divide, Multiply, Subtract, Bring down.",
+   "kind": "choice",
+   "choices": [
+    "Bring down",
+    "Borrow",
+    "Base",
+    "Big number"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-twodigit-13",
+   "prompt": "Using the Area Model, 918 ÷ 27 is split into 27×30 = 810 and 27×4 = 108. What is the quotient?",
+   "category": "Number",
+   "explanation": "810 uses up 30 groups of 27, and 108 uses up 4 more. Add the parts: 30 + 4 = 34, with nothing left over.",
+   "level": 2,
+   "kind": "number",
+   "answer": 34
+  },
+  {
+   "id": "g5-twodigit-14",
+   "prompt": "A bakery packs 2,845 cookies into boxes of 12. In 2,845 ÷ 12, what does the QUOTIENT represent?",
+   "category": "Number",
+   "explanation": "The quotient tells you how many complete groups (boxes) of 12 you can make from the total.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "How many cookies are left over",
+    "How many full boxes of 12 can be filled",
+    "The total number of cookies",
+    "How many bakeries there are"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "g5-twodigit-15",
+   "prompt": "Solve it: 2,845 ÷ 12 — what is the QUOTIENT?",
+   "category": "Number",
+   "explanation": "12 × 237 = 2,844, with 1 cookie left over. So the bakery fills 237 full boxes.",
+   "level": 2,
+   "kind": "number",
+   "answer": 237
+  },
+  {
+   "id": "g5-twodigit-16",
+   "prompt": "Same problem, 2,845 ÷ 12 — what is the REMAINDER, and what would the bakery need to do about it?",
+   "category": "Number",
+   "explanation": "2,845 − 2,844 = 1. That 1 leftover cookie means the bakery needs one MORE box so nothing is left behind.",
+   "level": 3,
+   "kind": "number",
+   "answer": 1
+  },
+  {
+   "id": "g5-twodigit-17",
+   "prompt": "3,520 pencils are shared equally among 24 students. How many pencils does each student get (the quotient)?",
+   "category": "Number",
+   "explanation": "24 × 146 = 3,504. Each student gets 146 pencils, with some left over.",
+   "level": 3,
+   "kind": "number",
+   "answer": 146
+  },
+  {
+   "id": "g5-twodigit-18",
+   "prompt": "A field trip has 245 students, and each bus holds 36 students. How many buses are needed so NO student is left behind?",
+   "category": "Number",
+   "explanation": "245 ÷ 36 = 6 remainder 29. Six buses only fit 216 students, leaving 29 behind — a 7th bus is needed for them. Round UP, because leftover people still need a seat.",
+   "hint": "Find the quotient and remainder first, then think about the leftover students.",
+   "level": 3,
+   "kind": "number",
+   "answer": 7
+  }
+ ],
+ "g5-fracword": [
+  {
+   "id": "g5-fracword-1",
+   "prompt": "A recipe needs 3/4 cup of flour. You want to make 1/2 the recipe. How much flour, as a decimal?",
+   "category": "Fractions",
+   "explanation": "3/4 × 1/2 = 3/8 = 0.375 cups.",
+   "kind": "number",
+   "answer": 0.375
+  },
+  {
+   "id": "g5-fracword-2",
+   "prompt": "You have 5/6 of a pizza and eat 1/3 of the whole pizza. How much is left? Type just the numerator (denominator 6).",
+   "category": "Fractions",
+   "explanation": "1/3 = 2/6, so 5/6 − 2/6 = 3/6 is left.",
+   "hint": "Turn 1/3 into sixths first.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g5-fracword-3",
+   "prompt": "A ribbon is 3/4 yard long. You cut it into pieces that are 1/8 yard each. How many pieces?",
+   "category": "Fractions",
+   "explanation": "(3/4) ÷ (1/8) = 3/4 × 8 = 6 pieces.",
+   "kind": "choice",
+   "choices": [
+    "6",
+    "3",
+    "8",
+    "4"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-fracword-4",
+   "prompt": "You walk 2/3 mile, then 1/6 mile more. How far in total? Type just the numerator (denominator 6).",
+   "category": "Fractions",
+   "explanation": "2/3 = 4/6, so 4/6 + 1/6 = 5/6 mile.",
+   "hint": "Turn 2/3 into sixths first.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g5-fracword-5",
+   "prompt": "A tank is 3/5 full. You use 1/5 of the tank. What fraction is left? Type just the numerator (denominator 5).",
+   "category": "Fractions",
+   "explanation": "3/5 − 1/5 = 2/5.",
+   "kind": "number",
+   "answer": 2
+  },
+  {
+   "id": "g5-fracword-6",
+   "prompt": "A garden is 3/4 planted. Half of the planted area is flowers. What fraction of the WHOLE garden is flowers? Type as a decimal.",
+   "category": "Fractions",
+   "explanation": "3/4 × 1/2 = 3/8 = 0.375.",
+   "level": 2,
+   "kind": "number",
+   "answer": 0.375
+  },
+  {
+   "id": "g5-fracword-7",
+   "prompt": "A recipe serves 6 people using 3/4 cup of rice. How much rice per person? Type as a decimal.",
+   "category": "Fractions",
+   "explanation": "3/4 ÷ 6 = 3/24 = 1/8 = 0.125 cups.",
+   "level": 2,
+   "kind": "number",
+   "answer": 0.125
+  },
+  {
+   "id": "g5-fracword-8",
+   "prompt": "A tank starts 1/2 full. Water equal to 1/3 of the tank's capacity is added. What fraction of the tank is now full? Type as a decimal rounded to 2 places.",
+   "category": "Fractions",
+   "explanation": "1/2 + 1/3 = 5/6 ≈ 0.83.",
+   "level": 3,
+   "kind": "number",
+   "answer": 0.83
+  }
+ ],
+ "g5-lineplot": [
+  {
+   "id": "g5-lineplot-1",
+   "prompt": "A line plot shows liquid measurements in cups: 3 X's at 1/4 cup, 2 X's at 1/2 cup. What is the TOTAL amount in cups? Type as a decimal.",
+   "category": "Measurement",
+   "explanation": "3 × 0.25 = 0.75, and 2 × 0.5 = 1. Together: 0.75 + 1 = 1.75 cups.",
+   "kind": "number",
+   "answer": 1.75
+  },
+  {
+   "id": "g5-lineplot-2",
+   "prompt": "That total of 1.75 cups is redistributed EQUALLY among the 5 data points. How much per point? Type as a decimal.",
+   "category": "Measurement",
+   "explanation": "1.75 ÷ 5 = 0.35 cups.",
+   "kind": "number",
+   "answer": 0.35
+  },
+  {
+   "id": "g5-lineplot-3",
+   "prompt": "Dividing a line plot's total amount by the number of data points gives the ___.",
+   "category": "Measurement",
+   "explanation": "That is exactly what an average (mean) is.",
+   "kind": "choice",
+   "choices": [
+    "average amount per point",
+    "biggest value",
+    "smallest value",
+    "total again"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-lineplot-4",
+   "prompt": "A line plot shows 4 X's at 1/3 cup and 2 X's at 2/3 cup. What is the total in cups? Type as a decimal, rounded to 2 places.",
+   "category": "Measurement",
+   "explanation": "4 × (1/3) + 2 × (2/3) = 4/3 + 4/3 = 8/3 ≈ 2.67 cups.",
+   "kind": "number",
+   "answer": 2.67
+  },
+  {
+   "id": "g5-lineplot-5",
+   "prompt": "Using that same plot (4 X's at 1/3 cup, 2 X's at 2/3 cup), how many data points are there?",
+   "category": "Measurement",
+   "explanation": "4 + 2 = 6 data points.",
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "g5-lineplot-6",
+   "prompt": "A line plot has 5 X's at 1/2 inch and 3 X's at 1/4 inch. What is the total length, in inches? Type as a decimal.",
+   "category": "Measurement",
+   "explanation": "5 × 0.5 = 2.5, and 3 × 0.25 = 0.75. Together: 2.5 + 0.75 = 3.25 inches.",
+   "level": 2,
+   "kind": "number",
+   "answer": 3.25
+  },
+  {
+   "id": "g5-lineplot-7",
+   "prompt": "Using that plot, how many total data points are there?",
+   "category": "Measurement",
+   "explanation": "5 + 3 = 8 data points.",
+   "level": 2,
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g5-lineplot-8",
+   "prompt": "A line plot's total is 4.5 cups across 9 equal data points. How much is each data point, in cups? Type as a decimal.",
+   "category": "Measurement",
+   "explanation": "4.5 ÷ 9 = 0.5 cups.",
+   "level": 3,
+   "kind": "number",
+   "answer": 0.5
+  }
+ ],
+ "g5-volume": [
+  {
+   "id": "g5-volume-1",
+   "prompt": "A box is 4 units long, 3 wide, and 2 tall. What is its volume in cubic units?",
+   "category": "Geometry & Measure",
+   "explanation": "4 × 3 × 2 = 24 cubic units.",
+   "kind": "number",
+   "answer": 24
+  },
+  {
+   "id": "g5-volume-2",
+   "prompt": "A cube has sides of 5 units. What is its volume?",
+   "category": "Geometry & Measure",
+   "explanation": "5 × 5 × 5 = 125 cubic units.",
+   "kind": "number",
+   "answer": 125
+  },
+  {
+   "id": "g5-volume-3",
+   "prompt": "Which formula finds the volume of a rectangular prism?",
+   "category": "Geometry & Measure",
+   "explanation": "Volume of a box is the product of all three dimensions.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "length × width × height",
+    "2 × (length + width)",
+    "length + width + height",
+    "length × width"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-volume-4",
+   "prompt": "A box has a volume of 60 cubic units, length 5 and width 4. What is its height?",
+   "category": "Geometry & Measure",
+   "explanation": "60 ÷ (5 × 4) = 60 ÷ 20 = 3.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g5-volume-5",
+   "prompt": "A box is 6 by 2 by 2. What is its volume?",
+   "category": "Geometry & Measure",
+   "explanation": "6 × 2 × 2 = 24 cubic units.",
+   "kind": "number",
+   "answer": 24
+  },
+  {
+   "id": "g5-volume-6",
+   "prompt": "Two boxes are stacked: one is 3×2×2 = 12 cubic units, the other is 4×2×2 = 16 cubic units. What is their combined volume?",
+   "category": "Geometry & Measure",
+   "explanation": "12 + 16 = 28 cubic units.",
+   "level": 2,
+   "kind": "number",
+   "answer": 28
+  },
+  {
+   "id": "g5-volume-7",
+   "prompt": "A tank holds 100 cubic units. Half of it is filled. How many cubic units of water are in it?",
+   "category": "Geometry & Measure",
+   "explanation": "100 ÷ 2 = 50 cubic units.",
+   "level": 2,
+   "kind": "number",
+   "answer": 50
+  },
+  {
+   "id": "g5-volume-8",
+   "prompt": "A rectangular prism has volume 192 cubic units. Its length is 6 and its width is twice its height. What is its height?",
+   "category": "Geometry & Measure",
+   "explanation": "6 × 2h × h = 192, so 12h² = 192, h² = 16, and h = 4.",
+   "hint": "Let the height be h, so the width is 2h.",
+   "level": 3,
+   "kind": "number",
+   "answer": 4
+  }
+ ],
+ "g5-coord": [
+  {
+   "id": "g5-coord-1",
+   "prompt": "In an ordered pair (3, 5), which number tells you how far to move ALONG the x-axis?",
+   "category": "Geometry & Measure",
+   "explanation": "The first number in an ordered pair is always the x-coordinate.",
+   "kind": "choice",
+   "choices": [
+    "3",
+    "5",
+    "Both",
+    "Neither"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-coord-2",
+   "prompt": "What is the x-coordinate of the point (7, 2)?",
+   "category": "Geometry & Measure",
+   "explanation": "The first number, 7, is the x-coordinate.",
+   "kind": "number",
+   "answer": 7
+  },
+  {
+   "id": "g5-coord-3",
+   "prompt": "What is the y-coordinate of the point (7, 2)?",
+   "category": "Geometry & Measure",
+   "explanation": "The second number, 2, is the y-coordinate.",
+   "kind": "number",
+   "answer": 2
+  },
+  {
+   "id": "g5-coord-4",
+   "prompt": "The point (0, 0) is called the ___.",
+   "category": "Geometry & Measure",
+   "explanation": "(0, 0) is always the origin, where the axes cross.",
+   "kind": "choice",
+   "choices": [
+    "origin",
+    "x-axis",
+    "y-axis",
+    "quadrant"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-coord-5",
+   "prompt": "Plot the point 4 right and 2 up from the origin. Write it as an ordered pair.",
+   "category": "Geometry & Measure",
+   "explanation": "4 right sets x = 4, and 2 up sets y = 2: (4, 2).",
+   "kind": "pair",
+   "answer": [
+    4,
+    2
+   ]
+  },
+  {
+   "id": "g5-coord-6",
+   "prompt": "A point is 3 units right and 5 units up from the origin. Write its ordered pair.",
+   "category": "Geometry & Measure",
+   "explanation": "3 right and 5 up gives (3, 5).",
+   "level": 2,
+   "kind": "pair",
+   "answer": [
+    3,
+    5
+   ]
+  },
+  {
+   "id": "g5-coord-7",
+   "prompt": "Two points share the same y-coordinate of 6. One point is (2, 6). What is the y-coordinate of the OTHER point?",
+   "category": "Geometry & Measure",
+   "explanation": "Sharing the same y-coordinate means both points have y = 6.",
+   "level": 2,
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "g5-coord-8",
+   "prompt": "A rectangle has three corners at (0, 0), (5, 0) and (5, 3). What is the 4th corner?",
+   "category": "Geometry & Measure",
+   "explanation": "The 4th corner shares its x with (0, 0) and its y with (5, 3): (0, 3).",
+   "level": 3,
+   "kind": "pair",
+   "answer": [
+    0,
+    3
+   ]
+  }
+ ],
+ "g5-hierarchy": [
+  {
+   "id": "g5-hierarchy-1",
+   "prompt": "Every square is also a ___.",
+   "category": "Geometry & Measure",
+   "explanation": "A square meets every requirement of a rectangle (4 right angles), plus more.",
+   "kind": "choice",
+   "choices": [
+    "rectangle",
+    "triangle",
+    "pentagon",
+    "circle"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-hierarchy-2",
+   "prompt": "Every rectangle is also a ___.",
+   "category": "Geometry & Measure",
+   "explanation": "A rectangle has two pairs of parallel sides, which makes it a parallelogram too.",
+   "kind": "choice",
+   "choices": [
+    "parallelogram",
+    "triangle",
+    "circle",
+    "pentagon"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-hierarchy-3",
+   "prompt": "Is every rhombus a square?",
+   "category": "Geometry & Measure",
+   "explanation": "A rhombus only needs 4 equal sides — it becomes a square only if its angles are also all right angles.",
+   "kind": "choice",
+   "choices": [
+    "No, only some are",
+    "Yes, always",
+    "No, never",
+    "Cannot tell"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-hierarchy-4",
+   "prompt": "Is every parallelogram a rectangle?",
+   "category": "Geometry & Measure",
+   "explanation": "A parallelogram only needs two pairs of parallel sides — it becomes a rectangle only with right angles too.",
+   "kind": "choice",
+   "choices": [
+    "No, only some are",
+    "Yes, always",
+    "No, never",
+    "Cannot tell"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-hierarchy-5",
+   "prompt": "Which is the MOST general category that includes squares, rectangles, and rhombuses?",
+   "category": "Geometry & Measure",
+   "explanation": "Squares, rectangles and rhombuses all have two pairs of parallel sides, making them all parallelograms.",
+   "kind": "choice",
+   "choices": [
+    "Parallelogram",
+    "Triangle",
+    "Circle",
+    "Pentagon"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-hierarchy-6",
+   "prompt": "A shape is a quadrilateral with 2 pairs of parallel sides. What MUST it be, at minimum?",
+   "category": "Geometry & Measure",
+   "explanation": "Two pairs of parallel sides is exactly the definition of a parallelogram — nothing more is guaranteed yet.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "A parallelogram",
+    "A square",
+    "A rectangle",
+    "A rhombus"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-hierarchy-7",
+   "prompt": "Which statement is TRUE?",
+   "category": "Geometry & Measure",
+   "explanation": "A square satisfies every rhombus requirement (4 equal sides) plus right angles, so it is a special rhombus.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "All squares are rhombuses, but not all rhombuses are squares",
+    "All rhombuses are squares",
+    "No squares are rhombuses",
+    "Squares and rhombuses are unrelated"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g5-hierarchy-8",
+   "prompt": "Order these from MOST specific to LEAST specific: square, quadrilateral, rectangle.",
+   "category": "Geometry & Measure",
+   "explanation": "A square is the narrowest category, a rectangle is broader, and quadrilateral is the broadest of the three.",
+   "level": 3,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "Square, rectangle, quadrilateral",
+    "Quadrilateral, rectangle, square",
+    "Rectangle, square, quadrilateral",
+    "Square, quadrilateral, rectangle"
+   ],
+   "answer": 0
+  }
+ ]
+}

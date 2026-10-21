@@ -47,6 +47,9 @@
 
 .wotd-chunks { display: flex; justify-content: center; align-items: center; gap: 4px; flex-wrap: wrap; margin: 4px 0 var(--spacing-sm); }
 .wotd-chunk {
+  /* Tap-to-hear targets a small finger can hit (44px). */
+  min-height: 44px;
+  min-width: 44px;
   border: 2px solid var(--secondary);
   background: color-mix(in srgb, var(--secondary) 12%, var(--card));
   color: var(--text);
@@ -59,8 +62,22 @@
 }
 .wotd-dash { color: var(--text-soft); font-weight: 900; }
 
-.wotd-meaning { color: var(--text); font-weight: 700; margin-bottom: 4px; }
+.wotd-line {
+  min-height: 44px;
+  display: block;
+  margin: 0 auto 4px;
+  border: none;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+.wotd-line:active { background: var(--card-soft); }
+.wotd-line-hear { font-size: 0.85rem; opacity: 0.55; }
+.wotd-meaning { color: var(--text); font-weight: 700; }
 .wotd-sentence { color: var(--text-soft); font-style: italic; margin-bottom: var(--spacing-sm); }
+.wotd-tomorrow { margin: var(--spacing-sm) 0 0; color: var(--text-soft); font-weight: 700; font-size: 0.9rem; }
 
 .wotd-facts { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin-bottom: var(--spacing-md); }
 .wotd-fact {

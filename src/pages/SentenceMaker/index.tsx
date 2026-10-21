@@ -1,10 +1,12 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAudio } from '../../contexts/AudioContext'
 import { useProgress } from '../../contexts/ProgressContext'
 import { useRewardStore } from '../../stores/rewards/useRewardStore'
 import { wordBank, Word } from '../../services/wordBank'
 import sfx from '../../components/games/shared/sfx'
+import { shuffle } from '../../components/games/shared/wordTricks'
+import Burst from '../../components/games/shared/Burst'
 import Button from '../../components/common/Button'
 import './SentenceMaker.css'
 
@@ -29,6 +31,25 @@ const fill = (template: string, picks: Word[]): string =>
     .replace('{a}', picks[0].word)
     .replace('{b}', picks[1].word)
     .replace('{c}', picks[2].word)
+
+const SLOT = { '{a}': 0, '{b}': 1, '{c}': 2 } as const
+
+/** The sentence in pieces, with the child's own words marked so they stand out. */
+const pieces = (template: string, picks: Word[]): { text: string; slot?: number }[] =>
+  template
+    .split(/(\{[abc]\})/)
+    .filter(Boolean)
+    .map((part) =>
+      part in SLOT ? { text: picks[SLOT[part as keyof typeof SLOT]].word, slot: SLOT[part as keyof typeof SLOT] } : { text: part }
+    )
+
+/** The stars for the first sentence of the day. */
+export const SENTENCE_STARS = 5
+
+const pickTemplate = (not?: string): string => {
+  const options = TEMPLATES.filter((t) => t !== not)
+  return options[Math.floor(Math.random() * options.length)]
+}
 
 const readToday = (): { date: string; made: number } => {
   try {
@@ -60,11 +81,21 @@ const SentenceMaker: React.FC = () => {
     [learningFlow]
   )
 
-  const shuffle = (arr: Word[]) => [...arr].sort(() => Math.random() - 0.5)
-
   const [picks, setPicks] = useState<Word[]>(() => shuffle(pool).slice(0, 3))
-  const [template, setTemplate] = useState(() => TEMPLATES[Math.floor(Math.random() * TEMPLATES.length)])
+  const [template, setTemplate] = useState(() => pickTemplate())
   const [today, setToday] = useState(readToday)
+  const [bonus, setBonus] = useState(0)
+  // The day's stars are paid once. The `today` state lost a race to a double
+  // tap on "Read it out loud!" (both taps read made: 0, 5 stars twice), and a
+  // page left open past midnight never paid the new day's.
+  const paidFor = useRef<string | null>(null)
+
+  // Words that arrive after the first render (a sync, a slow start) used to
+  // leave the page on "learn more words" until it was opened again.
+  useEffect(() => {
+    if (picks.length < 3 && pool.length >= 3) setPicks(shuffle(pool).slice(0, 3))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pool])
 
   const sentence = picks.length === 3 ? fill(template, picks) : ''
 
@@ -72,14 +103,20 @@ const SentenceMaker: React.FC = () => {
     sfx.pop()
     if (slot === undefined) {
       setPicks(shuffle(pool).slice(0, 3))
-      setTemplate(TEMPLATES[Math.floor(Math.random() * TEMPLATES.length)])
-    } else {
-      const options = pool.filter((w) => !picks.some((p) => p.id === w.id))
-      if (options.length === 0) return
-      const next = [...picks]
-      next[slot] = options[Math.floor(Math.random() * options.length)]
-      setPicks(next)
+      setTemplate(pickTemplate(template))
+      return
     }
+    const options = pool.filter((w) => !picks.some((p) => p.id === w.id))
+    if (options.length === 0) {
+      // Only three words so far: a tap that did nothing felt broken, so the
+      // same words go into a new silly sentence instead.
+      setTemplate(pickTemplate(template))
+      return
+    }
+    const next = [...picks]
+    next[slot] = options[Math.floor(Math.random() * options.length)]
+    setPicks(next)
+    speak(next[slot].word)
   }
 
   const readAloud = () => {
@@ -88,15 +125,19 @@ const SentenceMaker: React.FC = () => {
     sfx.correct()
 
     // The first sentence of each day earns a few stars — after that it is
-    // its own reward.
-    if (today.made === 0) {
-      const next = { date: today.date, made: 1 }
+    // its own reward. Read the day from storage, not from when the page opened.
+    const now = readToday()
+    if (now.made === 0 && paidFor.current !== now.date) {
+      paidFor.current = now.date
+      const next = { date: now.date, made: 1 }
       setToday(next)
       try { localStorage.setItem(STATE_KEY, JSON.stringify(next)) } catch { /* fine */ }
-      addStars(5)
+      addStars(SENTENCE_STARS)
+      setBonus((n) => n + 1)
+      speak(`${SENTENCE_STARS} stars for your silly sentence!`, { queue: true })
       window.dispatchEvent(new Event('show-confetti'))
     } else {
-      setToday({ ...today, made: today.made + 1 })
+      setToday({ date: now.date, made: Math.max(now.made, today.made) + 1 })
     }
   }
 
@@ -104,7 +145,7 @@ const SentenceMaker: React.FC = () => {
     return (
       <div className="sentence-page">
         <div className="sentence-header">
-          <Button variant="secondary" size="small" onClick={() => navigate('/')}>← Home</Button>
+          <Button variant="secondary" size="small" onClick={() => navigate('/spelling')}>← Spelling</Button>
           <h1>✍️ Sentence Maker</h1>
         </div>
         <p className="sentence-intro">
@@ -123,7 +164,7 @@ const SentenceMaker: React.FC = () => {
   return (
     <div className="sentence-page">
       <div className="sentence-header">
-        <Button variant="secondary" size="small" onClick={() => navigate('/')}>← Home</Button>
+        <Button variant="secondary" size="small" onClick={() => navigate('/spelling')}>← Spelling</Button>
         <h1>✍️ Sentence Maker</h1>
         <Button variant="secondary" size="small" onClick={() => navigate('/collection')}>🗂️ My Words</Button>
       </div>
@@ -134,7 +175,12 @@ const SentenceMaker: React.FC = () => {
 
       <div className="sentence-picks">
         {picks.map((w, i) => (
-          <button key={`${w.id}-${i}`} className="sentence-chip" onClick={() => reroll(i)}>
+          <button
+            key={`${w.id}-${i}`}
+            className={`sentence-chip s${i}`}
+            onClick={() => reroll(i)}
+            aria-label={`Swap ${w.word}`}
+          >
             <span className="sentence-chip-word">{w.word}</span>
             <span className="sentence-chip-swap" aria-hidden>🔄</span>
           </button>
@@ -143,8 +189,23 @@ const SentenceMaker: React.FC = () => {
 
       <div className="sentence-stage pop-in" key={sentence}>
         <div className="sentence-mascot" aria-hidden>🐝</div>
-        <p className="sentence-text">{sentence}</p>
+        <p className="sentence-text" aria-label={sentence}>
+          {pieces(template, picks).map((p, i) =>
+            p.slot === undefined ? (
+              <React.Fragment key={i}>{p.text}</React.Fragment>
+            ) : (
+              <mark key={i} className={`sentence-word s${p.slot}`}>{p.text}</mark>
+            )
+          )}
+        </p>
       </div>
+
+      {bonus > 0 && (
+        <p className="sentence-flash" role="status">
+          <Burst trigger={bonus} />
+          🌟 +{SENTENCE_STARS} stars — what a silly sentence!
+        </p>
+      )}
 
       <div className="sentence-actions">
         <Button variant="primary" size="large" icon="🔊" onClick={readAloud}>
@@ -155,7 +216,7 @@ const SentenceMaker: React.FC = () => {
         </Button>
       </div>
 
-      {today.made === 0 && (
+      {today.made === 0 && bonus === 0 && (
         <p className="sentence-bonus">✨ Your first sentence of the day earns 5 stars!</p>
       )}
     </div>

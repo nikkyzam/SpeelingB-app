@@ -15,6 +15,18 @@ const GOTD_KEY = 'game_of_day_bonus'
 
 export const GAME_STATS_EVENT = 'gameStatsUpdated'
 
+/**
+ * A medal for coming back to a game: bronze for finishing it once, silver at
+ * three plays, gold at seven. Game of the Day and the daily challenge reward
+ * trying many games; this rewards sticking with the ones a child loves — and
+ * forty-four empty medal spots are a collection worth filling.
+ */
+export type Medal = 'bronze' | 'silver' | 'gold'
+export const MEDAL_AT: Record<Medal, number> = { bronze: 1, silver: 3, gold: 7 }
+export const MEDAL_ICON: Record<Medal, string> = { bronze: '🥉', silver: '🥈', gold: '🥇' }
+export const medalFor = (plays: number): Medal | null =>
+  plays >= MEDAL_AT.gold ? 'gold' : plays >= MEDAL_AT.silver ? 'silver' : plays >= MEDAL_AT.bronze ? 'bronze' : null
+
 /** How many different games make up today's challenge. */
 export const DAILY_CHALLENGE_TARGET = 3
 /** Stars handed out for finishing it. */
@@ -28,6 +40,39 @@ export interface DailyChallenge {
 }
 
 type ScoreMap = Record<string, number>
+
+/**
+ * Games whose scoring was rebuilt, and which version of it they are on.
+ *
+ * Memory Match used to score 1,500 and now scores about 200; Balloon Pop,
+ * Spell Sprint and the Bible games were in the thousands too. An old best on
+ * the old scale could never be beaten again, so "Beat your best!" would be a
+ * promise the game can't keep. Their best is kept under `id@version` instead:
+ * the old number (and an old device that still writes one) stays under the
+ * plain id, where nothing reads it, and the first game on the new scale
+ * starts a fresh best. Bump a game's version whenever its score scale moves.
+ */
+export const SCORE_SCALES: Record<string, number> = {
+  'word-race': 2,
+  'memory-match': 2,
+  'abc-order': 2,
+  'balloon-pop': 2,
+  'spell-sprint': 2,
+  'word-scramble': 2,
+  'spelling-adventure': 2,
+  'bible-trivia': 2,
+  'bible-memorizer': 2,
+}
+
+/** Where a game's best lives in the saved map. */
+export const bestKey = (gameId: string): string =>
+  SCORE_SCALES[gameId] ? `${gameId}@${SCORE_SCALES[gameId]}` : gameId
+
+/** A game's best on its current scale, from a saved map of bests. */
+export const bestOf = (bests: Readonly<ScoreMap>, gameId: string): number => {
+  const best = bests[bestKey(gameId)]
+  return typeof best === 'number' && Number.isFinite(best) ? best : 0
+}
 
 const read = <T,>(key: string, fallback: T): T => {
   try {
@@ -58,15 +103,29 @@ export interface ScoreResult {
 
 export const GameStats = {
   getBest(gameId: string): number {
-    return read<ScoreMap>(BEST_KEY, {})[gameId] || 0
+    return bestOf(read<ScoreMap>(BEST_KEY, {}), gameId)
   },
 
+  /** Every game's best on its current scale, keyed by game id. */
   getAllBests(): ScoreMap {
-    return read<ScoreMap>(BEST_KEY, {})
+    const saved = read<ScoreMap>(BEST_KEY, {})
+    const out: ScoreMap = {}
+    for (const [key, best] of Object.entries(saved)) {
+      if (!key.includes('@') && !SCORE_SCALES[key]) out[key] = best
+    }
+    for (const gameId of Object.keys(SCORE_SCALES)) {
+      const best = bestOf(saved, gameId)
+      if (best > 0) out[gameId] = best
+    }
+    return out
   },
 
   getPlays(gameId: string): number {
     return read<ScoreMap>(PLAYS_KEY, {})[gameId] || 0
+  },
+
+  getAllPlays(): ScoreMap {
+    return read<ScoreMap>(PLAYS_KEY, {})
   },
 
   getTotalPlays(): number {
@@ -78,12 +137,12 @@ export const GameStats = {
     const bests = read<ScoreMap>(BEST_KEY, {})
     const plays = read<ScoreMap>(PLAYS_KEY, {})
 
-    const previous = bests[gameId] || 0
+    const previous = bestOf(bests, gameId)
     // A first play only counts as a "best" if it actually scored something —
     // otherwise quitting a game instantly would pop a celebration.
     const isNewBest = score > previous && score > 0
 
-    if (isNewBest) bests[gameId] = score
+    if (isNewBest) bests[bestKey(gameId)] = score
     plays[gameId] = (plays[gameId] || 0) + 1
 
     write(BEST_KEY, bests)

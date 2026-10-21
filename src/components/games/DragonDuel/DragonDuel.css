@@ -44,6 +44,18 @@
 }
 .dd-dragon.struck { animation: shake 0.45s; }
 .dd-dragon.tamed { animation: pulse 0.9s infinite; }
+.dd-dragon.sleepy { animation: dd-doze 2.4s ease-in-out infinite; }
+@keyframes dd-doze {
+  0%, 100% { transform: translateY(0) rotate(-4deg) scale(1); }
+  50%      { transform: translateY(4px) rotate(-6deg) scale(0.97); }
+}
+.dd-zzz {
+  position: absolute;
+  top: -6px;
+  right: -30px;
+  font-size: 1.6rem;
+  animation: dd-float-up 2s ease-out infinite;
+}
 
 .dd-damage {
   position: absolute;
@@ -113,9 +125,9 @@
   color: var(--text);
 }
 .dd-message.hit { background: color-mix(in srgb, var(--success) 20%, transparent); }
-.dd-message.burned { background: color-mix(in srgb, var(--error) 18%, transparent); }
+.dd-message.burned { background: color-mix(in srgb, var(--warning) 20%, transparent); }
 .dd-message.won { background: linear-gradient(90deg, var(--success), var(--secondary-2)); color: #fff; animation: pop-in var(--transition-normal) both; }
-.dd-message.lost { background: var(--card-soft); border: 2px dashed var(--border); }
+.dd-message.sleepy { background: linear-gradient(90deg, color-mix(in srgb, var(--secondary) 30%, var(--card-soft)), var(--card-soft)); border: 2px dashed var(--secondary); animation: pop-in var(--transition-normal) both; }
 
 .dd-blanks { display: flex; justify-content: center; gap: 8px; margin-bottom: var(--spacing-md); flex-wrap: wrap; }
 .dd-blank {
@@ -144,7 +156,7 @@
 }
 .dd-input:focus { outline: none; border-color: var(--primary); }
 .dd-input.ok { border-color: var(--success); background: rgba(47, 191, 113, 0.15); }
-.dd-input.bad { border-color: var(--error); background: rgba(239, 71, 111, 0.12); animation: shake 0.4s; }
+.dd-input.bad { border-color: var(--warning); color: var(--primary-2); animation: shake 0.4s; }
 
 .dd-btn {
   border: none;
@@ -162,9 +174,23 @@
 .dd-btn:active:not(:disabled) { transform: translateY(3px); box-shadow: none; }
 .dd-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
-.dd-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
 
 @media (max-width: 520px) {
   .dd-header { flex-direction: column; align-items: stretch; }
   .dd-stats { justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dd-dragon,
+  .dd-dragon.struck,
+  .dd-dragon.tamed,
+  .dd-dragon.sleepy,
+  .dd-damage,
+  .dd-fire,
+  .dd-zzz,
+  .dd-input.bad,
+  .dd-message.won,
+  .dd-message.sleepy { animation: none; }
+  .dd-hp-fill { transition: none; }
+  .dd-btn:active:not(:disabled) { transform: none; }
 }

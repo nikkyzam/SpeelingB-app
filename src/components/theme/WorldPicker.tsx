@@ -78,7 +78,7 @@ export const WorldPickerModal: React.FC<{ open: boolean; onClose: () => void }> 
         <div className="world-picker-modal__welcome">
           <span className="world-picker-modal__wave wiggle" aria-hidden>👋</span>
           <h1>Welcome!</h1>
-          <p>Let&apos;s make this <strong>your</strong> spelling world.</p>
+          <p>Let&apos;s make this <strong>your</strong> world.</p>
         </div>
         <WorldPicker showTitle={false} onPicked={onClose} />
       </div>

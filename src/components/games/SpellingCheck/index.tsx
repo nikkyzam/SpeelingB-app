@@ -1,6 +1,14 @@
-import React, { useMemo, useState, useEffect } from 'react'
+import React, { useMemo, useState, useEffect, useRef } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
+import { shuffle, isPlayable, likelySlips } from '../shared/wordTricks'
+import { fakeSpelling, isRealWord } from '../shared/realWords'
+import { maskClue } from '../shared/clues'
+import { useCheer } from '../shared/useCheer'
+import { useLater } from '../shared/useLater'
+import { spellOut } from '../../../services/words/praise'
+import Burst from '../shared/Burst'
+import GameEmpty from '../shared/GameEmpty'
 import './SpellingCheck.css'
 
 interface SpellingCheckProps {
@@ -9,117 +17,141 @@ interface SpellingCheckProps {
   rounds?: number
 }
 
-const VOWELS = 'aeiou'
-const shuffle = <T,>(a: T[]): T[] => {
-  const arr = [...a]
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[arr[i], arr[j]] = [arr[j], arr[i]]
+const HIT_MS = 1400
+/** Long enough to read the right spelling and hear it spelled out. */
+const MISS_MS = 2400
+
+/**
+ * Misspellings a child would really write: one letter swapped for the letter
+ * a speller reaches for there (half of a double dropped, a false double, a
+ * sound-alike). The first letter is left alone — "ccat" or "kcat" was spotted
+ * by its shape alone, without reading the word at all.
+ */
+export const slipSpellings = (word: string): string[] => {
+  const w = word.toLowerCase()
+  const out = new Set<string>()
+  for (let i = 1; i < w.length; i++) {
+    // Half of a double left out: "balon" for "balloon".
+    if (w[i] === w[i - 1]) out.add(w.slice(0, i) + w.slice(i + 1))
+    for (const slip of likelySlips(w, i).slice(0, 2)) out.add(w.slice(0, i) + slip + w.slice(i + 1))
   }
-  return arr
+  out.delete(w)
+  return [...out]
 }
 
-/** Make a plausible misspelling of a word (swap, double, drop, or vowel-swap). */
-const misspell = (w: string): string => {
-  const opts: string[] = []
-  if (w.length > 2) {
-    const i = 1 + Math.floor(Math.random() * (w.length - 2))
-    opts.push(w.slice(0, i) + w[i + 1] + w[i] + w.slice(i + 2)) // swap adjacent
+/**
+ * The right spelling plus three that look right and aren't words: a
+ * "misspelling" that is really another word ("from" for "form") would teach a
+ * child that a correct spelling is wrong.
+ */
+export const buildOptions = (word: string, isWord: (text: string) => boolean = isRealWord): string[] => {
+  const w = word.toLowerCase()
+  const fakes = new Set<string>()
+  for (const s of shuffle(slipSpellings(w))) {
+    if (fakes.size >= 3) break
+    if (!isWord(s)) fakes.add(s)
   }
-  {
-    const i = Math.floor(Math.random() * w.length)
-    opts.push(w.slice(0, i) + w[i] + w.slice(i)) // double a letter
-  }
-  if (w.length > 3) {
-    const i = 1 + Math.floor(Math.random() * (w.length - 2))
-    opts.push(w.slice(0, i) + w.slice(i + 1)) // drop a letter
-  }
-  const vowelIdx = [...w].map((c, i) => (VOWELS.includes(c) ? i : -1)).filter((i) => i >= 0)
-  if (vowelIdx.length) {
-    const i = vowelIdx[Math.floor(Math.random() * vowelIdx.length)]
-    let v = VOWELS[Math.floor(Math.random() * VOWELS.length)]
-    while (v === w[i]) v = VOWELS[Math.floor(Math.random() * VOWELS.length)]
-    opts.push(w.slice(0, i) + v + w.slice(i + 1))
-  }
-  const cand = opts.filter((s) => s && s !== w)
-  return cand.length ? cand[Math.floor(Math.random() * cand.length)] : w + w.slice(-1)
-}
-
-const buildOptions = (word: string): string[] => {
-  const set = new Set<string>([word])
   let guard = 0
-  while (set.size < 4 && guard++ < 30) set.add(misspell(word))
-  return shuffle([...set])
+  while (fakes.size < 3 && guard++ < 20) {
+    const f = fakeSpelling(w, isWord)
+    if (f !== w) fakes.add(f)
+  }
+  return shuffle([w, ...fakes])
 }
 
 /** Hear the word, then tap the correctly-spelled version. */
 const SpellingCheck: React.FC<SpellingCheckProps> = ({ onComplete, words: providedWords, rounds = 6 }) => {
   const { speak } = useAudio()
+  const cheer = useCheer()
+  const later = useLater()
 
   const roundWords = useMemo<Word[]>(() => {
     const pool = providedWords && providedWords.length > 0 ? providedWords : []
-    return shuffle(pool).filter((w) => w.word.length >= 3).slice(0, rounds)
+    return shuffle(pool).filter((w) => isPlayable(w, 3)).slice(0, rounds)
   }, [providedWords, rounds])
 
   const [index, setIndex] = useState(0)
   const [score, setScore] = useState(0)
   const [streak, setStreak] = useState(0)
   const [picked, setPicked] = useState<string | null>(null)
+  const [line, setLine] = useState('')
+  const [hits, setHits] = useState(0)
+  const settled = useRef(false)
 
   const current = roundWords[index]
   const answer = (current?.word || '').toLowerCase()
   const options = useMemo(() => (answer ? buildOptions(answer) : []), [answer])
+  const clue = useMemo(
+    () => (current ? maskClue((current.meaning || '').split(/[.;]/)[0].trim(), answer) : ''),
+    [current, answer]
+  )
 
   useEffect(() => {
-    if (current) speak(current.word)
+    if (current) speak(current.word, { queue: index > 0 })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, roundWords])
 
-  if (!current) return <div className="spelling-check"><p>Loading…</p></div>
+  // Cleared in the same step as moving on, so the next word's first frame
+  // never shows the last verdict (it would mark the new answer).
+  const nextWord = () => {
+    settled.current = false
+    setPicked(null)
+    setLine('')
+    setIndex((i) => i + 1)
+  }
+
+  if (!current) {
+    return (
+      <div className="spelling-check">
+        <GameEmpty icon="🔍">No words to check yet — learn a few, then come back and spot the right spellings!</GameEmpty>
+      </div>
+    )
+  }
 
   const pick = (opt: string) => {
-    if (picked) return
+    if (settled.current) return
+    settled.current = true
     setPicked(opt)
     const correct = opt === answer
+    const gained = correct ? 15 + streak * 3 : 0
     if (correct) {
-      setScore((s) => s + 15 + streak * 3)
+      setScore((s) => s + gained)
       setStreak((s) => s + 1)
-      speak('Correct!')
+      setHits((h) => h + 1)
+      setLine(cheer.hit({ say: current.word }))
     } else {
       setStreak(0)
-      speak(`It is spelled ${answer}`)
+      setLine(cheer.miss({ say: `It's spelled ${spellOut(answer)}.` }))
     }
-    setTimeout(() => {
-      if (index < roundWords.length - 1) {
-        setIndex((i) => i + 1)
-        setPicked(null)
-      } else {
-        onComplete(score + (correct ? 15 + streak * 3 : 0))
-      }
-    }, 1100)
+    later(() => {
+      if (index < roundWords.length - 1) nextWord()
+      else onComplete(score + gained)
+    }, correct ? HIT_MS : MISS_MS)
   }
+
+  const right = picked === answer
 
   return (
     <div className="spelling-check">
-      <div className="sc-header">
-        <div className="sc-title">🔍 Spelling Check</div>
-        <div className="sc-stats">
-          <div className="sc-stat"><span>Word</span><strong>{index + 1}/{roundWords.length}</strong></div>
-          <div className="sc-stat"><span>Score</span><strong>{score}</strong></div>
-          <div className="sc-stat"><span>Streak</span><strong>🔥 {streak}</strong></div>
+      <div className="sck-header">
+        <div className="sck-title">🔍 Spelling Check</div>
+        <div className="sck-stats">
+          <div className="sck-stat"><span>Word</span><strong>{index + 1}/{roundWords.length}</strong></div>
+          <div className="sck-stat"><span>Score</span><strong>{score}</strong></div>
+          <div className="sck-stat"><span>Streak</span><strong>🔥 {streak}</strong></div>
         </div>
       </div>
 
-      <p className="sc-question">Which spelling is correct?</p>
-      <button className="sc-hear" onClick={() => speak(current.word)}>🔊 Hear the word</button>
-      <p className="sc-clue">Clue: {current.meaning.split('.')[0]}</p>
+      <p className="sck-question">Which spelling is right?</p>
+      <button className="sck-hear" onClick={() => speak(current.word)}>🔊 Hear it again</button>
+      {clue && <p className="sck-clue">Clue: {clue}</p>}
 
-      <div className="sc-options">
+      <div className="sck-options">
         {options.map((opt) => {
-          let cls = 'sc-option'
+          let cls = 'sck-option'
           if (picked) {
             if (opt === answer) cls += ' correct'
-            else if (opt === picked) cls += ' wrong'
+            else if (opt === picked) cls += ' missed'
           }
           return (
             <button key={opt} className={cls} onClick={() => pick(opt)} disabled={!!picked}>
@@ -130,8 +162,15 @@ const SpellingCheck: React.FC<SpellingCheckProps> = ({ onComplete, words: provid
       </div>
 
       {picked && (
-        <div className={`sc-flash ${picked === answer ? 'ok' : 'bad'}`}>
-          {picked === answer ? 'Correct! 🎉' : `It's spelled "${answer}"`}
+        <div className={`sck-flash ${right ? 'ok' : 'bad'}`} role="status">
+          {right ? (
+            <>
+              {line} 🎉
+              <Burst trigger={hits} />
+            </>
+          ) : (
+            <>It’s spelled “{answer}” — you’ll get the next one! 💪</>
+          )}
         </div>
       )}
     </div>

@@ -27,6 +27,7 @@
 .wf-stat strong { font-size: 1.15rem; color: var(--text); }
 
 .wf-target {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: baseline;
@@ -47,6 +48,9 @@
 
 .wf-hint { color: var(--text-soft); font-weight: 600; margin: var(--spacing-sm) 0 var(--spacing-md); }
 .wf-speak {
+  /* A finger-sized target for a small child (44px). */
+  min-width: 44px;
+  min-height: 44px;
   margin-left: 8px;
   border: 2px solid var(--border);
   background: var(--card-soft);
@@ -128,7 +132,9 @@
 .wf-fish.hooked { animation-play-state: paused; z-index: 4; }
 .wf-fish.hooked .wf-fish-body { background: var(--success); color: #fff; animation: pulse 0.6s 2; }
 .wf-fish.swim-away { opacity: 0.35; }
-.wf-fish.splash .wf-fish-body { animation: shake 0.5s; }
+/* A fish that didn't fit wobbles and fades off — no alarm, one less to try. */
+.wf-fish.splash { opacity: 0.3; cursor: default; }
+.wf-fish.splash .wf-fish-body { animation: shake 0.5s; filter: grayscale(0.6); }
 
 .wf-flash,
 .wf-nudge {
@@ -141,22 +147,22 @@
 }
 .wf-flash { background: linear-gradient(90deg, var(--success), #4EF4C5); color: #fff; }
 .wf-nudge { background: var(--card-soft); border: 2px dashed var(--border); color: var(--text-soft); }
+.wf-nudge.shown { border: 2px solid var(--secondary); color: var(--text); }
 
-.wf-btn {
-  border: none;
-  cursor: pointer;
-  font-family: var(--font-primary);
-  font-weight: 800;
-  color: #fff;
-  background: linear-gradient(180deg, var(--primary), var(--primary-2));
-  border-radius: var(--radius-round);
-  padding: 0.7rem 1.4rem;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
-}
-.wf-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }
 
 @media (max-width: 520px) {
   .wf-header { flex-direction: column; align-items: stretch; }
   .wf-stats { justify-content: center; }
   .wf-pond { height: 230px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Fish hold still, spread across the pond, instead of piling up at the edge. */
+  .wf-fish { left: var(--wf-rest, 10%); }
+  .wf-fish,
+  .wf-water,
+  .wf-fish-body,
+  .wf-gap.filled,
+  .wf-flash,
+  .wf-nudge { animation: none; }
 }

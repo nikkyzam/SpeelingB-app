@@ -1,0 +1,1804 @@
+{
+ "g3-mult": [
+  {
+   "id": "g3-mult-1",
+   "prompt": "6 × 4 = ?",
+   "category": "Number",
+   "explanation": "6 × 4 = 24.",
+   "hint": "Six groups of four.",
+   "kind": "number",
+   "answer": 24
+  },
+  {
+   "id": "g3-mult-2",
+   "prompt": "7 × 8 = ?",
+   "category": "Number",
+   "explanation": "7 × 8 = 56.",
+   "kind": "number",
+   "answer": 56
+  },
+  {
+   "id": "g3-mult-3",
+   "prompt": "9 × 3 = ?",
+   "category": "Number",
+   "explanation": "9 × 3 = 27.",
+   "kind": "number",
+   "answer": 27
+  },
+  {
+   "id": "g3-mult-4",
+   "prompt": "Which is the same as 5 × 6?",
+   "category": "Number",
+   "explanation": "Multiplication can be done in either order, so 5 × 6 = 6 × 5 = 30.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "6 × 5",
+    "5 + 6",
+    "6 + 6",
+    "5 × 5"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-mult-5",
+   "prompt": "A spider has 8 legs. How many legs do 4 spiders have?",
+   "category": "Number",
+   "explanation": "4 × 8 = 32 legs.",
+   "kind": "number",
+   "answer": 32
+  },
+  {
+   "id": "g3-mult-6",
+   "prompt": "8 × 7 = ?",
+   "category": "Number",
+   "explanation": "8 × 7 = 56 — the same product as 7 × 8, just the other way round.",
+   "hint": "It is the same as 7 × 8.",
+   "level": 2,
+   "kind": "number",
+   "answer": 56
+  },
+  {
+   "id": "g3-mult-7",
+   "prompt": "Select EVERY expression equal to 24.",
+   "category": "Number",
+   "explanation": "6 × 4, 3 × 8 and 12 × 2 all make 24. 5 × 5 is 25.",
+   "level": 2,
+   "kind": "multi",
+   "choices": [
+    "6 × 4",
+    "3 × 8",
+    "12 × 2",
+    "5 × 5"
+   ],
+   "answers": [
+    0,
+    1,
+    2
+   ]
+  },
+  {
+   "id": "g3-mult-8",
+   "prompt": "What is 4 × 25?",
+   "category": "Number",
+   "explanation": "25 four times is 100 — like four 25p coins making £1.",
+   "hint": "Think of quarters of a hundred.",
+   "level": 2,
+   "kind": "number",
+   "answer": 100
+  },
+  {
+   "id": "g3-mult-9",
+   "prompt": "A room has 6 rows of 7 chairs. If 5 chairs are removed, how many remain?",
+   "category": "Number",
+   "explanation": "6 × 7 = 42 chairs, minus 5 removed leaves 37.",
+   "hint": "Find the total first.",
+   "level": 3,
+   "kind": "number",
+   "answer": 37
+  },
+  {
+   "id": "g3-mult-10",
+   "prompt": "What is the 8th number in the pattern 3, 6, 9, 12, ...?",
+   "category": "Number",
+   "explanation": "The pattern is multiples of 3, so the 8th is 8 × 3 = 24.",
+   "hint": "It counts up in threes.",
+   "level": 3,
+   "kind": "number",
+   "answer": 24
+  }
+ ],
+ "g3-fracnum": [
+  {
+   "id": "g3-fracnum-1",
+   "prompt": "A pizza is cut into 4 equal slices and you eat 1. What fraction did you eat?",
+   "category": "Fractions",
+   "explanation": "One slice out of four equal slices is 1/4.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "1/4",
+    "1/3",
+    "4/1",
+    "3/4"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-fracnum-2",
+   "prompt": "Which fraction is the largest?",
+   "category": "Fractions",
+   "explanation": "The more pieces you cut something into, the smaller each piece. Halves are the biggest here.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "1/2",
+    "1/3",
+    "1/4",
+    "1/8"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-fracnum-3",
+   "prompt": "How many quarters make one whole?",
+   "category": "Fractions",
+   "explanation": "Four quarters make a whole: 1/4 + 1/4 + 1/4 + 1/4 = 1.",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "g3-fracnum-4",
+   "prompt": "Which is the same as 2/4?",
+   "category": "Fractions",
+   "explanation": "Two quarters is the same amount as one half.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "1/2",
+    "1/4",
+    "3/4",
+    "2/2"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-fracnum-5",
+   "prompt": "Put these fractions in order, smallest first.",
+   "category": "Fractions",
+   "explanation": "With a numerator of 1, the bigger the bottom number the smaller the fraction.",
+   "level": 2,
+   "kind": "order",
+   "items": [
+    "1/8",
+    "1/4",
+    "1/3",
+    "1/2"
+   ]
+  },
+  {
+   "id": "g3-fracnum-6",
+   "prompt": "Which fraction is closest to 1 whole?",
+   "category": "Fractions",
+   "explanation": "7/8 is only 1/8 short of a whole, closer than the others.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "7/8",
+    "1/2",
+    "3/4",
+    "2/3"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-fracnum-7",
+   "prompt": "Three friends share 2 pizzas equally. What fraction of a pizza does each get? Type the bottom number of the fraction.",
+   "category": "Fractions",
+   "explanation": "Each pizza splits into thirds, so each friend gets 2/3 of a pizza. The bottom number is 3.",
+   "hint": "Each pizza is split three ways.",
+   "level": 3,
+   "kind": "number",
+   "answer": 3
+  }
+ ],
+ "g3-area": [
+  {
+   "id": "g3-area-1",
+   "prompt": "A rectangle is 5 squares long and 3 squares wide. What is its area in square units?",
+   "category": "Geometry & Measure",
+   "explanation": "Area = 5 × 3 = 15 square units.",
+   "hint": "Count the squares, or multiply.",
+   "kind": "number",
+   "answer": 15
+  },
+  {
+   "id": "g3-area-2",
+   "prompt": "A square has sides of 4 units. What is its area in square units?",
+   "category": "Geometry & Measure",
+   "explanation": "A square's sides are equal, so area = 4 × 4 = 16 square units.",
+   "kind": "number",
+   "answer": 16
+  },
+  {
+   "id": "g3-area-3",
+   "prompt": "What does area measure?",
+   "category": "Geometry & Measure",
+   "explanation": "Area is the space inside. The distance around the outside is the perimeter.",
+   "kind": "choice",
+   "choices": [
+    "The space inside a shape",
+    "The distance around a shape",
+    "The number of corners",
+    "The longest side"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-area-4",
+   "prompt": "A rectangle has an area of 24 square units and is 6 units long. How wide is it?",
+   "category": "Geometry & Measure",
+   "explanation": "6 × 4 = 24, so the width is 4 units.",
+   "hint": "What times 6 makes 24?",
+   "level": 2,
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "g3-area-5",
+   "prompt": "An L-shape is made from a 3 by 2 rectangle joined to a 2 by 2 square. What is the total area in square units?",
+   "category": "Geometry & Measure",
+   "explanation": "The rectangle is 3 × 2 = 6 and the square is 2 × 2 = 4. Together 6 + 4 = 10 square units.",
+   "hint": "Work out each piece, then add.",
+   "level": 2,
+   "kind": "number",
+   "answer": 10
+  },
+  {
+   "id": "g3-area-6",
+   "prompt": "A rectangle has an area of 36 square units and a perimeter of 26 units. What is its longer side?",
+   "category": "Geometry & Measure",
+   "explanation": "Half the perimeter is 13, so the sides add to 13 and multiply to 36. That is 9 and 4, so the longer side is 9.",
+   "hint": "Which pair multiplies to 36 and adds to 13?",
+   "level": 3,
+   "kind": "number",
+   "answer": 9
+  }
+ ],
+ "g3-div": [
+  {
+   "id": "g3-div-1",
+   "prompt": "24 ÷ 6 = ?",
+   "category": "Number",
+   "explanation": "24 ÷ 6 = 4.",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "g3-div-2",
+   "prompt": "35 ÷ 5 = ?",
+   "category": "Number",
+   "explanation": "35 ÷ 5 = 7.",
+   "kind": "number",
+   "answer": 7
+  },
+  {
+   "id": "g3-div-3",
+   "prompt": "Which division matches: 'sharing 18 stickers equally among 3 friends'?",
+   "category": "Number",
+   "explanation": "Sharing equally among 3 means dividing by 3: 18 ÷ 3 = 6 stickers each.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "18 ÷ 3",
+    "3 ÷ 18",
+    "18 × 3",
+    "18 − 3"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-div-4",
+   "prompt": "42 ÷ 7 = ?",
+   "category": "Number",
+   "explanation": "42 ÷ 7 = 6.",
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "g3-div-5",
+   "prompt": "A box has 48 pencils split evenly into 6 packs. How many pencils per pack?",
+   "category": "Number",
+   "explanation": "48 ÷ 6 = 8 pencils per pack.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g3-div-6",
+   "prompt": "56 ÷ 8 = ?",
+   "category": "Number",
+   "explanation": "56 ÷ 8 = 7.",
+   "level": 2,
+   "kind": "number",
+   "answer": 7
+  },
+  {
+   "id": "g3-div-7",
+   "prompt": "Which multiplication fact matches 45 ÷ 9 = 5?",
+   "category": "Number",
+   "explanation": "Division undoes multiplication: 45 ÷ 9 = 5 because 9 × 5 = 45.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "9 × 5 = 45",
+    "45 × 9 = 405",
+    "9 − 5 = 4",
+    "45 + 9 = 54"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-div-8",
+   "prompt": "A number divided by 6 gives 9 with none left over. What is the number?",
+   "category": "Number",
+   "explanation": "9 × 6 = 54.",
+   "hint": "Multiply to undo the division.",
+   "level": 3,
+   "kind": "number",
+   "answer": 54
+  }
+ ],
+ "g3-round": [
+  {
+   "id": "g3-round-1",
+   "prompt": "Round 47 to the nearest ten.",
+   "category": "Number",
+   "explanation": "47 is closer to 50 than to 40.",
+   "kind": "number",
+   "answer": 50
+  },
+  {
+   "id": "g3-round-2",
+   "prompt": "Round 82 to the nearest ten.",
+   "category": "Number",
+   "explanation": "82 is closer to 80 than to 90.",
+   "kind": "number",
+   "answer": 80
+  },
+  {
+   "id": "g3-round-3",
+   "prompt": "Round 350 to the nearest hundred.",
+   "category": "Number",
+   "explanation": "Halfway points round up, so 350 rounds to 400.",
+   "hint": "350 is exactly halfway — round up.",
+   "kind": "number",
+   "answer": 400
+  },
+  {
+   "id": "g3-round-4",
+   "prompt": "Round 125 to the nearest ten.",
+   "category": "Number",
+   "explanation": "125 is halfway between 120 and 130, and halfway points round up: 130.",
+   "kind": "choice",
+   "choices": [
+    "130",
+    "120",
+    "100",
+    "200"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-round-5",
+   "prompt": "Round 999 to the nearest hundred.",
+   "category": "Number",
+   "explanation": "999 is only 1 away from 1000, so it rounds up to 1000.",
+   "kind": "number",
+   "answer": 1000
+  },
+  {
+   "id": "g3-round-6",
+   "prompt": "A number rounds to 400 when rounded to the nearest hundred. What is the SMALLEST whole number it could be?",
+   "category": "Number",
+   "explanation": "350 is the smallest number that rounds up to 400.",
+   "hint": "Halfway points round up.",
+   "level": 2,
+   "kind": "number",
+   "answer": 350
+  },
+  {
+   "id": "g3-round-7",
+   "prompt": "Round 3,462 to the nearest hundred.",
+   "category": "Number",
+   "explanation": "The tens digit is 6, which rounds up: 3,462 rounds to 3,500.",
+   "level": 2,
+   "kind": "number",
+   "answer": 3500
+  },
+  {
+   "id": "g3-round-8",
+   "prompt": "Which number rounds to 60 (nearest ten) AND to 100 (nearest hundred)?",
+   "category": "Number",
+   "explanation": "64 rounds to 60 (nearest ten) and to 100 (nearest hundred, since it is closer to 100 than to 0). The others fail one test or the other.",
+   "level": 3,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "64",
+    "52",
+    "65",
+    "46"
+   ],
+   "answer": 0
+  }
+ ],
+ "g3-fraccomp": [
+  {
+   "id": "g3-fraccomp-1",
+   "prompt": "Which is greater: 3/4 or 1/4?",
+   "category": "Fractions",
+   "explanation": "With the same denominator, more pieces means a greater fraction: 3/4 > 1/4.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "3/4",
+    "1/4",
+    "They are equal",
+    "Cannot compare"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-fraccomp-2",
+   "prompt": "Which symbol makes this true?  2/3 ◯ 2/5",
+   "category": "Fractions",
+   "explanation": "Same numerator, so fewer pieces (thirds) means each piece is bigger: 2/3 > 2/5.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    ">",
+    "<",
+    "="
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-fraccomp-3",
+   "prompt": "Which is smaller: 1/6 or 1/3?",
+   "category": "Fractions",
+   "explanation": "Cutting something into 6 pieces makes each piece smaller than cutting it into 3.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "1/6",
+    "1/3",
+    "They are equal",
+    "Cannot compare"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-fraccomp-4",
+   "prompt": "Order from smallest to largest.",
+   "category": "Fractions",
+   "explanation": "With numerator 1, the bigger the bottom number, the smaller the fraction.",
+   "kind": "order",
+   "items": [
+    "1/8",
+    "1/4",
+    "1/2"
+   ]
+  },
+  {
+   "id": "g3-fraccomp-5",
+   "prompt": "Which symbol makes this true?  5/6 ◯ 5/8",
+   "category": "Fractions",
+   "explanation": "Same numerator, and sixths are bigger pieces than eighths: 5/6 > 5/8.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    ">",
+    "<",
+    "="
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-fraccomp-6",
+   "prompt": "Which is greater: 3/8 or 1/2?",
+   "category": "Fractions",
+   "explanation": "1/2 = 4/8, and 4/8 > 3/8.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "1/2",
+    "3/8",
+    "They are equal",
+    "Cannot compare"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-fraccomp-7",
+   "prompt": "Which symbol makes this true?  2/3 ◯ 3/4",
+   "category": "Fractions",
+   "explanation": "Using twelfths: 2/3 = 8/12 and 3/4 = 9/12, so 2/3 < 3/4.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "<",
+    ">",
+    "="
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-fraccomp-8",
+   "prompt": "Order from LARGEST to smallest:  5/6,  2/3,  3/4",
+   "category": "Fractions",
+   "explanation": "As decimals: 5/6 ≈ 0.83, 3/4 = 0.75, 2/3 ≈ 0.67 — so 5/6, 3/4, 2/3.",
+   "level": 3,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "5/6, 3/4, 2/3",
+    "2/3, 3/4, 5/6",
+    "3/4, 5/6, 2/3",
+    "5/6, 2/3, 3/4"
+   ],
+   "answer": 0
+  }
+ ],
+ "g3-timemin": [
+  {
+   "id": "g3-timemin-1",
+   "prompt": "A clock shows 4:37. How many minutes until 4:45?",
+   "category": "Measurement",
+   "explanation": "45 − 37 = 8 minutes.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g3-timemin-2",
+   "prompt": "A movie starts at 2:50 and ends at 3:15. How many minutes long is it?",
+   "category": "Measurement",
+   "explanation": "2:50 to 3:00 is 10 minutes, then 3:00 to 3:15 is 15 more: 10 + 15 = 25.",
+   "hint": "Count to the hour first, then the rest.",
+   "kind": "number",
+   "answer": 25
+  },
+  {
+   "id": "g3-timemin-3",
+   "prompt": "Which time is 20 minutes after 5:45?",
+   "category": "Measurement",
+   "explanation": "45 + 20 = 65 minutes, which is 1 hour 5 minutes past 5:00: 6:05.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "6:05",
+    "5:65",
+    "6:25",
+    "5:20"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-timemin-4",
+   "prompt": "A train leaves at 9:05 and arrives at 9:48. How many minutes is the trip?",
+   "category": "Measurement",
+   "explanation": "48 − 5 = 43 minutes.",
+   "kind": "number",
+   "answer": 43
+  },
+  {
+   "id": "g3-timemin-5",
+   "prompt": "It is 11:52. What time will it be in 10 minutes?",
+   "category": "Measurement",
+   "explanation": "52 + 10 = 62 minutes, which rolls over to 12:02.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "12:02",
+    "11:62",
+    "12:00",
+    "11:42"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-timemin-6",
+   "prompt": "A recipe takes 55 minutes and starts at 3:20. How many minutes PAST 4:00 does it finish?",
+   "category": "Measurement",
+   "explanation": "3:20 + 55 minutes = 4:15, which is 15 minutes past 4:00.",
+   "hint": "Work out the finishing time first.",
+   "level": 2,
+   "kind": "number",
+   "answer": 15
+  },
+  {
+   "id": "g3-timemin-7",
+   "prompt": "Two classes are 42 minutes and 38 minutes long, back to back with no break. What is the total time, in minutes?",
+   "category": "Measurement",
+   "explanation": "42 + 38 = 80 minutes.",
+   "level": 2,
+   "kind": "number",
+   "answer": 80
+  },
+  {
+   "id": "g3-timemin-8",
+   "prompt": "A bus is scheduled for 8:15 but leaves 12 minutes late, then takes 53 minutes to arrive. How many minutes after 8:15 does it arrive?",
+   "category": "Measurement",
+   "explanation": "The delay and the trip both add up: 12 + 53 = 65 minutes after 8:15.",
+   "level": 3,
+   "kind": "number",
+   "answer": 65
+  }
+ ],
+ "g3-quads": [
+  {
+   "id": "g3-quads-1",
+   "prompt": "Which shape has exactly 4 sides?",
+   "category": "Geometry & Measure",
+   "explanation": "'Quad' means four — a quadrilateral always has 4 sides.",
+   "kind": "choice",
+   "choices": [
+    "Quadrilateral",
+    "Triangle",
+    "Pentagon",
+    "Hexagon"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-quads-2",
+   "prompt": "A rectangle is ALSO a ___.",
+   "category": "Geometry & Measure",
+   "explanation": "Any 4-sided shape, including a rectangle, is a quadrilateral.",
+   "kind": "choice",
+   "choices": [
+    "quadrilateral",
+    "triangle",
+    "pentagon",
+    "circle"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-quads-3",
+   "prompt": "Which is true of ALL squares?",
+   "category": "Geometry & Measure",
+   "explanation": "A square is defined by having 4 equal sides AND 4 right angles.",
+   "kind": "choice",
+   "choices": [
+    "4 equal sides and 4 right angles",
+    "Only 2 equal sides",
+    "3 sides",
+    "No right angles"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-quads-4",
+   "prompt": "A shape has 4 sides, opposite sides parallel, but no right angles. What could it be?",
+   "category": "Geometry & Measure",
+   "explanation": "A rhombus has parallel opposite sides and equal sides, but its angles need not be right angles.",
+   "kind": "choice",
+   "choices": [
+    "A rhombus",
+    "A square",
+    "A triangle",
+    "A circle"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-quads-5",
+   "prompt": "Which quadrilateral has exactly one pair of parallel sides?",
+   "category": "Geometry & Measure",
+   "explanation": "A trapezoid is defined by having just one pair of parallel sides — the others all have two pairs.",
+   "kind": "choice",
+   "choices": [
+    "A trapezoid",
+    "A square",
+    "A rhombus",
+    "A rectangle"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-quads-6",
+   "prompt": "Every square is a rectangle, but not every rectangle is a square. Why?",
+   "category": "Geometry & Measure",
+   "explanation": "A rectangle only requires 4 right angles. A square adds the extra requirement that all 4 sides are equal.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "A rectangle does not need all 4 sides equal",
+    "A rectangle has no right angles",
+    "A square has more sides",
+    "They are actually the same shape always"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-quads-7",
+   "prompt": "Which shape can be BOTH a rhombus and a square?",
+   "category": "Geometry & Measure",
+   "explanation": "A shape with 4 equal sides is a rhombus; adding 4 right angles makes it a square too.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "One with 4 equal sides and 4 right angles",
+    "One with only 2 equal sides",
+    "One with exactly 3 sides",
+    "One with 5 sides and no right angles"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-quads-8",
+   "prompt": "A shape has 4 right angles. Which additional fact would make it a SQUARE rather than just a rectangle?",
+   "category": "Geometry & Measure",
+   "explanation": "Every rectangle already has parallel sides, 4 sides and is a quadrilateral. Equal sides is the extra fact that makes it a square.",
+   "level": 3,
+   "kind": "choice",
+   "choices": [
+    "It also has all 4 sides equal",
+    "It also has parallel sides",
+    "It also has exactly 4 sides",
+    "It is also a quadrilateral"
+   ],
+   "answer": 0
+  }
+ ],
+ "g3-multprops": [
+  {
+   "id": "g3-multprops-1",
+   "prompt": "Which shows the COMMUTATIVE property?",
+   "category": "Number",
+   "explanation": "Commutative means the ORDER of the factors can swap without changing the product.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "4 × 5 = 5 × 4",
+    "4 × (5 × 2) = (4 × 5) × 2",
+    "4 × 1 = 4",
+    "4 × 0 = 0"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-multprops-2",
+   "prompt": "Which shows the ASSOCIATIVE property?",
+   "category": "Number",
+   "explanation": "Associative means how the factors are GROUPED can change without changing the product.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "(2 × 3) × 4 = 2 × (3 × 4)",
+    "2 × 3 = 3 × 2",
+    "2 × 1 = 2",
+    "2 × 0 = 0"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-multprops-3",
+   "prompt": "Using the commutative property, if 6 × 7 = 42, what is 7 × 6?",
+   "category": "Number",
+   "explanation": "Swapping the order of the factors never changes the product.",
+   "kind": "number",
+   "answer": 42
+  },
+  {
+   "id": "g3-multprops-4",
+   "prompt": "Which shows the DISTRIBUTIVE property applied to 6 × 12?",
+   "category": "Number",
+   "explanation": "The distributive property breaks one factor into parts and multiplies each part separately.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "6 × (10 + 2) = 6×10 + 6×2",
+    "6 × 12 = 12 × 6",
+    "6 × 1 = 6",
+    "(6×3)×4 = 6×(3×4)"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-multprops-5",
+   "prompt": "What is 5 × 1?",
+   "category": "Number",
+   "explanation": "Any number times 1 stays the same: 5 × 1 = 5.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g3-multprops-6",
+   "prompt": "Using the distributive property, 7 × 12 = 7×10 + 7×2. What is 7×10 + 7×2?",
+   "category": "Number",
+   "explanation": "70 + 14 = 84.",
+   "level": 2,
+   "kind": "number",
+   "answer": 84
+  },
+  {
+   "id": "g3-multprops-7",
+   "prompt": "Which expression equals 8 × 6 by regrouping the factors differently?",
+   "category": "Number",
+   "explanation": "(8 × 2) × 3 = 16 × 3 = 48, the same as 8 × 6 = 48 — just grouped differently.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "(8 × 2) × 3",
+    "8 × 6 + 1",
+    "8 + 6",
+    "6 × 8 × 0"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-multprops-8",
+   "prompt": "Using the distributive property, break 9 × 14 into 9×10 + 9×4, then find the total.",
+   "category": "Number",
+   "explanation": "90 + 36 = 126.",
+   "level": 3,
+   "kind": "number",
+   "answer": 126
+  }
+ ],
+ "g3-twostep": [
+  {
+   "id": "g3-twostep-1",
+   "prompt": "Maria buys 3 packs of 4 pencils, then gives away 5 pencils. How many does she have left?",
+   "category": "Word Problems",
+   "explanation": "3 × 4 = 12 pencils, and 12 − 5 = 7 left.",
+   "kind": "number",
+   "answer": 7
+  },
+  {
+   "id": "g3-twostep-2",
+   "prompt": "A store has 6 shelves with 8 books each. 10 books are sold. How many books remain?",
+   "category": "Word Problems",
+   "explanation": "6 × 8 = 48 books, and 48 − 10 = 38 remain.",
+   "kind": "number",
+   "answer": 38
+  },
+  {
+   "id": "g3-twostep-3",
+   "prompt": "Which matches: 'Buy 5 bags of 6 marbles, then lose 7 marbles'?",
+   "category": "Word Problems",
+   "explanation": "Find the total marbles first (5 × 6), then subtract the 7 lost.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "5 × 6 − 7",
+    "5 × 6 + 7",
+    "5 + 6 − 7",
+    "5 − 6 × 7"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-twostep-4",
+   "prompt": "A farmer has 4 rows of 9 plants. 6 plants die. How many plants are left?",
+   "category": "Word Problems",
+   "explanation": "4 × 9 = 36 plants, and 36 − 6 = 30 left.",
+   "kind": "number",
+   "answer": 30
+  },
+  {
+   "id": "g3-twostep-5",
+   "prompt": "A class of 24 students is split into 4 equal groups. Then 2 students join one group. How many are in that group NOW?",
+   "category": "Word Problems",
+   "explanation": "24 ÷ 4 = 6 per group, and 6 + 2 = 8.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g3-twostep-6",
+   "prompt": "A baker makes 7 trays of 12 muffins. He sells 50 muffins. How many are left?",
+   "category": "Word Problems",
+   "explanation": "7 × 12 = 84 muffins, and 84 − 50 = 34 left.",
+   "level": 2,
+   "kind": "number",
+   "answer": 34
+  },
+  {
+   "id": "g3-twostep-7",
+   "prompt": "3 boxes of 15 crayons are combined with 2 more boxes of 15. How many crayons total?",
+   "category": "Word Problems",
+   "explanation": "3 + 2 = 5 boxes, and 5 × 15 = 75 crayons.",
+   "level": 2,
+   "kind": "number",
+   "answer": 75
+  },
+  {
+   "id": "g3-twostep-8",
+   "prompt": "A theater has 8 rows of 20 seats. 45 tickets are sold, then 60 more. How many empty seats remain?",
+   "category": "Word Problems",
+   "explanation": "8 × 20 = 160 seats. Sold: 45 + 60 = 105. Empty: 160 − 105 = 55.",
+   "hint": "Find the total seats and the total sold.",
+   "level": 3,
+   "kind": "number",
+   "answer": 55
+  }
+ ],
+ "g3-patterns": [
+  {
+   "id": "g3-patterns-1",
+   "prompt": "What is the next number in the pattern: 5, 10, 15, 20, ___?",
+   "category": "Number",
+   "explanation": "The rule is 'add 5', so the next number is 20 + 5 = 25.",
+   "kind": "number",
+   "answer": 25
+  },
+  {
+   "id": "g3-patterns-2",
+   "prompt": "What is the next number in the pattern: 2, 4, 8, 16, ___?",
+   "category": "Number",
+   "explanation": "The rule is 'double it', so the next number is 16 × 2 = 32.",
+   "kind": "number",
+   "answer": 32
+  },
+  {
+   "id": "g3-patterns-3",
+   "prompt": "What is the RULE for the pattern 3, 6, 9, 12?",
+   "category": "Number",
+   "explanation": "Each number is 3 more than the one before it.",
+   "kind": "choice",
+   "choices": [
+    "Add 3",
+    "Add 2",
+    "Multiply by 2",
+    "Subtract 3"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-patterns-4",
+   "prompt": "What is the 6th number in the pattern 4, 8, 12, 16, ...?",
+   "category": "Number",
+   "explanation": "The rule is 'add 4' each time: 4, 8, 12, 16, 20, 24 — the 6th number is 24.",
+   "kind": "number",
+   "answer": 24
+  },
+  {
+   "id": "g3-patterns-5",
+   "prompt": "Which pattern follows the rule 'subtract 5'?",
+   "category": "Number",
+   "explanation": "Each number in 30, 25, 20, 15 is 5 less than the one before.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "30, 25, 20, 15",
+    "5, 10, 15, 20",
+    "2, 4, 8, 16",
+    "1, 2, 3, 4"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-patterns-6",
+   "prompt": "A pattern starts at 3 and the rule is 'add 4'. What is the 5th number?",
+   "category": "Number",
+   "explanation": "3, 7, 11, 15, 19 — the 5th number is 19.",
+   "hint": "List them out: 3, 7, 11, 15, 19.",
+   "level": 2,
+   "kind": "number",
+   "answer": 19
+  },
+  {
+   "id": "g3-patterns-7",
+   "prompt": "A pattern is 1, 4, 9, 16, ___. What comes next?",
+   "category": "Number",
+   "explanation": "These are square numbers (1×1, 2×2, 3×3, 4×4), so next is 5×5 = 25.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "25",
+    "20",
+    "18",
+    "23"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-patterns-8",
+   "prompt": "A pattern follows 'multiply by 2, then subtract 1', starting at 3: 3, 5, 9, 17, ___. What is next?",
+   "category": "Number",
+   "explanation": "17 × 2 = 34, then 34 − 1 = 33.",
+   "level": 3,
+   "kind": "number",
+   "answer": 33
+  }
+ ],
+ "g3-add1000": [
+  {
+   "id": "g3-add1000-1",
+   "prompt": "456 + 328 = ?",
+   "category": "Number",
+   "explanation": "456 + 328 = 784.",
+   "kind": "number",
+   "answer": 784
+  },
+  {
+   "id": "g3-add1000-2",
+   "prompt": "702 − 385 = ?",
+   "category": "Number",
+   "explanation": "702 − 385 = 317.",
+   "kind": "number",
+   "answer": 317
+  },
+  {
+   "id": "g3-add1000-3",
+   "prompt": "234 + 567 = ?",
+   "category": "Number",
+   "explanation": "234 + 567 = 801.",
+   "kind": "number",
+   "answer": 801
+  },
+  {
+   "id": "g3-add1000-4",
+   "prompt": "What is 890 − 456?",
+   "category": "Number",
+   "explanation": "890 − 456 = 434.",
+   "kind": "choice",
+   "choices": [
+    "434",
+    "444",
+    "424",
+    "440"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-add1000-5",
+   "prompt": "125 + 275 = ?",
+   "category": "Number",
+   "explanation": "125 + 275 = 400.",
+   "kind": "number",
+   "answer": 400
+  },
+  {
+   "id": "g3-add1000-6",
+   "prompt": "A school has 615 students. 89 more enroll. How many students now?",
+   "category": "Number",
+   "explanation": "615 + 89 = 704.",
+   "level": 2,
+   "kind": "number",
+   "answer": 704
+  },
+  {
+   "id": "g3-add1000-7",
+   "prompt": "A warehouse had 950 boxes. 378 were shipped out. How many remain?",
+   "category": "Number",
+   "explanation": "950 − 378 = 572.",
+   "level": 2,
+   "kind": "number",
+   "answer": 572
+  },
+  {
+   "id": "g3-add1000-8",
+   "prompt": "Two numbers add to 800. One is 250 more than the other. What is the SMALLER number?",
+   "category": "Number",
+   "explanation": "x + (x + 250) = 800, so 2x = 550 and x = 275.",
+   "hint": "If the smaller is x, the larger is x + 250.",
+   "level": 3,
+   "kind": "number",
+   "answer": 275
+  }
+ ],
+ "g3-mult10": [
+  {
+   "id": "g3-mult10-1",
+   "prompt": "4 × 20 = ?",
+   "category": "Number",
+   "explanation": "4 × 20 = 80.",
+   "kind": "number",
+   "answer": 80
+  },
+  {
+   "id": "g3-mult10-2",
+   "prompt": "7 × 30 = ?",
+   "category": "Number",
+   "explanation": "7 × 30 = 210.",
+   "kind": "number",
+   "answer": 210
+  },
+  {
+   "id": "g3-mult10-3",
+   "prompt": "6 × 50 = ?",
+   "category": "Number",
+   "explanation": "6 × 50 = 300.",
+   "kind": "number",
+   "answer": 300
+  },
+  {
+   "id": "g3-mult10-4",
+   "prompt": "What is 8 × 40?",
+   "category": "Number",
+   "explanation": "8 × 40 = 320.",
+   "kind": "choice",
+   "choices": [
+    "320",
+    "300",
+    "340",
+    "280"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-mult10-5",
+   "prompt": "9 × 20 = ?",
+   "category": "Number",
+   "explanation": "9 × 20 = 180.",
+   "kind": "number",
+   "answer": 180
+  },
+  {
+   "id": "g3-mult10-6",
+   "prompt": "A theater has 30 rows with 8 seats each. How many seats total?",
+   "category": "Number",
+   "explanation": "30 × 8 = 240 seats.",
+   "level": 2,
+   "kind": "number",
+   "answer": 240
+  },
+  {
+   "id": "g3-mult10-7",
+   "prompt": "12 × 30 = ?",
+   "category": "Number",
+   "explanation": "12 × 30 = 360.",
+   "level": 2,
+   "kind": "number",
+   "answer": 360
+  },
+  {
+   "id": "g3-mult10-8",
+   "prompt": "A number times 20 equals 540. What is the number?",
+   "category": "Number",
+   "explanation": "540 ÷ 20 = 27.",
+   "hint": "Divide to undo the multiplication.",
+   "level": 3,
+   "kind": "number",
+   "answer": 27
+  }
+ ],
+ "g3-fraceq": [
+  {
+   "id": "g3-fraceq-1",
+   "prompt": "Which fraction is EQUIVALENT to 1/2?",
+   "category": "Fractions",
+   "explanation": "2/4 simplifies to 1/2 — same amount, different-sized pieces.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "2/4",
+    "1/4",
+    "3/8",
+    "1/3"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-fraceq-2",
+   "prompt": "Which fraction is EQUIVALENT to 2/3?",
+   "category": "Fractions",
+   "explanation": "4/6 simplifies to 2/3.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "4/6",
+    "3/4",
+    "2/4",
+    "1/3"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-fraceq-3",
+   "prompt": "1/2 = __/6. What number goes in the blank?",
+   "category": "Fractions",
+   "explanation": "To turn halves into sixths, multiply both parts by 3: 1×3 = 3.",
+   "kind": "number",
+   "answer": 3
+  },
+  {
+   "id": "g3-fraceq-4",
+   "prompt": "Which fraction is NOT equivalent to 3/4?",
+   "category": "Fractions",
+   "explanation": "6/8, 9/12 and 12/16 all simplify to 3/4. 4/5 does not.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "4/5",
+    "6/8",
+    "9/12",
+    "12/16"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-fraceq-5",
+   "prompt": "2/5 = __/10. What number goes in the blank?",
+   "category": "Fractions",
+   "explanation": "Multiply both parts by 2: 2×2 = 4.",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "g3-fraceq-6",
+   "prompt": "3/4 = 9/__. What number goes in the blank?",
+   "category": "Fractions",
+   "explanation": "3 was multiplied by 3 to get 9, so 4 must also be multiplied by 3: 4×3 = 12.",
+   "level": 2,
+   "kind": "number",
+   "answer": 12
+  },
+  {
+   "id": "g3-fraceq-7",
+   "prompt": "Which pair of fractions is equivalent?",
+   "category": "Fractions",
+   "explanation": "4/6 simplifies to 2/3 — they are the same amount.",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "4/6 and 2/3",
+    "4/6 and 1/2",
+    "4/6 and 3/4",
+    "4/6 and 5/6"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-fraceq-8",
+   "prompt": "Two fractions a/6 and 2/3 are equivalent. What is a?",
+   "category": "Fractions",
+   "explanation": "2/3 = 4/6 (multiply both parts by 2), so a = 4.",
+   "level": 3,
+   "kind": "number",
+   "answer": 4
+  }
+ ],
+ "g3-wholefrac": [
+  {
+   "id": "g3-wholefrac-1",
+   "prompt": "Which fraction equals the whole number 3?",
+   "category": "Fractions",
+   "explanation": "Any whole number n equals n/1.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "3/1",
+    "1/3",
+    "3/3",
+    "1/1"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-wholefrac-2",
+   "prompt": "How many fourths make the whole number 2? (2 = __/4)",
+   "category": "Fractions",
+   "explanation": "2 wholes is 8 fourths: 2 = 8/4.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g3-wholefrac-3",
+   "prompt": "Which fraction equals 5?",
+   "category": "Fractions",
+   "explanation": "5/1 = 5, since dividing by 1 does not change the value.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "5/1",
+    "1/5",
+    "5/5",
+    "2/5"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-wholefrac-4",
+   "prompt": "6 = __/3. What number goes in the blank?",
+   "category": "Fractions",
+   "explanation": "6 wholes is 18 thirds: 6 = 18/3.",
+   "kind": "number",
+   "answer": 18
+  },
+  {
+   "id": "g3-wholefrac-5",
+   "prompt": "Which is the SAME as the whole number 1?",
+   "category": "Fractions",
+   "explanation": "Any fraction with the same numerator and denominator equals 1: 4/4 = 1.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "4/4",
+    "1/4",
+    "2/4",
+    "3/4"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-wholefrac-6",
+   "prompt": "4 = __/2. What number goes in the blank?",
+   "category": "Fractions",
+   "explanation": "4 wholes is 8 halves: 4 = 8/2.",
+   "level": 2,
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g3-wholefrac-7",
+   "prompt": "Which fraction is the SAME as 7?",
+   "category": "Fractions",
+   "explanation": "7/1 = 7. (14/7 = 2, not 7.)",
+   "level": 2,
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "7/1",
+    "1/7",
+    "7/7",
+    "14/7"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-wholefrac-8",
+   "prompt": "A whole number n equals 24/8. What is n?",
+   "category": "Fractions",
+   "explanation": "24 ÷ 8 = 3.",
+   "level": 3,
+   "kind": "number",
+   "answer": 3
+  }
+ ],
+ "g3-perimeter": [
+  {
+   "id": "g3-perimeter-1",
+   "prompt": "A rectangle is 6 units long and 3 units wide. What is its perimeter?",
+   "category": "Geometry & Measure",
+   "explanation": "Perimeter = 2 × (6 + 3) = 2 × 9 = 18.",
+   "kind": "number",
+   "answer": 18
+  },
+  {
+   "id": "g3-perimeter-2",
+   "prompt": "A square has sides of 5 units. What is its perimeter?",
+   "category": "Geometry & Measure",
+   "explanation": "A square has 4 equal sides: 4 × 5 = 20.",
+   "kind": "number",
+   "answer": 20
+  },
+  {
+   "id": "g3-perimeter-3",
+   "prompt": "Which formula finds the perimeter of a square?",
+   "category": "Geometry & Measure",
+   "explanation": "A square has 4 equal sides, so its perimeter is 4 times one side's length.",
+   "mono": true,
+   "kind": "choice",
+   "choices": [
+    "4 × side",
+    "side × side",
+    "2 × side",
+    "side + side"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-perimeter-4",
+   "prompt": "A rectangle has a perimeter of 24 units and a length of 8 units. What is its width?",
+   "category": "Geometry & Measure",
+   "explanation": "24 ÷ 2 = 12, and 12 − 8 = 4.",
+   "hint": "Half the perimeter is the sum of one length and one width.",
+   "kind": "number",
+   "answer": 4
+  },
+  {
+   "id": "g3-perimeter-5",
+   "prompt": "A triangle has sides 4, 5 and 6 units. What is its perimeter?",
+   "category": "Geometry & Measure",
+   "explanation": "4 + 5 + 6 = 15.",
+   "kind": "number",
+   "answer": 15
+  },
+  {
+   "id": "g3-perimeter-6",
+   "prompt": "A rectangular garden is 12 m long and has a perimeter of 34 m. What is its width?",
+   "category": "Geometry & Measure",
+   "explanation": "34 ÷ 2 = 17, and 17 − 12 = 5.",
+   "level": 2,
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g3-perimeter-7",
+   "prompt": "A regular pentagon (5 equal sides) has a perimeter of 35 units. What is the length of one side?",
+   "category": "Geometry & Measure",
+   "explanation": "35 ÷ 5 = 7.",
+   "level": 2,
+   "kind": "number",
+   "answer": 7
+  },
+  {
+   "id": "g3-perimeter-8",
+   "prompt": "Two rectangles share the same perimeter of 20 units. One is 6 by 4. The other has a width of 2. What is its length?",
+   "category": "Geometry & Measure",
+   "explanation": "20 ÷ 2 = 10, and 10 − 2 = 8.",
+   "hint": "Half the perimeter is length plus width.",
+   "level": 3,
+   "kind": "number",
+   "answer": 8
+  }
+ ],
+ "g3-volmass": [
+  {
+   "id": "g3-volmass-1",
+   "prompt": "Which unit measures LIQUID VOLUME?",
+   "category": "Measurement",
+   "explanation": "Liters measure how much liquid something holds.",
+   "kind": "choice",
+   "choices": [
+    "Liters",
+    "Grams",
+    "Meters",
+    "Degrees"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-volmass-2",
+   "prompt": "Which unit measures MASS (weight)?",
+   "category": "Measurement",
+   "explanation": "Grams measure how heavy something is.",
+   "kind": "choice",
+   "choices": [
+    "Grams",
+    "Liters",
+    "Meters",
+    "Seconds"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-volmass-3",
+   "prompt": "A bottle holds 2 liters. Another holds 3 liters. How many liters together?",
+   "category": "Measurement",
+   "explanation": "2 + 3 = 5 liters.",
+   "kind": "number",
+   "answer": 5
+  },
+  {
+   "id": "g3-volmass-4",
+   "prompt": "A bag of rice weighs 5 kilograms. Another weighs 3 kilograms. How many kilograms together?",
+   "category": "Measurement",
+   "explanation": "5 + 3 = 8 kilograms.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g3-volmass-5",
+   "prompt": "Which tool measures how much liquid is in a container?",
+   "category": "Measurement",
+   "explanation": "A measuring cup is marked to show liquid volume.",
+   "kind": "choice",
+   "choices": [
+    "A measuring cup",
+    "A scale",
+    "A ruler",
+    "A thermometer"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-volmass-6",
+   "prompt": "A recipe uses 250 mL of milk per batch. How many mL for 3 batches?",
+   "category": "Measurement",
+   "explanation": "250 × 3 = 750 mL.",
+   "level": 2,
+   "kind": "number",
+   "answer": 750
+  },
+  {
+   "id": "g3-volmass-7",
+   "prompt": "A crate holds 12 kilograms of apples. If 4 kilograms are removed, how many remain?",
+   "category": "Measurement",
+   "explanation": "12 − 4 = 8 kilograms.",
+   "level": 2,
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g3-volmass-8",
+   "prompt": "A container holds 4 liters. It is filled from a jug that pours 500 mL at a time. How many pours does it take to fill it?",
+   "category": "Measurement",
+   "explanation": "4 liters = 4000 mL, and 4000 ÷ 500 = 8 pours.",
+   "hint": "Convert 4 liters to milliliters first.",
+   "level": 3,
+   "kind": "number",
+   "answer": 8
+  }
+ ],
+ "g3-scaled": [
+  {
+   "id": "g3-scaled-1",
+   "prompt": "A scaled bar graph shows each square = 2 books. A bar has 5 squares. How many books?",
+   "category": "Measurement",
+   "explanation": "5 × 2 = 10 books.",
+   "kind": "number",
+   "answer": 10
+  },
+  {
+   "id": "g3-scaled-2",
+   "prompt": "Using the same scale (1 square = 2 books), how many squares would show 14 books?",
+   "category": "Measurement",
+   "explanation": "14 ÷ 2 = 7 squares.",
+   "kind": "number",
+   "answer": 7
+  },
+  {
+   "id": "g3-scaled-3",
+   "prompt": "On a scaled picture graph, each icon = 5 people, and there are 3 icons. How many people?",
+   "category": "Measurement",
+   "explanation": "3 × 5 = 15 people.",
+   "kind": "choice",
+   "choices": [
+    "15",
+    "8",
+    "3",
+    "5"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-scaled-4",
+   "prompt": "A graph's scale is 1 unit = 10 people. A bar reaches 6 units. How many people?",
+   "category": "Measurement",
+   "explanation": "6 × 10 = 60 people.",
+   "kind": "number",
+   "answer": 60
+  },
+  {
+   "id": "g3-scaled-5",
+   "prompt": "Why do graphs use a SCALE instead of showing every single item?",
+   "category": "Measurement",
+   "explanation": "A scale lets one square or icon stand for several items, so big totals still fit on the page.",
+   "kind": "choice",
+   "choices": [
+    "To fit large numbers into a manageable graph",
+    "To make the graph confusing",
+    "Scales are required by law",
+    "There is no reason"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-scaled-6",
+   "prompt": "A graph's scale is 1 square = 4 items. Category A has 3 squares, Category B has 5 squares. How many MORE items does B have?",
+   "category": "Measurement",
+   "explanation": "B has 2 more squares than A, and 2 × 4 = 8 more items.",
+   "level": 2,
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "g3-scaled-7",
+   "prompt": "Using scale 1 square = 3 items, how many squares would represent 21 items?",
+   "category": "Measurement",
+   "explanation": "21 ÷ 3 = 7 squares.",
+   "level": 2,
+   "kind": "number",
+   "answer": 7
+  },
+  {
+   "id": "g3-scaled-8",
+   "prompt": "A graph uses scale 1 square = 6 items. Two EQUAL categories together use 8 squares and represent 48 items total. How many squares does EACH category use?",
+   "category": "Measurement",
+   "explanation": "8 squares split evenly between 2 equal categories: 8 ÷ 2 = 4 squares each.",
+   "level": 3,
+   "kind": "number",
+   "answer": 4
+  }
+ ],
+ "g3-equalarea": [
+  {
+   "id": "g3-equalarea-1",
+   "prompt": "A rectangle is divided into 4 equal parts. Each part is what fraction of the whole?",
+   "category": "Fractions",
+   "explanation": "4 equal parts means each part is 1/4 of the whole.",
+   "kind": "choice",
+   "choices": [
+    "1/4",
+    "1/2",
+    "1/3",
+    "4/4"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-equalarea-2",
+   "prompt": "A shape is divided into 3 equal areas. Each part represents ___.",
+   "category": "Fractions",
+   "explanation": "3 equal parts means each one is 1/3 of the total area.",
+   "kind": "choice",
+   "choices": [
+    "1/3 of the area",
+    "3/1 of the area",
+    "the whole area",
+    "half the area"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-equalarea-3",
+   "prompt": "Two SAME-SIZE rectangles are cut differently: one into 2 equal parts, the other into 4 equal parts. Which single part is BIGGER?",
+   "category": "Fractions",
+   "explanation": "Fewer equal parts from the same whole always means each part is bigger.",
+   "kind": "choice",
+   "choices": [
+    "A part from the 2-part rectangle",
+    "A part from the 4-part rectangle",
+    "They are equal",
+    "Cannot tell"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-equalarea-4",
+   "prompt": "A rectangle is split into 6 equal-area parts. What is the denominator of the fraction each part represents?",
+   "category": "Fractions",
+   "explanation": "Each of the 6 equal parts is 1/6 of the whole, so the denominator is 6.",
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "g3-equalarea-5",
+   "prompt": "A square is divided into 4 equal-area triangles from its center. Each triangle is what fraction of the square?",
+   "category": "Fractions",
+   "explanation": "4 equal triangles means each is 1/4 of the square, regardless of their shape.",
+   "kind": "choice",
+   "choices": [
+    "1/4",
+    "1/2",
+    "1/3",
+    "4/1"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-equalarea-6",
+   "prompt": "A rectangle is split into 8 equal-area parts, even though the pieces look different shapes. Each part equals ___.",
+   "category": "Fractions",
+   "explanation": "Equal AREA is what matters for the fraction, even if the pieces are shaped differently.",
+   "level": 2,
+   "kind": "choice",
+   "choices": [
+    "1/8 of the total area",
+    "1/2 of the total area",
+    "8 times the area",
+    "Cannot be determined"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-equalarea-7",
+   "prompt": "A shape's area is 24 square units, split into 4 equal-area parts. What is the area of EACH part?",
+   "category": "Fractions",
+   "explanation": "24 ÷ 4 = 6 square units each.",
+   "level": 2,
+   "kind": "number",
+   "answer": 6
+  },
+  {
+   "id": "g3-equalarea-8",
+   "prompt": "A rectangle is divided unevenly into 3 parts by area: 1/6, 1/3, and the rest. What is the THIRD part's numerator (denominator 6)?",
+   "category": "Fractions",
+   "explanation": "1/6 + 2/6 = 3/6 used, so 6/6 − 3/6 = 3/6 remains — a numerator of 3.",
+   "hint": "Convert 1/3 to sixths, then see what's left of the whole.",
+   "level": 3,
+   "kind": "number",
+   "answer": 3
+  }
+ ],
+ "g3-areaperim": [
+  {
+   "id": "g3-areaperim-1",
+   "prompt": "A rectangle has the SAME perimeter as another, but they can still have ___.",
+   "category": "Geometry & Measure",
+   "explanation": "Perimeter and area measure different things — matching one does not force the other to match.",
+   "kind": "choice",
+   "choices": [
+    "different areas",
+    "the same shape always",
+    "the same area always",
+    "no relationship"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-areaperim-2",
+   "prompt": "Rectangle A is 6 by 2 (perimeter 16). Rectangle B is 4 by 4 (perimeter 16 too). What is Rectangle B's area?",
+   "category": "Geometry & Measure",
+   "explanation": "4 × 4 = 16.",
+   "kind": "number",
+   "answer": 16
+  },
+  {
+   "id": "g3-areaperim-3",
+   "prompt": "Which statement is TRUE?",
+   "category": "Geometry & Measure",
+   "explanation": "A 6×2 rectangle and a 4×4 rectangle both have perimeter 16, but areas 12 and 16 — proof that perimeter alone doesn't fix area.",
+   "kind": "choice",
+   "choices": [
+    "Two shapes can have the same perimeter but different areas",
+    "Same perimeter always means same area",
+    "Same area always means same perimeter",
+    "Perimeter and area are the same thing"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-areaperim-4",
+   "prompt": "A rectangle has area 20 and one side of 4. What is its perimeter?",
+   "category": "Geometry & Measure",
+   "explanation": "The other side is 20 ÷ 4 = 5. Perimeter = 2 × (4 + 5) = 18.",
+   "hint": "Find the other side first: 20 ÷ 4.",
+   "kind": "number",
+   "answer": 18
+  },
+  {
+   "id": "g3-areaperim-5",
+   "prompt": "You stretch a rectangle to be longer and thinner while keeping the SAME area. What usually happens to the perimeter?",
+   "category": "Geometry & Measure",
+   "explanation": "A longer, thinner rectangle with the same area typically has more perimeter than a squarer one.",
+   "kind": "choice",
+   "choices": [
+    "It usually increases",
+    "It always stays the same",
+    "The area also changes",
+    "Nothing changes"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "g3-areaperim-6",
+   "prompt": "A square and a rectangle both have area 36. The square has side 6 (perimeter 24). The rectangle is 9 by 4. Type the LARGER of the two perimeters.",
+   "category": "Geometry & Measure",
+   "explanation": "The square's perimeter is 24. The rectangle's is 2 × (9 + 4) = 26, which is larger.",
+   "level": 2,
+   "kind": "number",
+   "answer": 26
+  },
+  {
+   "id": "g3-areaperim-7",
+   "prompt": "A rectangle has perimeter 20 and length 7. What is its area?",
+   "category": "Geometry & Measure",
+   "explanation": "Width = 10 − 7 = 3. Area = 7 × 3 = 21.",
+   "hint": "Find the width first.",
+   "level": 2,
+   "kind": "number",
+   "answer": 21
+  },
+  {
+   "id": "g3-areaperim-8",
+   "prompt": "Two rectangles both have area 24. One is 6 by 4 (perimeter 20). The other is 8 by 3 (perimeter 22). What is the DIFFERENCE in their perimeters?",
+   "category": "Geometry & Measure",
+   "explanation": "22 − 20 = 2.",
+   "level": 3,
+   "kind": "number",
+   "answer": 2
+  }
+ ]
+}

@@ -1,0 +1,1372 @@
+{
+ "S": [
+  {
+   "id": "decimal-operations-S-1",
+   "prompt": "5.4 + (−9.7) =",
+   "category": "Add & Subtract",
+   "explanation": "5.4 + (−9.7) = −4.3.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -4.3
+  },
+  {
+   "id": "decimal-operations-S-2",
+   "prompt": "10.8 + (−4.73) =",
+   "category": "Add & Subtract",
+   "explanation": "10.8 + (−4.73) = 6.07.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 6.07
+  },
+  {
+   "id": "decimal-operations-S-3",
+   "prompt": "(−0.5) + 0.3 =",
+   "category": "Add & Subtract",
+   "explanation": "(−0.5) + 0.3 = −0.2.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -0.2
+  },
+  {
+   "id": "decimal-operations-S-4",
+   "prompt": "(−4.79) + (−0.4) =",
+   "category": "Add & Subtract",
+   "explanation": "(−4.79) + (−0.4) = −5.19.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -5.19
+  },
+  {
+   "id": "decimal-operations-S-5",
+   "prompt": "3.305 + 1.7 =",
+   "category": "Add & Subtract",
+   "explanation": "3.305 + 1.7 = 5.005.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 5.005
+  },
+  {
+   "id": "decimal-operations-S-6",
+   "prompt": "(−3.6) + 0.43 =",
+   "category": "Add & Subtract",
+   "explanation": "(−3.6) + 0.43 = −3.17.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -3.17
+  },
+  {
+   "id": "decimal-operations-S-7",
+   "prompt": "(−4.3) + 14.5 =",
+   "category": "Add & Subtract",
+   "explanation": "(−4.3) + 14.5 = 10.2.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 10.2
+  },
+  {
+   "id": "decimal-operations-S-8",
+   "prompt": "(−7.1) + 3.63 =",
+   "category": "Add & Subtract",
+   "explanation": "(−7.1) + 3.63 = −3.47.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -3.47
+  },
+  {
+   "id": "decimal-operations-S-9",
+   "prompt": "13.7 + 3.2 =",
+   "category": "Add & Subtract",
+   "explanation": "13.7 + 3.2 = 16.9.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 16.9
+  },
+  {
+   "id": "decimal-operations-S-10",
+   "prompt": "(−10.9) + 6.1 =",
+   "category": "Add & Subtract",
+   "explanation": "(−10.9) + 6.1 = −4.8.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -4.8
+  },
+  {
+   "id": "decimal-operations-S-11",
+   "prompt": "2.2−7.3 =",
+   "category": "Add & Subtract",
+   "explanation": "2.2 − 7.3 = −5.1.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -5.1
+  },
+  {
+   "id": "decimal-operations-S-12",
+   "prompt": "(−8.1)−(−8.9) =",
+   "category": "Add & Subtract",
+   "explanation": "(−8.1) − (−8.9) = 0.8.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 0.8
+  },
+  {
+   "id": "decimal-operations-S-13",
+   "prompt": "2.9−9.4 =",
+   "category": "Add & Subtract",
+   "explanation": "2.9 − 9.4 = −6.5.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -6.5
+  },
+  {
+   "id": "decimal-operations-S-14",
+   "prompt": "(−3.9)−8.9 =",
+   "category": "Add & Subtract",
+   "explanation": "(−3.9) − 8.9 = −12.8.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -12.8
+  },
+  {
+   "id": "decimal-operations-S-15",
+   "prompt": "9.8−7.1 =",
+   "category": "Add & Subtract",
+   "explanation": "9.8 − 7.1 = 2.7.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 2.7
+  },
+  {
+   "id": "decimal-operations-S-16",
+   "prompt": "(−18.278)−(−6.8) =",
+   "category": "Add & Subtract",
+   "explanation": "(−18.278) − (−6.8) = −11.478.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -11.478
+  },
+  {
+   "id": "decimal-operations-S-17",
+   "prompt": "17.9−(−19.4) =",
+   "category": "Add & Subtract",
+   "explanation": "17.9 − (−19.4) = 37.3.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 37.3
+  },
+  {
+   "id": "decimal-operations-S-18",
+   "prompt": "15.5−15.5 =",
+   "category": "Add & Subtract",
+   "explanation": "15.5 − 15.5 = 0.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 0
+  },
+  {
+   "id": "decimal-operations-S-19",
+   "prompt": "1.58−(−13.6) =",
+   "category": "Add & Subtract",
+   "explanation": "1.58 − (−13.6) = 15.18.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 15.18
+  },
+  {
+   "id": "decimal-operations-S-20",
+   "prompt": "1.81−17.17 =",
+   "category": "Add & Subtract",
+   "explanation": "1.81 − 17.17 = −15.36.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -15.36
+  },
+  {
+   "id": "decimal-operations-S-21",
+   "prompt": "19.4 + 24.2 =",
+   "category": "Add & Subtract",
+   "explanation": "19.4 + 24.2 = 43.6.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 43.6
+  },
+  {
+   "id": "decimal-operations-S-22",
+   "prompt": "(−14.8)−(−9.7) =",
+   "category": "Add & Subtract",
+   "explanation": "(−14.8) − (−9.7) = −5.1.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -5.1
+  },
+  {
+   "id": "decimal-operations-S-23",
+   "prompt": "(−9.1) + 3.5 =",
+   "category": "Add & Subtract",
+   "explanation": "(−9.1) + 3.5 = −5.6.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -5.6
+  },
+  {
+   "id": "decimal-operations-S-24",
+   "prompt": "0.96−8.5 =",
+   "category": "Add & Subtract",
+   "explanation": "0.96 − 8.5 = −7.54.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -7.54
+  },
+  {
+   "id": "decimal-operations-S-25",
+   "prompt": "9.5−(−19.3) =",
+   "category": "Add & Subtract",
+   "explanation": "9.5 − (−19.3) = 28.8.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 28.8
+  },
+  {
+   "id": "decimal-operations-S-26",
+   "prompt": "3.4−(−12.1) =",
+   "category": "Add & Subtract",
+   "explanation": "3.4 − (−12.1) = 15.5.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 15.5
+  },
+  {
+   "id": "decimal-operations-S-27",
+   "prompt": "8.7 + 3.8 + 12.3 =",
+   "category": "Add & Subtract",
+   "explanation": "Work it in order — 8.7 + 3.8 = 12.5; then 12.5 + 12.3 = 24.8. So the answer is 24.8.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 24.8
+  },
+  {
+   "id": "decimal-operations-S-28",
+   "prompt": "(−13.6) + 12−(−15.5) =",
+   "category": "Add & Subtract",
+   "explanation": "Work it in order — (−13.6) + 12 = −1.6; then (−1.6) − (−15.5) = 13.9. So the answer is 13.9.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 13.9
+  },
+  {
+   "id": "decimal-operations-S-29",
+   "prompt": "3.4−5−10.4 =",
+   "category": "Add & Subtract",
+   "explanation": "Work it in order — 3.4 − 5 = −1.6; then (−1.6) − 10.4 = −12. So the answer is −12.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -12
+  },
+  {
+   "id": "decimal-operations-S-30",
+   "prompt": "(−5.6)−(−12.6) + (−6.6) =",
+   "category": "Add & Subtract",
+   "explanation": "Work it in order — (−5.6) − (−12.6) = 7; then 7 + (−6.6) = 0.4. So the answer is 0.4.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 0.4
+  }
+ ],
+ "M": [
+  {
+   "id": "decimal-operations-M-1",
+   "prompt": "(−5.5) × (−4.87) =",
+   "category": "Multiply",
+   "explanation": "(−5.5) × (−4.87) = 26.785.",
+   "tip": "Ignore the decimal points and multiply like whole numbers. Then count the decimal places in BOTH factors and put that many in the answer. Same signs → positive, different signs → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 26.785
+  },
+  {
+   "id": "decimal-operations-M-2",
+   "prompt": "1.7 × (−2.1) =",
+   "category": "Multiply",
+   "explanation": "1.7 × (−2.1) = −3.57.",
+   "tip": "Ignore the decimal points and multiply like whole numbers. Then count the decimal places in BOTH factors and put that many in the answer. Same signs → positive, different signs → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -3.57
+  },
+  {
+   "id": "decimal-operations-M-3",
+   "prompt": "0.2 × (−1.6) =",
+   "category": "Multiply",
+   "explanation": "0.2 × (−1.6) = −0.32.",
+   "tip": "Ignore the decimal points and multiply like whole numbers. Then count the decimal places in BOTH factors and put that many in the answer. Same signs → positive, different signs → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -0.32
+  },
+  {
+   "id": "decimal-operations-M-4",
+   "prompt": "1.7 × (−3.1) =",
+   "category": "Multiply",
+   "explanation": "1.7 × (−3.1) = −5.27.",
+   "tip": "Ignore the decimal points and multiply like whole numbers. Then count the decimal places in BOTH factors and put that many in the answer. Same signs → positive, different signs → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -5.27
+  },
+  {
+   "id": "decimal-operations-M-5",
+   "prompt": "(−4.6) × (−7.2) =",
+   "category": "Multiply",
+   "explanation": "(−4.6) × (−7.2) = 33.12.",
+   "tip": "Ignore the decimal points and multiply like whole numbers. Then count the decimal places in BOTH factors and put that many in the answer. Same signs → positive, different signs → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 33.12
+  },
+  {
+   "id": "decimal-operations-M-6",
+   "prompt": "(−5.928) × (−11.6) =",
+   "category": "Multiply",
+   "explanation": "(−5.928) × (−11.6) = 68.7648.",
+   "tip": "Ignore the decimal points and multiply like whole numbers. Then count the decimal places in BOTH factors and put that many in the answer. Same signs → positive, different signs → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 68.7648
+  },
+  {
+   "id": "decimal-operations-M-7",
+   "prompt": "(−1.5) × (−7.1) =",
+   "category": "Multiply",
+   "explanation": "(−1.5) × (−7.1) = 10.65.",
+   "tip": "Ignore the decimal points and multiply like whole numbers. Then count the decimal places in BOTH factors and put that many in the answer. Same signs → positive, different signs → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 10.65
+  },
+  {
+   "id": "decimal-operations-M-8",
+   "prompt": "7.8 × 5.1 =",
+   "category": "Multiply",
+   "explanation": "7.8 × 5.1 = 39.78.",
+   "tip": "Ignore the decimal points and multiply like whole numbers. Then count the decimal places in BOTH factors and put that many in the answer. Same signs → positive, different signs → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 39.78
+  },
+  {
+   "id": "decimal-operations-M-9",
+   "prompt": "(−7.5) × 9 × (−8.3) =",
+   "category": "Multiply",
+   "explanation": "Work it in order — (−7.5) × 9 = −67.5; then (−67.5) × (−8.3) = 560.25. So the answer is 560.25.",
+   "tip": "Ignore the decimal points and multiply like whole numbers. Then count the decimal places in BOTH factors and put that many in the answer. Same signs → positive, different signs → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 560.25
+  },
+  {
+   "id": "decimal-operations-M-10",
+   "prompt": "(−4.04) × (−9) × 3 =",
+   "category": "Multiply",
+   "explanation": "Work it in order — (−4.04) × (−9) = 36.36; then 36.36 × 3 = 109.08. So the answer is 109.08.",
+   "tip": "Ignore the decimal points and multiply like whole numbers. Then count the decimal places in BOTH factors and put that many in the answer. Same signs → positive, different signs → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 109.08
+  },
+  {
+   "id": "decimal-operations-M-11",
+   "prompt": "3.2 × 8.7 × (−1.1) =",
+   "category": "Multiply",
+   "explanation": "Work it in order — 3.2 × 8.7 = 27.84; then 27.84 × (−1.1) = −30.624. So the answer is −30.624.",
+   "tip": "Ignore the decimal points and multiply like whole numbers. Then count the decimal places in BOTH factors and put that many in the answer. Same signs → positive, different signs → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -30.624
+  },
+  {
+   "id": "decimal-operations-M-12",
+   "prompt": "8.1 × 8.6 × (−5.2) =",
+   "category": "Multiply",
+   "explanation": "Work it in order — 8.1 × 8.6 = 69.66; then 69.66 × (−5.2) = −362.232. So the answer is −362.232.",
+   "tip": "Ignore the decimal points and multiply like whole numbers. Then count the decimal places in BOTH factors and put that many in the answer. Same signs → positive, different signs → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -362.232
+  },
+  {
+   "id": "decimal-operations-M-13",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−4.8</span><span class=\"den\">−12</span></span> =",
+   "category": "Divide",
+   "explanation": "(−4.8) ÷ (−12) = 0.4.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 0.4
+  },
+  {
+   "id": "decimal-operations-M-14",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−12.4</span><span class=\"den\">0.4</span></span> =",
+   "category": "Divide",
+   "explanation": "(−12.4) ÷ 0.4 = −31.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -31
+  },
+  {
+   "id": "decimal-operations-M-15",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−6.3</span><span class=\"den\">−1.4</span></span> =",
+   "category": "Divide",
+   "explanation": "(−6.3) ÷ (−1.4) = 4.5.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 4.5
+  },
+  {
+   "id": "decimal-operations-M-16",
+   "prompt": "<span class=\"frac\"><span class=\"num\">7.6</span><span class=\"den\">−7.6</span></span> =",
+   "category": "Divide",
+   "explanation": "7.6 ÷ (−7.6) = −1.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -1
+  },
+  {
+   "id": "decimal-operations-M-17",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−7.9</span><span class=\"den\">2.5</span></span> =",
+   "category": "Divide",
+   "explanation": "(−7.9) ÷ 2.5 = −3.16.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -3.16
+  },
+  {
+   "id": "decimal-operations-M-18",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−12.6</span><span class=\"den\">3.6</span></span> =",
+   "category": "Divide",
+   "explanation": "(−12.6) ÷ 3.6 = −3.5.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -3.5
+  },
+  {
+   "id": "decimal-operations-M-19",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−10.7</span><span class=\"den\">0.1</span></span> =",
+   "category": "Divide",
+   "explanation": "(−10.7) ÷ 0.1 = −107.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -107
+  },
+  {
+   "id": "decimal-operations-M-20",
+   "prompt": "<span class=\"frac\"><span class=\"num\">14</span><span class=\"den\">−2.5</span></span> =",
+   "category": "Divide",
+   "explanation": "14 ÷ (−2.5) = −5.6.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -5.6
+  },
+  {
+   "id": "decimal-operations-M-21",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−13.1</span><span class=\"den\">2</span></span> =",
+   "category": "Divide",
+   "explanation": "(−13.1) ÷ 2 = −6.55.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -6.55
+  },
+  {
+   "id": "decimal-operations-M-22",
+   "prompt": "<span class=\"frac\"><span class=\"num\">2.7</span><span class=\"den\">−0.2</span></span> =",
+   "category": "Divide",
+   "explanation": "2.7 ÷ (−0.2) = −13.5.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -13.5
+  },
+  {
+   "id": "decimal-operations-M-23",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−12</span><span class=\"den\">0.4</span></span> =",
+   "category": "Divide",
+   "explanation": "(−12) ÷ 0.4 = −30.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -30
+  },
+  {
+   "id": "decimal-operations-M-24",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−0.9</span><span class=\"den\">0.1</span></span> =",
+   "category": "Divide",
+   "explanation": "(−0.9) ÷ 0.1 = −9.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -9
+  },
+  {
+   "id": "decimal-operations-M-25",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−5</span><span class=\"den\">−2.5</span></span> =",
+   "category": "Divide",
+   "explanation": "(−5) ÷ (−2.5) = 2.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 2
+  },
+  {
+   "id": "decimal-operations-M-26",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−9</span><span class=\"den\">5</span></span> =",
+   "category": "Divide",
+   "explanation": "(−9) ÷ 5 = −1.8.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -1.8
+  },
+  {
+   "id": "decimal-operations-M-27",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−14.4</span><span class=\"den\">5</span></span> =",
+   "category": "Divide",
+   "explanation": "(−14.4) ÷ 5 = −2.88.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -2.88
+  },
+  {
+   "id": "decimal-operations-M-28",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−10.47</span><span class=\"den\">−3</span></span> =",
+   "category": "Divide",
+   "explanation": "(−10.47) ÷ (−3) = 3.49.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 3.49
+  },
+  {
+   "id": "decimal-operations-M-29",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−4.2</span><span class=\"den\">28</span></span> =",
+   "category": "Divide",
+   "explanation": "(−4.2) ÷ 28 = −0.15.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -0.15
+  },
+  {
+   "id": "decimal-operations-M-30",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−28.7</span><span class=\"den\">−14</span></span> =",
+   "category": "Divide",
+   "explanation": "(−28.7) ÷ (−14) = 2.05.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 2.05
+  },
+  {
+   "id": "decimal-operations-M-31",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−12.06</span><span class=\"den\">−6</span></span> =",
+   "category": "Divide",
+   "explanation": "(−12.06) ÷ (−6) = 2.01.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 2.01
+  },
+  {
+   "id": "decimal-operations-M-32",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−28.5</span><span class=\"den\">−2.5</span></span> =",
+   "category": "Divide",
+   "explanation": "(−28.5) ÷ (−2.5) = 11.4.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 11.4
+  },
+  {
+   "id": "decimal-operations-M-33",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−18.9</span><span class=\"den\">−15</span></span> =",
+   "category": "Divide",
+   "explanation": "(−18.9) ÷ (−15) = 1.26.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 1.26
+  },
+  {
+   "id": "decimal-operations-M-34",
+   "prompt": "<span class=\"frac\"><span class=\"num\">28.5</span><span class=\"den\">−15</span></span> =",
+   "category": "Divide",
+   "explanation": "28.5 ÷ (−15) = −1.9.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -1.9
+  }
+ ],
+ "P": [
+  {
+   "id": "decimal-operations-P-1",
+   "prompt": "(−0.5) + 14.38 =",
+   "category": "Add & Subtract",
+   "explanation": "(−0.5) + 14.38 = 13.88.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 13.88
+  },
+  {
+   "id": "decimal-operations-P-2",
+   "prompt": "(−8.14)−(−8.9) =",
+   "category": "Add & Subtract",
+   "explanation": "(−8.14) − (−8.9) = 0.76.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 0.76
+  },
+  {
+   "id": "decimal-operations-P-3",
+   "prompt": "(−15.8)−(−1.73) + 0.6 =",
+   "category": "Add & Subtract",
+   "explanation": "Work it in order — (−15.8) − (−1.73) = −14.07; then (−14.07) + 0.6 = −13.47. So the answer is −13.47.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -13.47
+  },
+  {
+   "id": "decimal-operations-P-4",
+   "prompt": "−25.2 + 32 =",
+   "category": "Add & Subtract",
+   "explanation": "(−25.2) + 32 = 6.8.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 6.8
+  },
+  {
+   "id": "decimal-operations-P-5",
+   "prompt": "(−3.97) − 14.2(3.2) =",
+   "category": "Order of Operations",
+   "explanation": "Work it in order — 14.2 × 3.2 = 45.44; then (−3.97) − 45.44 = −49.41. So the answer is −49.41.",
+   "tip": "Multiply and divide first, left to right, then add and subtract. Do each operation as its own small decimal problem and write down the result before moving on.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -49.41
+  },
+  {
+   "id": "decimal-operations-P-6",
+   "prompt": "−9.2 × 0.42 =",
+   "category": "Order of Operations",
+   "explanation": "(−9.2) × 0.42 = −3.864.",
+   "tip": "Multiply and divide first, left to right, then add and subtract. Do each operation as its own small decimal problem and write down the result before moving on.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -3.864
+  },
+  {
+   "id": "decimal-operations-P-7",
+   "prompt": "−4.27−13.8 × 0.04 =",
+   "category": "Order of Operations",
+   "explanation": "Work it in order — 13.8 × 0.04 = 0.552; then (−4.27) − 0.552 = −4.822. So the answer is −4.822.",
+   "tip": "Multiply and divide first, left to right, then add and subtract. Do each operation as its own small decimal problem and write down the result before moving on.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -4.822
+  },
+  {
+   "id": "decimal-operations-P-8",
+   "prompt": "(−9.82) + (−0.4) =",
+   "category": "Add & Subtract",
+   "explanation": "(−9.82) + (−0.4) = −10.22.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -10.22
+  },
+  {
+   "id": "decimal-operations-P-9",
+   "prompt": "6.1−10.9 =",
+   "category": "Add & Subtract",
+   "explanation": "6.1 − 10.9 = −4.8.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -4.8
+  },
+  {
+   "id": "decimal-operations-P-10",
+   "prompt": "(−4.79)−(−0.992) =",
+   "category": "Add & Subtract",
+   "explanation": "(−4.79) − (−0.992) = −3.798.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -3.798
+  },
+  {
+   "id": "decimal-operations-P-11",
+   "prompt": "17−3.35 =",
+   "category": "Add & Subtract",
+   "explanation": "17 − 3.35 = 13.65.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 13.65
+  },
+  {
+   "id": "decimal-operations-P-12",
+   "prompt": "5.32 ÷ 8 − 10.4(0.02) =",
+   "category": "Order of Operations",
+   "explanation": "Work it in order — 5.32 ÷ 8 = 0.665; then 10.4 × 0.02 = 0.208; then 0.665 − 0.208 = 0.457. So the answer is 0.457.",
+   "tip": "Multiply and divide first, left to right, then add and subtract. Do each operation as its own small decimal problem and write down the result before moving on.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 0.457
+  }
+ ],
+ "T": [
+  {
+   "id": "decimal-operations-T-1",
+   "prompt": "3.6 + (−8.25) =",
+   "category": "Add & Subtract",
+   "explanation": "3.6 + (−8.25) = −4.65.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -4.65
+  },
+  {
+   "id": "decimal-operations-T-2",
+   "prompt": "(−7.4)−(−2.95) =",
+   "category": "Add & Subtract",
+   "explanation": "(−7.4) − (−2.95) = −4.45.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -4.45
+  },
+  {
+   "id": "decimal-operations-T-3",
+   "prompt": "12.05−(−4.7) =",
+   "category": "Add & Subtract",
+   "explanation": "12.05 − (−4.7) = 16.75.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 16.75
+  },
+  {
+   "id": "decimal-operations-T-4",
+   "prompt": "Which is the correct way to line up <strong>6.1 − 2.35</strong> before subtracting?",
+   "category": "Add & Subtract",
+   "explanation": "Decimal points must sit directly above each other, and 6.1 gets a placeholder zero: 6.10 − 2.35 = 3.75.",
+   "tip": "Line up the dots, not the right-hand digits. Pad with zeros so every number has the same number of decimal places.",
+   "kind": "choice",
+   "choices": [
+    "6.10 over 2.35 — decimal points lined up",
+    "6.1 over 2.35 — numbers lined up on the right",
+    "61 over 235 — decimals ignored",
+    "6.1 over 0.235 — shifted one place"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "decimal-operations-T-5",
+   "prompt": "(−0.8) + (−6.35) =",
+   "category": "Add & Subtract",
+   "explanation": "(−0.8) + (−6.35) = −7.15.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -7.15
+  },
+  {
+   "id": "decimal-operations-T-6",
+   "prompt": "(−15.2) + 8.64 =",
+   "category": "Add & Subtract",
+   "explanation": "(−15.2) + 8.64 = −6.56.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -6.56
+  },
+  {
+   "id": "decimal-operations-T-7",
+   "prompt": "6.3 + 4.85 + (−2.1) =",
+   "category": "Add & Subtract",
+   "explanation": "Work it in order — 6.3 + 4.85 = 11.15; then 11.15 + (−2.1) = 9.05. So the answer is 9.05.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 9.05
+  },
+  {
+   "id": "decimal-operations-T-8",
+   "prompt": "(−2.4) − (−2.4) = 0",
+   "category": "Add & Subtract",
+   "explanation": "True. Subtracting a negative adds it back: −2.4 + 2.4 = 0. Any number minus itself is 0.",
+   "tip": "A number minus itself is always 0, whatever its sign.",
+   "kind": "truefalse",
+   "answer": true
+  },
+  {
+   "id": "decimal-operations-T-9",
+   "prompt": "(−3.2)−5.7−1.45 =",
+   "category": "Add & Subtract",
+   "explanation": "Work it in order — (−3.2) − 5.7 = −8.9; then (−8.9) − 1.45 = −10.35. So the answer is −10.35.",
+   "tip": "Line up the decimal points and pad with zeros (6.1 = 6.10). Same signs: add and keep the sign. Different signs: subtract the smaller from the larger and keep the sign of the bigger one. Subtracting a negative? Keep–Change–Change.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -10.35
+  },
+  {
+   "id": "decimal-operations-T-10",
+   "prompt": "(−3.4) × (−2.5) =",
+   "category": "Multiply",
+   "explanation": "(−3.4) × (−2.5) = 8.5.",
+   "tip": "Ignore the decimal points and multiply like whole numbers. Then count the decimal places in BOTH factors and put that many in the answer. Same signs → positive, different signs → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 8.5
+  },
+  {
+   "id": "decimal-operations-T-11",
+   "prompt": "6.2 × (−1.3) =",
+   "category": "Multiply",
+   "explanation": "6.2 × (−1.3) = −8.06.",
+   "tip": "Ignore the decimal points and multiply like whole numbers. Then count the decimal places in BOTH factors and put that many in the answer. Same signs → positive, different signs → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -8.06
+  },
+  {
+   "id": "decimal-operations-T-12",
+   "prompt": "0.7 × (−0.8) =",
+   "category": "Multiply",
+   "explanation": "0.7 × (−0.8) = −0.56.",
+   "tip": "Ignore the decimal points and multiply like whole numbers. Then count the decimal places in BOTH factors and put that many in the answer. Same signs → positive, different signs → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -0.56
+  },
+  {
+   "id": "decimal-operations-T-13",
+   "prompt": "0.4 × 0.3 has <strong>two</strong> decimal places in its answer.",
+   "category": "Multiply",
+   "explanation": "True. 0.4 and 0.3 have one decimal place each, so the product has 1 + 1 = 2: 4 × 3 = 12, so 0.12.",
+   "tip": "Count the decimal places in both factors and add them up — that is how many the answer gets.",
+   "kind": "truefalse",
+   "answer": true
+  },
+  {
+   "id": "decimal-operations-T-14",
+   "prompt": "(−4.5) × 2 × (−1.6) =",
+   "category": "Multiply",
+   "explanation": "Work it in order — (−4.5) × 2 = −9; then (−9) × (−1.6) = 14.4. So the answer is 14.4.",
+   "tip": "Ignore the decimal points and multiply like whole numbers. Then count the decimal places in BOTH factors and put that many in the answer. Same signs → positive, different signs → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 14.4
+  },
+  {
+   "id": "decimal-operations-T-15",
+   "prompt": "Which is the best <strong>estimate</strong> of 19.7 × 4.1?",
+   "category": "Multiply",
+   "explanation": "Round to 20 × 4 = 80. The exact answer, 80.77, is close.",
+   "tip": "Round each factor to a friendly number, multiply, and use that to check where the decimal point belongs.",
+   "kind": "choice",
+   "choices": [
+    "8",
+    "80",
+    "800",
+    "8,000"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "decimal-operations-T-16",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−7.5</span><span class=\"den\">2.5</span></span> =",
+   "category": "Divide",
+   "explanation": "(−7.5) ÷ 2.5 = −3.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -3
+  },
+  {
+   "id": "decimal-operations-T-17",
+   "prompt": "<span class=\"frac\"><span class=\"num\">18.4</span><span class=\"den\">−4</span></span> =",
+   "category": "Divide",
+   "explanation": "18.4 ÷ (−4) = −4.6.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -4.6
+  },
+  {
+   "id": "decimal-operations-T-18",
+   "prompt": "<span class=\"frac\"><span class=\"num\">−0.72</span><span class=\"den\">−0.9</span></span> =",
+   "category": "Divide",
+   "explanation": "(−0.72) ÷ (−0.9) = 0.8.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 0.8
+  },
+  {
+   "id": "decimal-operations-T-19",
+   "prompt": "<span class=\"frac\"><span class=\"num\">5.1</span><span class=\"den\">0.3</span></span> =",
+   "category": "Divide",
+   "explanation": "5.1 ÷ 0.3 = 17.",
+   "tip": "Slide the decimal point in the divisor right until it is a whole number, and slide the dividend the same number of places. Then divide as usual. Same signs → positive, different → negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 17
+  },
+  {
+   "id": "decimal-operations-T-20",
+   "prompt": "To work out <strong>4.8 ÷ 0.06</strong>, which equivalent problem is easiest?",
+   "category": "Divide",
+   "explanation": "Slide the decimal in 0.06 two places right to make 6; slide 4.8 the same two places to make 480. So 480 ÷ 6 = 80.",
+   "tip": "Whatever you do to the divisor, do to the dividend. Both move the same number of places.",
+   "kind": "choice",
+   "choices": [
+    "480 ÷ 6",
+    "48 ÷ 6",
+    "4.8 ÷ 6",
+    "0.48 ÷ 0.6"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "decimal-operations-T-21",
+   "prompt": "Put these in order from <strong>least to greatest</strong>.",
+   "category": "Compare",
+   "explanation": "Negatives come before positives, and among negatives the one farthest from zero is smallest: −2.5 < −2.05 < −0.25 < 0.2 < 2.05.",
+   "tip": "On a number line, left is less. A bigger negative sits farther left.",
+   "kind": "order",
+   "items": [
+    "−2.5",
+    "−2.05",
+    "−0.25",
+    "0.2",
+    "2.05"
+   ]
+  },
+  {
+   "id": "decimal-operations-T-22",
+   "prompt": "Match each expression to its value.",
+   "category": "Multiply",
+   "explanation": "Same signs give a positive, different signs give a negative: (−1.2)(−3) = 3.6, (−7.2) ÷ 2 = −3.6, (−0.4)(−3) = 1.2, 7.2 ÷ (−3) = −2.4.",
+   "tip": "Decide the sign first, then multiply or divide the sizes.",
+   "kind": "match",
+   "pairs": [
+    [
+     "(−1.2)(−3)",
+     "3.6"
+    ],
+    [
+     "(−7.2) ÷ 2",
+     "−3.6"
+    ],
+    [
+     "(−0.4)(−3)",
+     "1.2"
+    ],
+    [
+     "7.2 ÷ (−3)",
+     "−2.4"
+    ]
+   ]
+  },
+  {
+   "id": "decimal-operations-T-23",
+   "prompt": "Select <strong>ALL</strong> the expressions that equal −2.4.",
+   "category": "Mixed",
+   "explanation": "(−4.8) ÷ 2 = −2.4; (−1.2)(2) = −2.4; (−5.6) − (−3.2) = −5.6 + 3.2 = −2.4; (−1.2) + (−1.2) = −2.4. The last two are +2.4.",
+   "tip": "Do each choice on its own. Two of them have the wrong sign.",
+   "kind": "multi",
+   "choices": [
+    "(−4.8) ÷ 2",
+    "(−1.2)(2)",
+    "(−5.6) − (−3.2)",
+    "(−1.2) + (−1.2)",
+    "4.8 ÷ 2",
+    "(−0.6)(−4)"
+   ],
+   "answers": [
+    0,
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "id": "decimal-operations-T-24",
+   "prompt": "(−6.4) + 3.2(2.5) =",
+   "category": "Order of Operations",
+   "explanation": "Work it in order — 3.2 × 2.5 = 8; then (−6.4) + 8 = 1.6. So the answer is 1.6.",
+   "tip": "Multiply and divide first, left to right, then add and subtract. Do each operation as its own small decimal problem and write down the result before moving on.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 1.6
+  },
+  {
+   "id": "decimal-operations-T-25",
+   "prompt": "12.6−4.5 ÷ 0.5 =",
+   "category": "Order of Operations",
+   "explanation": "Work it in order — 4.5 ÷ 0.5 = 9; then 12.6 − 9 = 3.6. So the answer is 3.6.",
+   "tip": "Multiply and divide first, left to right, then add and subtract. Do each operation as its own small decimal problem and write down the result before moving on.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": 3.6
+  },
+  {
+   "id": "decimal-operations-T-26",
+   "prompt": "(−2.5)(4) − 0.75 =",
+   "category": "Order of Operations",
+   "explanation": "Work it in order — (−2.5) × 4 = −10; then (−10) − 0.75 = −10.75. So the answer is −10.75.",
+   "tip": "Multiply and divide first, left to right, then add and subtract. Do each operation as its own small decimal problem and write down the result before moving on.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "mono": true,
+   "kind": "number",
+   "answer": -10.75
+  },
+  {
+   "id": "decimal-operations-T-27",
+   "prompt": "Mia buys 3 notebooks at $2.35 each and a pen for $1.80. She pays with a $10 bill. How much change does she get?",
+   "category": "Word Problems",
+   "explanation": "3 × 2.35 = 7.05. Then 7.05 + 1.80 = 8.85 spent. Change: 10 − 8.85 = $1.15.",
+   "tip": "Decide what is happening — joining, taking away, equal groups, or sharing — then write the one expression that matches and solve it.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "kind": "number",
+   "answer": 1.15
+  },
+  {
+   "id": "decimal-operations-T-28",
+   "prompt": "At 6 p.m. it is 5.2°C. The temperature falls 2.4 degrees every hour. What is the temperature 3.5 hours later?",
+   "category": "Word Problems",
+   "explanation": "It falls 2.4 × 3.5 = 8.4 degrees. Then 5.2 − 8.4 = −3.2°C.",
+   "tip": "Decide what is happening — joining, taking away, equal groups, or sharing — then write the one expression that matches and solve it.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "kind": "number",
+   "answer": -3.2
+  },
+  {
+   "id": "decimal-operations-T-29",
+   "prompt": "A 3.6-liter jug of juice is poured into bottles that each hold 0.45 liter. How many bottles can be filled?",
+   "category": "Word Problems",
+   "explanation": "3.6 ÷ 0.45 = 360 ÷ 45 = 8 bottles.",
+   "tip": "Decide what is happening — joining, taking away, equal groups, or sharing — then write the one expression that matches and solve it.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "kind": "number",
+   "answer": 8
+  },
+  {
+   "id": "decimal-operations-T-30",
+   "prompt": "Dev runs 2.75 miles each day for 6 days. How many miles does he run in all?",
+   "category": "Word Problems",
+   "explanation": "2.75 × 6 = 16.5 miles.",
+   "tip": "Decide what is happening — joining, taking away, equal groups, or sharing — then write the one expression that matches and solve it.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "kind": "number",
+   "answer": 16.5
+  },
+  {
+   "id": "decimal-operations-T-31",
+   "prompt": "A diver is 12.5 meters below sea level and then descends another 8.75 meters. What is her depth relative to sea level (as a signed number)?",
+   "category": "Word Problems",
+   "explanation": "Below sea level is negative: −12.5 − 8.75 = −21.25 meters.",
+   "tip": "Below zero is negative; going deeper makes the number more negative.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "kind": "number",
+   "answer": -21.25
+  }
+ ],
+ "R": [
+  {
+   "id": "decimal-operations-R-1",
+   "prompt": "Mrs. Lee has 43 pieces of candy to give out equally to 18 people. How many pieces does each person get?",
+   "category": "Remainders",
+   "explanation": "43 ÷ 18 = 2 remainder 7. You cannot hand out part of a piece, so ignore the remainder: each person gets 2.",
+   "tip": "Ask: what does the leftover mean here? If the extras cannot be used, ignore them. If everyone must be served, round up. If the leftover can be cut up, split it as a decimal.",
+   "kind": "choice",
+   "choices": [
+    "Ignore the remainder",
+    "Round up to the next whole number",
+    "Split the remainder (write it as a decimal)",
+    "There is no remainder"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "decimal-operations-R-2",
+   "prompt": "Trolleys seat 15 people each. How many trolleys are needed to carry 95 people?",
+   "category": "Remainders",
+   "explanation": "95 ÷ 15 = 6 remainder 5. The 5 left-over people still need a ride, so round up: 7 trolleys.",
+   "tip": "Ask: what does the leftover mean here? If the extras cannot be used, ignore them. If everyone must be served, round up. If the leftover can be cut up, split it as a decimal.",
+   "kind": "choice",
+   "choices": [
+    "Ignore the remainder",
+    "Round up to the next whole number",
+    "Split the remainder (write it as a decimal)",
+    "There is no remainder"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "decimal-operations-R-3",
+   "prompt": "A teacher has 95 pencils to give to 20 students. How many pencils does each student get?",
+   "category": "Remainders",
+   "explanation": "95 ÷ 20 = 4 remainder 15 (4.75). Pencils cannot be cut into pieces, so ignore the remainder: 4 each.",
+   "tip": "Ask: what does the leftover mean here? If the extras cannot be used, ignore them. If everyone must be served, round up. If the leftover can be cut up, split it as a decimal.",
+   "kind": "choice",
+   "choices": [
+    "Ignore the remainder",
+    "Round up to the next whole number",
+    "Split the remainder (write it as a decimal)",
+    "There is no remainder"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "decimal-operations-R-4",
+   "prompt": "A $55.00 sweatshirt is paid for equally by 15 players. Which is the best way to handle the remainder?",
+   "category": "Remainders",
+   "explanation": "55 ÷ 15 = 3.666…, so money is split to the cent: about $3.67 each (the last cents get rounded). Money can be split, so write it as a decimal.",
+   "tip": "Ask: what does the leftover mean here? If the extras cannot be used, ignore them. If everyone must be served, round up. If the leftover can be cut up, split it as a decimal.",
+   "kind": "choice",
+   "choices": [
+    "Ignore the remainder",
+    "Round up to the next whole number",
+    "Split the remainder (write it as a decimal)",
+    "There is no remainder"
+   ],
+   "answer": 2
+  },
+  {
+   "id": "decimal-operations-R-5",
+   "prompt": "85 girls sign up for basketball with no more than 6 on a team. How many teams are needed?",
+   "category": "Remainders",
+   "explanation": "85 ÷ 6 = 14 remainder 1. That last girl needs a team too, so round up: 15 teams.",
+   "tip": "Ask: what does the leftover mean here? If the extras cannot be used, ignore them. If everyone must be served, round up. If the leftover can be cut up, split it as a decimal.",
+   "kind": "choice",
+   "choices": [
+    "Ignore the remainder",
+    "Round up to the next whole number",
+    "Split the remainder (write it as a decimal)",
+    "There is no remainder"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "decimal-operations-R-6",
+   "prompt": "12 cheerleaders share 87 inches of ribbon equally. How many inches does each get?",
+   "category": "Remainders",
+   "explanation": "87 ÷ 12 = 7 remainder 3, and the 3 inches can be cut: 7.25 inches each. Ribbon can be split, so write the remainder as a decimal.",
+   "tip": "Ask: what does the leftover mean here? If the extras cannot be used, ignore them. If everyone must be served, round up. If the leftover can be cut up, split it as a decimal.",
+   "kind": "choice",
+   "choices": [
+    "Ignore the remainder",
+    "Round up to the next whole number",
+    "Split the remainder (write it as a decimal)",
+    "There is no remainder"
+   ],
+   "answer": 2
+  },
+  {
+   "id": "decimal-operations-R-7",
+   "prompt": "25 people are sitting on benches that seat 7 each. How many benches are needed?",
+   "category": "Remainders",
+   "explanation": "25 ÷ 7 = 3 remainder 4. Those 4 people still need a seat, so round up: 4 benches.",
+   "tip": "Ask: what does the leftover mean here? If the extras cannot be used, ignore them. If everyone must be served, round up. If the leftover can be cut up, split it as a decimal.",
+   "kind": "choice",
+   "choices": [
+    "Ignore the remainder",
+    "Round up to the next whole number",
+    "Split the remainder (write it as a decimal)",
+    "There is no remainder"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "decimal-operations-R-8",
+   "prompt": "Lynn has $60 and each pizza costs $8. How many pizzas can she buy?",
+   "category": "Remainders",
+   "explanation": "60 ÷ 8 = 7 remainder 4. She cannot buy part of a pizza with $4, so ignore the remainder: 7 pizzas.",
+   "tip": "Ask: what does the leftover mean here? If the extras cannot be used, ignore them. If everyone must be served, round up. If the leftover can be cut up, split it as a decimal.",
+   "kind": "choice",
+   "choices": [
+    "Ignore the remainder",
+    "Round up to the next whole number",
+    "Split the remainder (write it as a decimal)",
+    "There is no remainder"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "decimal-operations-R-9",
+   "prompt": "Write the answer as a number: 12 cheerleaders share 87 inches of ribbon equally. How many inches does each one get?",
+   "category": "Remainders",
+   "explanation": "87 ÷ 12 = 7.25 inches.",
+   "tip": "Ask: what does the leftover mean here? If the extras cannot be used, ignore them. If everyone must be served, round up. If the leftover can be cut up, split it as a decimal.",
+   "hint": "Write the number only. Include the minus sign if it is negative.",
+   "kind": "number",
+   "answer": 7.25
+  },
+  {
+   "id": "decimal-operations-R-10",
+   "prompt": "Lynn has $60 and pizzas cost $8 each. <strong>How many pizzas</strong> can she buy?",
+   "category": "Remainders",
+   "explanation": "60 ÷ 8 = 7 remainder 4. $4 will not buy a pizza, so she buys 7.",
+   "tip": "Ask: what does the leftover mean here? If the extras cannot be used, ignore them. If everyone must be served, round up. If the leftover can be cut up, split it as a decimal.",
+   "hint": "Write a whole number.",
+   "kind": "number",
+   "answer": 7
+  },
+  {
+   "id": "decimal-operations-R-11",
+   "prompt": "85 girls sign up for basketball. Teams can have <strong>no more than 6</strong> players. How many teams are needed?",
+   "category": "Remainders",
+   "explanation": "85 ÷ 6 = 14 remainder 1. The last girl needs a team, so 15 teams.",
+   "tip": "Ask: what does the leftover mean here? If the extras cannot be used, ignore them. If everyone must be served, round up. If the leftover can be cut up, split it as a decimal.",
+   "hint": "Write a whole number.",
+   "kind": "number",
+   "answer": 15
+  }
+ ]
+}

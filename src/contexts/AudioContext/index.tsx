@@ -10,6 +10,17 @@ interface AudioContextType {
 
 const AudioContext = createContext<AudioContextType | undefined>(undefined)
 
+/**
+ * What a voice should actually read. Emoji are for eyes: iOS reads "🎉" as
+ * "party popper" and "📍" as "round pushpin" in the middle of a sentence.
+ */
+export const speakable = (text: string): string =>
+  text
+    .replace(/[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\u{FE0F}\u{200D}\u{20E3}]/gu, '')
+    .replace(/\s+([,.!?])/g, '$1')
+    .replace(/\s{2,}/g, ' ')
+    .trim()
+
 export const useAudio = () => {
   const context = useContext(AudioContext)
   if (!context) {
@@ -39,10 +50,11 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
   }
 
   const speak = async (text: string, options?: any) => {
-    if (isAudioEnabled && window.speechSynthesis) {
+    const said = speakable(text)
+    if (isAudioEnabled && window.speechSynthesis && said) {
       // Never let speech hiccups bubble up as unhandled rejections.
       try {
-        await speechSpeak(text, options)
+        await speechSpeak(said, options)
       } catch {
         /* ignore — speech is a nice-to-have, not critical */
       }

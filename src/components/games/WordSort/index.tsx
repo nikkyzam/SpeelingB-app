@@ -1,8 +1,11 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle, isPlayable } from '../shared/wordTricks'
-import sfx from '../shared/sfx'
+import useCheer from '../shared/useCheer'
+import useLater from '../shared/useLater'
+import Burst from '../shared/Burst'
+import GameEmpty from '../shared/GameEmpty'
 import './WordSort.css'
 
 interface WordSortProps {
@@ -11,47 +14,123 @@ interface WordSortProps {
   rounds?: number
 }
 
-interface Rule {
+export interface Rule {
   id: string
   question: string
+  /** The question as it is read aloud. */
+  say: string
   /** basket A is the "true" side of `test` */
   a: { label: string; icon: string }
   b: { label: string; icon: string }
   test: (word: string) => boolean
+  /** Why a word goes where it goes, said after a miss: "apple starts with a, a vowel". */
+  why: (word: string) => string
 }
 
 const VOWELS = 'aeiou'
+const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
+const isVowel = (c: string) => VOWELS.includes(c)
 
-const RULES: Rule[] = [
+const CLASSIC_RULES: Rule[] = [
   {
     id: 'starts',
     question: 'Which letter does it START with?',
+    say: 'Does it start with a vowel, or a consonant?',
     a: { label: 'Vowel (a e i o u)', icon: '🅰️' },
     b: { label: 'Consonant', icon: '🅱️' },
-    test: (w) => VOWELS.includes(w[0]),
-  },
-  {
-    id: 'length',
-    question: 'How LONG is the word?',
-    a: { label: 'Short (4 or fewer)', icon: '🐜' },
-    b: { label: 'Long (5 or more)', icon: '🐘' },
-    test: (w) => w.length <= 4,
+    test: (w) => isVowel(w[0]),
+    why: (w) => `${w} starts with ${w[0]}, ${isVowel(w[0]) ? 'a vowel' : 'a consonant'}`,
   },
   {
     id: 'double',
     question: 'Does it have DOUBLE letters?',
+    say: 'Does it have double letters?',
     a: { label: 'Double letters', icon: '👯' },
     b: { label: 'No doubles', icon: '1️⃣' },
     test: (w) => /(.)\1/.test(w),
+    why: (w) => {
+      const pair = /(.)\1/.exec(w)
+      return pair ? `${w} has a double ${pair[1]}` : `${w} has no double letters`
+    },
   },
   {
     id: 'ends',
     question: 'What does it END with?',
+    say: 'Does it end with a vowel, or a consonant?',
     a: { label: 'Ends in a vowel', icon: '🎈' },
     b: { label: 'Ends in a consonant', icon: '🧱' },
-    test: (w) => VOWELS.includes(w[w.length - 1]),
+    test: (w) => isVowel(w[w.length - 1]),
+    why: (w) => `${w} ends with ${w[w.length - 1]}, ${isVowel(w[w.length - 1]) ? 'a vowel' : 'a consonant'}`,
   },
 ]
+
+/** Short or long, with the line drawn where it splits these words best. */
+const lengthRule = (most: number): Rule => ({
+  id: `length-${most}`,
+  question: 'How LONG is the word?',
+  say: `Is it short, ${most} letters or fewer? Or long?`,
+  a: { label: `Short (${most} or fewer)`, icon: '🐜' },
+  b: { label: `Long (${most + 1} or more)`, icon: '🐘' },
+  test: (w) => w.length <= most,
+  why: (w) => `${w} has ${w.length} letters`,
+})
+
+/** "Is there a G in it?" — a rule almost any handful of words splits on. */
+const letterRule = (ch: string): Rule => ({
+  id: `letter-${ch}`,
+  question: `Is there a letter ${ch.toUpperCase()} in it?`,
+  say: `Is there a letter ${ch} in it?`,
+  a: { label: `Has a ${ch.toUpperCase()}`, icon: '🔎' },
+  b: { label: `No ${ch.toUpperCase()}`, icon: '🙈' },
+  test: (w) => w.includes(ch),
+  why: (w) => (w.includes(ch) ? `${w} has a ${ch} in it` : `${w} has no ${ch}`),
+})
+
+interface Split {
+  rule: Rule
+  yes: string[]
+  no: string[]
+}
+const balance = (s: Split) => Math.min(s.yes.length, s.no.length)
+const splitBy = (rule: Rule, words: string[]): Split => ({
+  rule,
+  yes: words.filter((w) => rule.test(w)),
+  no: words.filter((w) => !rule.test(w)),
+})
+const mostEven = (splits: Split[]): Split => shuffle(splits).sort((x, y) => balance(y) - balance(x))[0]
+
+/**
+ * The rule and the pile of words for one game.
+ *
+ * Every rule must put at least two of the words in each basket. The old pick
+ * fell back to the first rule it tried, so a pile like cat, dog, sun, pig got
+ * "starts with a vowel?" — every word in one basket, nothing to decide.
+ */
+export const planSort = (words: string[], rounds: number): { rule: Rule; queue: string[] } => {
+  const all = [...new Set(words.map((w) => w.toLowerCase()))]
+  const candidates = [
+    ...CLASSIC_RULES.map((r) => splitBy(r, all)),
+    mostEven([3, 4, 5, 6, 7, 8, 9].map((n) => splitBy(lengthRule(n), all))),
+  ]
+  const letters = mostEven([...ALPHABET].map((ch) => splitBy(letterRule(ch), all)))
+  const total = Math.min(rounds, all.length)
+  const need = Math.max(2, Math.ceil(total / 3))
+
+  const chosen =
+    shuffle(candidates).find((s) => balance(s) >= need) ??
+    (balance(letters) >= need ? letters : undefined) ??
+    mostEven([...candidates, letters])
+
+  // Half and half where the words allow, never fewer than two a side.
+  let nYes = Math.min(chosen.yes.length, Math.ceil(total / 2))
+  const nNo = Math.min(chosen.no.length, total - nYes)
+  nYes = Math.min(chosen.yes.length, total - nNo)
+  const queue = shuffle([...shuffle(chosen.yes).slice(0, nYes), ...shuffle(chosen.no).slice(0, nNo)])
+  return { rule: chosen.rule, queue }
+}
+
+const SORTED = 20
+const PERFECT_BONUS = 60
 
 /**
  * Two baskets, one rule, a pile of words. Sorting forces a child to notice the
@@ -60,52 +139,54 @@ const RULES: Rule[] = [
  */
 const WordSort: React.FC<WordSortProps> = ({ onComplete, words: providedWords, rounds = 10 }) => {
   const { speak } = useAudio()
+  const cheer = useCheer()
+  const later = useLater()
 
   const { rule, queue } = useMemo(() => {
     const pool = (providedWords && providedWords.length > 0 ? providedWords : [])
       .filter((w) => isPlayable(w))
-      .map((w) => w.word.toLowerCase())
-    const all = [...new Set(pool)]
-
-    // Pick a rule that actually splits this child's words — a rule where every
-    // word lands in one basket is no fun to play.
-    const scored = shuffle(RULES).map((r) => {
-      const yes = pool.filter((w) => r.test(w))
-      const no = pool.filter((w) => !r.test(w))
-      return { rule: r, yes, no, balance: Math.min(yes.length, no.length) }
-    })
-    const chosen = scored.find((s) => s.balance >= Math.ceil(rounds / 3)) || scored[0]
-
-    // Both baskets come from the child's own words, so a lopsided pile just
-    // makes for a shorter round.
-    const half = Math.ceil(rounds / 2)
-    const yes = [...chosen.yes, ...all.filter((w) => chosen.rule.test(w) && !chosen.yes.includes(w))].slice(0, half)
-    const no = [...chosen.no, ...all.filter((w) => !chosen.rule.test(w) && !chosen.no.includes(w))].slice(0, rounds - half)
-
-    return { rule: chosen.rule, queue: shuffle([...yes, ...no]).slice(0, rounds) }
+      .map((w) => w.word)
+    return planSort(pool, rounds)
   }, [providedWords, rounds])
 
   const [index, setIndex] = useState(0)
   const [score, setScore] = useState(0)
   const [right, setRight] = useState(0)
+  const [streak, setStreak] = useState(0)
   const [basketA, setBasketA] = useState<string[]>([])
   const [basketB, setBasketB] = useState<string[]>([])
   const [verdict, setVerdict] = useState<'a' | 'b' | null>(null)
   const [correct, setCorrect] = useState<boolean | null>(null)
+  const [cheerLine, setCheerLine] = useState('')
+  const [hits, setHits] = useState(0)
+  const locked = useRef(false)
 
   const current = queue[index]
+
+  // The rule is read out before the first word, then every word as it comes.
+  useEffect(() => {
+    if (!current) return
+    locked.current = false
+    if (index === 0) {
+      speak(rule.say)
+      speak(current, { queue: true })
+    } else {
+      speak(current)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [index, queue])
 
   if (!current) {
     return (
       <div className="word-sort">
-        <p className="ws2-empty">No words to sort yet — learn a few first! 🧺</p>
-        <button className="ws2-btn" onClick={() => onComplete(0)}>Back to Games</button>
+        <GameEmpty icon="🧺">No words to sort yet — learn a few first!</GameEmpty>
       </div>
     )
   }
 
   const sort = (side: 'a' | 'b') => {
-    if (verdict) return
+    if (locked.current) return
+    locked.current = true
     const belongsInA = rule.test(current)
     const ok = (side === 'a') === belongsInA
 
@@ -115,26 +196,26 @@ const WordSort: React.FC<WordSortProps> = ({ onComplete, words: providedWords, r
     else setBasketB((x) => [...x, current])
 
     if (ok) {
-      setScore((s) => s + 20)
+      setScore((s) => s + SORTED)
       setRight((r) => r + 1)
-      sfx.correct()
+      setHits((h) => h + 1)
+      setCheerLine(cheer.hit())
+      setStreak(cheer.streak())
     } else {
-      sfx.wrong()
-      speak(`${current} goes in the other basket`)
+      setCheerLine(cheer.miss({ say: rule.why(current) }))
+      setStreak(0)
     }
 
-    setTimeout(() => {
+    later(() => {
       if (index < queue.length - 1) {
-        setIndex((i) => i + 1)
         setVerdict(null)
         setCorrect(null)
+        setIndex((i) => i + 1)
       } else {
         const perfect = right + (ok ? 1 : 0) === queue.length
-        const total = score + (ok ? 20 : 0) + (perfect ? 60 : 0)
-        sfx.win()
-        onComplete(total)
+        onComplete(score + (ok ? SORTED : 0) + (perfect ? PERFECT_BONUS : 0))
       }
-    }, ok ? 900 : 1800)
+    }, ok ? 1200 : 2600)
   }
 
   const belongsInA = rule.test(current)
@@ -147,12 +228,19 @@ const WordSort: React.FC<WordSortProps> = ({ onComplete, words: providedWords, r
           <div className="ws2-stat"><span>Word</span><strong>{index + 1}/{queue.length}</strong></div>
           <div className="ws2-stat"><span>Score</span><strong>{score}</strong></div>
           <div className="ws2-stat"><span>Right</span><strong>✅ {right}</strong></div>
+          <div className="ws2-stat"><span>Streak</span><strong>🔥 {streak}</strong></div>
         </div>
       </div>
 
-      <p className="ws2-rule">{rule.question}</p>
+      <p className="ws2-rule">
+        {rule.question}
+        <button className="ws2-hear" onClick={() => speak(rule.say)} aria-label="Hear the rule again">🔊</button>
+      </p>
 
-      <button className={`ws2-card ${verdict ? (correct ? 'good' : 'bad') : ''}`} onClick={() => speak(current)}>
+      <button
+        className={`ws2-card ${verdict ? (correct ? 'good' : 'bad') : ''}`}
+        onClick={() => speak(current)}
+      >
         {current}
         <span className="ws2-card-speak" aria-hidden>🔊</span>
       </button>
@@ -180,7 +268,10 @@ const WordSort: React.FC<WordSortProps> = ({ onComplete, words: providedWords, r
 
       {verdict && (
         <div className={`ws2-flash ${correct ? 'ok' : 'bad'}`}>
-          {correct ? '🎉 Perfect sorting!' : `“${current}” belongs with ${belongsInA ? rule.a.label : rule.b.label}`}
+          {correct && <Burst trigger={hits} />}
+          {correct
+            ? `🎉 ${cheerLine}`
+            : `${cheerLine} “${current}” belongs with ${belongsInA ? rule.a.label : rule.b.label} — ${rule.why(current)}.`}
         </div>
       )}
     </div>

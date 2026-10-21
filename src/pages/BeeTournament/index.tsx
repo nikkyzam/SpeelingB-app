@@ -10,14 +10,54 @@ import TrophyService from '../../services/trophies/TrophyService'
 import { buildBracket, ROUNDS, grandBeeWeek, RoundSpec } from './bracket'
 import Celebration, { CelebrationData } from '../../components/common/Celebration'
 import sfx from '../../components/games/shared/sfx'
+import useCheer from '../../components/games/shared/useCheer'
+import Burst from '../../components/games/shared/Burst'
+import { maskClue } from '../../components/games/shared/clues'
+import { sayPrompt, spellOut } from '../../services/words/praise'
 import Button from '../../components/common/Button'
 import './BeeTournament.css'
 import SpellingInput from '../../components/common/SpellingInput'
 
 const WINGS = 2
 const BEST_KEY = 'bee_tournament_best'
+/** How the lobby says how many rounds this child's Bee really has. */
+const ROUND_COUNT: Record<number, string> = {
+  1: 'One round',
+  2: 'Two rounds',
+  3: 'Three rounds',
+  4: 'Four rounds',
+  5: 'Five rounds',
+}
 
 type Phase = 'lobby' | 'announce' | 'spelling' | 'judging' | 'over'
+
+/** This week's saved best: the furthest round reached, whether the crown was won, and Bees finished. */
+const readBest = (): { round: number; champion: boolean; runs: number } => {
+  try {
+    const saved = JSON.parse(localStorage.getItem(BEST_KEY) || '{}')
+    return saved.week === grandBeeWeek()
+      ? { round: Number(saved.round) || 0, champion: saved.champion === true, runs: Number(saved.runs) || 0 }
+      : { round: 0, champion: false, runs: 0 }
+  } catch {
+    return { round: 0, champion: false, runs: 0 }
+  }
+}
+
+/** Stars a word spelled is worth in the week's first Bee. */
+export const STARS_PER_WORD = 3
+/**
+ * A replay that week pays like a game — a star a word, at most this many. The
+ * bracket is the same all week, so paying full price every time made the Bee
+ * worth ~45 stars a run, as often as a child liked.
+ */
+export const REPLAY_MAX_STARS = 5
+
+/** Stars for a finished Bee: full price the first time this week, game price after. */
+export const beeStars = (spelled: number, runsBefore: number, firstCrown: boolean): number =>
+  (runsBefore === 0 ? spelled * STARS_PER_WORD : Math.min(REPLAY_MAX_STARS, spelled)) + (firstCrown ? CHAMPION_BONUS : 0)
+
+/** The champion's bonus. Paid once a week: the Bee is the same all week, so it could be replayed for it. */
+export const CHAMPION_BONUS = 40
 
 /**
  * The Spelling Bee itself — five rounds, rising stakes, a trophy at the end.
@@ -40,11 +80,22 @@ const BeeTournament: React.FC = () => {
   const [wordIndex, setWordIndex] = useState(0)
   const [wings, setWings] = useState(WINGS)
   const [spelled, setSpelled] = useState(0)
+  // Rounds finished with a wing to spare. Cups are earned by these: going by
+  // the round a child merely reached gave a Silver Cup to one who entered the
+  // Final — a new child's only round — and spelled nothing.
+  const [cleared, setCleared] = useState(0)
   const [input, setInput] = useState('')
   const [verdict, setVerdict] = useState<'right' | 'wrong' | null>(null)
   const [celebration, setCelebration] = useState<CelebrationData | null>(null)
+  const cheer = useCheer()
+  const [cheerLine, setCheerLine] = useState('')
+  const [hits, setHits] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
   const timers = useRef<number[]>([])
+  // The verdict state loses a race to a double tap on "Lock it in": both taps
+  // read "no verdict yet", and one word cost two wings — or finished the Bee
+  // twice, paying the stars twice. A ref settles at once.
+  const settled = useRef(false)
 
   const later = (fn: () => void, ms: number) => {
     timers.current.push(window.setTimeout(fn, ms))
@@ -61,26 +112,28 @@ const BeeTournament: React.FC = () => {
   const roundWords: Word[] = bracket[roundIndex] ?? []
   const word = roundWords[wordIndex]
 
-  const best = (() => {
-    try {
-      const saved = JSON.parse(localStorage.getItem(BEST_KEY) || '{}')
-      return saved.week === grandBeeWeek() ? Number(saved.round) || 0 : 0
-    } catch {
-      return 0
-    }
-  })()
+  const best = readBest().round
 
-  const recordBest = (reached: number) => {
+  const recordBest = (reached: number, won: boolean) => {
     try {
-      const saved = JSON.parse(localStorage.getItem(BEST_KEY) || '{}')
-      const same = saved.week === grandBeeWeek()
-      if (!same || reached > (Number(saved.round) || 0)) {
-        localStorage.setItem(BEST_KEY, JSON.stringify({ week: grandBeeWeek(), round: reached }))
-      }
+      const saved = readBest()
+      // Written every time now: the count of Bees this week decides replay pay.
+      localStorage.setItem(
+        BEST_KEY,
+        JSON.stringify({
+          week: grandBeeWeek(),
+          round: Math.max(reached, saved.round),
+          champion: saved.champion || won,
+          runs: saved.runs + 1,
+        })
+      )
     } catch {
       /* a personal best that cannot be saved was still reached */
     }
   }
+
+  /** The word, bee-style: the word, the word in a sentence, the word again. */
+  const ask = (w: Word) => speak(`Your word is: ${sayPrompt(w.word, w.sentence)}`, { queue: true })
 
   /**
    * The rounds that actually have words in them.
@@ -95,7 +148,17 @@ const BeeTournament: React.FC = () => {
     () => bracket.map((round, i) => (round.length > 0 ? i : -1)).filter((i) => i >= 0),
     [bracket]
   )
-  const enough = playable.length > 0
+  // The stretch rounds can always be filled from the bank, so a child with no
+  // words of their own was handed a Bee made entirely of words nobody had
+  // taught them. It needs at least one round of their own words.
+  const enough = playable.some((i) => !ROUNDS[i].stretch)
+
+  /** Only a word the child has met goes into their review schedule. */
+  const known = useMemo(
+    () => new Set([...learningFlow.getWordsLearnedTotal(), ...learningFlow.getWordsSpelledTotal()]),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [learningFlow, phase === 'lobby']
+  )
 
   const announce = (index: number) => {
     setRoundIndex(index)
@@ -105,30 +168,38 @@ const BeeTournament: React.FC = () => {
     setPhase('announce')
     const spec = ROUNDS[index]
     sfx.applause()
-    speak(`${spec.name}! ${spec.blurb}`)
+    // Queued, so the cheer for the last word of the round isn't cut off.
+    speak(`${spec.name}! ${spec.blurb}`, { queue: true })
     later(() => {
+      settled.current = false
       setPhase('spelling')
       later(() => inputRef.current?.focus(), 60)
       const first = bracket[index]?.[0]
-      if (first) speak(`Your word is. ${first.word}.`)
+      if (first) ask(first)
     }, 2200)
   }
 
   const start = () => {
     setWings(WINGS)
     setSpelled(0)
+    setCleared(0)
     announce(playable[0])
   }
 
-  const finish = (won: boolean, reached: number, spelledNow = spelled) => {
+  const finish = (won: boolean, reached: number, spelledNow = spelled, clearedNow = cleared) => {
     setPhase('over')
-    recordBest(reached)
+    const before = readBest()
+    const crownedBefore = before.champion
+    recordBest(reached, won)
 
-    // A cup for how far they got — bronze at the semi, gold for the lot.
-    const cup = won ? 'cup-gold' : reached >= 4 ? 'cup-silver' : reached >= 3 ? 'cup-bronze' : null
+    // A cup for rounds cleared — bronze for two, silver for three, gold for
+    // the lot. On a full bracket that is the same as reaching the Semi-final
+    // and the Final; on a short one it can't be had without the spelling.
+    const cup = won ? 'cup-gold' : clearedNow >= 3 ? 'cup-silver' : clearedNow >= 2 ? 'cup-bronze' : null
     if (cup) TrophyService.award(cup)
 
-    const stars = spelledNow * 3 + (won ? 40 : 0)
+    const firstCrown = won && !crownedBefore
+    const stars = beeStars(spelledNow, before.runs, firstCrown)
     addStars(stars)
     if (won) {
       sfx.fanfare()
@@ -139,35 +210,46 @@ const BeeTournament: React.FC = () => {
     }
 
     setCelebration({
-      title: won ? '🏆 Champion of the Bee!' : `You spelled ${spelledNow} words!`,
+      title: won
+        ? '🏆 Champion of the Bee!'
+        : spelledNow === 0
+        ? '🎤 What a brave try!'
+        : `You spelled ${spelledNow} ${spelledNow === 1 ? 'word' : 'words'}!`,
       message: won
-        ? 'You went all the way to the Championship word. The Golden Cup is yours — it is in your Trophy Room.'
+        ? firstCrown
+          ? 'You went all the way to the Championship word. The Golden Cup is yours — it is in your Trophy Room.'
+          : 'Champion again! Your Golden Cup is already in your Trophy Room — a new Bee starts on Monday.'
         : cup
         ? `You reached the ${ROUNDS[reached - 1].name}. That is a cup for your Trophy Room — come back and go further!`
+        : spelledNow === 0
+        ? 'Standing on the stage is the bravest part. Practise your words and the Bee will be here for you!'
         : 'Every word you spelled counts. The trophy will wait for you — come back and try again!',
       stars,
     })
   }
 
   const submit = () => {
-    if (!word || verdict) return
+    if (!word || verdict || settled.current || !input.trim()) return
+    settled.current = true
     const correct = input.trim().toLowerCase() === word.word.toLowerCase()
     setVerdict(correct ? 'right' : 'wrong')
     setPhase('judging')
-    ReviewSchedule.record(word.id, correct)
+    // A stretch word the child never met stays out of their review schedule —
+    // missing it would otherwise lock tomorrow's games behind a word nobody taught.
+    if (known.has(word.id)) ReviewSchedule.record(word.id, correct)
 
     const spelledNow = spelled + (correct ? 1 : 0)
+    const wingsLeft = correct ? wings : wings - 1
     if (correct) {
       setSpelled((n) => n + 1)
-      sfx.correct()
-      speak('Correct!')
+      setCheerLine(cheer.hit())
+      setHits((n) => n + 1)
     } else {
-      sfx.wrong()
-      speak(`The word was. ${word.word}.`)
+      setWings(wingsLeft)
+      // The letters, not just the word again — and a soft landing for the wing.
+      const after = wingsLeft === 1 ? ' You still have one wing. Keep going!' : ''
+      setCheerLine(cheer.miss({ say: `The word was ${word.word}. ${spellOut(word.word)}.${after}` }))
     }
-
-    const wingsLeft = correct ? wings : wings - 1
-    if (!correct) setWings(wingsLeft)
 
     later(() => {
       if (wingsLeft <= 0) {
@@ -176,14 +258,18 @@ const BeeTournament: React.FC = () => {
       }
       const nextWord = wordIndex + 1
       if (nextWord < roundWords.length) {
+        settled.current = false
         setWordIndex(nextWord)
         setVerdict(null)
         setInput('')
         setPhase('spelling')
         later(() => inputRef.current?.focus(), 60)
-        speak(`Your word is. ${roundWords[nextWord].word}.`)
+        ask(roundWords[nextWord])
         return
       }
+      // The round is finished with a wing to spare.
+      const clearedNow = cleared + 1
+      setCleared(clearedNow)
       const nextRound = playable[playable.indexOf(roundIndex) + 1]
       if (nextRound !== undefined) {
         announce(nextRound)
@@ -191,7 +277,7 @@ const BeeTournament: React.FC = () => {
         // Champion means the Championship word, not merely "no rounds left".
         // A child with eight words used to be crowned — Golden Cup, winner's
         // bonus and all — for finishing a Bee that stopped at the Qualifier.
-        finish(roundIndex === ROUNDS.length - 1, roundIndex + 1, spelledNow)
+        finish(roundIndex === ROUNDS.length - 1, roundIndex + 1, spelledNow, clearedNow)
       }
     }, correct ? 1400 : 2600)
   }
@@ -201,7 +287,7 @@ const BeeTournament: React.FC = () => {
     return (
       <div className="bee">
         <div className="bee-header">
-          <Button variant="secondary" size="small" onClick={() => navigate('/')}>← Home</Button>
+          <Button variant="secondary" size="small" onClick={() => navigate('/spelling')}>← Spelling</Button>
           <h1>🏆 The Spelling Bee</h1>
         </div>
         <p className="bee-empty">
@@ -216,10 +302,11 @@ const BeeTournament: React.FC = () => {
   return (
     <div className={`bee phase-${phase}`} data-world={world.id}>
       <div className="bee-header">
-        <Button variant="secondary" size="small" onClick={() => navigate('/')}>← Home</Button>
+        <Button variant="secondary" size="small" onClick={() => navigate('/spelling')}>← Spelling</Button>
         <h1>🏆 The Spelling Bee</h1>
         <span className="bee-wings" aria-label={`${wings} wings left`}>
-          {'🪽'.repeat(Math.max(wings, 0)) || '—'}
+          {'🪽'.repeat(Math.max(wings, 0))}
+          <span className="bee-wing-lost" aria-hidden>{'🪶'.repeat(Math.max(WINGS - wings, 0))}</span>
         </span>
       </div>
 
@@ -229,8 +316,8 @@ const BeeTournament: React.FC = () => {
           <div className="bee-mascot" aria-hidden>{world.mascot}</div>
           <h2>This week&apos;s Grand Bee</h2>
           <p className="bee-blurb">
-            Five rounds. The words get harder each time. You have <strong>two wings</strong> —
-            miss a word and you lose one, but you keep going.
+            {ROUND_COUNT[playable.length] ?? `${playable.length} rounds`}. The words get harder each time.
+            You have <strong>two wings</strong> — miss a word and you lose one, but you keep going.
           </p>
           <ol className="bee-rounds">
             {/* Only the rounds this child will actually be asked — listing a
@@ -266,7 +353,8 @@ const BeeTournament: React.FC = () => {
           <div className="bee-mascot small" aria-hidden>{world.mascot}</div>
 
           <Button variant="secondary" icon="🔊" onClick={() => speak(word.word)}>Hear it again</Button>
-          {word.meaning && <p className="bee-meaning">{word.meaning}</p>}
+          {/* A meaning can hold the word itself, which turns the spelling into copying. */}
+          {word.meaning && <p className="bee-meaning">{maskClue(word.meaning, word.word)}</p>}
 
           <SpellingInput
             ref={inputRef}
@@ -285,7 +373,8 @@ const BeeTournament: React.FC = () => {
             </Button>
           ) : (
             <div className={`bee-verdict ${verdict}`}>
-              {verdict === 'right' ? '✅ Correct!' : `The word was “${word.word}”`}
+              {verdict === 'right' && <Burst trigger={hits} />}
+              {verdict === 'right' ? `🎉 ${cheerLine}` : `${cheerLine} The word was “${word.word}”`}
             </div>
           )}
 
@@ -296,6 +385,7 @@ const BeeTournament: React.FC = () => {
       <Celebration
         data={celebration}
         variant="cannon"
+        autoClose={false}
         onClose={() => { setCelebration(null); navigate('/trophies') }}
         closeLabel="See my trophies"
       />

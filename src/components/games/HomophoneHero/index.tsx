@@ -1,7 +1,10 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useAudio } from '../../../contexts/AudioContext'
 import { shuffle } from '../shared/wordTricks'
-import sfx from '../shared/sfx'
+import useCheer from '../shared/useCheer'
+import useLater from '../shared/useLater'
+import Burst from '../shared/Burst'
+import GameEmpty from '../shared/GameEmpty'
 import './HomophoneHero.css'
 
 interface HomophoneHeroProps {
@@ -26,7 +29,7 @@ interface Puzzle {
  * So every round ends with a memory hook ("hear has EAR in it"), because the
  * trick is what a child carries out of the game — the score isn't.
  */
-const PUZZLES: Puzzle[] = [
+export const PUZZLES: Puzzle[] = [
   { text: 'I can ___ the birds singing.', options: ['hear', 'here'], answer: 'hear',
     why: '“Hear” has EAR in it — you hear with your ear! 👂' },
   { text: 'Come and sit over ___.', options: ['here', 'hear'], answer: 'here',
@@ -65,58 +68,90 @@ const PUZZLES: Puzzle[] = [
     why: '“Bear” the animal has EAR in it — and bears have ears! 🐻' },
 ]
 
+/** The sentence as it should be read, with the right word in the gap. */
+const sentenceOf = (p: Puzzle) => p.text.replace('___', p.answer)
+
+/**
+ * Deal the round: a few puzzles, each with its buttons in a fresh order. The
+ * answer is listed first in every puzzle above, so showing them as written
+ * meant tapping the first button always won.
+ */
+export const dealPuzzles = (rounds: number): Puzzle[] =>
+  shuffle(PUZZLES)
+    .slice(0, rounds)
+    .map((p) => ({ ...p, options: shuffle(p.options) }))
+
 const HomophoneHero: React.FC<HomophoneHeroProps> = ({ onComplete, rounds = 6 }) => {
   const { speak } = useAudio()
+  const cheer = useCheer()
+  const later = useLater()
 
-  const puzzles = useMemo(() => shuffle(PUZZLES).slice(0, rounds), [rounds])
+  const puzzles = useMemo(() => dealPuzzles(rounds), [rounds])
 
   const [index, setIndex] = useState(0)
   const [picked, setPicked] = useState<string | null>(null)
   const [score, setScore] = useState(0)
   const [streak, setStreak] = useState(0)
   const [saved, setSaved] = useState(0)
+  const [line, setLine] = useState('')
+  const [hits, setHits] = useState(0)
+
+  // A state guard loses to a fast double tap (both taps read the old value),
+  // which scored twice and skipped a puzzle. A ref settles at once.
+  const locked = useRef(false)
 
   const puzzle = puzzles[index]
   const right = picked === puzzle?.answer
 
+  // Read the sentence out each round: the two words sound the same, so
+  // hearing it gives nothing away, and a child still learning to read can
+  // follow along. Queued, so the last round's memory hook is never cut off.
+  useEffect(() => {
+    if (!puzzle) return
+    locked.current = false
+    speak(sentenceOf(puzzle), { queue: index > 0 })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [index, puzzles])
+
   if (!puzzle) {
     return (
       <div className="homophone-hero">
-        <p className="hh-empty">No puzzles right now — try again in a moment! 🦸</p>
-        <button className="hh-btn" onClick={() => onComplete(0)}>Back to Games</button>
+        <GameEmpty icon="🦸">No puzzles right now — try again in a moment!</GameEmpty>
       </div>
     )
   }
 
   const choose = (option: string) => {
-    if (picked) return
+    if (locked.current) return
+    locked.current = true
     setPicked(option)
 
     const correct = option === puzzle.answer
+    let gained = 0
     if (correct) {
-      const nextStreak = streak + 1
-      const points = 30 + (nextStreak >= 3 ? 20 : 0)
-      setScore((s) => s + points)
-      setStreak(nextStreak)
+      const run = streak + 1
+      gained = 30 + (run >= 3 ? 20 : 0)
+      setScore((s) => s + gained)
+      setStreak(run)
       setSaved((d) => d + 1)
-      sfx.correct()
-      speak(puzzle.text.replace('___', puzzle.answer))
+      setHits((h) => h + 1)
+      setLine(cheer.hit({ say: sentenceOf(puzzle) }))
     } else {
       setStreak(0)
-      sfx.wrong()
-      speak(`It's ${puzzle.answer}. ${puzzle.why}`)
+      // The trick is the teaching, so a miss says it out loud.
+      setLine(cheer.miss({ say: `It's ${puzzle.answer}. ${puzzle.why}` }))
     }
 
     // The hook stays on screen long enough to actually read it.
-    setTimeout(() => {
+    later(() => {
       if (index < puzzles.length - 1) {
-        setIndex((i) => i + 1)
+        // Cleared in the same update, so the next puzzle never shows this answer.
         setPicked(null)
+        setIndex((i) => i + 1)
       } else {
-        sfx.win()
-        onComplete(score + (correct ? 30 + (streak + 1 >= 3 ? 20 : 0) : 0))
+        onComplete(score + gained)
       }
-    }, correct ? 2600 : 3400)
+    }, correct ? 2600 : 4000)
   }
 
   const [before, after] = puzzle.text.split('___')
@@ -132,7 +167,10 @@ const HomophoneHero: React.FC<HomophoneHeroProps> = ({ onComplete, rounds = 6 })
         </div>
       </div>
 
-      <p className="hh-brief">These words sound the same. Only one is right here!</p>
+      <p className="hh-brief">
+        These words sound the same. Which one fits?
+        {streak >= 2 && <span className="hh-streak" aria-label={`${streak} in a row`}> 🔥 {streak} in a row</span>}
+      </p>
 
       <div className="hh-sentence">
         <span>{before}</span>
@@ -140,7 +178,7 @@ const HomophoneHero: React.FC<HomophoneHeroProps> = ({ onComplete, rounds = 6 })
           {picked ? puzzle.answer : '?????'}
         </span>
         <span>{after}</span>
-        <button className="hh-speak" onClick={() => speak(puzzle.text.replace('___', puzzle.answer))} aria-label="Hear the sentence">🔊</button>
+        <button className="hh-speak" onClick={() => speak(sentenceOf(puzzle))} aria-label="Hear the sentence">🔊</button>
       </div>
 
       <div className="hh-options">
@@ -160,8 +198,9 @@ const HomophoneHero: React.FC<HomophoneHeroProps> = ({ onComplete, rounds = 6 })
       </div>
 
       {picked && (
-        <div className={`hh-why ${right ? 'ok' : 'bad'}`}>
-          <span className="hh-why-label">{right ? '🎉 Yes! Remember:' : '💡 Here’s the trick:'}</span>
+        <div className={`hh-why ${right ? 'ok' : 'bad'}`} role="status">
+          {right && <Burst trigger={hits} />}
+          <span className="hh-why-label">{right ? `🎉 ${line} Remember:` : `💡 ${line} Here’s the trick:`}</span>
           <span className="hh-why-text">{puzzle.why}</span>
         </div>
       )}

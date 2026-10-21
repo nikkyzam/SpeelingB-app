@@ -1,3 +1,5 @@
+import { wordsLeftFor } from './LearningFlow'
+
 /**
  * Ceiling for a goal that has grown from missed days.
  *
@@ -43,10 +45,18 @@ export class DailyResetService {
       const vocabProgress = learningProgress.gamesUnlocked ? vocabGoal : 0
 
       let wasGoalMissed = false
-      
+
+      // A goal the word list couldn't fill — the end of a level — isn't a
+      // missed day, and mustn't grow into a bigger goal it can't fill either.
+      const levels: (1 | 2 | 3)[] = Array.isArray(learningProgress.wordLevels) && learningProgress.wordLevels.length > 0
+        ? learningProgress.wordLevels
+        : learningProgress.difficulty ? [learningProgress.difficulty] : []
+      const left = wordsLeftFor(levels, learningProgress.wordsLearnedTotal || [])
+      const reachableLearn = left === null ? learnGoal : Math.min(learnGoal, learnProgress + left)
+
       // Learn carry over
-      if (learnProgress < learnGoal) {
-        const missed = learnGoal - learnProgress
+      if (learnProgress < reachableLearn) {
+        const missed = reachableLearn - learnProgress
         learningProgress.dailyGoal = carryOver(learnGoal, missed)
         wasGoalMissed = true
       }

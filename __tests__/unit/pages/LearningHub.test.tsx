@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { render, screen, within, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import LearningHub from '@/pages/LearningHub'
 import { UserProvider } from '@/contexts/UserContext'
@@ -9,6 +9,7 @@ import { MemoryRouter } from 'react-router-dom'
 import React from 'react'
 import { LearningFlowController } from '@/services/progress/LearningFlow'
 import { useUserStore } from '@/stores/userStore'
+import { wordBank } from '@/services/wordBank'
 
 // Mock the LearningFlowController
 vi.mock('@/services/progress/LearningFlow')
@@ -71,6 +72,13 @@ const createMockLearningFlow = (overrides: Partial<LearningFlowController>) => (
   setWordLevels: vi.fn(),
   getSelectedGroup: () => 0,
   getMissedDays: () => [],
+  gamesLockedReason: () => 'quiz',
+  areStarterGamesOpen: () => false,
+  // Mid-list, today's goal is just the daily goal.
+  getLearnGoalToday(this: { getDailyGoal: () => number }) { return this.getDailyGoal() },
+  isLevelFinished: () => false,
+  // Nothing learned yet today.
+  isDailyGoalReached: () => false,
   ...overrides,
 } as any)
 
@@ -126,12 +134,32 @@ describe('LearningHub Page - Group Succession', () => {
     vi.mocked(LearningFlowController).mockImplementation(() => createMockLearningFlow({
       getWordsLearnedTotal: () => ['1'],
       getWordsSpelledTotal: () => ['1'],
+      // Today's words are met, so the starter games are open.
+      areStarterGamesOpen: () => true,
     }))
 
     renderWithProviders(<LearningHub />)
 
     const gameStep = stepByHeading('Play a Game!')
     expect(within(gameStep).getByRole('button', { name: /Play a Game!/i })).not.toBeDisabled()
+    // ...and it says what opens the rest, with a way there.
+    expect(within(gameStep).getByText(/Pass today’s quiz for all the rest/)).toBeInTheDocument()
+    expect(within(gameStep).getByRole('button', { name: /Take the Quiz/i })).toBeInTheDocument()
+  })
+
+  it('does not promise a game when nothing is open today', () => {
+    // A group spelled on an earlier day, and nothing learned yet today.
+    vi.mocked(LearningFlowController).mockImplementation(() => createMockLearningFlow({
+      getWordsLearnedTotal: () => ['1'],
+      getWordsSpelledTotal: () => ['1'],
+    }))
+
+    renderWithProviders(<LearningHub />)
+
+    const gameStep = stepByHeading('Play a Game!')
+    expect(within(gameStep).queryByText(/You unlocked a game/)).not.toBeInTheDocument()
+    expect(within(gameStep).getByText(/Meet today’s new words/)).toBeInTheDocument()
+    expect(within(gameStep).getByRole('button', { name: /Locked/i })).toBeDisabled()
   })
 
   it('shows the daily goal from the user profile', () => {
@@ -148,5 +176,66 @@ describe('LearningHub Page - Group Succession', () => {
     renderWithProviders(<LearningHub />)
 
     expect(screen.getByText('0/10')).toBeInTheDocument()
+  })
+
+  it('leads with one next step from the ladder', () => {
+    vi.mocked(LearningFlowController).mockImplementation(() => createMockLearningFlow({}))
+    renderWithProviders(<LearningHub />)
+    expect(screen.getByText('Next up')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Learn 1 new word/ })).toBeInTheDocument()
+  })
+
+  it('once the group is spelled, the next step is whatever really opens the games', () => {
+    vi.mocked(LearningFlowController).mockImplementation(() => createMockLearningFlow({
+      getWordsLearnedTotal: () => ['1'],
+      getWordsSpelledTotal: () => ['1'],
+      areStarterGamesOpen: () => true,
+    }))
+    renderWithProviders(<LearningHub />)
+    expect(screen.getByRole('button', { name: /Take today’s quiz/ })).toBeInTheDocument()
+  })
+
+  it('puts today\u2019s new words before play, as Home does, once this group is done', () => {
+    // Two groups of one word: group 1 is learned and spelled, today's goal isn't met.
+    const one = [{ id: '1', word: 'apple', meaning: 'a fruit' }]
+    const two = [...one, { id: '2', word: 'pear', meaning: 'a fruit' }]
+    vi.mocked(wordBank.getWordsForLevels).mockReturnValue(two as any)
+    try {
+      vi.mocked(LearningFlowController).mockImplementation(() => createMockLearningFlow({
+        getDailyGoal: () => 1,
+        getWordsLearnedTotal: () => ['1'],
+        getWordsSpelledTotal: () => ['1'],
+        gamesLockedReason: () => null,
+      }))
+      renderWithProviders(<LearningHub />)
+      expect(screen.getByRole('button', { name: /Meet your next words/ })).toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: /^🎮 Play a game!$/ })).not.toBeInTheDocument()
+    } finally {
+      vi.mocked(wordBank.getWordsForLevels).mockReturnValue(one as any)
+    }
+  })
+
+  it('greets the child by name, never by an email, and lists no missed days', () => {
+    vi.mocked(useUserStore).mockReturnValue({
+      user: { id: 'joy-user', name: 'Joy', email: 'parent@example.com', dailyGoal: 5 },
+      setUser: vi.fn(),
+      updateDailyGoal: vi.fn(),
+      logout: vi.fn(),
+    } as any)
+    vi.mocked(LearningFlowController).mockImplementation(() => createMockLearningFlow({
+      getMissedDays: () => ['Mon Sep 29 2026'],
+    }))
+    renderWithProviders(<LearningHub />)
+    expect(screen.queryByText(/parent@example\.com/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Missed Goals/)).not.toBeInTheDocument()
+  })
+
+  it('keeps the level picker off the lesson and under "More" on the hub', () => {
+    vi.mocked(LearningFlowController).mockImplementation(() => createMockLearningFlow({}))
+    renderWithProviders(<LearningHub />)
+    expect(screen.queryByText('🐝 Word level')).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /More/ }))
+    expect(screen.getByText('🐝 Word level')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '1-Word Test' })).toBeInTheDocument()
   })
 })

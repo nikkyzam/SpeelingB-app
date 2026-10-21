@@ -1,0 +1,68 @@
+.coord-grid {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: var(--spacing-sm, 8px) auto;
+  background: var(--card, #fff);
+  border-radius: var(--radius-md, 12px);
+}
+
+.cg-line {
+  stroke: var(--border, #e6dcc4);
+  stroke-width: 1;
+}
+
+.cg-axis {
+  stroke: var(--text-soft, #8a6d2f);
+  stroke-width: 2;
+}
+
+.cg-tick {
+  font-size: 9px;
+  fill: var(--text-soft, #8a6d2f);
+  paint-order: stroke;
+  stroke: var(--card, #fff);
+  stroke-width: 3px;
+}
+
+.cg-poly {
+  fill: rgba(var(--primary-rgb, 245, 166, 35), 0.18);
+  stroke: var(--primary, #f5a623);
+  stroke-width: 2;
+}
+
+.cg-path {
+  fill: none;
+  stroke: var(--secondary, #3ab795);
+  stroke-width: 2.5;
+  stroke-dasharray: 5 3;
+}
+
+.cg-point {
+  fill: var(--accent, #ef476f);
+}
+
+.cg-label {
+  font-size: 10px;
+  font-weight: 700;
+  fill: var(--text, #4a3200);
+  paint-order: stroke;
+  stroke: var(--card, #fff);
+  stroke-width: 3px;
+}
+
+.cg-target {
+  fill: transparent;
+  cursor: pointer;
+}
+
+.cg-target:hover {
+  fill: rgba(var(--primary-rgb, 245, 166, 35), 0.25);
+}
+
+.cg-target-on,
+.cg-target-on:hover {
+  fill: var(--primary, #f5a623);
+  stroke: var(--card, #fff);
+  stroke-width: 2;
+}

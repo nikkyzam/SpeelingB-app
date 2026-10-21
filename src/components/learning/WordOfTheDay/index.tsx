@@ -92,8 +92,15 @@ const WordOfTheDay: React.FC = () => {
         </div>
       )}
 
-      <p className="wotd-meaning">{word.meaning}</p>
-      {word.sentence && <p className="wotd-sentence">“{word.sentence}”</p>}
+      {/* Tap to hear: the daily word is for children who can't read it all yet too. */}
+      <button className="wotd-line wotd-meaning" onClick={() => speak(`${word.word} means ${word.meaning}`)}>
+        {word.meaning} <span className="wotd-line-hear" aria-hidden>🔊</span>
+      </button>
+      {word.sentence && (
+        <button className="wotd-line wotd-sentence" onClick={() => speak(word.sentence)}>
+          “{word.sentence}” <span className="wotd-line-hear" aria-hidden>🔊</span>
+        </button>
+      )}
 
       <div className="wotd-facts">
         {facts.slice(0, 3).map((f) => (
@@ -104,6 +111,7 @@ const WordOfTheDay: React.FC = () => {
       <button className={`wotd-keep ${collected ? 'done' : ''}`} onClick={keepIt} disabled={collected}>
         {collected ? '✅ It’s in your collection!' : '⭐ Keep this word'}
       </button>
+      {collected && <p className="wotd-tomorrow">A new word tomorrow 🌅</p>}
     </section>
   )
 }

@@ -29,6 +29,14 @@ import BeeTournament from './pages/BeeTournament'
 import TrophyRoom from './pages/TrophyRoom'
 import SiblingChallenge from './pages/SiblingChallenge'
 import WordHunt from './pages/WordHunt'
+import Subjects from './pages/Subjects'
+import SubjectPage from './pages/Subjects/SubjectPage'
+import TestPage from './pages/Subjects/TestPage'
+import MathQuest from './pages/Subjects/MathQuest'
+import QuestTopic from './pages/Subjects/QuestTopic'
+import MathArcadePage from './pages/Subjects/MathArcadePage'
+import MathProofs from './pages/Subjects/MathProofs'
+import MathPuzzles from './pages/Subjects/MathPuzzles'
 import SiblingShowdown from './components/games/SiblingShowdown'
 
 // Layout Components
@@ -39,6 +47,26 @@ import FunFx from './components/common/FunFx'
 import BuddyCompanion from './components/buddy/BuddyCompanion'
 import { useTheme } from './contexts/ThemeContext'
 import { WorldPickerModal } from './components/theme/WorldPicker'
+import { setWordsLeftCounter } from './services/progress/LearningFlow'
+import { wordBank } from './services/wordBank'
+
+// LearningFlow can't see the word bank, so it is told how to count the words
+// a child still has to meet in their levels. At the end of a word list that
+// shrinks the day's goal to what is left, instead of a goal nobody can meet.
+// Cached: the answer only changes when a word is learned or the levels change.
+{
+  let lastKey = ''
+  let lastLeft = 0
+  setWordsLeftCounter((levels, learned) => {
+    const key = `${levels.join(',')}|${learned.length}|${learned[learned.length - 1] ?? ''}`
+    if (key !== lastKey) {
+      const known = new Set(learned)
+      lastLeft = wordBank.getWordsForLevels(levels).filter((w) => !known.has(w.id)).length
+      lastKey = key
+    }
+    return lastLeft
+  })
+}
 
 function FirstRunWorldPicker() {
   const { hasChosenWorld, markWorldChosen } = useTheme()
@@ -67,6 +95,24 @@ function App() {
     }
   }, [])
 
+  useEffect(() => {
+    // The day also turns over while the app stays open — an iPad left on the
+    // table overnight. Checking only at start-up counted the morning's words
+    // as yesterday's, and the next reload then wiped them. The reset runs at
+    // most once a day and tells ProgressContext to re-read what it rewrote.
+    const newDayCheck = () => {
+      if (document.visibilityState === 'visible') DailyResetService.initialize()
+    }
+    const minute = window.setInterval(newDayCheck, 60_000)
+    document.addEventListener('visibilitychange', newDayCheck)
+    window.addEventListener('focus', newDayCheck)
+    return () => {
+      window.clearInterval(minute)
+      document.removeEventListener('visibilitychange', newDayCheck)
+      window.removeEventListener('focus', newDayCheck)
+    }
+  }, [])
+
   return (
     <Router>
       <ThemeProvider>
@@ -77,7 +123,8 @@ function App() {
                 <Header />
                 <main className="main-content">
                   <Routes>
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<Subjects />} />
+                    <Route path="/spelling" element={<Home />} />
                     <Route path="/learn" element={<LearningHub />} />
                     <Route path="/review" element={<Review />} />
                     <Route path="/daily-quiz" element={<DailyQuiz />} />
@@ -95,6 +142,14 @@ function App() {
                     <Route path="/challenge" element={<SiblingChallenge />} />
                     <Route path="/hunt" element={<WordHunt />} />
                     <Route path="/showdown" element={<SiblingShowdown />} />
+                    <Route path="/subjects" element={<Navigate to="/" replace />} />
+                    <Route path="/subjects/math/quest/topic/:topicId" element={<QuestTopic />} />
+                    <Route path="/subjects/math/quest/:grade" element={<MathQuest />} />
+                    <Route path="/subjects/math/arcade" element={<MathArcadePage />} />
+                    <Route path="/subjects/math/proofs" element={<MathProofs />} />
+                    <Route path="/subjects/math/puzzles" element={<MathPuzzles />} />
+                    <Route path="/subjects/:subjectId/tests/:testId" element={<TestPage />} />
+                    <Route path="/subjects/:subjectId" element={<SubjectPage />} />
                     <Route path="/settings" element={<Settings />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>
