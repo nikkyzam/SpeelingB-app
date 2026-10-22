@@ -9,14 +9,14 @@ import Button from '../../components/common/Button'
 import BackLink from './BackLink'
 import './Subjects.css'
 
-/** A practice test: choose a form (when there are several), then take it. */
+/** A practice test: read the notes, play its games, or choose a form and take it. */
 const TestPage: React.FC = () => {
   const { subjectId = '', testId = '' } = useParams()
   const navigate = useNavigate()
   const test = testById(testId)
   const [bank, setBank] = useState<QuestionBank | null>(null)
   const [failed, setFailed] = useState(false)
-  const [form, setForm] = useState<string | null>(test?.forms ? null : 'main')
+  const [form, setForm] = useState<string | null>(null)
   const [withAddOn, setWithAddOn] = useState(false)
   const [notes, setNotes] = useState<NoteSection[] | null>(null)
   const [readingNotes, setReadingNotes] = useState(false)
@@ -79,13 +79,14 @@ const TestPage: React.FC = () => {
           title={formName ? `${test.name} · ${formName}` : test.name}
           questions={[...(bank[form] ?? []), ...addOn]}
           resultKey={`test:${test.id}:${form}${addOn.length ? '+' + test.addOn!.form : ''}`}
-          onExit={() => (test.forms ? setForm(null) : navigate(back))}
+          onExit={() => setForm(null)}
         />
       </div>
     )
   }
 
-  const forms = test.forms as TestForm[]
+  // A one-form test still lands here first, so its notes and games are one tap away.
+  const forms: TestForm[] = test.forms ?? [{ id: 'main', name: 'Take the test', desc: test.desc, recommended: true }]
   return (
     <div className="subjects-page">
       <BackLink to={back} label="Back" />
@@ -104,8 +105,15 @@ const TestPage: React.FC = () => {
           <span className="sj-best">Notes</span>
         </button>
       )}
+      <button type="button" className="sj-row sj-row-star" onClick={() => navigate(`/subjects/play/test/${test.id}`)}>
+        <span className="sj-row-main">
+          <span className="sj-name">🎮 Play games</span>
+          <span className="sj-blurb">Quiz Sprint, Match Up and Bubble Pop — made from this test</span>
+        </span>
+        <span className="sj-best">Games</span>
+      </button>
       <section className="sj-section">
-        <h2>Pick a test</h2>
+        <h2>{test.forms ? 'Pick a test' : 'Ready?'}</h2>
         <div className="sj-list">
           {forms.map((f) => {
             const best = SubjectProgress.getBest(`test:${test.id}:${f.id}`)

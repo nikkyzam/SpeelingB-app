@@ -1,0 +1,118 @@
+.quiz-sprint {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 16px);
+}
+
+.qs-card {
+  align-items: center;
+  text-align: center;
+  background: var(--card, #fff);
+  border-radius: var(--radius-lg, 18px);
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.08));
+  padding: var(--spacing-lg, 24px);
+}
+
+.qs-card h2 {
+  margin: 0;
+  font-family: var(--font-primary, 'Baloo 2', cursive);
+}
+
+.qs-card p {
+  margin: 0;
+}
+
+.qs-big {
+  font-size: 3.4rem;
+  line-height: 1;
+}
+
+.qs-empty {
+  text-align: center;
+  font-weight: 700;
+}
+
+.qs-bar {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+.qs-clock-low {
+  color: var(--accent, #ef476f);
+}
+
+.qs-track {
+  height: 10px;
+  border-radius: var(--radius-round, 999px);
+  background: var(--card-soft, #fff8e1);
+  overflow: hidden;
+}
+
+.qs-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--secondary, #3ab795), var(--primary, #f5a623));
+  transition: width 1s linear;
+}
+
+.qs-question {
+  position: relative;
+  background: var(--card, #fff);
+  border-radius: var(--radius-lg, 18px);
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.08));
+  padding: var(--spacing-md, 16px);
+}
+
+.qs-flash {
+  margin-top: var(--spacing-md, 16px);
+  padding: 10px 14px;
+  border-radius: var(--radius-md, 12px);
+}
+
+.qs-flash.ok {
+  background: rgba(47, 191, 113, 0.14);
+}
+
+.qs-flash.bad {
+  background: rgba(255, 176, 32, 0.16);
+}
+
+.qs-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.qs-go,
+.qs-skip {
+  min-height: 48px;
+  min-width: 96px;
+  padding: 0 22px;
+  border: none;
+  border-radius: var(--radius-round, 999px);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.qs-go {
+  background: linear-gradient(180deg, var(--primary, #f5a623), var(--primary-2, #ff7a00));
+  color: #fff;
+}
+
+.qs-go:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.qs-skip {
+  background: var(--card-soft, #fff8e1);
+  color: var(--text-soft, #8a6d2f);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qs-fill {
+    transition: none;
+  }
+}

@@ -37,6 +37,7 @@ import QuestTopic from './pages/Subjects/QuestTopic'
 import MathArcadePage from './pages/Subjects/MathArcadePage'
 import MathProofs from './pages/Subjects/MathProofs'
 import MathPuzzles from './pages/Subjects/MathPuzzles'
+import TopicGames from './pages/Subjects/TopicGames'
 import SiblingShowdown from './components/games/SiblingShowdown'
 
 // Layout Components
@@ -148,6 +149,7 @@ function App() {
                     <Route path="/subjects/math/arcade" element={<MathArcadePage />} />
                     <Route path="/subjects/math/proofs" element={<MathProofs />} />
                     <Route path="/subjects/math/puzzles" element={<MathPuzzles />} />
+                    <Route path="/subjects/play/:source/:id" element={<TopicGames />} />
                     <Route path="/subjects/:subjectId/tests/:testId" element={<TestPage />} />
                     <Route path="/subjects/:subjectId" element={<SubjectPage />} />
                     <Route path="/settings" element={<Settings />} />

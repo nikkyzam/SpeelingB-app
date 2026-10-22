@@ -115,6 +115,13 @@ const QuestTopic: React.FC = () => {
           <span className="sj-best">Lesson</span>
         </button>
       )}
+      <button type="button" className="sj-row sj-row-star" onClick={() => navigate(`/subjects/play/quest/${topic.id}`)}>
+        <span className="sj-row-main">
+          <span className="sj-name">🎮 Play games</span>
+          <span className="sj-blurb">Quiz Sprint, Match Up and Bubble Pop — made from this topic</span>
+        </span>
+        <span className="sj-best">Games</span>
+      </button>
       <section className="sj-section">
         <h2>Choose your round</h2>
         <div className="sj-grid sj-grid-small">

@@ -85,6 +85,12 @@ BrightHive (formerly Kids Spelling Bee; the repo folder is still `SpeelingB-app`
 - `src/pages/GameCenter/index.tsx`: `GameMode` union, `rawGames` card, `renderActiveGame` switch, `wordlessGames` if it takes no words
 - `FREE_GAMES` in `src/services/progress/LearningFlow.ts` only if it should unlock before the daily quiz
 
+## Adding a subject topic or test (every topic gets games)
+- Every topic must be playable as games, not only as a quiz. Topic games are generated from the topic's own questions: `src/services/subjects/gamePool.ts` (`pickRounds`, `matchPairs`) feeds the games in `src/components/subjects/TopicGames/` (registry `index.ts`), shown at `/subjects/play/{quest|test}/:id` from a "🎮 Play games" row on every Math Quest topic and test page
+- So a new Math Quest topic or `TESTS` entry gets games automatically — but `gamePool.test.ts` sweeps every topic and test and fails if one can't fill a pick or match game (e.g. all-paragraph answers). Fix the bank or gamePool, don't skip the topic
+- A new `Question` kind must be handled in `gamePool.answerLabel` (and decoys), or its questions sit out pick/match games
+- Adding a game to `TOPIC_GAMES` adds it to every topic. Games take `{ questions, onComplete(pct) }`, follow `src/components/games/CLAUDE.md` conventions, and never store anything; the page pays stars once a day per game per topic via `SubjectProgress` (`game:<source>:<id>:<gameId>`)
+
 ## Where to look for X
 - Routes → `src/App.tsx`; bottom nav → `src/components/layout/Navigation`
 - Auth/login → `src/services/auth/AuthService.ts`, `src/components/auth/AuthModal.tsx`

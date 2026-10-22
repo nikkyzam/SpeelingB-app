@@ -1,0 +1,198 @@
+.match-up {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  box-sizing: border-box;
+}
+
+.mu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  border-bottom: 2px dashed var(--border);
+  padding-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+.mu-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.mu-count { font-family: var(--font-primary); font-weight: 800; font-size: 1.1rem; color: var(--text-soft); }
+.mu-instructions { margin: 0 0 var(--spacing-md); font-size: 0.95rem; color: var(--text-soft); }
+
+/* --- the board: questions left, answers right ------------------------------ */
+
+.mu-board {
+  display: grid;
+  /* Questions run longer than answers, so they get the wider column. */
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: var(--spacing-md);
+  align-items: start;
+}
+.mu-col { display: flex; flex-direction: column; gap: var(--spacing-sm); min-width: 0; }
+
+.mu-card {
+  position: relative;
+  box-sizing: border-box;
+  min-height: 52px;
+  border: 3px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card-soft);
+  color: var(--text);
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  line-height: 1.35;
+  text-align: left;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.mu-prompt { display: flex; align-items: stretch; }
+.mu-card-main,
+.mu-answer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 46px;
+  cursor: pointer;
+  touch-action: manipulation;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+.mu-card-main {
+  flex: 1;
+  min-width: 0;
+  padding: 0.55rem 0.4rem 0.55rem 0.75rem;
+  border: none;
+  background: transparent;
+}
+.mu-answer {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  font-weight: 700;
+}
+
+/* Long text and fractions like 12/25 wrap rather than spill out. */
+.mu-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  hyphens: auto;
+}
+
+.mu-say {
+  flex: 0 0 auto;
+  width: 44px;
+  min-height: 44px;
+  margin: 3px;
+  border: none;
+  border-radius: var(--radius-sm, 8px);
+  background: transparent;
+  font-size: 1.1rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.mu-say:active { background: color-mix(in srgb, var(--primary) 15%, transparent); }
+
+.mu-card.picked {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 14%, var(--card-soft));
+  transform: scale(1.02);
+}
+.mu-card.matched {
+  border-color: var(--success);
+  background: color-mix(in srgb, var(--success) 14%, var(--card-soft));
+}
+.mu-card.matched .mu-card-main,
+.mu-answer.matched { cursor: default; }
+.mu-card-main:disabled,
+.mu-answer:disabled { opacity: 1; color: inherit; }
+
+/* After two misses on a question, its answer glows softly. */
+.mu-card.help {
+  border-color: var(--warning);
+  background: color-mix(in srgb, var(--warning) 18%, var(--card-soft));
+  animation: mu-glow 1.2s ease-in-out infinite;
+}
+@keyframes mu-glow {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--warning) 45%, transparent); }
+  50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--warning) 20%, transparent); }
+}
+
+.mu-card.wobble { animation: mu-wobble 0.45s ease; }
+@keyframes mu-wobble {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.mu-badge {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--success);
+  color: var(--on-primary, #fff);
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.mu-flash {
+  position: relative;
+  min-height: 1.6em;
+  margin-top: var(--spacing-md);
+  text-align: center;
+  font-family: var(--font-primary);
+  font-weight: 800;
+}
+.mu-flash.ok { color: var(--success); }
+.mu-flash.bad { color: var(--text-soft); }
+
+/* --- finished ------------------------------------------------------------ */
+
+.mu-finish {
+  position: relative;
+  text-align: center;
+  padding: var(--spacing-lg) var(--spacing-md);
+}
+.mu-finish-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.8rem; color: var(--primary); }
+.mu-finish-text { margin: var(--spacing-sm) 0 var(--spacing-lg); font-size: 1.1rem; }
+.mu-done {
+  min-height: 48px;
+  min-width: 140px;
+  border: none;
+  border-radius: var(--radius-round);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.15rem;
+  padding: 0.6rem 1.6rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+/* --- phones: keep both columns side by side, just tighter ----------------- */
+
+@media (max-width: 560px) {
+  .match-up { padding: var(--spacing-md) var(--spacing-sm); }
+  .mu-board { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: var(--spacing-sm); }
+  .mu-card { font-size: 0.88rem; line-height: 1.3; }
+  .mu-card-main { padding: 0.45rem 0.2rem 0.45rem 0.5rem; }
+  .mu-answer { padding: 0.45rem 0.5rem; }
+  .mu-say { width: 44px; margin: 1px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mu-card { transition: none; }
+  .mu-card.picked { transform: none; }
+  .mu-card.wobble,
+  .mu-card.help { animation: none; }
+}

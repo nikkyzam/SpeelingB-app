@@ -1,0 +1,215 @@
+.bubble-pop {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--spacing-md);
+  color: var(--text);
+  font-family: var(--font-secondary, var(--font-primary));
+  text-align: center;
+  box-sizing: border-box;
+}
+.bubble-pop *,
+.bubble-pop *::before,
+.bubble-pop *::after { box-sizing: border-box; }
+
+/* Progress strip: round x of n and the first-try stars. No clock. */
+.bub-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  background: var(--card-soft);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-round);
+  font-family: var(--font-primary);
+  font-weight: 800;
+}
+.bub-title { font-size: 1.1rem; }
+.bub-round { color: var(--text-soft); }
+
+.bub-question {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  text-align: left;
+}
+.bub-prompt {
+  flex: 1;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.bub-hear {
+  flex: none;
+  min-width: 48px;
+  min-height: 48px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-round);
+  background: var(--card-soft);
+  font-size: 1.3rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+/* The bubbles. Layout is plain flex/grid with gaps wider than the bob, so they never overlap. */
+.bub-field {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-sm) 0 var(--spacing-md);
+}
+.bub-field.pills {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.bub-bubble {
+  position: relative;
+  min-width: 44px;
+  min-height: 44px;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  background:
+    radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.9) 0 10%, transparent 24%),
+    radial-gradient(circle at 50% 55%, rgba(var(--primary-rgb, 120, 160, 255), 0.18), rgba(var(--primary-rgb, 120, 160, 255), 0.38));
+  color: var(--text);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  box-shadow: var(--shadow-md), inset 0 -6px 14px rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  touch-action: manipulation;
+  animation: bub-bob 3.2s ease-in-out infinite;
+  animation-delay: var(--bub-delay, 0s);
+  transition: opacity var(--transition-normal), transform var(--transition-fast);
+}
+.bub-field.round .bub-bubble {
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  padding: 0.4rem;
+  font-size: 1.3rem;
+  line-height: 1.15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bub-field.pills .bub-bubble {
+  width: 100%;
+  min-height: 56px;
+  border-radius: 28px;
+  padding: 0.75rem 1.25rem;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  text-align: left;
+}
+.bub-text { overflow-wrap: anywhere; }
+
+.bub-bubble:active:not(:disabled) { transform: scale(0.94); }
+.bub-bubble:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+.bub-bubble:disabled { cursor: default; }
+
+.bub-bubble.faded { opacity: 0.3; filter: grayscale(0.7); }
+.bub-bubble.wobble { animation: bub-wobble 0.5s ease-in-out; }
+.bub-bubble.glow {
+  border-color: var(--warning);
+  box-shadow: 0 0 0 4px rgba(255, 200, 60, 0.45), 0 0 22px 6px rgba(255, 200, 60, 0.55);
+  animation: bub-bob 3.2s ease-in-out infinite, bub-glow 1.2s ease-in-out infinite;
+}
+.bub-bubble.popped {
+  border-color: var(--success);
+  background: var(--success);
+  color: var(--on-primary);
+  opacity: 1;
+  animation: bub-pop 0.45s ease-out;
+}
+
+.bub-flash {
+  position: relative;
+  min-height: 3.5rem;
+  margin-top: var(--spacing-md);
+  font-family: var(--font-primary);
+}
+.bub-line { margin: 0 0 var(--spacing-xs); font-weight: 800; font-size: 1.15rem; }
+.bub-flash.ok .bub-line { color: var(--success); }
+.bub-flash.soft .bub-line { color: var(--text-soft); }
+.bub-why,
+.bub-nudge {
+  margin: 0 auto;
+  max-width: 600px;
+  color: var(--text);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.bub-nudge { color: var(--text-soft); }
+
+/* Finish card. */
+.bub-finish {
+  padding: var(--spacing-xl) var(--spacing-md);
+  background: var(--card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+.bub-finish-icon { font-size: 3.5rem; }
+.bub-finish-title { margin: var(--spacing-sm) 0; font-family: var(--font-primary); }
+.bub-finish-score { color: var(--text-soft); font-weight: 700; margin-bottom: var(--spacing-lg); }
+
+.bub-btn {
+  min-height: 48px;
+  min-width: 120px;
+  border: none;
+  border-radius: var(--radius-round);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 1.1rem;
+  padding: 0.6rem 1.5rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+@keyframes bub-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes bub-wobble {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-7deg) scale(0.97); }
+  75% { transform: rotate(7deg) scale(0.97); }
+}
+@keyframes bub-glow {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.15); }
+}
+@keyframes bub-pop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 480px) {
+  .bubble-pop { padding: var(--spacing-md) 16px; }
+  .bub-field { gap: var(--spacing-md); }
+  .bub-field.round .bub-bubble { width: 92px; height: 92px; font-size: 1.15rem; }
+  .bub-prompt { font-size: 1.1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bub-bubble,
+  .bub-bubble.wobble,
+  .bub-bubble.glow,
+  .bub-bubble.popped { animation: none; }
+  .bub-bubble { transition: none; }
+}
