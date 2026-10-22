@@ -2131,6 +2131,691 @@
    "category": "Fractions as Division",
    "level": 3,
    "group": "g5-fracasdiv-pair-9"
+  },
+  {
+   "id": "g5-fracasdiv-19",
+   "prompt": "4 friends share 10 pies equally. Which show how much pie each one gets? Choose <strong>ALL</strong> that are right.",
+   "explanation": "Each share = pies ÷ friends = 10 ÷ 4 = 10/4 = 5/2. That is more than one whole (5/2 = 2 1/2). Watch out: 4 ÷ 10 is the other question, and subtracting never shares anything.",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">5</span><span class=\"den\">2</span></span>",
+    "<span class=\"frac\"><span class=\"num\">10</span><span class=\"den\">4</span></span>",
+    "2 <span class=\"frac\"><span class=\"num\">1</span><span class=\"den\">2</span></span>",
+    "10 ÷ 4",
+    "<span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">5</span></span>",
+    "<span class=\"frac\"><span class=\"num\">4</span><span class=\"den\">10</span></span>",
+    "4 ÷ 10",
+    "10 − 4"
+   ],
+   "answers": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2,
+   "group": "g5-fracasdiv-pair-10"
+  },
+  {
+   "id": "g5-fracasdiv-20",
+   "prompt": "4 friends share 10 pies equally. Which show how many friends share one pie? Choose <strong>ALL</strong> that are right.",
+   "explanation": "Friends per pie = 4 ÷ 10 = 4/10 = 2/5. That is less than one whole — the first answer flipped.",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">5</span><span class=\"den\">2</span></span>",
+    "<span class=\"frac\"><span class=\"num\">10</span><span class=\"den\">4</span></span>",
+    "2 <span class=\"frac\"><span class=\"num\">1</span><span class=\"den\">2</span></span>",
+    "10 ÷ 4",
+    "<span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">5</span></span>",
+    "<span class=\"frac\"><span class=\"num\">4</span><span class=\"den\">10</span></span>",
+    "4 ÷ 10",
+    "10 − 4"
+   ],
+   "answers": [
+    4,
+    5,
+    6
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2,
+   "group": "g5-fracasdiv-pair-10"
+  },
+  {
+   "id": "g5-fracasdiv-21",
+   "prompt": "18 players share 12 oranges equally. Which show how much orange each one gets? Choose <strong>ALL</strong> that are right.",
+   "explanation": "Each share = oranges ÷ players = 12 ÷ 18 = 12/18 = 2/3. That is less than one whole. Watch out: 18 ÷ 12 is the other question, and subtracting never shares anything.",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">3</span></span>",
+    "<span class=\"frac\"><span class=\"num\">12</span><span class=\"den\">18</span></span>",
+    "12 ÷ 18",
+    "<span class=\"frac\"><span class=\"num\">3</span><span class=\"den\">2</span></span>",
+    "<span class=\"frac\"><span class=\"num\">18</span><span class=\"den\">12</span></span>",
+    "1 <span class=\"frac\"><span class=\"num\">1</span><span class=\"den\">2</span></span>",
+    "18 ÷ 12",
+    "18 − 12"
+   ],
+   "answers": [
+    0,
+    1,
+    2
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2,
+   "group": "g5-fracasdiv-pair-11"
+  },
+  {
+   "id": "g5-fracasdiv-22",
+   "prompt": "18 players share 12 oranges equally. Which show how many players share one orange? Choose <strong>ALL</strong> that are right.",
+   "explanation": "Players per orange = 18 ÷ 12 = 18/12 = 3/2. That is more than one whole (3/2 = 1 1/2) — the first answer flipped.",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">3</span></span>",
+    "<span class=\"frac\"><span class=\"num\">12</span><span class=\"den\">18</span></span>",
+    "12 ÷ 18",
+    "<span class=\"frac\"><span class=\"num\">3</span><span class=\"den\">2</span></span>",
+    "<span class=\"frac\"><span class=\"num\">18</span><span class=\"den\">12</span></span>",
+    "1 <span class=\"frac\"><span class=\"num\">1</span><span class=\"den\">2</span></span>",
+    "18 ÷ 12",
+    "18 − 12"
+   ],
+   "answers": [
+    3,
+    4,
+    5,
+    6
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2,
+   "group": "g5-fracasdiv-pair-11"
+  },
+  {
+   "id": "g5-fracasdiv-23",
+   "prompt": "3 sisters share 8 muffins equally. Which show how much muffin each one gets? Choose <strong>ALL</strong> that are right.",
+   "explanation": "Each share = muffins ÷ sisters = 8 ÷ 3 = 8/3. That is more than one whole (8/3 = 2 2/3). Watch out: 3 ÷ 8 is the other question, and subtracting never shares anything.",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">8</span><span class=\"den\">3</span></span>",
+    "2 <span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">3</span></span>",
+    "8 ÷ 3",
+    "<span class=\"frac\"><span class=\"num\">3</span><span class=\"den\">8</span></span>",
+    "3 ÷ 8",
+    "8 − 3"
+   ],
+   "answers": [
+    0,
+    1,
+    2
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2,
+   "group": "g5-fracasdiv-pair-12"
+  },
+  {
+   "id": "g5-fracasdiv-24",
+   "prompt": "3 sisters share 8 muffins equally. Which show how many sisters share one muffin? Choose <strong>ALL</strong> that are right.",
+   "explanation": "Sisters per muffin = 3 ÷ 8 = 3/8. That is less than one whole — the first answer flipped.",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">8</span><span class=\"den\">3</span></span>",
+    "2 <span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">3</span></span>",
+    "8 ÷ 3",
+    "<span class=\"frac\"><span class=\"num\">3</span><span class=\"den\">8</span></span>",
+    "3 ÷ 8",
+    "8 − 3"
+   ],
+   "answers": [
+    3,
+    4
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2,
+   "group": "g5-fracasdiv-pair-12"
+  },
+  {
+   "id": "g5-fracasdiv-25",
+   "prompt": "20 campers share 8 sandwiches equally. Which show how much sandwich each one gets? Choose <strong>ALL</strong> that are right.",
+   "explanation": "Each share = sandwiches ÷ campers = 8 ÷ 20 = 8/20 = 2/5. That is less than one whole. Watch out: 20 ÷ 8 is the other question, and subtracting never shares anything.",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">5</span></span>",
+    "<span class=\"frac\"><span class=\"num\">8</span><span class=\"den\">20</span></span>",
+    "8 ÷ 20",
+    "<span class=\"frac\"><span class=\"num\">5</span><span class=\"den\">2</span></span>",
+    "<span class=\"frac\"><span class=\"num\">20</span><span class=\"den\">8</span></span>",
+    "2 <span class=\"frac\"><span class=\"num\">1</span><span class=\"den\">2</span></span>",
+    "20 ÷ 8",
+    "20 − 8"
+   ],
+   "answers": [
+    0,
+    1,
+    2
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3,
+   "group": "g5-fracasdiv-pair-13"
+  },
+  {
+   "id": "g5-fracasdiv-26",
+   "prompt": "20 campers share 8 sandwiches equally. Which show how many campers share one sandwich? Choose <strong>ALL</strong> that are right.",
+   "explanation": "Campers per sandwich = 20 ÷ 8 = 20/8 = 5/2. That is more than one whole (5/2 = 2 1/2) — the first answer flipped.",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">5</span></span>",
+    "<span class=\"frac\"><span class=\"num\">8</span><span class=\"den\">20</span></span>",
+    "8 ÷ 20",
+    "<span class=\"frac\"><span class=\"num\">5</span><span class=\"den\">2</span></span>",
+    "<span class=\"frac\"><span class=\"num\">20</span><span class=\"den\">8</span></span>",
+    "2 <span class=\"frac\"><span class=\"num\">1</span><span class=\"den\">2</span></span>",
+    "20 ÷ 8",
+    "20 − 8"
+   ],
+   "answers": [
+    3,
+    4,
+    5,
+    6
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3,
+   "group": "g5-fracasdiv-pair-13"
+  },
+  {
+   "id": "g5-fracasdiv-27",
+   "prompt": "6 cousins share 9 melons equally. Which show how much melon each one gets? Choose <strong>ALL</strong> that are right.",
+   "explanation": "Each share = melons ÷ cousins = 9 ÷ 6 = 9/6 = 3/2. That is more than one whole (3/2 = 1 1/2). Watch out: 6 ÷ 9 is the other question, and subtracting never shares anything.",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">3</span><span class=\"den\">2</span></span>",
+    "<span class=\"frac\"><span class=\"num\">9</span><span class=\"den\">6</span></span>",
+    "1 <span class=\"frac\"><span class=\"num\">1</span><span class=\"den\">2</span></span>",
+    "9 ÷ 6",
+    "<span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">3</span></span>",
+    "<span class=\"frac\"><span class=\"num\">6</span><span class=\"den\">9</span></span>",
+    "6 ÷ 9",
+    "9 − 6"
+   ],
+   "answers": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3,
+   "group": "g5-fracasdiv-pair-14"
+  },
+  {
+   "id": "g5-fracasdiv-28",
+   "prompt": "6 cousins share 9 melons equally. Which show how many cousins share one melon? Choose <strong>ALL</strong> that are right.",
+   "explanation": "Cousins per melon = 6 ÷ 9 = 6/9 = 2/3. That is less than one whole — the first answer flipped.",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">3</span><span class=\"den\">2</span></span>",
+    "<span class=\"frac\"><span class=\"num\">9</span><span class=\"den\">6</span></span>",
+    "1 <span class=\"frac\"><span class=\"num\">1</span><span class=\"den\">2</span></span>",
+    "9 ÷ 6",
+    "<span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">3</span></span>",
+    "<span class=\"frac\"><span class=\"num\">6</span><span class=\"den\">9</span></span>",
+    "6 ÷ 9",
+    "9 − 6"
+   ],
+   "answers": [
+    4,
+    5,
+    6
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3,
+   "group": "g5-fracasdiv-pair-14"
+  },
+  {
+   "id": "g5-fracasdiv-29",
+   "prompt": "24 students share 16 pizzas equally. Which show how much pizza each one gets? Choose <strong>ALL</strong> that are right.",
+   "explanation": "Each share = pizzas ÷ students = 16 ÷ 24 = 16/24 = 2/3. That is less than one whole. Watch out: 24 ÷ 16 is the other question, and subtracting never shares anything.",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">3</span></span>",
+    "<span class=\"frac\"><span class=\"num\">16</span><span class=\"den\">24</span></span>",
+    "16 ÷ 24",
+    "<span class=\"frac\"><span class=\"num\">3</span><span class=\"den\">2</span></span>",
+    "<span class=\"frac\"><span class=\"num\">24</span><span class=\"den\">16</span></span>",
+    "1 <span class=\"frac\"><span class=\"num\">1</span><span class=\"den\">2</span></span>",
+    "24 ÷ 16",
+    "24 − 16"
+   ],
+   "answers": [
+    0,
+    1,
+    2
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3,
+   "group": "g5-fracasdiv-pair-15"
+  },
+  {
+   "id": "g5-fracasdiv-30",
+   "prompt": "24 students share 16 pizzas equally. Which show how many students share one pizza? Choose <strong>ALL</strong> that are right.",
+   "explanation": "Students per pizza = 24 ÷ 16 = 24/16 = 3/2. That is more than one whole (3/2 = 1 1/2) — the first answer flipped.",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">3</span></span>",
+    "<span class=\"frac\"><span class=\"num\">16</span><span class=\"den\">24</span></span>",
+    "16 ÷ 24",
+    "<span class=\"frac\"><span class=\"num\">3</span><span class=\"den\">2</span></span>",
+    "<span class=\"frac\"><span class=\"num\">24</span><span class=\"den\">16</span></span>",
+    "1 <span class=\"frac\"><span class=\"num\">1</span><span class=\"den\">2</span></span>",
+    "24 ÷ 16",
+    "24 − 16"
+   ],
+   "answers": [
+    3,
+    4,
+    5,
+    6
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3,
+   "group": "g5-fracasdiv-pair-15"
+  },
+  {
+   "id": "g5-fracasdiv-31",
+   "prompt": "2 friends share 5 cookies equally. How many cookies does each friend get?",
+   "hint": "What is shared goes on top. Is it more or less than one each?",
+   "explanation": "5 ÷ 2 = 5/2. There are more cookies than friends, so each gets more than one whole (5/2 = 2 1/2).",
+   "kind": "fraction",
+   "answer": [
+    5,
+    2
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "group": "g5-fracasdiv-pair-16"
+  },
+  {
+   "id": "g5-fracasdiv-32",
+   "prompt": "Same story: 2 friends, 5 cookies. How many friends share each cookie?",
+   "explanation": "2 ÷ 5 = 2/5 — the first answer flipped. That is less than one whole.",
+   "kind": "fraction",
+   "answer": [
+    2,
+    5
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "group": "g5-fracasdiv-pair-16"
+  },
+  {
+   "id": "g5-fracasdiv-33",
+   "prompt": "4 kids share 6 sandwiches equally. How many sandwiches does each kid get?",
+   "hint": "What is shared goes on top. Is it more or less than one each?",
+   "explanation": "6 ÷ 4 = 3/2. There are more sandwiches than kids, so each gets more than one whole (3/2 = 1 1/2).",
+   "kind": "fraction",
+   "answer": [
+    3,
+    2
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2,
+   "group": "g5-fracasdiv-pair-17"
+  },
+  {
+   "id": "g5-fracasdiv-34",
+   "prompt": "Same story: 4 kids, 6 sandwiches. How many kids share each sandwich?",
+   "explanation": "4 ÷ 6 = 2/3 — the first answer flipped. That is less than one whole.",
+   "kind": "fraction",
+   "answer": [
+    2,
+    3
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2,
+   "group": "g5-fracasdiv-pair-17"
+  },
+  {
+   "id": "g5-fracasdiv-35",
+   "prompt": "3 painters share 7 gallons equally. How many gallons does each painter get?",
+   "hint": "What is shared goes on top. Is it more or less than one each?",
+   "explanation": "7 ÷ 3 = 7/3. There are more gallons than painters, so each gets more than one whole (7/3 = 2 1/3).",
+   "kind": "fraction",
+   "answer": [
+    7,
+    3
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2,
+   "group": "g5-fracasdiv-pair-18"
+  },
+  {
+   "id": "g5-fracasdiv-36",
+   "prompt": "Same story: 3 painters, 7 gallons. How many painters share each gallon?",
+   "explanation": "3 ÷ 7 = 3/7 — the first answer flipped. That is less than one whole.",
+   "kind": "fraction",
+   "answer": [
+    3,
+    7
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2,
+   "group": "g5-fracasdiv-pair-18"
+  },
+  {
+   "id": "g5-fracasdiv-37",
+   "prompt": "6 hikers share 15 liters equally. How many liters does each hiker get?",
+   "hint": "What is shared goes on top. Is it more or less than one each?",
+   "explanation": "15 ÷ 6 = 5/2. There are more liters than hikers, so each gets more than one whole (5/2 = 2 1/2).",
+   "kind": "fraction",
+   "answer": [
+    5,
+    2
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3,
+   "group": "g5-fracasdiv-pair-19"
+  },
+  {
+   "id": "g5-fracasdiv-38",
+   "prompt": "Same story: 6 hikers, 15 liters. How many hikers share each liter?",
+   "explanation": "6 ÷ 15 = 2/5 — the first answer flipped. That is less than one whole.",
+   "kind": "fraction",
+   "answer": [
+    2,
+    5
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3,
+   "group": "g5-fracasdiv-pair-19"
+  },
+  {
+   "id": "g5-fracasdiv-39",
+   "prompt": "Some friends share 5 pizzas equally, and each gets 5/8 of a pizza. How many friends are there?",
+   "explanation": "A share of 5/8 means 5 ÷ 8: 5 pizzas shared by 8 friends.",
+   "hint": "The share is pizzas ÷ friends. Which number is on the bottom?",
+   "kind": "number",
+   "answer": 8,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2
+  },
+  {
+   "id": "g5-fracasdiv-40",
+   "prompt": "A group shares some sandwiches equally. There are 7 people and each gets 3/7 of a sandwich. How many sandwiches were there?",
+   "explanation": "3/7 means 3 ÷ 7: 3 sandwiches shared by 7 people.",
+   "hint": "The top of the share is what was shared.",
+   "kind": "number",
+   "answer": 3,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2
+  },
+  {
+   "id": "g5-fracasdiv-41",
+   "prompt": "6 pizzas are shared equally, and each person gets 2/3 of a pizza. How many people are sharing?",
+   "explanation": "6 ÷ people = 2/3. Since 6 ÷ 9 = 6/9 = 2/3, there are 9 people. (Check: 9 × 2/3 = 6.)",
+   "hint": "Write 2/3 another way with 6 on top.",
+   "kind": "number",
+   "answer": 9,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3
+  },
+  {
+   "id": "g5-fracasdiv-42",
+   "prompt": "Each camper gets 3/2 bottles of juice, and there are 8 campers. How many bottles were shared?",
+   "explanation": "8 × 3/2 = 24/2 = 12 bottles. (Check: 12 ÷ 8 = 12/8 = 3/2.)",
+   "hint": "Shares × people = what was shared.",
+   "kind": "number",
+   "answer": 12,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3
+  },
+  {
+   "id": "g5-fracasdiv-43",
+   "prompt": "5 people share 17 pounds of clay equally. Each person's share is between which two whole numbers?",
+   "explanation": "17 ÷ 5 = 17/5 = 3 2/5, so it is between 3 and 4.",
+   "kind": "choice",
+   "choices": [
+    "3 and 4",
+    "4 and 5",
+    "2 and 3",
+    "5 and 17"
+   ],
+   "answer": 0,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2
+  },
+  {
+   "id": "g5-fracasdiv-44",
+   "prompt": "4 people share 9 pizzas equally. Each person's share is between which two whole numbers?",
+   "explanation": "9 ÷ 4 = 9/4 = 2 1/4, so it is between 2 and 3.",
+   "kind": "choice",
+   "choices": [
+    "2 and 3",
+    "3 and 4",
+    "1 and 2",
+    "4 and 9"
+   ],
+   "answer": 0,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2
+  },
+  {
+   "id": "g5-fracasdiv-45",
+   "prompt": "3 people share 20 yards of ribbon equally. Each person's share is between which two whole numbers?",
+   "explanation": "20 ÷ 3 = 20/3 = 6 2/3, so it is between 6 and 7.",
+   "kind": "choice",
+   "choices": [
+    "6 and 7",
+    "7 and 8",
+    "5 and 6",
+    "3 and 20"
+   ],
+   "answer": 0,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3
+  },
+  {
+   "id": "g5-fracasdiv-46",
+   "prompt": "8 people share 5 apples equally. Each person's share is between which two whole numbers?",
+   "explanation": "5 ÷ 8 = 5/8 = 5/8, so it is between 0 and 1.",
+   "kind": "choice",
+   "choices": [
+    "0 and 1",
+    "1 and 2",
+    "2 and 3",
+    "8 and 5"
+   ],
+   "answer": 0,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3
+  },
+  {
+   "id": "g5-fracasdiv-47",
+   "prompt": "Table A: 4 kids share 3 pizzas. Table B: 6 kids share 4 pizzas. At which table does each kid get more?",
+   "explanation": "Table A: 3 ÷ 4 = 3/4. Table B: 4 ÷ 6 = 2/3. Table A gets more.",
+   "hint": "Work out each table’s share as a fraction, then compare.",
+   "kind": "choice",
+   "choices": [
+    "Table A",
+    "Table B",
+    "They get the same"
+   ],
+   "answer": 0,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2
+  },
+  {
+   "id": "g5-fracasdiv-48",
+   "prompt": "Table A: 5 kids share 2 pies. Table B: 10 kids share 4 pies. At which table does each kid get more?",
+   "explanation": "Table A: 2 ÷ 5 = 2/5. Table B: 4 ÷ 10 = 2/5. They are equal!",
+   "hint": "Work out each table’s share as a fraction, then compare.",
+   "kind": "choice",
+   "choices": [
+    "Table A",
+    "Table B",
+    "They get the same"
+   ],
+   "answer": 2,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2
+  },
+  {
+   "id": "g5-fracasdiv-49",
+   "prompt": "Table A: 3 kids share 2 cakes. Table B: 8 kids share 5 cakes. At which table does each kid get more?",
+   "explanation": "Table A: 2 ÷ 3 = 2/3. Table B: 5 ÷ 8 = 5/8. Table A gets more.",
+   "hint": "Work out each table’s share as a fraction, then compare.",
+   "kind": "choice",
+   "choices": [
+    "Table A",
+    "Table B",
+    "They get the same"
+   ],
+   "answer": 0,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3
+  },
+  {
+   "id": "g5-fracasdiv-50",
+   "prompt": "Table A: 6 kids share 9 melons. Table B: 4 kids share 5 melons. At which table does each kid get more?",
+   "explanation": "Table A: 9 ÷ 6 = 3/2. Table B: 5 ÷ 4 = 5/4. Table A gets more.",
+   "hint": "Work out each table’s share as a fraction, then compare.",
+   "kind": "choice",
+   "choices": [
+    "Table A",
+    "Table B",
+    "They get the same"
+   ],
+   "answer": 0,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3
+  },
+  {
+   "id": "g5-fracasdiv-51",
+   "prompt": "If 8 people share 3 pizzas equally, each person gets more than 1 pizza.",
+   "explanation": "3 ÷ 8 = 3/8, which is less than 1. More people than pizzas means less than one each.",
+   "kind": "truefalse",
+   "answer": false,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each."
+  },
+  {
+   "id": "g5-fracasdiv-52",
+   "prompt": "7 ÷ 4 and 4 ÷ 7 are the same.",
+   "explanation": "7 ÷ 4 = 7/4 (more than 1), but 4 ÷ 7 = 4/7 (less than 1). Swapping the numbers flips the fraction.",
+   "kind": "truefalse",
+   "answer": false,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2
+  },
+  {
+   "id": "g5-fracasdiv-53",
+   "prompt": "12 ÷ 16 is the same amount as 3/4.",
+   "explanation": "12 ÷ 16 = 12/16, and dividing top and bottom by 4 gives 3/4.",
+   "kind": "truefalse",
+   "answer": true,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2
+  },
+  {
+   "id": "g5-fracasdiv-54",
+   "prompt": "When 5 friends share 5 pizzas, each friend gets 5/5, which is exactly 1 pizza.",
+   "explanation": "5 ÷ 5 = 5/5 = 1 whole pizza each.",
+   "kind": "truefalse",
+   "answer": true,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3
+  },
+  {
+   "id": "g5-fracasdiv-55",
+   "prompt": "Which story is answered by 5 ÷ 8?",
+   "explanation": "5 ÷ 8 shares 5 things among 8. Only \"8 kids share 5 granola bars\" does that; the others share 8 things among 5.",
+   "kind": "choice",
+   "choices": [
+    "8 kids share 5 granola bars. How much does each kid get?",
+    "5 kids share 8 granola bars. How much does each kid get?",
+    "Each kid gets 8 granola bars. How many for 5 kids?",
+    "5 granola bars are added to 8 granola bars."
+   ],
+   "answer": 0,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 2
+  },
+  {
+   "id": "g5-fracasdiv-56",
+   "prompt": "Which story is answered by 9/4?",
+   "explanation": "9/4 means 9 ÷ 4: 9 things shared among 4 — 4 friends sharing 9 pizzas, so each gets 2 1/4.",
+   "kind": "choice",
+   "choices": [
+    "4 friends share 9 pizzas. How much does each friend get?",
+    "9 friends share 4 pizzas. How much does each friend get?",
+    "4 friends each eat 9 slices. How many slices?",
+    "9 pizzas, 4 are eaten. How many are left?"
+   ],
+   "answer": 0,
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3
+  },
+  {
+   "id": "g5-fracasdiv-57",
+   "prompt": "12 members planned to share 8 pizzas, but 2 members went home. How much pizza does each member who stayed get?",
+   "hint": "First find how many members are left.",
+   "explanation": "12 − 2 = 10 members. 8 ÷ 10 = 8/10 = 4/5 of a pizza each.",
+   "kind": "fraction",
+   "answer": [
+    4,
+    5
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3
+  },
+  {
+   "id": "g5-fracasdiv-58",
+   "prompt": "5 friends share 3 pizzas. Then 2 more pizzas arrive and are shared the same way. How much pizza does each friend get altogether?",
+   "hint": "Add the pizzas first, or add the two shares.",
+   "explanation": "3 + 2 = 5 pizzas for 5 friends: 5 ÷ 5 = 1 whole pizza each. (Or 3/5 + 2/5 = 5/5 = 1.)",
+   "kind": "fraction",
+   "answer": [
+    1,
+    1
+   ],
+   "category": "Fractions as Division",
+   "tip": "What is being shared goes on top, who shares it goes on the bottom. More people than things → less than 1 each. More things than people → more than 1 each.",
+   "level": 3
   }
  ]
 }
