@@ -33,6 +33,14 @@ service cloud.firestore {
           .hasAny(['deleted', 'deletedAt', 'deletedBy']);
     }
 
+    // Private word lists (e.g. the 2026 School Bee study list, which may not be
+    // posted publicly). Any signed-in child may read them; nobody writes from
+    // the app — scripts/upload-word-list.mjs uses the Admin SDK, which bypasses rules.
+    match /wordLists/{listId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
     // Deny everything else by default.
     match /{document=**} {
       allow read, write: if false;

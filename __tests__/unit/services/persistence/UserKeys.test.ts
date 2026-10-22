@@ -4,6 +4,7 @@ import path from 'path'
 import {
   USER_KEYS,
   DEVICE_KEYS,
+  SIGNED_IN_CACHE_KEYS,
   LAST_USER_KEY,
   BUNDLED_SYNC_KEYS,
   TYPED_SYNC_KEYS,
@@ -43,7 +44,7 @@ const keysWrittenInSource = (): Map<string, string> => {
 
 describe('the registry of what belongs to a child', () => {
   it('knows about every key the app writes', () => {
-    const registered = new Set<string>([...USER_KEYS, ...DEVICE_KEYS])
+    const registered = new Set<string>([...USER_KEYS, ...DEVICE_KEYS, ...SIGNED_IN_CACHE_KEYS])
     const unregistered = [...keysWrittenInSource()]
       .filter(([key]) => !registered.has(key))
       .map(([key, file]) => `${key}  (${file})`)

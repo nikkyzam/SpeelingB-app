@@ -19,6 +19,12 @@ export interface Word {
   vocabulary_question?: string
   source?: string
   sentences?: string[]
+  /**
+   * Set on words from a private list (e.g. the 2026 School Bee study list,
+   * loaded from Firestore for signed-in children). They belong to that list,
+   * not to the One/Two/Three Bee levels.
+   */
+  list?: string
 }
 
 export interface WordCategory {
@@ -167,7 +173,27 @@ export class WordBank {
    * held was eight Halloween words.
    */
   private leveledWords(level: 1 | 2 | 3): Word[] {
-    return this.words.filter((w) => w.difficulty === level && w.category !== 'seasonal')
+    return this.words.filter((w) => w.difficulty === level && w.category !== 'seasonal' && !w.list)
+  }
+
+  /** Whether a private list's words are loaded on this device. */
+  hasList(list: string): boolean {
+    return this.words.some((w) => w.list === list)
+  }
+
+  /** A private list's words, in the list's own order (registration order). */
+  getWordsForList(list: string): Word[] {
+    return this.words.filter((w) => w.list === list)
+  }
+
+  /**
+   * The words a child learns from: their chosen private list when it is
+   * loaded here, otherwise their Bee levels. A list that isn't available
+   * (signed out, not downloaded yet) falls back to the levels.
+   */
+  getLearningList(levels: readonly number[], list?: string | null): Word[] {
+    if (list && this.hasList(list)) return this.getWordsForList(list)
+    return this.getWordsForLevels(levels)
   }
 
   /**
@@ -216,7 +242,8 @@ export class WordBank {
   }
 
   getWordsByDifficulty(difficulty: 1 | 2 | 3): Word[] {
-    return this.words.filter(word => word.difficulty === difficulty)
+    // Private-list words stay inside their list (word of the day, random picks).
+    return this.words.filter(word => word.difficulty === difficulty && !word.list)
   }
 
   getWordsByCategory(category: string): Word[] {

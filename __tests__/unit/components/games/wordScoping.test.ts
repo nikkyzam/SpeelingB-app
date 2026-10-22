@@ -86,7 +86,7 @@ describe('games only use the words a child is learning', () => {
     .forEach(({ name, file }) => {
       it(`${name} never pulls words from the shared bank`, () => {
         const src = fs.readFileSync(file, 'utf-8')
-        const leaks = src.match(/wordBank\.(getRandomWords?|getAllWords|getWordsByDifficulty|getWordsForLevels|getUnlearnedWords|getWordsByCategory|searchWords)\b/g)
+        const leaks = src.match(/wordBank\.(getRandomWords?|getAllWords|getWordsByDifficulty|getWordsForLevels|getLearningList|getWordsForList|getUnlearnedWords|getWordsByCategory|searchWords)\b/g)
         expect(leaks, `${name} sources words outside the child's own list`).toBeNull()
       })
     })
@@ -94,7 +94,7 @@ describe('games only use the words a child is learning', () => {
   playPages.forEach(({ name, file }) => {
     it(`page ${name} never pads from the shared bank`, () => {
       const src = fs.readFileSync(file, 'utf-8')
-      const leaks = src.match(/wordBank\.(getRandomWords?|getAllWords|getWordsByDifficulty|getWordsForLevels|getUnlearnedWords|getWordsByCategory|searchWords)\b/g)
+      const leaks = src.match(/wordBank\.(getRandomWords?|getAllWords|getWordsByDifficulty|getWordsForLevels|getLearningList|getWordsForList|getUnlearnedWords|getWordsByCategory|searchWords)\b/g)
       expect(leaks, `${name} sources words outside the child's own list`).toBeNull()
     })
   })

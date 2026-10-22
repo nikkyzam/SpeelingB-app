@@ -51,7 +51,7 @@ export class DailyResetService {
       const levels: (1 | 2 | 3)[] = Array.isArray(learningProgress.wordLevels) && learningProgress.wordLevels.length > 0
         ? learningProgress.wordLevels
         : learningProgress.difficulty ? [learningProgress.difficulty] : []
-      const left = wordsLeftFor(levels, learningProgress.wordsLearnedTotal || [])
+      const left = wordsLeftFor(levels, learningProgress.wordsLearnedTotal || [], learningProgress.wordList)
       const reachableLearn = left === null ? learnGoal : Math.min(learnGoal, learnProgress + left)
 
       // Learn carry over

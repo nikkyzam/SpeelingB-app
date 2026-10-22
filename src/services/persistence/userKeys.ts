@@ -94,6 +94,13 @@ export const USER_KEYS = [
  *  signing in starts from a clean slate. Device-scoped by definition. */
 export const LAST_USER_KEY = 'last_user_uid'
 
+/**
+ * Downloads that only a signed-in user may have, like the private 2026 School
+ * Bee list. They are not the child's data, so they are never synced, but
+ * they are cleared on sign-out so a signed-out device doesn't keep them.
+ */
+export const SIGNED_IN_CACHE_KEYS = ['private_word_lists'] as const
+
 /** Keys that belong to the device and survive a sign-out: a parent who muted
  *  the tablet did not mute one child. */
 export const DEVICE_KEYS = ['audioEnabled', LAST_USER_KEY] as const
@@ -119,7 +126,7 @@ export const BUNDLED_SYNC_KEYS: readonly string[] = USER_KEYS.filter(
 /** Remove everything that belongs to the signed-in child. Device keys and
  *  anything we do not own (Firebase's own auth entries, for one) are left. */
 export const clearUserData = (): void => {
-  for (const key of USER_KEYS) {
+  for (const key of [...USER_KEYS, ...SIGNED_IN_CACHE_KEYS]) {
     try {
       localStorage.removeItem(key)
     } catch {

@@ -32,3 +32,9 @@ cypress/videos/
 .idea/
 .vscode/
 .DS_Store
+
+# Copyrighted source material (e.g. the Scripps study list) — never publish to the public repo.
+documents/*.pdf
+
+# Private, copyrighted-source content (e.g. the 2026 School Bee list). Uploaded to Firestore, never committed.
+private/

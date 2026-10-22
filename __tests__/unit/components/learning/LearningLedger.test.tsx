@@ -44,6 +44,9 @@ vi.mock('@/services/wordBank', () => {
     wordBank: {
       getAllWords: () => words,
       getWordsForLevels: () => words,
+      // No private list here: learning follows the levels.
+      getLearningList: () => words,
+      hasList: () => false,
       getRandomWords: () => words,
       getWordsByDifficulty: () => words,
       getWordById: (id: string) => words.find((w) => w.id === id),

@@ -58,11 +58,14 @@ import { wordBank } from './services/wordBank'
 {
   let lastKey = ''
   let lastLeft = 0
-  setWordsLeftCounter((levels, learned) => {
-    const key = `${levels.join(',')}|${learned.length}|${learned[learned.length - 1] ?? ''}`
+  setWordsLeftCounter((levels, learned, list) => {
+    // A private list counts only once it is loaded on this device; until then
+    // the child is on their levels, so the count must follow that too.
+    const onList = !!list && wordBank.hasList(list)
+    const key = `${onList ? list : levels.join(',')}|${learned.length}|${learned[learned.length - 1] ?? ''}`
     if (key !== lastKey) {
       const known = new Set(learned)
-      lastLeft = wordBank.getWordsForLevels(levels).filter((w) => !known.has(w.id)).length
+      lastLeft = wordBank.getLearningList(levels, list).filter((w) => !known.has(w.id)).length
       lastKey = key
     }
     return lastLeft

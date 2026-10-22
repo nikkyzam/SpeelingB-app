@@ -12,6 +12,7 @@ import WordMastery, {
   LEARN_CHALLENGE_REWARD,
 } from '../../services/progress/WordMastery'
 import ExplorerLevel from '../../components/progress/ExplorerLevel'
+import { PRIVATE_LISTS, WORD_LISTS_EVENT } from '../../services/wordLists'
 import QuestMap from '../../components/progress/QuestMap'
 import Button from '../../components/common/Button'
 import Celebration, { CelebrationData } from '../../components/common/Celebration'
@@ -32,6 +33,16 @@ const LearningHub: React.FC = () => {
   const [activeMode, setActiveMode] = useState<LearningMode>(null)
   const [quizType, setQuizType] = useState<QuizType>(null)
   const [levels, setLevels] = useState<(1 | 2 | 3)[]>(() => learningFlow.getWordLevels())
+  // A private list (the 2026 School Bee list) replaces the levels while chosen.
+  const [wordList, setWordList] = useState<string | null>(() => learningFlow.getWordList())
+  // The private list arrives after sign-in; re-render when it does so it can be offered.
+  const [, setListsTick] = useState(0)
+  useEffect(() => {
+    const onLists = () => setListsTick((t) => t + 1)
+    window.addEventListener(WORD_LISTS_EVENT, onLists)
+    return () => window.removeEventListener(WORD_LISTS_EVENT, onLists)
+  }, [])
+  const listReady = !!wordList && wordBank.hasList(wordList)
   const difficulty: Difficulty = levels.length === 1 ? levels[0] : undefined
   const [selectedGroup, setSelectedGroup] = useState(() => learningFlow.getSelectedGroup())
   const [isGroupsExpanded, setIsGroupsExpanded] = useState(false)
@@ -75,9 +86,9 @@ const LearningHub: React.FC = () => {
     // A grown-up can pick one Bee level or a blend of them; getWordsForLevels
     // interleaves a blend so every group mixes, and falls back to everything if
     // the chosen levels turn out to be empty.
-    const base = wordBank.getWordsForLevels(levels)
+    const base = wordBank.getLearningList(levels, wordList)
     return base.length > 0 ? base : wordBank.getAllWords()
-  }, [levels, seasonalEvent])
+  }, [levels, wordList, listReady, seasonalEvent])
 
   const groupsCount = Math.max(1, Math.ceil(filteredWords.length / groupSize))
 
@@ -146,8 +157,15 @@ const LearningHub: React.FC = () => {
   const handleDifficultySelect = (level: Difficulty) => {
     const next: (1 | 2 | 3)[] = level ? [level] : []
     setLevels(next)
+    setWordList(null)
     setSelectedGroup(0)
     learningFlow.setWordLevels(next)
+  }
+
+  const handleListSelect = (list: string) => {
+    setWordList(list)
+    setSelectedGroup(0)
+    learningFlow.setWordList(list)
   }
 
   /**
@@ -176,28 +194,38 @@ const LearningHub: React.FC = () => {
         <div className="difficulty-buttons">
           <Button
             onClick={() => handleDifficultySelect(1)}
-            variant={difficulty === 1 ? 'primary' : 'secondary'}
+            variant={!listReady && difficulty === 1 ? 'primary' : 'secondary'}
           >
             🐝 One Bee
           </Button>
           <Button
             onClick={() => handleDifficultySelect(2)}
-            variant={difficulty === 2 ? 'primary' : 'secondary'}
+            variant={!listReady && difficulty === 2 ? 'primary' : 'secondary'}
           >
             🐝🐝 Two Bee
           </Button>
           <Button
             onClick={() => handleDifficultySelect(3)}
-            variant={difficulty === 3 ? 'primary' : 'secondary'}
+            variant={!listReady && difficulty === 3 ? 'primary' : 'secondary'}
           >
             🐝🐝🐝 Three Bee
           </Button>
           <Button
             onClick={() => handleDifficultySelect(undefined)}
-            variant={difficulty === undefined ? 'primary' : 'secondary'}
+            variant={!listReady && difficulty === undefined ? 'primary' : 'secondary'}
           >
             🌟 All Words
           </Button>
+          {/* Private lists show only once downloaded — i.e. for signed-in children. */}
+          {PRIVATE_LISTS.filter((l) => wordBank.hasList(l.id)).map((l) => (
+            <Button
+              key={l.id}
+              onClick={() => handleListSelect(l.id)}
+              variant={listReady && wordList === l.id ? 'primary' : 'secondary'}
+            >
+              {l.icon} {l.title}
+            </Button>
+          ))}
         </div>
       </div>
 

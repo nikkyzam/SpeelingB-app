@@ -14,14 +14,17 @@ export const weekOf = (d: Date): string =>
  * The word bank lives outside this module, so the app registers a way to ask
  * (App.tsx). Without one — tests, scripts — a goal is simply the goal.
  */
-export type WordsLeftCounter = (levels: (1 | 2 | 3)[], learned: readonly string[]) => number
+export type WordsLeftCounter = (levels: (1 | 2 | 3)[], learned: readonly string[], list: string | null) => number
 let countWordsLeft: WordsLeftCounter | null = null
 export const setWordsLeftCounter = (fn: WordsLeftCounter | null): void => {
   countWordsLeft = fn
 }
 /** Words left to meet in these levels, or null when nobody has said how to count. */
-export const wordsLeftFor = (levels: (1 | 2 | 3)[], learned: readonly string[]): number | null =>
-  countWordsLeft ? countWordsLeft(levels, learned) : null
+export const wordsLeftFor = (
+  levels: (1 | 2 | 3)[],
+  learned: readonly string[],
+  list?: string | null
+): number | null => (countWordsLeft ? countWordsLeft(levels, learned, list ?? null) : null)
 
 export interface LearningProgress {
   wordsLearnedToday: string[]
@@ -43,6 +46,8 @@ export interface LearningProgress {
   /** Which Bee levels today's words are drawn from. Empty or absent means all
    *  of them. More than one means the levels are blended. */
   wordLevels?: (1 | 2 | 3)[]
+  /** A private word list (e.g. 'school-2026') chosen instead of the Bee levels. */
+  wordList?: string
   missedDays: string[] // Array of date strings "YYYY-MM-DD"
   lastGoalCheck: string | null // Last date goals were checked/reset
   lastReviewDate: string | null // Last date the "Review Time!" quiz was completed
@@ -186,8 +191,21 @@ export class LearningFlowController {
     return single ? [single] : []
   }
 
-  /** Set the levels today's words are drawn from; empty means all. */
+  /** The private word list this child learns from, or null for the Bee levels. */
+  getWordList(): string | null {
+    return this.progress.wordList || null
+  }
+
+  /** Learn from a private list (null goes back to the Bee levels). Starts at its first group. */
+  setWordList(list: string | null): void {
+    this.progress.wordList = list || undefined
+    this.progress.selectedGroup = 0
+    this.saveProgress()
+  }
+
+  /** Set the levels today's words are drawn from; empty means all. Leaves any private list. */
   setWordLevels(levels: (1 | 2 | 3)[]): void {
+    this.progress.wordList = undefined
     const clean = [...new Set(levels)].filter((l): l is 1 | 2 | 3 => l === 1 || l === 2 || l === 3).sort()
     this.progress.wordLevels = clean
     // Keep the old single field meaningful for anything still reading it: one
@@ -429,13 +447,13 @@ export class LearningFlowController {
    */
   getLearnGoalToday(): number {
     const goal = this.progress.dailyGoal
-    const left = wordsLeftFor(this.getWordLevels(), this.progress.wordsLearnedTotal)
+    const left = wordsLeftFor(this.getWordLevels(), this.progress.wordsLearnedTotal, this.getWordList())
     return left === null ? goal : Math.min(goal, this.progress.wordsLearnedToday.length + left)
   }
 
   /** Every word in the child's levels has been met. */
   isLevelFinished(): boolean {
-    return wordsLeftFor(this.getWordLevels(), this.progress.wordsLearnedTotal) === 0
+    return wordsLeftFor(this.getWordLevels(), this.progress.wordsLearnedTotal, this.getWordList()) === 0
   }
 
   getWordsPracticedToday(): string[] {

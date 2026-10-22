@@ -10,6 +10,7 @@ import { auth } from '../../config/firebase';
 import { useUserStore } from '../../stores/userStore';
 import FirebaseSync from '../persistence/FirebaseSync';
 import { clearUserData, forgetDeviceUser } from '../persistence/userKeys';
+import { refreshPrivateLists } from '../wordLists';
 
 /**
  * A friendly first name from an email address, for accounts that never set a
@@ -61,6 +62,8 @@ export class AuthService {
         // Pull the saved progress down FIRST. Uploads are blocked until this
         // finishes, so a fresh login can never overwrite the studied words.
         FirebaseSync.syncFromServer();
+        // Word lists that only signed-in children may see (the 2026 School Bee list).
+        refreshPrivateLists();
       } else {
         // User is signed out, but we might want to keep the guest user or set to null
         // For now, let's keep it simple

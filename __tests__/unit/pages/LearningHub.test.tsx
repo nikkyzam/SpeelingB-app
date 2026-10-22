@@ -15,16 +15,20 @@ import { wordBank } from '@/services/wordBank'
 vi.mock('@/services/progress/LearningFlow')
 
 // One-word group so groupCount === 1: learning/spelling word '1' completes the group.
-vi.mock('@/services/wordBank', () => ({
-  wordBank: {
+vi.mock('@/services/wordBank', () => {
+  const wordBank: Record<string, ReturnType<typeof vi.fn>> = {
     getRandomWords: vi.fn(() => [{ id: '1', word: 'apple', meaning: 'a fruit' }]),
     getAllWords: vi.fn(() => [{ id: '1', word: 'apple', meaning: 'a fruit' }]),
     getWordsForLevels: vi.fn(() => [{ id: '1', word: 'apple', meaning: 'a fruit' }]),
     getWordsByDifficulty: vi.fn((difficulty) =>
       difficulty === 1 ? [{ id: '1', word: 'apple', meaning: 'a fruit' }] : []
     ),
+    // No private list on this device, so learning follows the levels.
+    hasList: vi.fn(() => false),
   }
-}))
+  wordBank.getLearningList = vi.fn((levels) => wordBank.getWordsForLevels(levels))
+  return { wordBank }
+})
 
 vi.mock('@/stores/progressStore', () => ({
   useProgressStore: () => ({ setDailyGoal: vi.fn() })
@@ -69,6 +73,7 @@ const createMockLearningFlow = (overrides: Partial<LearningFlowController>) => (
   advanceToNextGroup: vi.fn(),
   getDifficulty: () => 1,
   getWordLevels: () => [1],
+  getWordList: () => null,
   setWordLevels: vi.fn(),
   getSelectedGroup: () => 0,
   getMissedDays: () => [],
