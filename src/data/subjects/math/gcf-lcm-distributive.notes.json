@@ -1,0 +1,97 @@
+[
+ {
+  "title": "Greatest Common Factor (GCF)",
+  "icon": "🧩",
+  "intro": "The GCF is the <strong>biggest number that divides into both numbers</strong> with nothing left over.",
+  "steps": [
+   "List the factors of each number.",
+   "Find the factors that are on both lists — the common factors.",
+   "Pick the greatest one. That is the GCF."
+  ],
+  "example": {
+   "title": "Find the GCF of 18 and 30",
+   "lines": [
+    "Factors of 18: 1, 2, 3, 6, 9, 18",
+    "Factors of 30: 1, 2, 3, 5, 6, 10, 15, 30",
+    "Common factors: 1, 2, 3, 6",
+    "<strong>GCF = 6</strong>"
+   ]
+  },
+  "remember": "If the only common factor is 1, the GCF is 1 (like 9 and 16)."
+ },
+ {
+  "title": "Least Common Multiple (LCM)",
+  "icon": "🔁",
+  "intro": "The LCM is the <strong>smallest number that both numbers go into</strong> — the first place their times tables meet.",
+  "steps": [
+   "List the multiples of each number (count by that number).",
+   "Find the multiples that are on both lists — the common multiples.",
+   "Pick the least one. That is the LCM."
+  ],
+  "example": {
+   "title": "Find the LCM of 3 and 4",
+   "lines": [
+    "Multiples of 3: 3, 6, 9, 12, 15",
+    "Multiples of 4: 4, 8, 12, 16",
+    "<strong>LCM = 12</strong>"
+   ]
+  },
+  "remember": "If two numbers share no factor but 1 (like 5 and 7), the LCM is just the two numbers multiplied: 35."
+ },
+ {
+  "title": "The ladder method",
+  "icon": "🪜",
+  "intro": "A quick way to get both answers at once. Divide both numbers by a factor they share, write the answers underneath, and keep going until the bottom numbers share nothing but 1.",
+  "ladder": {
+   "rows": [["2", "8", "12"], ["2", "4", "6"], ["", "2", "3"]]
+  },
+  "steps": [
+   "<strong>GCF</strong> = multiply the numbers down the left side: 2 × 2 = <strong>4</strong>",
+   "<strong>LCM</strong> = multiply the left side AND the bottom row — make the L: 2 × 2 × 2 × 3 = <strong>24</strong>"
+  ],
+  "remember": "Every number you divide by has to go into ALL the numbers in the row. 5 goes into 5 and 10 but not 16 — so it can't be used for 5, 10 and 16."
+ },
+ {
+  "title": "Is it GCF or LCM?",
+  "icon": "🤔",
+  "intro": "Read the story and ask: are we <strong>splitting things into groups</strong>, or <strong>waiting for things to happen together again</strong>?",
+  "compare": [
+   {
+    "head": "LCM",
+    "points": [
+     "The answer is bigger than or equal to the numbers",
+     "Meeting at a time in the future",
+     "Key words: “least”, “next”, “lowest”"
+    ],
+    "example": "Dylan exercises every 12 days and Karen every 8 days. When do they exercise together again? → LCM of 12 and 8 = <strong>day 24</strong>"
+   },
+   {
+    "head": "GCF",
+    "points": [
+     "The answer is less than or equal to the numbers",
+     "Splitting into equal groups",
+     "Key words: “greatest”, “most”, “highest”"
+    ],
+    "example": "112 roses, 64 daisies and 48 orchids into identical vases → GCF = <strong>16 vases</strong>, each with 7 roses, 4 daisies and 3 orchids"
+   }
+  ],
+  "remember": "Be careful! “Hot dogs come in packs of 8 and buns in packs of 10 — how many of each to have the same number?” sounds like sharing, but you need a number both packs reach: that is the LCM, 40."
+ },
+ {
+  "title": "The distributive property",
+  "icon": "✖️",
+  "intro": "<strong>a(b + c) = ab + ac</strong>. The number outside the brackets multiplies <em>each</em> number inside — then you add the answers.",
+  "steps": [
+   "<strong>Expand:</strong> multiply the outside number by each inside number. 6(3 + 5) = 18 + 30",
+   "<strong>Factor:</strong> go the other way. Find the GCF of the two numbers and put it outside. 12 + 20 = 4(3 + 5)"
+  ],
+  "example": {
+   "title": "Watch the signs",
+   "lines": [
+    "−3(6 + 2) = −18 + (−6)",
+    "−5(−4 − 3) = 20 + 15 (a negative times a negative is positive)"
+   ]
+  },
+  "remember": "In words: the sum or difference of two numbers multiplied by a number is the sum or difference of the products of each number and the number used to multiply. When you factor, use the GREATEST common factor — 54 + 36 = 18(3 + 2), not 6(9 + 6)."
+ }
+]

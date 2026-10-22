@@ -16,6 +16,21 @@ export interface TestForm {
   standalone?: boolean
 }
 
+/** One topic of a test's study notes: what it is, how to do it, a worked example. */
+export interface NoteSection {
+  title: string
+  icon: string
+  /** May hold the same light markup as questions (see RichText). */
+  intro: string
+  steps?: string[]
+  example?: { title: string; lines: string[] }
+  /** A ladder-method diagram: each row is [divisor, ...numbers]; the last row has an empty divisor. */
+  ladder?: { rows: string[][] }
+  /** Side-by-side comparison, e.g. LCM vs GCF. */
+  compare?: { head: string; points: string[]; example?: string }[]
+  remember?: string
+}
+
 export interface SubjectTest {
   id: string
   subject: SubjectId
@@ -28,6 +43,8 @@ export interface SubjectTest {
   /** A form whose questions can be added to the end of any non-standalone form. */
   addOn?: { form: string; text: string }
   load: () => Promise<QuestionBank>
+  /** Study notes to read before the test. */
+  notes?: () => Promise<NoteSection[]>
 }
 
 export interface Subject {
@@ -95,6 +112,7 @@ export const TESTS: SubjectTest[] = [
       { id: 'K', name: 'Concept Check', desc: 'True/false, matching and ordering about the big ideas.', standalone: true },
     ],
     load: () => bank(import('../../data/subjects/math/gcf-lcm-distributive.json')),
+    notes: () => import('../../data/subjects/math/gcf-lcm-distributive.notes.json').then((m) => m.default as NoteSection[]),
   },
   {
     id: 'grade5-unit1',

@@ -92,6 +92,22 @@ describe('marking each kind of question', () => {
     expect(isCorrect(neg, '18 + 6')).toBe(false)
   })
 
+  it('fractions accept any way of writing the same amount', () => {
+    const big: Question = { ...base, kind: 'fraction', answer: [4, 3] }
+    expect(isCorrect(big, '4/3')).toBe(true)
+    expect(isCorrect(big, '1 1/3')).toBe(true)
+    expect(isCorrect(big, '8/6')).toBe(true)
+    expect(isCorrect(big, '3/4')).toBe(false)
+    const small: Question = { ...base, kind: 'fraction', answer: [3, 4] }
+    expect(isCorrect(small, '3 / 4')).toBe(true)
+    expect(isCorrect(small, '0.75')).toBe(true)
+    expect(isCorrect(small, '4/3')).toBe(false)
+    expect(isCorrect({ ...base, kind: 'fraction', answer: [8, 1] }, '8')).toBe(true)
+    expect(isAnswered(small, '3/')).toBe(false)
+    expect(isAnswered(small, '3/0')).toBe(false)
+    expect(correctAnswerText(big)).toBe('4/3 (1 1/3)')
+  })
+
   it('ordered pairs compare both coordinates', () => {
     const q: Question = { ...base, kind: 'pair', answer: [4, 2] }
     expect(isCorrect(q, '(4, 2)')).toBe(true)

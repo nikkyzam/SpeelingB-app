@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
-import { gradeLabel, testById, type TestForm } from '../../services/subjects/catalogue'
+import { gradeLabel, testById, type NoteSection, type TestForm } from '../../services/subjects/catalogue'
 import type { QuestionBank } from '../../services/subjects/types'
 import SubjectProgress from '../../services/subjects/SubjectProgress'
 import TestRunner from '../../components/subjects/TestRunner'
+import StudyNotes from '../../components/subjects/StudyNotes'
 import Button from '../../components/common/Button'
 import BackLink from './BackLink'
 import './Subjects.css'
@@ -17,6 +18,8 @@ const TestPage: React.FC = () => {
   const [failed, setFailed] = useState(false)
   const [form, setForm] = useState<string | null>(test?.forms ? null : 'main')
   const [withAddOn, setWithAddOn] = useState(false)
+  const [notes, setNotes] = useState<NoteSection[] | null>(null)
+  const [readingNotes, setReadingNotes] = useState(false)
 
   useEffect(() => {
     let live = true
@@ -24,6 +27,11 @@ const TestPage: React.FC = () => {
       ?.load()
       .then((b) => live && setBank(b))
       .catch(() => live && setFailed(true))
+    // Notes are a bonus: if they fail to load, the tests still work.
+    test
+      ?.notes?.()
+      .then((n) => live && setNotes(n))
+      .catch(() => live && setNotes(null))
     return () => {
       live = false
     }
@@ -41,6 +49,24 @@ const TestPage: React.FC = () => {
     )
   }
   if (!bank) return <div className="subjects-page sj-loading">Getting your test ready…</div>
+
+  if (readingNotes && notes) {
+    return (
+      <div className="subjects-page">
+        <button type="button" className="sj-back" onClick={() => setReadingNotes(false)}>
+          ← Back to tests
+        </button>
+        <StudyNotes
+          title={test.name}
+          sections={notes}
+          onDone={() => {
+            setReadingNotes(false)
+            window.scrollTo?.({ top: 0 })
+          }}
+        />
+      </div>
+    )
+  }
 
   if (form) {
     const chosen = test.forms?.find((f) => f.id === form)
@@ -69,6 +95,15 @@ const TestPage: React.FC = () => {
           {gradeLabel(test.grade)} · {test.desc}
         </p>
       </header>
+      {notes && (
+        <button type="button" className="sj-row sj-row-star" onClick={() => setReadingNotes(true)}>
+          <span className="sj-row-main">
+            <span className="sj-name">📖 Read the notes</span>
+            <span className="sj-blurb">{notes.map((n) => n.title).join(' · ')}</span>
+          </span>
+          <span className="sj-best">Notes</span>
+        </button>
+      )}
       <section className="sj-section">
         <h2>Pick a test</h2>
         <div className="sj-list">

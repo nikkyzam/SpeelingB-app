@@ -36,6 +36,46 @@ export const normExpression = (s: string): string =>
     .replace(/\((-\d+(?:\.\d+)?)\)/g, '$1')
     .replace(/\+-/g, '-')
 
+const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : Math.abs(a))
+
+/** A fraction in lowest terms, sign on top. */
+export const simplify = ([n, d]: [number, number]): [number, number] => {
+  const g = gcd(n, d) || 1
+  const s = d < 0 ? -1 : 1
+  return [(s * n) / g, (s * d) / g]
+}
+
+/**
+ * Read "3/4", "1 1/3" (a mixed number), "5", or an exact decimal like "0.75"
+ * as [numerator, denominator]. Null when it isn't one of those.
+ */
+export const parseFraction = (raw: string): [number, number] | null => {
+  const s = raw.replace(/[−–—]/g, '-').replace(/\s+/g, ' ').trim()
+  let m = s.match(/^(-?)(\d+) (\d+)\/(\d+)$/)
+  if (m) {
+    const [whole, n, d] = [Number(m[2]), Number(m[3]), Number(m[4])]
+    if (d === 0) return null
+    return simplify([(m[1] ? -1 : 1) * (whole * d + n), d])
+  }
+  m = s.match(/^(-?\d+) ?\/ ?(\d+)$/)
+  if (m) return Number(m[2]) === 0 ? null : simplify([Number(m[1]), Number(m[2])])
+  m = s.match(/^-?\d+$/)
+  if (m) return [Number(s), 1]
+  m = s.match(/^(-?)(\d*)\.(\d+)$/)
+  if (m) {
+    const scale = 10 ** m[3].length
+    return simplify([(m[1] ? -1 : 1) * (Number(m[2] || 0) * scale + Number(m[3])), scale])
+  }
+  return null
+}
+
+/** 7/4 → "7/4 (1 3/4)"; 3/4 → "3/4"; 8/1 → "8". */
+export const fractionText = ([n, d]: [number, number]): string => {
+  if (d === 1) return String(n)
+  const whole = Math.trunc(n / d)
+  return whole === 0 ? `${n}/${d}` : `${n}/${d} (${whole} ${Math.abs(n % d)}/${d})`
+}
+
 /** "(3, -2)", "3,-2" and "3 −2" all read as [3, -2]. */
 export const parsePair = (raw: string): [number, number] | null => {
   const nums = raw.replace(/[−–—]/g, '-').match(/-?\d*\.?\d+/g)
@@ -57,6 +97,8 @@ export const isAnswered = (q: Question, r: Response): boolean => {
       return typeof r === 'string' && parseNumber(r) !== null
     case 'pair':
       return typeof r === 'string' && parsePair(r) !== null
+    case 'fraction':
+      return typeof r === 'string' && parseFraction(r) !== null
     case 'text':
     case 'expression':
       return typeof r === 'string' && r.trim() !== ''
@@ -82,6 +124,11 @@ export const isCorrect = (q: Question, r: Response): boolean => {
       return close(parseNumber(r as string)!, q.answer)
     case 'pair':
       return samePoint(parsePair(r as string)!, q.answer)
+    case 'fraction': {
+      // Equal value is enough: 6/8 for 3/4 and 1 1/3 for 4/3 are both right.
+      const [n, d] = parseFraction(r as string)!
+      return n * q.answer[1] === q.answer[0] * d
+    }
     case 'text':
       return q.accept.some((ok) => normText(ok) === normText(r as string))
     case 'expression':
@@ -122,6 +169,8 @@ export const correctAnswerText = (q: Question): string => {
       return String(q.answer)
     case 'pair':
       return fmtPoint(q.answer)
+    case 'fraction':
+      return fractionText(q.answer)
     case 'text':
     case 'expression':
       return q.display
@@ -150,6 +199,7 @@ export const givenText = (q: Question, r: Response): string => {
     case 'pair':
     case 'text':
     case 'expression':
+    case 'fraction':
       return (r as string).trim()
     case 'multi':
       return [...(r as number[])].sort((a, b) => a - b).map((i) => q.choices[i]).join('; ')

@@ -283,6 +283,116 @@
     "2"
    ],
    "answer": 0
+  },
+  {
+   "id": "g5-unlike-9",
+   "prompt": "1/2 + 1/4 = ?",
+   "explanation": "The LCD is 4: 2/4 + 1/4 = 3/4. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    3,
+    4
+   ],
+   "category": "Fractions",
+   "group": "g5-unlike-pair-1"
+  },
+  {
+   "id": "g5-unlike-10",
+   "prompt": "1/2 + 3/4 = ?",
+   "explanation": "The LCD is 4: 2/4 + 3/4 = 5/4. The top is bigger than the bottom, so it is MORE than one whole: 5/4 = 1 1/4.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    5,
+    4
+   ],
+   "category": "Fractions",
+   "group": "g5-unlike-pair-1"
+  },
+  {
+   "id": "g5-unlike-11",
+   "prompt": "1/3 + 1/2 = ?",
+   "explanation": "The LCD is 6: 2/6 + 3/6 = 5/6. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    5,
+    6
+   ],
+   "category": "Fractions",
+   "level": 2,
+   "group": "g5-unlike-pair-2"
+  },
+  {
+   "id": "g5-unlike-12",
+   "prompt": "2/3 + 5/6 = ?",
+   "explanation": "The LCD is 6: 4/6 + 5/6 = 9/6 = 3/2. The top is bigger than the bottom, so it is MORE than one whole: 3/2 = 1 1/2.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    3,
+    2
+   ],
+   "category": "Fractions",
+   "level": 2,
+   "group": "g5-unlike-pair-2"
+  },
+  {
+   "id": "g5-unlike-13",
+   "prompt": "3/2 − 1/3 = ?",
+   "explanation": "The LCD is 6: 9/6 − 2/6 = 7/6. The top is bigger than the bottom, so it is MORE than one whole: 7/6 = 1 1/6.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    7,
+    6
+   ],
+   "category": "Fractions",
+   "level": 2,
+   "group": "g5-unlike-pair-3"
+  },
+  {
+   "id": "g5-unlike-14",
+   "prompt": "5/6 − 1/4 = ?",
+   "explanation": "The LCD is 12: 10/12 − 3/12 = 7/12. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    7,
+    12
+   ],
+   "category": "Fractions",
+   "level": 2,
+   "group": "g5-unlike-pair-3"
+  },
+  {
+   "id": "g5-unlike-15",
+   "prompt": "3/4 + 5/6 = ?",
+   "explanation": "The LCD is 12: 9/12 + 10/12 = 19/12. The top is bigger than the bottom, so it is MORE than one whole: 19/12 = 1 7/12.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    19,
+    12
+   ],
+   "category": "Fractions",
+   "level": 3,
+   "group": "g5-unlike-pair-4"
+  },
+  {
+   "id": "g5-unlike-16",
+   "prompt": "1/4 + 1/6 = ?",
+   "explanation": "The LCD is 12: 3/12 + 2/12 = 5/12. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    5,
+    12
+   ],
+   "category": "Fractions",
+   "level": 3,
+   "group": "g5-unlike-pair-4"
   }
  ],
  "g5-thousandth": [
@@ -532,24 +642,142 @@
     "3/4"
    ],
    "answer": 0
+  },
+  {
+   "id": "g5-fracmult-9",
+   "prompt": "2/3 × 3/4 = ?",
+   "explanation": "Multiply the tops and the bottoms: 6/12 = 1/2. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    1,
+    2
+   ],
+   "category": "Fractions",
+   "group": "g5-fracmult-pair-1"
+  },
+  {
+   "id": "g5-fracmult-10",
+   "prompt": "3/2 × 4/3 = ?",
+   "explanation": "Multiply the tops and the bottoms: 12/6 = 2. Each fraction is the other one flipped from 2/3 × 3/4, so the answer flips from 1/2 to 2. That is a whole number: 2.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    2,
+    1
+   ],
+   "category": "Fractions",
+   "group": "g5-fracmult-pair-1"
+  },
+  {
+   "id": "g5-fracmult-11",
+   "prompt": "3/5 × 2/3 = ?",
+   "explanation": "6/15 = 2/5. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    2,
+    5
+   ],
+   "category": "Fractions",
+   "level": 2,
+   "group": "g5-fracmult-pair-2"
+  },
+  {
+   "id": "g5-fracmult-12",
+   "prompt": "5/3 × 3/2 = ?",
+   "explanation": "15/6 = 5/2. Flip both fractions of 3/5 × 2/3 and the answer flips from 2/5 to 5/2. The top is bigger than the bottom, so it is MORE than one whole: 5/2 = 2 1/2.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    5,
+    2
+   ],
+   "category": "Fractions",
+   "level": 2,
+   "group": "g5-fracmult-pair-2"
+  },
+  {
+   "id": "g5-fracmult-13",
+   "prompt": "3/4 × 1/2 = ?",
+   "explanation": "Multiplying by a fraction less than 1 makes it smaller: 3/8. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    3,
+    8
+   ],
+   "category": "Fractions",
+   "level": 2,
+   "group": "g5-fracmult-pair-3"
+  },
+  {
+   "id": "g5-fracmult-14",
+   "prompt": "4/3 × 2 = ?",
+   "explanation": "Multiplying by more than 1 makes it bigger: 8/3. The top is bigger than the bottom, so it is MORE than one whole: 8/3 = 2 2/3.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    8,
+    3
+   ],
+   "category": "Fractions",
+   "level": 2,
+   "group": "g5-fracmult-pair-3"
+  },
+  {
+   "id": "g5-fracmult-15",
+   "prompt": "5/6 × 2/5 = ?",
+   "explanation": "10/30 = 1/3. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    1,
+    3
+   ],
+   "category": "Fractions",
+   "level": 3,
+   "group": "g5-fracmult-pair-4"
+  },
+  {
+   "id": "g5-fracmult-16",
+   "prompt": "6/5 × 5/2 = ?",
+   "explanation": "30/10 = 3. That is 5/6 × 2/5 with both fractions flipped, so 1/3 flips to 3. That is a whole number: 3.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    3,
+    1
+   ],
+   "category": "Fractions",
+   "level": 3,
+   "group": "g5-fracmult-pair-4"
   }
  ],
  "g5-fracdiv": [
   {
    "id": "g5-fracdiv-1",
-   "prompt": "1/2 ÷ 4 = ? Type just the denominator of the answer (the numerator is 1).",
-   "category": "Fractions",
-   "explanation": "1/2 ÷ 4 = 1/8, so the denominator is 8.",
-   "kind": "number",
-   "answer": 8
+   "prompt": "1/2 ÷ 4 = ?",
+   "explanation": "Sharing 1/2 into 4 equal parts: 1/2 × 1/4 = 1/8. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    1,
+    8
+   ],
+   "category": "Fractions"
   },
   {
    "id": "g5-fracdiv-2",
-   "prompt": "1/3 ÷ 2 = ? Type just the denominator of the answer.",
-   "category": "Fractions",
-   "explanation": "1/3 ÷ 2 = 1/6, so the denominator is 6.",
-   "kind": "number",
-   "answer": 6
+   "prompt": "1/3 ÷ 2 = ?",
+   "explanation": "Sharing 1/3 into 2 equal parts: 1/3 × 1/2 = 1/6. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    1,
+    6
+   ],
+   "category": "Fractions"
   },
   {
    "id": "g5-fracdiv-3",
@@ -590,12 +818,16 @@
   },
   {
    "id": "g5-fracdiv-6",
-   "prompt": "1/4 ÷ 5 = ? Type just the denominator of the answer.",
+   "prompt": "1/4 ÷ 5 = ?",
+   "explanation": "Sharing 1/4 into 5 equal parts: 1/4 × 1/5 = 1/20. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    1,
+    20
+   ],
    "category": "Fractions",
-   "explanation": "1/4 ÷ 5 = 1/20, so the denominator is 20.",
-   "level": 2,
-   "kind": "number",
-   "answer": 20
+   "level": 2
   },
   {
    "id": "g5-fracdiv-7",
@@ -615,6 +847,81 @@
    "level": 3,
    "kind": "number",
    "answer": 3
+  },
+  {
+   "id": "g5-fracdiv-9",
+   "prompt": "2 ÷ 1/3 = ?",
+   "explanation": "How many thirds fit in 2? 2 × 3 = 6. Compare it with 1/3 ÷ 2 = 1/6 — the same numbers the other way round flip the answer. That is a whole number: 6.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    6,
+    1
+   ],
+   "category": "Fractions"
+  },
+  {
+   "id": "g5-fracdiv-10",
+   "prompt": "1/3 ÷ 6 = ?",
+   "explanation": "Sharing 1/3 into 6 parts: 1/3 × 1/6 = 1/18. Compare it with 6 ÷ 1/3 = 18. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    1,
+    18
+   ],
+   "category": "Fractions"
+  },
+  {
+   "id": "g5-fracdiv-11",
+   "prompt": "3 ÷ 1/5 = ?",
+   "explanation": "How many fifths fit in 3? 3 × 5 = 15. Compare it with 1/5 ÷ 3 = 1/15. That is a whole number: 15.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    15,
+    1
+   ],
+   "category": "Fractions"
+  },
+  {
+   "id": "g5-fracdiv-12",
+   "prompt": "5 ÷ 1/4 = ?",
+   "explanation": "How many quarters fit in 5? 5 × 4 = 20. Compare it with 1/4 ÷ 5 = 1/20. That is a whole number: 20.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    20,
+    1
+   ],
+   "category": "Fractions",
+   "level": 2
+  },
+  {
+   "id": "g5-fracdiv-13",
+   "prompt": "1/4 ÷ 8 = ?",
+   "explanation": "Sharing 1/4 into 8 parts: 1/4 × 1/8 = 1/32. Compare it with 8 ÷ 1/4 = 32. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    1,
+    32
+   ],
+   "category": "Fractions",
+   "level": 2
+  },
+  {
+   "id": "g5-fracdiv-14",
+   "prompt": "A ribbon that is 1/9 yard long is compared with a 1/3-yard piece. What fraction of the 1/3-yard piece is it?",
+   "explanation": "(1/9) ÷ (1/3) = 1/9 × 3 = 3/9 = 1/3. Flip the question — how many 1/9-yard pieces fit in 1/3 yard — and the answer flips to 3. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    1,
+    3
+   ],
+   "category": "Fractions",
+   "level": 3
   }
  ],
  "g5-convert": [
@@ -963,20 +1270,28 @@
  "g5-fracword": [
   {
    "id": "g5-fracword-1",
-   "prompt": "A recipe needs 3/4 cup of flour. You want to make 1/2 the recipe. How much flour, as a decimal?",
-   "category": "Fractions",
-   "explanation": "3/4 × 1/2 = 3/8 = 0.375 cups.",
-   "kind": "number",
-   "answer": 0.375
+   "prompt": "A recipe needs 3/4 cup of flour. You want to make 1/2 the recipe. How much flour?",
+   "explanation": "3/4 × 1/2 = 3/8 cup. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    3,
+    8
+   ],
+   "category": "Fractions"
   },
   {
    "id": "g5-fracword-2",
-   "prompt": "You have 5/6 of a pizza and eat 1/3 of the whole pizza. How much is left? Type just the numerator (denominator 6).",
+   "prompt": "You have 5/6 of a pizza and eat 1/3 of the whole pizza. How much is left?",
+   "explanation": "1/3 = 2/6, so 5/6 − 2/6 = 3/6 = 1/2 of the pizza. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    1,
+    2
+   ],
    "category": "Fractions",
-   "explanation": "1/3 = 2/6, so 5/6 − 2/6 = 3/6 is left.",
-   "hint": "Turn 1/3 into sixths first.",
-   "kind": "number",
-   "answer": 3
+   "hint": "Turn 1/3 into sixths first."
   },
   {
    "id": "g5-fracword-3",
@@ -994,47 +1309,130 @@
   },
   {
    "id": "g5-fracword-4",
-   "prompt": "You walk 2/3 mile, then 1/6 mile more. How far in total? Type just the numerator (denominator 6).",
+   "prompt": "You walk 2/3 mile, then 1/6 mile more. How far in total?",
+   "explanation": "2/3 = 4/6, so 4/6 + 1/6 = 5/6 mile. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    5,
+    6
+   ],
    "category": "Fractions",
-   "explanation": "2/3 = 4/6, so 4/6 + 1/6 = 5/6 mile.",
-   "hint": "Turn 2/3 into sixths first.",
-   "kind": "number",
-   "answer": 5
+   "hint": "Turn 2/3 into sixths first."
   },
   {
    "id": "g5-fracword-5",
-   "prompt": "A tank is 3/5 full. You use 1/5 of the tank. What fraction is left? Type just the numerator (denominator 5).",
-   "category": "Fractions",
-   "explanation": "3/5 − 1/5 = 2/5.",
-   "kind": "number",
-   "answer": 2
+   "prompt": "A tank is 3/5 full. You use 1/5 of the tank. What fraction is left?",
+   "explanation": "3/5 − 1/5 = 2/5. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    2,
+    5
+   ],
+   "category": "Fractions"
   },
   {
    "id": "g5-fracword-6",
-   "prompt": "A garden is 3/4 planted. Half of the planted area is flowers. What fraction of the WHOLE garden is flowers? Type as a decimal.",
+   "prompt": "A garden is 3/4 planted. Half of the planted area is flowers. What fraction of the WHOLE garden is flowers?",
+   "explanation": "3/4 × 1/2 = 3/8. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    3,
+    8
+   ],
    "category": "Fractions",
-   "explanation": "3/4 × 1/2 = 3/8 = 0.375.",
-   "level": 2,
-   "kind": "number",
-   "answer": 0.375
+   "level": 2
   },
   {
    "id": "g5-fracword-7",
-   "prompt": "A recipe serves 6 people using 3/4 cup of rice. How much rice per person? Type as a decimal.",
+   "prompt": "A recipe serves 6 people using 3/4 cup of rice. How much rice per person?",
+   "explanation": "3/4 ÷ 6 = 3/24 = 1/8 cup. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    1,
+    8
+   ],
    "category": "Fractions",
-   "explanation": "3/4 ÷ 6 = 3/24 = 1/8 = 0.125 cups.",
-   "level": 2,
-   "kind": "number",
-   "answer": 0.125
+   "level": 2
   },
   {
    "id": "g5-fracword-8",
-   "prompt": "A tank starts 1/2 full. Water equal to 1/3 of the tank's capacity is added. What fraction of the tank is now full? Type as a decimal rounded to 2 places.",
+   "prompt": "A tank starts 1/2 full. Water equal to 1/3 of the tank is added. What fraction of the tank is full now?",
+   "explanation": "1/2 + 1/3 = 3/6 + 2/6 = 5/6. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    5,
+    6
+   ],
    "category": "Fractions",
-   "explanation": "1/2 + 1/3 = 5/6 ≈ 0.83.",
-   "level": 3,
-   "kind": "number",
-   "answer": 0.83
+   "level": 3
+  },
+  {
+   "id": "g5-fracword-9",
+   "prompt": "A ribbon is 1/8 yard long. What fraction of a 3/4-yard ribbon is it?",
+   "explanation": "(1/8) ÷ (3/4) = 1/8 × 4/3 = 4/24 = 1/6. Turn it round — how many 1/8-yard pieces fit in 3/4 yard — and the answer is 6. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    1,
+    6
+   ],
+   "category": "Fractions"
+  },
+  {
+   "id": "g5-fracword-10",
+   "prompt": "You walk 2/3 mile, then 5/6 mile more. How far in total?",
+   "explanation": "2/3 = 4/6, so 4/6 + 5/6 = 9/6 = 3/2 miles. The top is bigger than the bottom, so it is MORE than one whole: 3/2 = 1 1/2.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    3,
+    2
+   ],
+   "category": "Fractions"
+  },
+  {
+   "id": "g5-fracword-11",
+   "prompt": "A recipe needs 3/4 cup of flour. You make the recipe one and a half times (3/2). How much flour?",
+   "explanation": "3/4 × 3/2 = 9/8 cups. The top is bigger than the bottom, so it is MORE than one whole: 9/8 = 1 1/8.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    9,
+    8
+   ],
+   "category": "Fractions",
+   "level": 2
+  },
+  {
+   "id": "g5-fracword-12",
+   "prompt": "Each person eats 1/8 cup of rice. How many people does 1 cup feed?",
+   "explanation": "1 ÷ 1/8 = 8 people. Compare: 1 cup shared by 8 people is 1/8 cup each. That is a whole number: 8.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    8,
+    1
+   ],
+   "category": "Fractions",
+   "level": 2
+  },
+  {
+   "id": "g5-fracword-13",
+   "prompt": "A tank is 1/2 full. Then 3/4 of a tank of water is poured in, and it overflows into a second tank. How many tanks of water is that altogether?",
+   "explanation": "1/2 + 3/4 = 2/4 + 3/4 = 5/4 tanks. The top is bigger than the bottom, so it is MORE than one whole: 5/4 = 1 1/4.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    5,
+    4
+   ],
+   "category": "Fractions",
+   "level": 3
   }
  ],
  "g5-lineplot": [
@@ -1395,6 +1793,344 @@
     "Square, quadrilateral, rectangle"
    ],
    "answer": 0
+  }
+ ],
+ "g5-fracasdiv": [
+  {
+   "id": "g5-fracasdiv-1",
+   "prompt": "A baseball team has 15 members. They order 6 pizzas to share equally. Which expressions show how much pizza each member gets? Choose <strong>THREE</strong>.",
+   "explanation": "Each member's share = pizzas ÷ members = 6 ÷ 15 = 6/15 = 2/5 of a pizza. There are more people than pizzas, so each gets LESS than one whole — the small number is on top.",
+   "tip": "What is being shared goes on top. Sharing fewer things among more people gives less than 1 each (small on top). Asking how many people share one thing flips it (big on top).",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">5</span></span>",
+    "<span class=\"frac\"><span class=\"num\">6</span><span class=\"den\">15</span></span>",
+    "<span class=\"frac\"><span class=\"num\">5</span><span class=\"den\">2</span></span>",
+    "<span class=\"frac\"><span class=\"num\">15</span><span class=\"den\">6</span></span>",
+    "6 ÷ 15",
+    "15 ÷ 6"
+   ],
+   "answers": [
+    0,
+    1,
+    4
+   ],
+   "category": "Fractions as Division",
+   "group": "g5-fracasdiv-pair-1"
+  },
+  {
+   "id": "g5-fracasdiv-2",
+   "prompt": "A baseball team has 15 members. They order 6 pizzas to share equally. Which expressions show how many members share one pizza? Choose <strong>THREE</strong>.",
+   "explanation": "Members per pizza = members ÷ pizzas = 15 ÷ 6 = 15/6 = 5/2 = 2 1/2 members. It is the first question turned round, so the fraction flips — the big number is on top.",
+   "tip": "What is being shared goes on top. Sharing fewer things among more people gives less than 1 each (small on top). Asking how many people share one thing flips it (big on top).",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">5</span></span>",
+    "<span class=\"frac\"><span class=\"num\">6</span><span class=\"den\">15</span></span>",
+    "<span class=\"frac\"><span class=\"num\">5</span><span class=\"den\">2</span></span>",
+    "<span class=\"frac\"><span class=\"num\">15</span><span class=\"den\">6</span></span>",
+    "6 ÷ 15",
+    "15 ÷ 6"
+   ],
+   "answers": [
+    2,
+    3,
+    5
+   ],
+   "category": "Fractions as Division",
+   "group": "g5-fracasdiv-pair-1"
+  },
+  {
+   "id": "g5-fracasdiv-3",
+   "prompt": "A chess club has 12 members. They order 8 sandwiches to share equally. Which expressions show how much sandwich each member gets? Choose <strong>THREE</strong>.",
+   "explanation": "Each member's share = sandwiches ÷ members = 8 ÷ 12 = 8/12 = 2/3 of a sandwich. There are more people than sandwiches, so each gets LESS than one whole — the small number is on top.",
+   "tip": "What is being shared goes on top. Sharing fewer things among more people gives less than 1 each (small on top). Asking how many people share one thing flips it (big on top).",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">3</span></span>",
+    "<span class=\"frac\"><span class=\"num\">8</span><span class=\"den\">12</span></span>",
+    "<span class=\"frac\"><span class=\"num\">3</span><span class=\"den\">2</span></span>",
+    "<span class=\"frac\"><span class=\"num\">12</span><span class=\"den\">8</span></span>",
+    "8 ÷ 12",
+    "12 ÷ 8"
+   ],
+   "answers": [
+    0,
+    1,
+    4
+   ],
+   "category": "Fractions as Division",
+   "group": "g5-fracasdiv-pair-2"
+  },
+  {
+   "id": "g5-fracasdiv-4",
+   "prompt": "A chess club has 12 members. They order 8 sandwiches to share equally. Which expressions show how many members share one sandwich? Choose <strong>THREE</strong>.",
+   "explanation": "Members per sandwich = members ÷ sandwiches = 12 ÷ 8 = 12/8 = 3/2 = 1 1/2 members. It is the first question turned round, so the fraction flips — the big number is on top.",
+   "tip": "What is being shared goes on top. Sharing fewer things among more people gives less than 1 each (small on top). Asking how many people share one thing flips it (big on top).",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">3</span></span>",
+    "<span class=\"frac\"><span class=\"num\">8</span><span class=\"den\">12</span></span>",
+    "<span class=\"frac\"><span class=\"num\">3</span><span class=\"den\">2</span></span>",
+    "<span class=\"frac\"><span class=\"num\">12</span><span class=\"den\">8</span></span>",
+    "8 ÷ 12",
+    "12 ÷ 8"
+   ],
+   "answers": [
+    2,
+    3,
+    5
+   ],
+   "category": "Fractions as Division",
+   "group": "g5-fracasdiv-pair-2"
+  },
+  {
+   "id": "g5-fracasdiv-5",
+   "prompt": "3 pizzas are shared equally by 4 friends. How much pizza does each friend get?",
+   "explanation": "3 shared by 4 is 3 ÷ 4 = 3/4 of a pizza each. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "hint": "Things shared ÷ people sharing. The things go on top.",
+   "kind": "fraction",
+   "answer": [
+    3,
+    4
+   ],
+   "category": "Fractions as Division",
+   "group": "g5-fracasdiv-pair-3"
+  },
+  {
+   "id": "g5-fracasdiv-6",
+   "prompt": "4 pizzas are shared equally by 3 friends. How much pizza does each friend get?",
+   "explanation": "4 shared by 3 is 4 ÷ 3 = 4/3 pizza each. The top is bigger than the bottom, so it is MORE than one whole: 4/3 = 1 1/3.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "hint": "Things shared ÷ people sharing. The things go on top.",
+   "kind": "fraction",
+   "answer": [
+    4,
+    3
+   ],
+   "category": "Fractions as Division",
+   "group": "g5-fracasdiv-pair-3"
+  },
+  {
+   "id": "g5-fracasdiv-7",
+   "prompt": "2 sandwiches are shared equally by 5 kids. How much does each kid get?",
+   "explanation": "2 ÷ 5 = 2/5 of a sandwich each. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    2,
+    5
+   ],
+   "category": "Fractions as Division",
+   "group": "g5-fracasdiv-pair-4"
+  },
+  {
+   "id": "g5-fracasdiv-8",
+   "prompt": "5 sandwiches are shared equally by 2 kids. How much does each kid get?",
+   "explanation": "5 ÷ 2 = 5/2 sandwiches each. The top is bigger than the bottom, so it is MORE than one whole: 5/2 = 2 1/2.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    5,
+    2
+   ],
+   "category": "Fractions as Division",
+   "group": "g5-fracasdiv-pair-4"
+  },
+  {
+   "id": "g5-fracasdiv-9",
+   "prompt": "5 cookies are shared equally by 8 children. How much does each child get?",
+   "explanation": "5 ÷ 8 = 5/8 of a cookie each. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    5,
+    8
+   ],
+   "category": "Fractions as Division",
+   "level": 2,
+   "group": "g5-fracasdiv-pair-5"
+  },
+  {
+   "id": "g5-fracasdiv-10",
+   "prompt": "8 cookies are shared equally by 5 children. How much does each child get?",
+   "explanation": "8 ÷ 5 = 8/5 cookies each. The top is bigger than the bottom, so it is MORE than one whole: 8/5 = 1 3/5.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    8,
+    5
+   ],
+   "category": "Fractions as Division",
+   "level": 2,
+   "group": "g5-fracasdiv-pair-5"
+  },
+  {
+   "id": "g5-fracasdiv-11",
+   "prompt": "7 yards of rope are cut into 3 equal pieces. How long is each piece?",
+   "explanation": "7 ÷ 3 = 7/3 yards each. The top is bigger than the bottom, so it is MORE than one whole: 7/3 = 2 1/3.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    7,
+    3
+   ],
+   "category": "Fractions as Division",
+   "level": 3,
+   "group": "g5-fracasdiv-pair-6"
+  },
+  {
+   "id": "g5-fracasdiv-12",
+   "prompt": "3 yards of rope are cut into 7 equal pieces. How long is each piece?",
+   "explanation": "3 ÷ 7 = 3/7 yard each. The top is smaller than the bottom, so it is LESS than one whole.",
+   "tip": "Big on top, small on the bottom (like 4/3) means MORE than one whole. Small on top, big on the bottom (like 3/4) means LESS than one whole.",
+   "kind": "fraction",
+   "answer": [
+    3,
+    7
+   ],
+   "category": "Fractions as Division",
+   "level": 3,
+   "group": "g5-fracasdiv-pair-6"
+  },
+  {
+   "id": "g5-fracasdiv-13",
+   "prompt": "A soccer team has 16 members. They order 12 granola bars to share equally. Which expressions show how much granola bar each member gets? Choose <strong>THREE</strong>.",
+   "explanation": "Each member's share = granola bars ÷ members = 12 ÷ 16 = 12/16 = 3/4 of a granola bar. There are more people than granola bars, so each gets LESS than one whole — the small number is on top.",
+   "tip": "What is being shared goes on top. Sharing fewer things among more people gives less than 1 each (small on top). Asking how many people share one thing flips it (big on top).",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">3</span><span class=\"den\">4</span></span>",
+    "<span class=\"frac\"><span class=\"num\">12</span><span class=\"den\">16</span></span>",
+    "<span class=\"frac\"><span class=\"num\">4</span><span class=\"den\">3</span></span>",
+    "<span class=\"frac\"><span class=\"num\">16</span><span class=\"den\">12</span></span>",
+    "12 ÷ 16",
+    "16 ÷ 12"
+   ],
+   "answers": [
+    0,
+    1,
+    4
+   ],
+   "category": "Fractions as Division",
+   "level": 2,
+   "group": "g5-fracasdiv-pair-7"
+  },
+  {
+   "id": "g5-fracasdiv-14",
+   "prompt": "A soccer team has 16 members. They order 12 granola bars to share equally. Which expressions show how many members share one granola bar? Choose <strong>THREE</strong>.",
+   "explanation": "Members per granola bar = members ÷ granola bars = 16 ÷ 12 = 16/12 = 4/3 = 1 1/3 members. It is the first question turned round, so the fraction flips — the big number is on top.",
+   "tip": "What is being shared goes on top. Sharing fewer things among more people gives less than 1 each (small on top). Asking how many people share one thing flips it (big on top).",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">3</span><span class=\"den\">4</span></span>",
+    "<span class=\"frac\"><span class=\"num\">12</span><span class=\"den\">16</span></span>",
+    "<span class=\"frac\"><span class=\"num\">4</span><span class=\"den\">3</span></span>",
+    "<span class=\"frac\"><span class=\"num\">16</span><span class=\"den\">12</span></span>",
+    "12 ÷ 16",
+    "16 ÷ 12"
+   ],
+   "answers": [
+    2,
+    3,
+    5
+   ],
+   "category": "Fractions as Division",
+   "level": 2,
+   "group": "g5-fracasdiv-pair-7"
+  },
+  {
+   "id": "g5-fracasdiv-15",
+   "prompt": "A choir has 14 members. They order 4 cakes to share equally. Which expressions show how much cake each member gets? Choose <strong>THREE</strong>.",
+   "explanation": "Each member's share = cakes ÷ members = 4 ÷ 14 = 4/14 = 2/7 of a cake. There are more people than cakes, so each gets LESS than one whole — the small number is on top.",
+   "tip": "What is being shared goes on top. Sharing fewer things among more people gives less than 1 each (small on top). Asking how many people share one thing flips it (big on top).",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">7</span></span>",
+    "<span class=\"frac\"><span class=\"num\">4</span><span class=\"den\">14</span></span>",
+    "<span class=\"frac\"><span class=\"num\">7</span><span class=\"den\">2</span></span>",
+    "<span class=\"frac\"><span class=\"num\">14</span><span class=\"den\">4</span></span>",
+    "4 ÷ 14",
+    "14 ÷ 4"
+   ],
+   "answers": [
+    0,
+    1,
+    4
+   ],
+   "category": "Fractions as Division",
+   "level": 2,
+   "group": "g5-fracasdiv-pair-8"
+  },
+  {
+   "id": "g5-fracasdiv-16",
+   "prompt": "A choir has 14 members. They order 4 cakes to share equally. Which expressions show how many members share one cake? Choose <strong>THREE</strong>.",
+   "explanation": "Members per cake = members ÷ cakes = 14 ÷ 4 = 14/4 = 7/2 = 3 1/2 members. It is the first question turned round, so the fraction flips — the big number is on top.",
+   "tip": "What is being shared goes on top. Sharing fewer things among more people gives less than 1 each (small on top). Asking how many people share one thing flips it (big on top).",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">2</span><span class=\"den\">7</span></span>",
+    "<span class=\"frac\"><span class=\"num\">4</span><span class=\"den\">14</span></span>",
+    "<span class=\"frac\"><span class=\"num\">7</span><span class=\"den\">2</span></span>",
+    "<span class=\"frac\"><span class=\"num\">14</span><span class=\"den\">4</span></span>",
+    "4 ÷ 14",
+    "14 ÷ 4"
+   ],
+   "answers": [
+    2,
+    3,
+    5
+   ],
+   "category": "Fractions as Division",
+   "level": 2,
+   "group": "g5-fracasdiv-pair-8"
+  },
+  {
+   "id": "g5-fracasdiv-17",
+   "prompt": "A scout troop has 21 members. They order 9 pizzas to share equally. Which expressions show how much pizza each member gets? Choose <strong>THREE</strong>.",
+   "explanation": "Each member's share = pizzas ÷ members = 9 ÷ 21 = 9/21 = 3/7 of a pizza. There are more people than pizzas, so each gets LESS than one whole — the small number is on top.",
+   "tip": "What is being shared goes on top. Sharing fewer things among more people gives less than 1 each (small on top). Asking how many people share one thing flips it (big on top).",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">3</span><span class=\"den\">7</span></span>",
+    "<span class=\"frac\"><span class=\"num\">9</span><span class=\"den\">21</span></span>",
+    "<span class=\"frac\"><span class=\"num\">7</span><span class=\"den\">3</span></span>",
+    "<span class=\"frac\"><span class=\"num\">21</span><span class=\"den\">9</span></span>",
+    "9 ÷ 21",
+    "21 ÷ 9"
+   ],
+   "answers": [
+    0,
+    1,
+    4
+   ],
+   "category": "Fractions as Division",
+   "level": 3,
+   "group": "g5-fracasdiv-pair-9"
+  },
+  {
+   "id": "g5-fracasdiv-18",
+   "prompt": "A scout troop has 21 members. They order 9 pizzas to share equally. Which expressions show how many members share one pizza? Choose <strong>THREE</strong>.",
+   "explanation": "Members per pizza = members ÷ pizzas = 21 ÷ 9 = 21/9 = 7/3 = 2 1/3 members. It is the first question turned round, so the fraction flips — the big number is on top.",
+   "tip": "What is being shared goes on top. Sharing fewer things among more people gives less than 1 each (small on top). Asking how many people share one thing flips it (big on top).",
+   "kind": "multi",
+   "choices": [
+    "<span class=\"frac\"><span class=\"num\">3</span><span class=\"den\">7</span></span>",
+    "<span class=\"frac\"><span class=\"num\">9</span><span class=\"den\">21</span></span>",
+    "<span class=\"frac\"><span class=\"num\">7</span><span class=\"den\">3</span></span>",
+    "<span class=\"frac\"><span class=\"num\">21</span><span class=\"den\">9</span></span>",
+    "9 ÷ 21",
+    "21 ÷ 9"
+   ],
+   "answers": [
+    2,
+    3,
+    5
+   ],
+   "category": "Fractions as Division",
+   "level": 3,
+   "group": "g5-fracasdiv-pair-9"
   }
  ]
 }

@@ -43,6 +43,8 @@ interface QuestionBase {
   /** The label printed on the original worksheet, when it isn't 1..n. */
   label?: string
   figure?: GridFigure
+  /** Questions sharing a group are asked together, in bank order — a question and its follow-up. */
+  group?: string
   /** A drawing that belongs to the explanation, shown only after answering. */
   answerFigure?: GridFigure
 }
@@ -60,6 +62,11 @@ export type Question = QuestionBase &
     | { kind: 'text'; accept: string[]; display: string }
     /** A short math expression such as 6(3 + 2) or 30 + 15, typed on the number pad. */
     | { kind: 'expression'; accept: string[]; display: string }
+    /**
+     * A fraction, stored in lowest terms as [numerator, denominator]. Any equal
+     * value is accepted: 6/8 for 3/4, 1 1/3 or 4/3, 0.75 for 3/4.
+     */
+    | { kind: 'fraction'; answer: [number, number] }
     /** Write an ordered pair. */
     | { kind: 'pair'; answer: [number, number] }
     /** Tap points onto a grid: exactly these points, or any `need` points on y = m·x + c. */
@@ -76,7 +83,7 @@ export type QuestionKind = Question['kind']
 /**
  * What a child has entered for a question. Shape depends on the kind:
  * - choice: the chosen index · truefalse: the boolean
- * - number, text, pair, expression: exactly what was typed (graded leniently)
+ * - number, text, pair, expression, fraction: exactly what was typed (graded leniently)
  * - multi: chosen indices · order: item indices in the order tapped
  * - match: for each row, the index of the pair whose right side was picked (-1 for none)
  * - plot: the points placed

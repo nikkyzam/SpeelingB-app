@@ -8,6 +8,8 @@ interface NumberInputProps {
   pair?: boolean
   /** Adds the keys for an expression: ( ) + */
   expression?: boolean
+  /** Adds the keys for a fraction or mixed number: / and a space */
+  fraction?: boolean
   disabled?: boolean
   onEnter?: () => void
   label?: string
@@ -28,7 +30,7 @@ const DIGITS = ['7', '8', '9', '4', '5', '6', '1', '2', '3']
  * half of the integer questions are negative — so on touch screens the system
  * keyboard stays shut and the child taps this pad instead.
  */
-const NumberInput: React.FC<NumberInputProps> = ({ value, onChange, pair, expression, disabled, onEnter, label }) => {
+const NumberInput: React.FC<NumberInputProps> = ({ value, onChange, pair, expression, fraction, disabled, onEnter, label }) => {
   const touch = React.useMemo(isTouch, [])
   // Two quick taps can land before the parent re-renders; build on the last value sent, not the last prop.
   const latest = React.useRef(value)
@@ -49,7 +51,7 @@ const NumberInput: React.FC<NumberInputProps> = ({ value, onChange, pair, expres
         inputMode={touch ? 'none' : 'decimal'}
         autoComplete="off"
         aria-label={label ?? (pair ? 'Your ordered pair' : 'Your answer')}
-        placeholder={pair ? '( x , y )' : expression ? 'e.g. 6(3 + 2)' : 'Your answer'}
+        placeholder={pair ? '( x , y )' : expression ? 'e.g. 6(3 + 2)' : fraction ? 'e.g. 3/4 or 1 1/3' : 'Your answer'}
         disabled={disabled}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => {
@@ -58,9 +60,15 @@ const NumberInput: React.FC<NumberInputProps> = ({ value, onChange, pair, expres
       />
       {!disabled && (
         <div className="number-pad" role="group" aria-label="Number keys">
-          {[...DIGITS, '−', '0', '.', ...(pair ? ['(', ',', ')'] : expression ? ['(', '+', ')'] : [])].map((k) => (
-            <button key={k} type="button" className={/\d/.test(k) ? undefined : 'number-pad-extra'} onClick={() => press(k)}>
-              {k}
+          {[...DIGITS, '−', '0', '.', ...(pair ? ['(', ',', ')'] : expression ? ['(', '+', ')'] : fraction ? ['/', ' '] : [])].map((k) => (
+            <button
+              key={k}
+              type="button"
+              className={/\d/.test(k) ? undefined : 'number-pad-extra'}
+              aria-label={k === ' ' ? 'Space (for a mixed number like 1 1/3)' : k === '/' ? 'Fraction bar' : undefined}
+              onClick={() => press(k)}
+            >
+              {k === ' ' ? 'space' : k}
             </button>
           ))}
           <button type="button" className="number-pad-extra number-pad-wide" onClick={() => press('⌫')} aria-label="Delete">

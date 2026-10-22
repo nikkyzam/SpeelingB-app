@@ -44,6 +44,12 @@ const problems = (q: Question): string[] => {
     case 'pair':
       if (q.answer.length !== 2) out.push('pair is not two numbers')
       break
+    case 'fraction': {
+      const [n, d] = q.answer
+      if (!Number.isInteger(n) || !Number.isInteger(d) || d <= 0) out.push('fraction is not n/d')
+      else if (!isCorrect(q, `${n}/${d}`)) out.push('its own answer is not accepted')
+      break
+    }
     case 'plot':
       if (!q.answer?.length && !q.rule) out.push('no points and no rule')
       break
@@ -66,6 +72,17 @@ describe('practice test banks', () => {
         expect(ids.has(q.id), `duplicate id ${q.id}`).toBe(false)
         ids.add(q.id)
       }
+    }
+  })
+})
+
+describe('study notes', () => {
+  it.each(TESTS.filter((t) => t.notes).map((t) => [t.id, t] as const))('%s has notes with every section filled in', async (_id, test) => {
+    const notes = await test.notes!()
+    expect(notes.length).toBeGreaterThan(0)
+    for (const n of notes) {
+      expect(n.title && n.icon && n.intro, n.title).toBeTruthy()
+      for (const row of n.ladder?.rows ?? []) expect(row.length, `${n.title} ladder row`).toBe(n.ladder!.rows[0].length)
     }
   })
 })

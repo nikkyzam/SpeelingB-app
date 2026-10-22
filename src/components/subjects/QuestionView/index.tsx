@@ -177,12 +177,14 @@ const QuestionView: React.FC<QuestionViewProps> = ({ question: q, response, onCh
       case 'number':
       case 'pair':
       case 'expression':
+      case 'fraction':
         return (
           <NumberInput
             value={typeof response === 'string' ? response : ''}
             onChange={onChange}
             pair={q.kind === 'pair'}
             expression={q.kind === 'expression'}
+            fraction={q.kind === 'fraction'}
             disabled={locked}
             onEnter={onSubmit}
           />

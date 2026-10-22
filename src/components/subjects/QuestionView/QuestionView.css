@@ -142,3 +142,8 @@
   border-radius: var(--radius-md, 12px);
   max-width: 360px;
 }
+
+/* A fraction that IS the answer choice should be easy to read, not footnote-sized. */
+.qv-choice .rt-frac {
+  font-size: 1.15em;
+}

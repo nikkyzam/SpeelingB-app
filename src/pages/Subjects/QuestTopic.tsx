@@ -13,6 +13,24 @@ import './Subjects.css'
 /** Questions in one round. A long bank is sampled fresh each time. */
 const ROUND_SIZE = 10
 
+/**
+ * A fresh, shuffled round — but a question and its follow-up (same `group`)
+ * stay together and in order, and a pair is never cut in half at the end.
+ */
+export const dealRound = (questions: Question[], size: number): Question[] => {
+  const groups = new Map<string, Question[]>()
+  for (const q of questions) {
+    const key = q.group ?? q.id
+    groups.set(key, [...(groups.get(key) ?? []), q])
+  }
+  const round: Question[] = []
+  for (const g of shuffle([...groups.values()])) {
+    if (round.length >= size) break
+    round.push(...g)
+  }
+  return round
+}
+
 /** One Math Quest topic: pick Practice, Challenge or Boss and play a round. */
 const QuestTopic: React.FC = () => {
   const { topicId = '' } = useParams()
@@ -42,7 +60,7 @@ const QuestTopic: React.FC = () => {
   }, [questions])
 
   const roundQuestions = useMemo(
-    () => (tier ? shuffle(byTier[tier]).slice(0, ROUND_SIZE) : []),
+    () => (tier ? dealRound(byTier[tier], ROUND_SIZE) : []),
     // A new round deals a new set.
     [tier, byTier, round]
   )
