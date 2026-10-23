@@ -76,7 +76,7 @@
 
 .sentence-bonus {
   text-align: center;
-  color: var(--accent);
+  color: var(--accent-ink, var(--accent));
   font-weight: 800;
   margin: 0;
 }
@@ -101,7 +101,7 @@
   text-align: center;
   font-weight: 900;
   font-size: 1.15rem;
-  color: var(--success);
+  color: var(--success-ink, var(--success));
   animation: pop-in 0.35s ease-out;
 }
 

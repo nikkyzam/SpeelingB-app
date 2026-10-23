@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useState, useEffect } from 'react'
 import './BonusGame.css'
 
@@ -24,7 +25,7 @@ const BonusGame: React.FC<BonusGameProps> = ({ onComplete, duration = 15 }) => {
 
     // Timer
     if (timeLeft > 0 && isActive) {
-      const timer = setTimeout(() => {
+      const timer = activityClock.setTimeout(() => {
         setTimeLeft(timeLeft - 1)
 
         // Add new items periodically
@@ -40,7 +41,7 @@ const BonusGame: React.FC<BonusGameProps> = ({ onComplete, duration = 15 }) => {
           ])
         }
       }, 1000)
-      return () => clearTimeout(timer)
+      return () => activityClock.clearTimeout(timer)
     } else if (timeLeft === 0 && isActive) {
       setIsActive(false)
       onComplete(score)

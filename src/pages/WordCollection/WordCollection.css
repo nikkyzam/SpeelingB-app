@@ -14,7 +14,7 @@
 .wc-header h1 {
   flex: 1;
   text-align: center;
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
   font-size: clamp(1.5rem, 5vw, 2.2rem);
 }
 
@@ -38,7 +38,7 @@
   font-family: var(--font-primary);
   font-weight: 900;
   font-size: 1.9rem;
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
   line-height: 1.1;
 }
 .wc-stat-label { font-size: 0.8rem; color: var(--text-soft); font-weight: 700; text-align: center; }
@@ -172,9 +172,9 @@
   letter-spacing: 0.06em;
   color: var(--text-soft);
 }
-.rarity-rare .wc-card-rarity { color: var(--secondary); }
-.rarity-sparkly .wc-card-rarity { color: var(--accent); }
-.rarity-event .wc-card-rarity { color: var(--primary-2); }
+.rarity-rare .wc-card-rarity { color: var(--secondary-ink, var(--secondary)); }
+.rarity-sparkly .wc-card-rarity { color: var(--accent-ink, var(--accent)); }
+.rarity-event .wc-card-rarity { color: var(--primary-ink, var(--primary-2)); }
 
 .wc-card-flip-hint {
   font-size: 0.62rem;
@@ -200,7 +200,7 @@
   flex-direction: column;
   gap: 6px;
 }
-.wc-card-tip { color: var(--primary-2); font-weight: 700; font-style: italic; }
+.wc-card-tip { color: var(--primary-ink, var(--primary-2)); font-weight: 700; font-style: italic; }
 
 .wc-none, .wc-empty { grid-column: 1 / -1; text-align: center; color: var(--text-soft); }
 .wc-empty {
@@ -258,6 +258,6 @@
   border: 2px solid var(--border);
   color: var(--text-soft);
 }
-.wc-tally-sparkly { border-color: var(--accent); color: var(--accent); }
-.wc-tally-rare { border-color: var(--secondary); color: var(--secondary); }
-.wc-tally-event { border-color: var(--primary-2); color: var(--primary-2); }
+.wc-tally-sparkly { border-color: var(--accent); color: var(--accent-ink, var(--accent)); }
+.wc-tally-rare { border-color: var(--secondary); color: var(--secondary-ink, var(--secondary)); }
+.wc-tally-event { border-color: var(--primary-2); color: var(--primary-ink, var(--primary-2)); }

@@ -1,3 +1,4 @@
+import { setPreferences } from '@/services/preferences'
 import React from 'react'
 import { beforeEach, afterEach, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent, act, cleanup } from '@testing-library/react'
@@ -16,7 +17,7 @@ import DailyQuiz from '@/pages/DailyQuiz'
 import { LearningFlowController } from '@/services/progress/LearningFlow'
 
 beforeEach(() => {
-  localStorage.clear(); vi.clearAllMocks(); vi.useFakeTimers()
+  localStorage.clear(); setPreferences({ relaxed: false, waitForMe: false }); vi.clearAllMocks(); vi.useFakeTimers()
   h.word = 'cat'
   h.flow = new LearningFlowController()
   h.flow.completeWord('cat')
@@ -27,6 +28,20 @@ const answer = (typed = 'cat') => {
   fireEvent.change(screen.getByPlaceholderText('Type the word...'), { target: { value: typed } })
   fireEvent.click(screen.getByRole('button', { name: /Check it/ }))
 }
+
+it('saves a partly finished quiz and resumes after leaving the page', () => {
+  setPreferences({ waitForMe: true })
+  h.flow.completeWord('another-cat')
+  const first = mount()
+  answer()
+  fireEvent.click(screen.getByRole('button', { name: 'Continue →' }))
+  expect(screen.getByText('1 / 2 spelled')).toBeInTheDocument()
+  first.unmount()
+  mount()
+  expect(screen.getByText('1 / 2 spelled')).toBeInTheDocument()
+  expect(screen.getByPlaceholderText('Type the word...')).toBeEnabled()
+  expect(h.flow.isDailyQuizPassed()).toBe(false)
+})
 
 it('accepts a word typed without its accents, and shows how it is written', () => {
   // A laptop has no ñ key, and the accent keypad only appears on touch

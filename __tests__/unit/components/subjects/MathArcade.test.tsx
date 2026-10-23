@@ -1,3 +1,4 @@
+import { setPreferences } from '@/services/preferences'
 import React from 'react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, act } from '@testing-library/react'
@@ -94,6 +95,7 @@ describe('Math Arcade round makers', () => {
 
 describe('Math Arcade play', () => {
   beforeEach(() => {
+    setPreferences({ relaxed: false, waitForMe: false })
     vi.useFakeTimers()
   })
   afterEach(() => {
@@ -147,7 +149,7 @@ describe('Math Arcade play', () => {
     act(() => {
       vi.advanceTimersByTime((SPRINT_SECONDS + 1) * 1000)
     })
-    expect(screen.getByText("Time's up!")).toBeInTheDocument()
+    expect(screen.getByText("Time’s up!")).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Done' }))
     expect(onComplete).toHaveBeenCalledWith(0)
   })

@@ -60,7 +60,7 @@
 .proof-trainer-done {
   font-size: 0.9rem;
   font-weight: 700;
-  color: var(--secondary);
+  color: var(--secondary-ink, var(--secondary));
 }
 
 .proof-trainer-back {
@@ -85,7 +85,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--accent);
+  color: var(--accent-ink, var(--accent));
 }
 
 .proof-trainer-claimrow {
@@ -167,7 +167,7 @@
 .proof-trainer-num {
   flex: 0 0 auto;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-ink, var(--accent));
 }
 
 .proof-trainer-row {

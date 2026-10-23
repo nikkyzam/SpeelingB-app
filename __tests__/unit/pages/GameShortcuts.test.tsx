@@ -1,3 +1,4 @@
+vi.mock('@/contexts/AudioContext', () => ({ useAudio: () => ({ speak: vi.fn(), stopSpeaking: vi.fn() }) }))
 import React from 'react'
 import { beforeEach, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'

@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react'
 import { useRewardStore } from '../../../stores/rewards/useRewardStore'
 import BuddyService from '../../../services/buddy/BuddyService'
-import { WARDROBE, SLOT_LABELS, Slot, WardrobeItem, buyItem } from '../../../services/buddy/wardrobe'
+import { WARDROBE, SLOT_LABELS, Slot, WardrobeItem, buyItem, returnItem } from '../../../services/buddy/wardrobe'
+import Dialog from '../../common/Dialog'
 import sfx from '../../games/shared/sfx'
 import './Wardrobe.css'
 
@@ -24,6 +25,8 @@ const Wardrobe: React.FC<WardrobeProps> = ({ buddyName, onClose, onSay }) => {
   const { heavenlyStars, loadPoints } = useRewardStore()
   const [tick, setTick] = useState(0)
   const [denied, setDenied] = useState<string | null>(null)
+  const [confirm, setConfirm] = useState<WardrobeItem | null>(null)
+  const [lastBought, setLastBought] = useState<string | null>(null)
 
   const buddy = useMemo(() => BuddyService.get(), [tick])
 
@@ -36,13 +39,15 @@ const Wardrobe: React.FC<WardrobeProps> = ({ buddyName, onClose, onSay }) => {
     if (BuddyService.isOwned(item.id)) return
     if (!buyItem(item)) {
       // Never a dead end: say how close they are instead of just refusing.
+      setConfirm(null)
       sfx.wrong()
       setDenied(item.id)
       window.setTimeout(() => setDenied((d) => (d === item.id ? null : d)), 1800)
       return
     }
-    BuddyService.own(item.id)
-    BuddyService.equip(item.slot, item.id)
+    // buyItem has already put it in the wardrobe and on the buddy.
+    setConfirm(null)
+    setLastBought(item.id)
     sfx.fanfare()
     refresh()
     onSay(`Look at me in my ${item.name.toLowerCase()}!`)
@@ -57,7 +62,13 @@ const Wardrobe: React.FC<WardrobeProps> = ({ buddyName, onClose, onSay }) => {
   }
 
   return (
-    <div className="wardrobe" role="dialog" aria-label={`${buddyName}'s wardrobe`}>
+    <div className="wardrobe" aria-label={`${buddyName}'s wardrobe`}>
+      {confirm && <Dialog title={`Use stars for ${confirm.name}`} onClose={() => setConfirm(null)}>
+        <h2>{confirm.emoji} {confirm.name}</h2>
+        <p>Use {confirm.cost} stars? You will have {Math.max(0, heavenlyStars - confirm.cost)} left. Your buddy will wear it right away.</p>
+        <button className="btn" disabled={heavenlyStars < confirm.cost} onClick={() => buy(confirm)}>Use {confirm.cost} stars</button>
+        <button className="comfort-button" onClick={() => setConfirm(null)}>Keep my stars</button>
+      </Dialog>}
       <div className="wd-card">
         <div className="wd-head">
           <h3>🎽 {buddyName}&apos;s Wardrobe</h3>
@@ -78,7 +89,7 @@ const Wardrobe: React.FC<WardrobeProps> = ({ buddyName, onClose, onSay }) => {
                     <button
                       key={item.id}
                       className={`wd-item ${owned ? 'owned' : ''} ${wearing ? 'wearing' : ''} ${denied === item.id ? 'denied' : ''}`}
-                      onClick={() => (owned ? toggle(item) : buy(item))}
+                      onClick={() => (owned ? toggle(item) : setConfirm(item))}
                       title={item.blurb}
                     >
                       <span className="wd-emoji" aria-hidden>{item.emoji}</span>
@@ -98,6 +109,7 @@ const Wardrobe: React.FC<WardrobeProps> = ({ buddyName, onClose, onSay }) => {
         </div>
 
         <p className="wd-foot">Earn stars by learning words and playing games. 🌟</p>
+        {lastBought && <button className="comfort-button" onClick={() => { if (returnItem(lastBought)) { refresh(); setLastBought(null); onSay('Your stars are back.'); } }}>Undo my last purchase</button>}
       </div>
     </div>
   )

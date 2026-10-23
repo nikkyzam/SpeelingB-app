@@ -62,7 +62,7 @@ const subscribe = (l: () => void) => {
 }
 const getActive = () => active
 
-const ROWS = ['abcdefg', 'hijklmn', 'opqrstu', 'vwxyz'] as const
+const ROWS = ['abcdef', 'ghijkl', 'mnopqr', 'stuvwx', 'yz'] as const
 
 /**
  * The keys a word needs beyond a–z.

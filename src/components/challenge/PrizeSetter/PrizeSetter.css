@@ -10,7 +10,7 @@
 .ps-current-icon { font-size: 1.8rem; }
 .ps-current div { display: flex; flex-direction: column; flex: 1; }
 .ps-current span { font-size: 0.78rem; color: var(--text-soft); }
-.ps-clear { border: none; background: none; color: var(--error); font-weight: 700; cursor: pointer; text-decoration: underline; font-size: 0.8rem; }
+.ps-clear { border: none; background: none; color: var(--error-ink, var(--error)); font-weight: 700; cursor: pointer; text-decoration: underline; font-size: 0.8rem; }
 
 .ps-presets { display: flex; gap: 0.35rem; flex-wrap: wrap; }
 .ps-preset {

@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.wl-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.wl-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary)); }
 .wl-stats { display: flex; gap: var(--spacing-lg); }
 .wl-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .wl-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -146,8 +146,8 @@
   font-weight: 800;
   color: var(--text-soft);
 }
-.wl-flash.ok { color: var(--success); }
-.wl-flash.bad { color: var(--error); }
+.wl-flash.ok { color: var(--success-ink, var(--success)); }
+.wl-flash.bad { color: var(--error-ink, var(--error)); }
 
 /* --- the keypad ----------------------------------------------------------------- */
 

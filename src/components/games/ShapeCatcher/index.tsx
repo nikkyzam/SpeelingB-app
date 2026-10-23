@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useState, useEffect, useCallback } from 'react'
 import './ShapeCatcher.css'
 
@@ -34,10 +35,10 @@ const ShapeCatcher: React.FC<ShapeCatcherProps> = ({ onComplete, duration = 60 }
     newTargetLetter()
 
     if (timeLeft > 0 && isActive) {
-      const timer = setTimeout(() => {
+      const timer = activityClock.setTimeout(() => {
         setTimeLeft(timeLeft - 1)
       }, 1000)
-      return () => clearTimeout(timer)
+      return () => activityClock.clearTimeout(timer)
     } else if (timeLeft === 0 && isActive) {
       setIsActive(false)
       onComplete(score)
@@ -47,17 +48,17 @@ const ShapeCatcher: React.FC<ShapeCatcherProps> = ({ onComplete, duration = 60 }
   useEffect(() => {
     if (!isActive) return
 
-    const spawnInterval = setInterval(() => {
+    const spawnInterval = activityClock.setInterval(() => {
       spawnShape()
     }, 800)
 
-    const moveInterval = setInterval(() => {
+    const moveInterval = activityClock.setInterval(() => {
       moveShapes()
     }, 50)
 
     return () => {
-      clearInterval(spawnInterval)
-      clearInterval(moveInterval)
+      activityClock.clearInterval(spawnInterval)
+      activityClock.clearInterval(moveInterval)
     }
   }, [isActive])
 
@@ -122,7 +123,7 @@ const ShapeCatcher: React.FC<ShapeCatcherProps> = ({ onComplete, duration = 60 }
         const newLives = prev - 1
         if (newLives <= 0) {
           setIsActive(false)
-          setTimeout(() => onComplete(score), 1000)
+          activityClock.setTimeout(() => onComplete(score), 1000)
         }
         return newLives
       })

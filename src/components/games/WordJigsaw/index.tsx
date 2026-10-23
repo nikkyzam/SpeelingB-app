@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
@@ -161,9 +162,9 @@ const WordJigsaw: React.FC<WordJigsawProps> = ({ onComplete, words: providedWord
   const ignoreClickUntil = useRef(0)
   const timers = useRef<number[]>([])
   const later = (fn: () => void, ms: number) => {
-    timers.current.push(window.setTimeout(fn, ms))
+    timers.current.push(activityClock.setTimeout(fn, ms))
   }
-  useEffect(() => () => timers.current.forEach((t) => window.clearTimeout(t)), [])
+  useEffect(() => () => timers.current.forEach((t) => activityClock.clearTimeout(t)), [])
 
   const current = words[index]
 
@@ -241,7 +242,7 @@ const WordJigsaw: React.FC<WordJigsawProps> = ({ onComplete, words: providedWord
 
   /** A tap puts the piece in the first space still empty. */
   const tapPiece = (piece: Piece) => {
-    if (grab.current || Date.now() < ignoreClickUntil.current) return
+    if (grab.current || activityClock.now() < ignoreClickUntil.current) return
     place(piece, round.placed.findIndex((p) => !p))
   }
 
@@ -281,7 +282,7 @@ const WordJigsaw: React.FC<WordJigsawProps> = ({ onComplete, words: providedWord
     if (!g || e.pointerId !== g.pointer) return
     grab.current = null
     if (!g.moved) return
-    ignoreClickUntil.current = Date.now() + 400
+    ignoreClickUntil.current = activityClock.now() + 400
     setDrag(null)
     setHover(null)
     const slot = slotAt(e.clientX, e.clientY)

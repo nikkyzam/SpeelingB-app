@@ -6,6 +6,7 @@ import { praise, spellOut, isStreakMilestone } from '../../../services/words/pra
 import sfx from '../../games/shared/sfx'
 import Burst from '../../games/shared/Burst'
 import './QuickCheck.css'
+import { usePreferences } from '../../../hooks/usePreferences'
 
 interface QuickCheckProps {
   word: Word
@@ -38,6 +39,7 @@ const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
  */
 const QuickCheck: React.FC<QuickCheckProps> = ({ word, variant = 0, onPass, isLast, streak = 0 }) => {
   const { speak } = useAudio()
+  const [preferences] = usePreferences()
   const answer = word.word.toLowerCase()
 
   // Very short words have nothing to hide, so they always get built.
@@ -105,7 +107,7 @@ const QuickCheck: React.FC<QuickCheckProps> = ({ word, variant = 0, onPass, isLa
     sfx.correct()
     if (isStreakMilestone(run)) timers.current.push(window.setTimeout(() => sfx.star(), 180))
     speak(line)
-    timers.current.push(window.setTimeout(() => onPass(false), 900))
+    if (!preferences.waitForMe) timers.current.push(window.setTimeout(() => onPass(false), 900))
   }
 
   const miss = (label: string) => {
@@ -236,6 +238,7 @@ const QuickCheck: React.FC<QuickCheckProps> = ({ word, variant = 0, onPass, isLa
       )}
 
       {phase === 'right' && <div className="qc-flash ok" role="status">🎉 {cheer}</div>}
+      {phase === 'right' && preferences.waitForMe && <button className="btn" onClick={() => onPass(false)}>{isLast ? 'Finish my words' : 'Next word →'}</button>}
 
       {phase === 'revealed' && (
         <div className="qc-revealed">

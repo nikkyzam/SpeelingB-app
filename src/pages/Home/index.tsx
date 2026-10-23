@@ -1,3 +1,4 @@
+import { usePreferences } from '../../hooks/usePreferences'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUser } from '../../contexts/UserContext'
@@ -19,6 +20,7 @@ import './Home.css'
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
+  const [preferences] = usePreferences()
   const { user } = useUser()
   const { learningFlow } = useProgress()
   const { world } = useTheme()
@@ -67,7 +69,7 @@ const Home: React.FC = () => {
       path: '/games',
       tone: 'accent',
     },
-    { icon: '⚔️', label: 'Sibling Challenge', sub: 'Beat them for a prize', path: '/challenge', tone: 'accent' },
+    { icon: '⚔️', label: 'Sibling Challenge', sub: 'Team up or take turns', path: '/challenge', tone: 'accent' },
     { icon: '✍️', label: 'Sentence Maker', sub: 'Build with your words', path: '/sentences', tone: 'secondary' },
     { icon: '🔍', label: 'Word Hunt', sub: 'Find letters at home', path: '/hunt', tone: 'primary' },
     { icon: '🏆', label: 'Spelling Bee', sub: 'Enter the tournament', path: '/tournament', tone: 'accent' },
@@ -119,13 +121,13 @@ const Home: React.FC = () => {
       </section>
 
       {/* Explorer rank — the long game, always climbing */}
-      <section className="level-section">
+      <details className="level-section"><summary>My word journey</summary>
         <ExplorerLevel onClick={() => navigate('/collection')} />
 
         {/* How far through the whole list they are — the only place that
             answers "how much is left?" */}
         <WordProgress onClick={() => navigate('/collection')} />
-      </section>
+      </details>
 
       {/* Today's quest progress */}
       <section className="quest-card">
@@ -160,7 +162,7 @@ const Home: React.FC = () => {
           </div>
         ) : (
           <p className="quest-hint">
-            Learn {Math.max(dailyGoal - wordsLearnedToday, 0)} more word{dailyGoal - wordsLearnedToday === 1 ? '' : 's'} to unlock games! You&apos;ve got this. 💪
+            {learningFlow.gameAccessMessage()}
           </p>
         )}
       </section>
@@ -198,7 +200,7 @@ const Home: React.FC = () => {
       <section className="play-section">
         <h2>✨ What do you want to do?</h2>
         <div className="play-grid">
-          {playCards.map((c) => (
+          {playCards.filter(c => preferences.stage !== 'early' || ['/learn', '/games', '/rewards', '/challenge'].includes(c.path)).map((c) => (
             <button
               key={c.label}
               className={`play-card tone-${c.tone}`}

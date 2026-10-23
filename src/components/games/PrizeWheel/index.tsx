@@ -21,7 +21,7 @@ const PRIZES: Prize[] = [
   { stars: 8, label: '8 stars', icon: '✨', color: '#FF8FAB' },
   { stars: 25, label: '25 stars', icon: '💫', color: '#8AC926' },
   { stars: 10, label: '10 stars', icon: '⭐', color: '#7C5CFF' },
-  { stars: 50, label: 'JACKPOT!', icon: '🏆', color: '#FF6B6B' },
+  { stars: 50, label: '50 stars', icon: '🏆', color: '#FF6B6B' },
   { stars: 12, label: '12 stars', icon: '✨', color: '#06D6A0' },
   { stars: 20, label: '20 stars', icon: '🌟', color: '#F4A300' },
 ]
@@ -111,25 +111,25 @@ const PrizeWheel: React.FC = () => {
       setSpunToday(true)
       sfx.fanfare()
       if (prize.stars >= 50) sfx.applause()
-      speak(prize.stars >= 50 ? 'Jackpot! Fifty stars!' : `You won ${prize.stars} stars!`)
+      speak(prize.stars >= 50 ? 'A gift of fifty stars!'  : `You won ${prize.stars} stars!`)
     }, SPIN_MS)
   }
 
   return (
     <div className="prize-wheel">
       <div className="pw-text">
-        <h3>🎡 Daily Prize Wheel</h3>
+        <h3>🎁 A little gift</h3>
         <p aria-live="polite">
           {won
-            ? `${won.icon} You won ${won.stars} stars! Come back tomorrow for another spin.`
+            ? `${won.icon} You won ${won.stars} stars! Enjoy your gift.`
             : spinning
               ? 'Round and round it goes… 🤞'
               : spunToday
                 ? 'Already spun today — a fresh spin is waiting tomorrow! 🌙'
-                : 'One free spin every day. Everybody wins something!'}
+                : 'A free gift. You can open it whenever you like.'}
         </p>
         <button className="pw-btn" onClick={spin} disabled={spinning || spunToday}>
-          {spinning ? 'Spinning…' : spunToday ? '✅ Spun today' : '🎡 Spin the wheel!'}
+          {spinning ? 'Spinning…' : spunToday ? '✅ Spun today' : 'Open my gift'}
         </button>
       </div>
 

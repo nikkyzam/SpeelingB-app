@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.bp-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.bp-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary)); }
 .bp-stats { display: flex; gap: var(--spacing-lg); }
 .bp-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .bp-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -62,10 +62,10 @@
   font-family: var(--font-primary);
   font-weight: 800;
   font-size: clamp(1.4rem, 6vw, 2.1rem);
-  color: var(--primary);
+  color: var(--primary-ink, var(--primary));
 }
 .bp-slot.next { border-bottom-color: var(--warning); }
-.bp-word.done .bp-slot { color: var(--success); border-bottom-color: var(--success); }
+.bp-word.done .bp-slot { color: var(--success-ink, var(--success)); border-bottom-color: var(--success); }
 
 /* --- the balloons ---------------------------------------------------------- */
 
@@ -146,7 +146,7 @@
   font-family: var(--font-primary);
   font-weight: 800;
 }
-.bp-flash.ok { color: var(--success); }
+.bp-flash.ok { color: var(--success-ink, var(--success)); }
 .bp-streak { margin-top: var(--spacing-md); font-weight: 700; color: var(--warning); }
 
 @media (prefers-reduced-motion: reduce) {

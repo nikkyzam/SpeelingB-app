@@ -22,7 +22,7 @@
 }
 .wp-title { font-family: var(--font-primary); font-weight: 800; color: var(--text); }
 .wp-count { color: var(--text-soft); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
-.wp-count strong { color: var(--primary-2); font-size: 1.1rem; }
+.wp-count strong { color: var(--primary-ink, var(--primary-2)); font-size: 1.1rem; }
 
 /* The bar carries two facts at once: how many words have been met (the wide
    band) and how many are mastered (the bright band sitting on top of it). */
@@ -53,7 +53,7 @@
   color: var(--text-soft);
   font-weight: 700;
 }
-.wp-pct { color: var(--primary-2); }
+.wp-pct { color: var(--primary-ink, var(--primary-2)); }
 .wp-dot { opacity: 0.5; }
 
 .wp-tiers { display: flex; flex-direction: column; gap: 0.6rem; margin-top: var(--spacing-md); }

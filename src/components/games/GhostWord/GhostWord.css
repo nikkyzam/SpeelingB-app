@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.gw-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.gw-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary-2)); }
 .gw-stats { display: flex; gap: var(--spacing-lg); }
 .gw-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .gw-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -51,8 +51,8 @@
   70%  { opacity: 1; transform: scale(1); filter: blur(0); }
   100% { opacity: 0; transform: scale(1.15) translateY(-12px); filter: blur(6px); }
 }
-.gw-word.caught { color: var(--success); animation: pop-in 300ms both; }
-.gw-word.revealed { color: var(--primary-2); animation: pop-in 300ms both; }
+.gw-word.caught { color: var(--success-ink, var(--success)); animation: pop-in 300ms both; }
+.gw-word.revealed { color: var(--primary-ink, var(--primary-2)); animation: pop-in 300ms both; }
 
 .gw-poof { display: flex; flex-direction: column; align-items: center; gap: 6px; }
 .gw-ghost { font-size: 3rem; animation: gw-float 2.4s ease-in-out infinite; }

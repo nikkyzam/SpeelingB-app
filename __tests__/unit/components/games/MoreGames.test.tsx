@@ -1,3 +1,4 @@
+import { setPreferences } from '@/services/preferences'
 import React from 'react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, act, within } from '@testing-library/react'
@@ -353,3 +354,6 @@ describe('Honey Flight: playing it', () => {
     expect(onComplete).not.toHaveBeenCalled()
   })
 })
+
+// These timing regressions cover challenge mode; relaxed mode has its own tests.
+beforeEach(() => setPreferences({ relaxed: false, waitForMe: false }))

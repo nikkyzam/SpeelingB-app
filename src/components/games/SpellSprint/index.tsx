@@ -1,3 +1,5 @@
+import { usePreferences } from '../../../hooks/usePreferences'
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
@@ -50,6 +52,7 @@ export const beeWords = (paces: number[], elapsed: number): number => {
  */
 const SpellSprint: React.FC<SpellSprintProps> = ({ onComplete, words: providedWords, rounds = 8 }) => {
   const { speak } = useAudio()
+  const [preferences] = usePreferences()
   const cheer = useCheer()
   const later = useLater()
 
@@ -84,13 +87,13 @@ const SpellSprint: React.FC<SpellSprintProps> = ({ onComplete, words: providedWo
 
   // The bee's clock runs only while a word is being spelled.
   useEffect(() => {
-    if (words.length === 0) return
-    const id = window.setInterval(() => {
+    if (words.length === 0 || preferences.relaxed) return
+    const id = activityClock.setInterval(() => {
       if (locked.current || over.current) return
       clock.current += TICK_MS
       setElapsed(clock.current)
     }, TICK_MS)
-    return () => window.clearInterval(id)
+    return () => activityClock.clearInterval(id)
   }, [words])
 
   useEffect(() => {
@@ -123,7 +126,7 @@ const SpellSprint: React.FC<SpellSprintProps> = ({ onComplete, words: providedWo
       over.current = true
       // Beating the bee counts when most of the words were spelled, so racing
       // through with guesses doesn't earn it.
-      const beatBee = clock.current < totalPace && right * 2 >= words.length
+      const beatBee = !preferences.relaxed && clock.current < totalPace && right * 2 >= words.length
       setFinished(beatBee ? 'beat' : 'made')
       const bonus = beatBee ? 30 : 0
       if (bonus) setScore((s) => s + bonus)
@@ -148,7 +151,7 @@ const SpellSprint: React.FC<SpellSprintProps> = ({ onComplete, words: providedWo
     locked.current = true
 
     if (typed === answer) {
-      const fast = clock.current - wordStart.current <= paces[index]
+      const fast = !preferences.relaxed && clock.current - wordStart.current <= paces[index]
       const gained = (tries === 0 ? 25 : 10) + (fast ? 10 : 0)
       setScore((s) => s + gained)
       setRightCount((n) => n + 1)

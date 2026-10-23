@@ -20,7 +20,7 @@
   padding-bottom: var(--spacing-sm);
   margin-bottom: var(--spacing-sm);
 }
-.mu-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.mu-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary)); }
 .mu-count { font-family: var(--font-primary); font-weight: 800; font-size: 1.1rem; color: var(--text-soft); }
 .mu-instructions { margin: 0 0 var(--spacing-md); font-size: 0.95rem; color: var(--text-soft); }
 
@@ -152,7 +152,7 @@
   font-family: var(--font-primary);
   font-weight: 800;
 }
-.mu-flash.ok { color: var(--success); }
+.mu-flash.ok { color: var(--success-ink, var(--success)); }
 .mu-flash.bad { color: var(--text-soft); }
 
 /* --- finished ------------------------------------------------------------ */
@@ -162,7 +162,7 @@
   text-align: center;
   padding: var(--spacing-lg) var(--spacing-md);
 }
-.mu-finish-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.8rem; color: var(--primary); }
+.mu-finish-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.8rem; color: var(--primary-ink, var(--primary)); }
 .mu-finish-text { margin: var(--spacing-sm) 0 var(--spacing-lg); font-size: 1.1rem; }
 .mu-done {
   min-height: 48px;

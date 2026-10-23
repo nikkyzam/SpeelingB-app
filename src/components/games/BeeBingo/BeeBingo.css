@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.bb-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.bb-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary)); }
 .bb-stats { display: flex; gap: var(--spacing-lg); }
 .bb-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .bb-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -38,7 +38,7 @@
   font-family: var(--font-primary);
   font-weight: 800;
   font-size: 1.1rem;
-  color: var(--primary);
+  color: var(--primary-ink, var(--primary));
 }
 .bb-btn {
   border: none;
@@ -135,8 +135,8 @@
 }
 
 .bb-turned { display: flex; flex-direction: column; gap: 2px; font-size: clamp(0.7rem, 3.2vw, 1rem); }
-.bb-turned s { color: var(--error); opacity: 0.8; }
-.bb-turned span { color: var(--success); }
+.bb-turned s { color: var(--error-ink, var(--error)); opacity: 0.8; }
+.bb-turned span { color: var(--success-ink, var(--success)); }
 
 .bb-note {
   margin: var(--spacing-md) 0 0;
@@ -145,9 +145,9 @@
   font-weight: 800;
   color: var(--text-soft);
 }
-.bb-note.ok { color: var(--success); }
-.bb-note.bad { color: var(--error); }
-.bb-note.help { color: var(--primary); }
+.bb-note.ok { color: var(--success-ink, var(--success)); }
+.bb-note.bad { color: var(--error-ink, var(--error)); }
+.bb-note.help { color: var(--primary-ink, var(--primary)); }
 .bb-lesson { margin: var(--spacing-xs) 0 0; font-size: 0.85rem; color: var(--text-soft); }
 
 .bb-empty { color: var(--text-soft); margin-bottom: var(--spacing-md); }

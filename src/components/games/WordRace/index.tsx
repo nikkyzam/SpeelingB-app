@@ -1,3 +1,5 @@
+import { usePreferences } from '../../../hooks/usePreferences'
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useState, useEffect, useRef, useMemo } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
@@ -69,6 +71,7 @@ export const fallOnce = (
 
 const WordRace: React.FC<WordRaceProps> = ({ onComplete, duration = 60, words: providedWords }) => {
   const { speak } = useAudio()
+  const [preferences] = usePreferences()
   const cheer = useCheer()
   const later = useLater()
 
@@ -119,8 +122,8 @@ const WordRace: React.FC<WordRaceProps> = ({ onComplete, duration = 60, words: p
         id: nextId.current++,
         word: text,
         x: Math.random() * 76 + 12,
-        y: -8,
-        speed: 0.5 + Math.random(),
+        y: preferences.relaxed ? 10 + (nextId.current % 3) * 25 : -8,
+        speed: preferences.relaxed ? 0 : 0.5 + Math.random(),
         round: round.current,
         state: 'falling',
       },
@@ -158,7 +161,7 @@ const WordRace: React.FC<WordRaceProps> = ({ onComplete, duration = 60, words: p
   // nobody played.
   useEffect(() => {
     if (!hasWords) return
-    const id = window.setInterval(() => {
+    const id = activityClock.setInterval(() => {
       if (finished.current) return
       // A new word every second or so (this runs ten times a second).
       if (Math.random() > 0.93) spawn()
@@ -168,9 +171,9 @@ const WordRace: React.FC<WordRaceProps> = ({ onComplete, duration = 60, words: p
         comboRef.current = 0
         setCombo(0)
       }
-      setTimeLeft((t) => t - 1)
+      if (!preferences.relaxed) setTimeLeft((t) => t - 1)
     }, TICK_MS)
-    return () => window.clearInterval(id)
+    return () => activityClock.clearInterval(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasWords])
 
@@ -228,10 +231,11 @@ const WordRace: React.FC<WordRaceProps> = ({ onComplete, duration = 60, words: p
 
   return (
     <div className="word-race">
+      {preferences.relaxed && <button className="comfort-button" onClick={() => { if (!finished.current) { finished.current = true; onComplete(scoreRef.current); } }}>Finish my round</button>}
       <div className="wr-header">
         <div className="wr-title">🏃 Word Race</div>
         <div className="wr-stats">
-          <div className="wr-stat"><span>Time</span><strong>{Math.ceil(timeLeft / 10)}s</strong></div>
+          <div className="wr-stat"><span>Time</span><strong>{preferences.relaxed ? "Your pace" : `${Math.ceil(timeLeft / 10)}s`}</strong></div>
           <div className="wr-stat"><span>Score</span><strong>{score}</strong></div>
           <div className="wr-stat"><span>Combo</span><strong>🔥 {combo}</strong></div>
         </div>

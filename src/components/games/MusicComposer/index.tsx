@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useState, useEffect } from 'react'
 import './MusicComposer.css'
 
@@ -44,8 +45,8 @@ const MusicComposer: React.FC<MusicComposerProps> = ({ onComplete }) => {
 
   useEffect(() => {
     if (timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
-      return () => clearTimeout(timer)
+      const timer = activityClock.setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
+      return () => activityClock.clearTimeout(timer)
     } else {
       endGame()
     }
@@ -125,14 +126,14 @@ const MusicComposer: React.FC<MusicComposerProps> = ({ onComplete }) => {
       setCombo(prev => prev + 1)
       setLevel(prev => prev + 1)
 
-      setTimeout(() => {
+      activityClock.setTimeout(() => {
         generateTargetSequence()
       }, 1500)
     } else if (accuracy >= 0.7) {
       // Good match
       setScore(prev => prev + Math.floor(100 * accuracy))
       setCombo(0)
-      setTimeout(() => {
+      activityClock.setTimeout(() => {
         generateTargetSequence()
       }, 1500)
     } else {
@@ -155,7 +156,7 @@ const MusicComposer: React.FC<MusicComposerProps> = ({ onComplete }) => {
         if (note) {
           playSound(note.frequency)
           index++
-          setTimeout(playNextNote, targetSequence.tempo)
+          activityClock.setTimeout(playNextNote, targetSequence.tempo)
         }
       } else {
         setIsPlaying(false)

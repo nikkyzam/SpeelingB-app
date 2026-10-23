@@ -31,8 +31,8 @@ export interface BookPage {
 export const christianBooks: ChristianBook[] = [
   {
     id: 'cbook-001',
-    title: 'The Beginner\'s Bible',
-    author: 'Various',
+    title: 'God Made Our World',
+    author: 'BrightHive Bible retellings',
     coverImage: '/images/books/christian/beginners-bible.jpg',
     ageRange: { min: 2, max: 5 },
     grades: ['Pre-K', 'K'],
@@ -74,7 +74,7 @@ export const christianBooks: ChristianBook[] = [
   {
     id: 'cbook-002',
     title: 'Noah\'s Ark Adventure',
-    author: 'Bible Stories for Kids',
+    author: 'BrightHive Bible retellings',
     coverImage: '/images/books/christian/noahs-ark.jpg',
     ageRange: { min: 4, max: 8 },
     grades: ['K', '1', '2'],
@@ -115,7 +115,7 @@ export const christianBooks: ChristianBook[] = [
   {
     id: 'cbook-003',
     title: 'David and Goliath',
-    author: 'Bible Heroes',
+    author: 'BrightHive Bible retellings',
     coverImage: '/images/books/christian/david-goliath.jpg',
     ageRange: { min: 5, max: 9 },
     grades: ['1', '2', '3'],
@@ -156,7 +156,7 @@ export const christianBooks: ChristianBook[] = [
   {
     id: 'cbook-004',
     title: 'The Parable of the Good Samaritan',
-    author: 'Jesus\' Stories',
+    author: 'BrightHive Bible retellings',
     coverImage: '/images/books/christian/good-samaritan.jpg',
     ageRange: { min: 6, max: 10 },
     grades: ['1', '2', '3', '4'],
@@ -197,7 +197,7 @@ export const christianBooks: ChristianBook[] = [
   {
     id: 'cbook-005',
     title: 'God Made Me Special',
-    author: 'Christian Learning Series',
+    author: 'BrightHive Bible retellings',
     coverImage: '/images/books/christian/god-made-me.jpg',
     ageRange: { min: 3, max: 6 },
     grades: ['Pre-K', 'K'],
@@ -226,7 +226,7 @@ export const christianBooks: ChristianBook[] = [
   {
     id: 'cbook-006',
     title: 'Fruit of the Spirit',
-    author: 'Christian Character Series',
+    author: 'BrightHive Bible retellings',
     coverImage: '/images/books/christian/fruit-spirit.jpg',
     ageRange: { min: 7, max: 12 },
     grades: ['2', '3', '4', '5'],
@@ -261,7 +261,7 @@ export const christianBooks: ChristianBook[] = [
   {
     id: 'cbook-007',
     title: 'The Christmas Story',
-    author: 'Holiday Bible Stories',
+    author: 'BrightHive Bible retellings',
     coverImage: '/images/books/christian/christmas-story.jpg',
     ageRange: { min: 4, max: 9 },
     grades: ['K', '1', '2', '3'],
@@ -290,7 +290,7 @@ export const christianBooks: ChristianBook[] = [
   {
     id: 'cbook-008',
     title: 'Prayer Time with Jesus',
-    author: 'Christian Devotionals for Kids',
+    author: 'BrightHive Bible retellings',
     coverImage: '/images/books/christian/prayer-time.jpg',
     ageRange: { min: 5, max: 10 },
     grades: ['K', '1', '2', '3', '4'],

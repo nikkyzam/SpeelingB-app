@@ -1,11 +1,14 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis'
+import { usePreferences } from '../../hooks/usePreferences'
 
 interface AudioContextType {
   isAudioEnabled: boolean
   toggleAudio: () => void
   speak: (text: string, options?: any) => Promise<void>
   stopSpeaking: () => void
+  isSpeaking: boolean
+  speechError: string | null
 }
 
 const AudioContext = createContext<AudioContextType | undefined>(undefined)
@@ -39,13 +42,15 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
     return saved ? JSON.parse(saved) : true
   })
 
-  const { speak: speechSpeak, stop } = useSpeechSynthesis()
+  const { speak: speechSpeak, stop, isSpeaking, error: speechError } = useSpeechSynthesis()
+  const [preferences] = usePreferences()
 
   useEffect(() => {
     localStorage.setItem('audioEnabled', JSON.stringify(isAudioEnabled))
   }, [isAudioEnabled])
 
   const toggleAudio = () => {
+    stop()
     setIsAudioEnabled((prev: any) => !prev)
   }
 
@@ -54,7 +59,7 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
     if (isAudioEnabled && window.speechSynthesis && said) {
       // Never let speech hiccups bubble up as unhandled rejections.
       try {
-        await speechSpeak(said, options)
+        await speechSpeak(said, { rate: preferences.narrationRate, ...options })
       } catch {
         /* ignore — speech is a nice-to-have, not critical */
       }
@@ -70,7 +75,9 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
       isAudioEnabled,
       toggleAudio,
       speak,
-      stopSpeaking
+      stopSpeaking,
+      isSpeaking,
+      speechError,
     }}>
       {children}
     </AudioContext.Provider>

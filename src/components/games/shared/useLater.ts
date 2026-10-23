@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import { useCallback, useEffect, useRef } from 'react'
 
 /**
@@ -12,13 +13,13 @@ export const useLater = (): ((fn: () => void, ms: number) => void) => {
   const timers = useRef<number[]>([])
   useEffect(
     () => () => {
-      timers.current.forEach((t) => window.clearTimeout(t))
+      timers.current.forEach((t) => activityClock.clearTimeout(t))
       timers.current = []
     },
     []
   )
   return useCallback((fn: () => void, ms: number) => {
-    timers.current.push(window.setTimeout(fn, ms))
+    timers.current.push(activityClock.setTimeout(fn, ms))
   }, [])
 }
 

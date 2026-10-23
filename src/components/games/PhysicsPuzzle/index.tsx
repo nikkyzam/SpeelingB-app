@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useState, useEffect, useRef } from 'react'
 import './PhysicsPuzzle.css'
 
@@ -194,7 +195,7 @@ const PhysicsPuzzle: React.FC<PhysicsPuzzleProps> = ({ onComplete }) => {
     setScore(prev => prev + points)
     setMessage(`Perfect! +${points} points`)
 
-    setTimeout(() => {
+    activityClock.setTimeout(() => {
       if (level < 3) {
         setLevel(prev => prev + 1)
       } else {
@@ -206,7 +207,7 @@ const PhysicsPuzzle: React.FC<PhysicsPuzzleProps> = ({ onComplete }) => {
   const endGame = () => {
     setGameActive(false)
     const finalScore = score + (level * 200)
-    setTimeout(() => onComplete(finalScore), 2000)
+    activityClock.setTimeout(() => onComplete(finalScore), 2000)
   }
 
   const renderGame = () => {

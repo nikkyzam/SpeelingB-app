@@ -60,7 +60,7 @@
 .age-button:hover,
 .grade-button:hover {
   border-color: var(--primary);
-  color: var(--primary);
+  color: var(--primary-ink, var(--primary));
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
 }
@@ -166,7 +166,7 @@
 }
 
 .selection-summary strong {
-  color: var(--primary);
+  color: var(--primary-ink, var(--primary));
 }
 
 .confirm-selection-button {

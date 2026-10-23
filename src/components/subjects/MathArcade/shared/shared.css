@@ -14,7 +14,7 @@
   text-align: center;
 }
 
-.ma-title { margin: 0; font-weight: 800; font-size: clamp(1.5rem, 5vw, 2rem); color: var(--primary); }
+.ma-title { margin: 0; font-weight: 800; font-size: clamp(1.5rem, 5vw, 2rem); color: var(--primary-ink, var(--primary)); }
 .ma-blurb { margin: var(--spacing-sm) auto; max-width: 30rem; color: var(--text-soft); font-size: 1.05rem; }
 
 /* --- start ---------------------------------------------------------------- */
@@ -88,7 +88,7 @@
   margin-bottom: var(--spacing-md);
   border-bottom: 2px dashed var(--border);
 }
-.ma-header-title { font-weight: 800; font-size: 1.3rem; color: var(--primary); }
+.ma-header-title { font-weight: 800; font-size: 1.3rem; color: var(--primary-ink, var(--primary)); }
 .ma-hud { display: flex; gap: var(--spacing-sm); flex-wrap: wrap; }
 .ma-chip {
   display: inline-flex;
@@ -153,8 +153,8 @@
   font-weight: 700;
   color: var(--text-soft);
 }
-.ma-flash.ok { color: var(--success); }
-.ma-flash.bad { color: var(--accent); }
+.ma-flash.ok { color: var(--success-ink, var(--success)); }
+.ma-flash.bad { color: var(--accent-ink, var(--accent)); }
 
 @keyframes ma-glow {
   from { box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0.0); }

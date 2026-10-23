@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.ws2-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.ws2-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary-2)); }
 .ws2-stats { display: flex; gap: var(--spacing-md); flex-wrap: wrap; }
 .ws2-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .ws2-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -29,7 +29,7 @@
 .ws2-rule {
   font-family: var(--font-primary);
   font-weight: 800;
-  color: var(--accent);
+  color: var(--accent-ink, var(--accent));
   margin-bottom: var(--spacing-md);
 }
 .ws2-hear {

@@ -21,6 +21,7 @@ export interface Prize {
   /** who set it, for the record */
   setBy: string
   setAt: string
+  grownUpApproved?: boolean
 }
 
 export interface MatchResult {
@@ -112,7 +113,7 @@ export const ChallengeService = {
   /** What a grown-up is currently offering, if anything. */
   getPrize(): Prize | null {
     const p = readJson<Prize | null>(PRIZE_KEY, null)
-    return p && typeof p.label === 'string' && p.label.trim() ? p : null
+    return p && p.grownUpApproved === true && typeof p.label === 'string' && p.label.trim() ? p : null
   },
 
   setPrize(label: string, icon: string, setBy: string): Prize | null {
@@ -121,7 +122,7 @@ export const ChallengeService = {
       this.clearPrize()
       return null
     }
-    const prize: Prize = { label: clean, icon: icon || '🎁', setBy, setAt: new Date().toISOString() }
+    const prize: Prize = { label: clean, icon: icon || '🎁', setBy, setAt: new Date().toISOString(), grownUpApproved: true }
     writeJson(PRIZE_KEY, prize)
     return prize
   },

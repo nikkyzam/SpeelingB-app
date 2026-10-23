@@ -158,7 +158,7 @@ p {
   color: inherit;
 }
 
-a { color: var(--primary-2); }
+a { color: var(--primary-ink, var(--primary-2)); }
 
 /* ---- Buttons: chunky, squishy, toy-like ---- */
 .btn {
@@ -372,3 +372,108 @@ input:focus {
   from { background-position: 0 0; }
   to { background-position: 28px 0; }
 }
+
+/* Shared child-facing controls and accessible dialogs. */
+button, summary, select { touch-action: manipulation; }
+button:not(.ws-cell), summary { min-height: 44px; }
+button:focus-visible, a:focus-visible, summary:focus-visible, select:focus-visible {
+  outline: 3px solid var(--text); outline-offset: 3px;
+}
+.accessible-dialog-backdrop {
+  position: fixed; inset: 0; z-index: 3000; background: #0009;
+  display: flex; align-items: center; justify-content: center; padding: 16px;
+}
+.accessible-dialog {
+  position: relative; width: min(640px, 100%); max-height: 90dvh; overflow: auto;
+  padding: 56px 24px 24px; background: var(--card); color: var(--text);
+  border: 3px solid var(--border); border-radius: 24px; box-shadow: var(--shadow-lg);
+}
+.dialog-close { position: absolute; top: 8px; right: 8px; min-width: 44px; border-radius: 50%; }
+.accessible-dialog form, .accessible-dialog label { display: grid; gap: 12px; margin-bottom: 16px; }
+.accessible-dialog input { width: 100%; min-height: 44px; }
+.comfort-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.comfort-controls label { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; min-height: 44px; }
+.comfort-controls select { min-height: 44px; font: inherit; background: var(--card); color: var(--text); }
+.comfort-button { padding: 8px 12px; border: 2px solid var(--border); border-radius: 16px; background: var(--card); color: var(--text); font: inherit; font-weight: 700; }
+.header-sound { position: relative; }
+.header-sound summary { display: flex; align-items: center; padding: 8px; cursor: pointer; font-weight: 800; }
+.header-sound .comfort-controls { position: absolute; top: 100%; right: 0; width: 250px; z-index: 1600; background: var(--card); padding: 12px; box-shadow: var(--shadow-lg); border-radius: 18px; }
+.grown-up-area { display: grid; gap: 20px; }
+.btn-success, .sj-tone-success { background: linear-gradient(180deg, var(--success), #13683d); color: #fff; }
+.sj-card .sj-blurb { opacity: 1; }
+.nav-label { font-size: 0.82rem; }
+.spelling-keypad-hide { height: 44px; top: -44px; min-width: 48px; }
+.read-aloud-button { min-width: 44px; background: var(--card-soft); color: var(--text); border: 2px solid var(--border); border-radius: 16px; padding: 8px 12px; font: inherit; }
+[data-calm="true"] *, [data-calm="true"] *::before, [data-calm="true"] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+[data-calm="true"] .confetti-container, [data-calm="true"] .confetti-overlay, [data-calm="true"] .fun-fx, [data-calm="true"] .burst, [data-calm="true"] .celebration__confetti { display: none !important; }
+@media (max-width: 600px) {
+  .main-content { padding: 12px; padding-bottom: 100px; }
+  .header { padding: 8px 12px; }
+  .header-right { gap: 6px; }
+  .logo-world, .logo-block .logo-world { display: none; }
+  .header-sound summary { font-size: 0.8rem; }
+  .nav-label { font-size: 0.75rem; }
+  .nav-item { min-width: 0; flex: 1; padding: 5px 2px; }
+  .learning-hub .learning-header, .learning-header { padding: 12px; margin-bottom: 12px; }
+  .learning-header h1 { font-size: 1.5rem; margin: 8px 0; }
+  .learn-mode { padding: 12px; }
+  .word-display { padding: 12px; margin-bottom: 12px; }
+  .word-text { font-size: 2.8rem; margin-bottom: 6px; }
+  .audio-controls { margin-top: 8px; gap: 8px; }
+  .lm-line { padding: 10px; font-size: 1rem; }
+  .navigation-controls { position: sticky; bottom: 92px; z-index: 20; padding: 8px; background: var(--card); border-radius: 18px; gap: 8px; box-shadow: var(--shadow-sm); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+.story-card { display: flex; flex-direction: column; gap: 12px; padding: 20px; background: var(--card); color: var(--text); border: 3px solid var(--border); font: inherit; text-align: left; }
+.story-cover { font-size: 3rem; }
+.story-title { font-size: 1.4rem; font-weight: 800; }
+.story-open { font-weight: 800; }
+.book-shelf-container, .book-reader-container { padding: 8px; }
+.book-filters { margin: 16px 0; }
+.book-filters label { display: grid; gap: 8px; margin-top: 16px; }
+.book-filters input, .book-filters select { min-height: 44px; width: 100%; font: inherit; }
+.book-reader-container .page-text { background: var(--card-soft); color: var(--text); font-family: var(--font-secondary); font-size: clamp(1.2rem, 3vw, 1.6rem); }
+.book-reader-container .vocabulary-word { font: inherit; color: var(--text); background: var(--card-soft); border: 2px solid var(--border); }
+@media (max-width: 600px) {
+  .book-reader-header { padding: 12px; margin-bottom: 12px; }
+  .book-reader-container .book-title { font-size: 1.5rem; }
+  .book-content { padding: 12px; }
+  .book-page { min-height: 0; gap: 12px; margin-bottom: 12px; }
+  .book-reader-container .page-text { padding: 12px; }
+  .books-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .story-card { padding: 12px; }
+  .story-title { font-size: 1.15rem; }
+}
+.activity-paused *, .activity-paused *::before, .activity-paused *::after { animation-play-state: paused !important; }
+.celebration-dialog .celebration__card { width: 100%; padding: 8px; box-shadow: none; border: none; }
+.accessible-dialog .auth-modal-content { box-shadow: none; padding: 0; max-height: none; overflow: visible; width: 100%; background: var(--card); color: var(--text); }
+.world-dialog { max-width: 900px; }
+.world-dialog .world-picker-modal__sheet { padding: 0; box-shadow: none; background: var(--card); max-height: none; overflow: visible; }
+.wardrobe { position: static; display: block; background: transparent; padding: 0; }
+.wardrobe .wd-card { width: 100%; max-height: none; box-shadow: none; }
+[data-mode="dark"] h1, [data-mode="dark"] h2, [data-mode="dark"] h3, [data-mode="dark"] h4 { color: var(--text); }
+.celebration__unlock, .correct-feedback, .qc-flash.ok { background: var(--success); color: white; }
+.settings select, .settings input[type="number"] { min-height: 44px; padding: 8px; font: inherit; color: var(--text); background: var(--card); }
+.settings form { display: grid; gap: 12px; }
+.settings form label { display: grid; gap: 6px; }
+.daily-gift { margin: 16px 0; padding: 12px; background: var(--card); color: var(--text); border-radius: 18px; }
+@media (max-width: 600px) { .settings { padding: 4px; } .settings-section { padding: 16px; } }
+.word-picture { display: inline-block; font-size: 2rem; margin: 6px; }
+.ws-board { overflow-x: auto; padding: 4px; }
+.ws-grid .ws-cell { min-width: 44px; min-height: 44px; }
+.spelling-key { min-width: 44px; }
+body.has-spelling-keypad { padding-bottom: 24rem; }
+.buddy-namer-card { width: 100%; max-width: none; box-shadow: none; padding: 12px; background: var(--card); }
+@media (max-width: 600px) {
+  .learning-mode-container { padding: 0; }
+  .mode-header { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; padding: 10px; margin-bottom: 12px; }
+  .mode-header h1 { font-size: 1.3rem; margin: 0; }
+  .mode-header > .read-aloud-button { grid-column: 1 / -1; }
+  .navigation-controls { position: static; padding: 8px 0; box-shadow: none; flex-direction: row; flex-wrap: wrap; }
+  .navigation-controls .btn { flex: 1; padding: 10px; }
+}
+[data-calm="true"] .chip:has(.chip-icon), [data-calm="true"] .sj-welcome-chip:first-child { animation: none; }
+.story-illustration { font-size: 3rem; text-align: center; background: var(--card-soft); border-radius: 20px; padding: 16px; align-self: center; }
+[data-calm="true"] .bst-burst, [data-calm="true"] .celebration__fx { display: none !important; }

@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
@@ -115,9 +116,9 @@ const CrissCross: React.FC<CrissCrossProps> = ({ onComplete, words: providedWord
   const finished = useRef(false)
   const timers = useRef<number[]>([])
   const later = (fn: () => void, ms: number) => {
-    timers.current.push(window.setTimeout(fn, ms))
+    timers.current.push(activityClock.setTimeout(fn, ms))
   }
-  useEffect(() => () => timers.current.forEach((t) => window.clearTimeout(t)), [])
+  useEffect(() => () => timers.current.forEach((t) => activityClock.clearTimeout(t)), [])
 
   /** Squares that belong to a finished clue can't be typed over. */
   const given = useMemo(

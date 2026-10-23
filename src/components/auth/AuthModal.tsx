@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import AuthService from '../../services/auth/AuthService';
 import Button from '../common/Button';
 import './AuthModal.css';
+import Dialog from '../common/Dialog';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -29,9 +30,9 @@ const friendlyError = (err: any): string => {
     case 'auth/network-request-failed':
       return 'Network problem. Please check your internet and try again.';
     case 'auth/operation-not-allowed':
-      return 'Email sign-up isn\'t turned on yet for this app. Ask the grown-up who set it up to enable Email/Password sign-in in Firebase.';
+      return 'Email sign-up isn\'t turned on yet for this app. Ask the person who set up the app for help.';
     default:
-      return err?.message?.replace('Firebase: ', '') || 'Something went wrong. Please try again.';
+      return 'We could not sign in. Please try again with your grown-up.';
   }
 };
 
@@ -84,22 +85,21 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="auth-modal-overlay" onClick={onClose}>
-      <div className="auth-modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="close-button" onClick={onClose} aria-label="Close">×</button>
-        <h2>{isLogin ? 'Welcome Back! 👋' : 'Create Your Account! 🚀'}</h2>
+    <Dialog title="Save family progress" onClose={onClose}>
+      <div className="auth-modal-content">
+        <h2>{isLogin ? 'Grown-up sign in' : 'Save your child’s progress'}</h2>
         <p className="auth-subtitle">
           {isLogin
-            ? 'Log in to save your stars and streaks.'
-            : 'Make an account so your progress is saved on any device.'}
+            ? 'Grown-ups: sign in to save learning progress across devices.'
+            : 'Use a grown-up email. A child’s nickname is enough. Guest progress stays in this browser until you sign in.'}
         </p>
 
         <form onSubmit={handleSubmit}>
           {!isLogin && (
             <div className="form-group">
-              <label>Your Name</label>
+              <label htmlFor="auth-name">Child’s nickname</label>
               <input
-                type="text"
+                id="auth-name" type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -110,9 +110,9 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
           )}
 
           <div className="form-group">
-            <label>Email</label>
+            <label htmlFor="auth-email">Grown-up email</label>
             <input
-              type="email"
+              id="auth-email" type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -122,9 +122,9 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           <div className="form-group">
-            <label>Password</label>
+            <label htmlFor="auth-password">Password</label>
             <input
-              type="password"
+              id="auth-password" type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -136,9 +136,9 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
 
           {!isLogin && (
             <div className="form-group">
-              <label>Confirm Password</label>
+              <label htmlFor="auth-confirm">Enter password again</label>
               <input
-                type="password"
+                id="auth-confirm" type="password"
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 required
@@ -148,7 +148,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
             </div>
           )}
 
-          {error && <div className="auth-error">{error}</div>}
+          {error && <div className="auth-error" role="alert">{error}</div>}
 
           <Button type="submit" variant="primary" fullWidth disabled={loading}>
             {loading ? 'Please wait…' : (isLogin ? 'Log In' : 'Create Account')}
@@ -163,8 +163,9 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
             </button>
           </p>
         </div>
+        <button className="comfort-button" onClick={onClose}>Keep playing as a guest</button>
       </div>
-    </div>
+    </Dialog>
   );
 };
 

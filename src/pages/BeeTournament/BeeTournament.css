@@ -14,7 +14,7 @@
   gap: var(--spacing-sm);
   flex-wrap: wrap;
 }
-.bee-header h1 { margin: 0; font-family: var(--font-primary); font-size: 1.7rem; color: var(--primary-2); text-shadow: 0 2px 0 rgba(255,255,255,0.6); }
+.bee-header h1 { margin: 0; font-family: var(--font-primary); font-size: 1.7rem; color: var(--primary-ink, var(--primary-2)); text-shadow: 0 2px 0 rgba(255,255,255,0.6); }
 .bee-wings { font-size: 1.6rem; letter-spacing: 0.1rem; }
 /* A lost wing stays as a pale feather: you can see what is left, nothing flashes red. */
 .bee-wing-lost { opacity: 0.35; filter: grayscale(1); }
@@ -81,7 +81,7 @@
 .bee-stage-lights span:nth-child(3) { animation-delay: 0.5s }
 @keyframes bee-blink { 0%,100% { opacity: 0.3 } 50% { opacity: 1 } }
 
-.bee-lobby h2, .bee-announce h2 { margin: 0; font-family: var(--font-primary); color: var(--primary-2); }
+.bee-lobby h2, .bee-announce h2 { margin: 0; font-family: var(--font-primary); color: var(--primary-ink, var(--primary-2)); }
 .bee-announce h2 { font-size: 1.8rem; }
 .bee-blurb, .bee-announce p { margin: 0; color: var(--text); position: relative; }
 
@@ -136,7 +136,7 @@
 .bee-input.wrong { border-color: var(--warning); }
 
 .bee-verdict { font-family: var(--font-primary); font-weight: 800; font-size: 1.1rem; position: relative; }
-.bee-verdict.right { color: var(--success); }
+.bee-verdict.right { color: var(--success-ink, var(--success)); }
 .bee-verdict.wrong { color: var(--text); }
 .bee-tally { font-size: 0.85rem; color: var(--text-soft); position: relative; }
 

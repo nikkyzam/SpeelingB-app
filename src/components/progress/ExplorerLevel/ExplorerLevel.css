@@ -38,7 +38,7 @@ button.explorer-level:hover { transform: translateY(-3px); }
   font-family: var(--font-primary);
   font-weight: 900;
   font-size: 1.15rem;
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
 }
 .xl-level {
   font-size: 0.75rem;

@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { bibleApi, type BibleVersion } from '../../../services/bibleApi'
 import { useAudio } from '../../../contexts/AudioContext'
@@ -102,7 +103,7 @@ const BibleMemorizer: React.FC<BibleMemorizerProps> = ({ onComplete, version = '
     const settle = (v: KidVerse) => {
       if (live) setVerse((cur) => cur ?? v)
     }
-    const wait = window.setTimeout(() => settle(chosen), FETCH_WAIT_MS)
+    const wait = activityClock.setTimeout(() => settle(chosen), FETCH_WAIT_MS)
     bibleApi
       .getVerse(chosen.reference, version)
       .then((data) => {
@@ -113,7 +114,7 @@ const BibleMemorizer: React.FC<BibleMemorizerProps> = ({ onComplete, version = '
       .catch(() => settle(chosen))
     return () => {
       live = false
-      window.clearTimeout(wait)
+      activityClock.clearTimeout(wait)
     }
   }, [version, chosen])
 

@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useState, useEffect, useCallback } from 'react'
 import './PatternSequencer.css'
 
@@ -46,8 +47,8 @@ const PatternSequencer: React.FC<PatternSequencerProps> = ({ onComplete }) => {
 
   useEffect(() => {
     if (isActive && timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
-      return () => clearTimeout(timer)
+      const timer = activityClock.setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
+      return () => activityClock.clearTimeout(timer)
     } else if (timeLeft === 0 && isActive) {
       endGame()
     }
@@ -58,11 +59,11 @@ const PatternSequencer: React.FC<PatternSequencerProps> = ({ onComplete }) => {
 
     if (isPlaying) {
       const stepTime = (60000 / tempo) / 4 // 16th notes
-      interval = setInterval(playNextStep, stepTime)
+      interval = activityClock.setInterval(playNextStep, stepTime)
     }
 
     return () => {
-      if (interval) clearInterval(interval)
+      if (interval) activityClock.clearInterval(interval)
     }
   }, [isPlaying, tempo])
 
@@ -169,7 +170,7 @@ const PatternSequencer: React.FC<PatternSequencerProps> = ({ onComplete }) => {
     setIsActive(false)
     setIsPlaying(false)
     const finalScore = score + (combo * 200) + (level * 500)
-    setTimeout(() => onComplete(finalScore), 2000)
+    activityClock.setTimeout(() => onComplete(finalScore), 2000)
   }
 
   const startPlayback = () => {

@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.rb-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.rb-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary-2)); }
 .rb-stats { display: flex; gap: var(--spacing-lg); }
 .rb-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.8rem; color: var(--text-soft); }
 .rb-stat strong { font-size: 1.2rem; color: var(--text); }
@@ -146,7 +146,7 @@
 }
 .rb-slot.shown { animation: pop-in 200ms both; }
 /* Letters handed over at the end, apart from the ones the child found. */
-.rb-slot.given { color: var(--secondary); }
+.rb-slot.given { color: var(--secondary-ink, var(--secondary)); }
 
 .rb-keys {
   display: grid;

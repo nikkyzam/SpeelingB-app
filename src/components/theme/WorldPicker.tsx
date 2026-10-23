@@ -2,6 +2,7 @@ import React from 'react'
 import { useTheme } from '../../contexts/ThemeContext'
 import { World, getWorld } from '../../theme/worlds'
 import './WorldPicker.css'
+import Dialog from '../common/Dialog'
 
 interface WorldPickerProps {
   /** Called after a world is picked (e.g. to close a modal) */
@@ -73,7 +74,7 @@ export const WorldPickerModal: React.FC<{ open: boolean; onClose: () => void }> 
 }) => {
   if (!open) return null
   return (
-    <div className="world-picker-modal" role="dialog" aria-modal="true">
+    <Dialog title="Pick your world" onClose={onClose} className="world-dialog">
       <div className="world-picker-modal__sheet pop-in">
         <div className="world-picker-modal__welcome">
           <span className="world-picker-modal__wave wiggle" aria-hidden>👋</span>
@@ -82,7 +83,7 @@ export const WorldPickerModal: React.FC<{ open: boolean; onClose: () => void }> 
         </div>
         <WorldPicker showTitle={false} onPicked={onClose} />
       </div>
-    </div>
+    </Dialog>
   )
 }
 

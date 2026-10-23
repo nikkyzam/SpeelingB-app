@@ -1,3 +1,5 @@
+import { usePreferences } from '../../../hooks/usePreferences'
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
@@ -97,6 +99,7 @@ const HoneyFlight: React.FC<HoneyFlightProps> = ({
   pace = 4400,
 }) => {
   const { speak } = useAudio()
+  const [preferences] = usePreferences()
   const cheer = useCheer()
 
   const words = useMemo<Word[]>(() => {
@@ -148,9 +151,9 @@ const HoneyFlight: React.FC<HoneyFlightProps> = ({
   // game nobody is playing, so every delay is tracked and cleared on unmount.
   const timers = useRef<number[]>([])
   const later = (fn: () => void, ms: number) => {
-    timers.current.push(window.setTimeout(fn, ms))
+    timers.current.push(activityClock.setTimeout(fn, ms))
   }
-  useEffect(() => () => timers.current.forEach((t) => window.clearTimeout(t)), [])
+  useEffect(() => () => timers.current.forEach((t) => activityClock.clearTimeout(t)), [])
 
   const current = words[index]
   const answer = (current?.word ?? '').toLowerCase()
@@ -185,8 +188,8 @@ const HoneyFlight: React.FC<HoneyFlightProps> = ({
 
   useEffect(() => {
     if (!current) return
-    const step = (START_X - BEE_X) / (pace / TICK_MS)
-    const ticker = window.setInterval(() => {
+    const step = (START_X - BEE_X) / ((preferences.relaxed ? pace * 3 : pace) / TICK_MS)
+    const ticker = activityClock.setInterval(() => {
       const f = flight.current
       if (f.phase !== 'flying' || f.paused) return
 
@@ -215,7 +218,7 @@ const HoneyFlight: React.FC<HoneyFlightProps> = ({
       }
       repaint()
     }, TICK_MS)
-    return () => window.clearInterval(ticker)
+    return () => activityClock.clearInterval(ticker)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, words, pace])
 

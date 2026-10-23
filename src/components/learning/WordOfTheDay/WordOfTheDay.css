@@ -38,7 +38,7 @@
   font-family: var(--font-primary);
   font-weight: 900;
   font-size: clamp(1.9rem, 8vw, 2.9rem);
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
   letter-spacing: 0.03em;
   padding: 0;
 }
@@ -105,7 +105,7 @@
 .wotd-keep:active:not(:disabled) { transform: translateY(3px); box-shadow: none; }
 .wotd-keep.done {
   background: var(--card-soft);
-  color: var(--success);
+  color: var(--success-ink, var(--success));
   border: 2px solid var(--success);
   box-shadow: none;
   cursor: default;

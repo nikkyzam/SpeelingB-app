@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import { useMemo, useRef } from 'react'
 import { useAudio } from '../../../contexts/AudioContext'
 import { praise, nearly, isStreakMilestone } from '../../../services/words/praise'
@@ -37,7 +38,7 @@ export const useCheer = (): Cheer => {
         run.current += 1
         const line = praise(run.current)
         sfx.correct()
-        if (isStreakMilestone(run.current)) window.setTimeout(() => sfx.star(), 180)
+        if (isStreakMilestone(run.current)) activityClock.setTimeout(() => sfx.star(), 180)
         if (!quiet) speak(say ? `${line} ${say}` : line)
         return line
       },

@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useState, useEffect, useCallback } from 'react'
 import './ReactionTest.css'
 
@@ -25,36 +26,36 @@ const ReactionTest: React.FC<ReactionTestProps> = ({ onComplete, rounds = 10 }) 
 
     if (gameState === 'waiting') {
       const waitTime = 1000 + Math.random() * 3000
-      const timer = setTimeout(() => {
+      const timer = activityClock.setTimeout(() => {
         setGameState('ready')
-        setTimeout(() => {
+        activityClock.setTimeout(() => {
           setGameState('go')
-          setStartTime(Date.now())
+          setStartTime(activityClock.now())
         }, Math.random() * 2000 + 1000) // Random delay 1-3s
       }, waitTime)
-      return () => clearTimeout(timer)
+      return () => activityClock.clearTimeout(timer)
     }
   }, [currentRound, gameState, rounds])
 
   useEffect(() => {
     if (gameState === 'ready') {
       setCountdown(3)
-      const timer = setInterval(() => {
+      const timer = activityClock.setInterval(() => {
         setCountdown(prev => {
           if (prev <= 1) {
-            clearInterval(timer)
+            activityClock.clearInterval(timer)
             return 3
           }
           return prev - 1
         })
       }, 1000)
-      return () => clearInterval(timer)
+      return () => activityClock.clearInterval(timer)
     }
   }, [gameState])
 
   const handleClick = useCallback(() => {
     if (gameState === 'go') {
-      const time = Date.now() - startTime
+      const time = activityClock.now() - startTime
       setReactionTime(time)
       setReactionTimes(prev => [...prev, time])
 
@@ -80,7 +81,7 @@ const ReactionTest: React.FC<ReactionTestProps> = ({ onComplete, rounds = 10 }) 
       setGameState('result')
 
       // Move to next round
-      setTimeout(() => {
+      activityClock.setTimeout(() => {
         setCurrentRound(prev => prev + 1)
         setGameState('waiting')
         setReactionTime(null)
@@ -89,7 +90,7 @@ const ReactionTest: React.FC<ReactionTestProps> = ({ onComplete, rounds = 10 }) 
       // Too early!
       setReactionTime(-1)
       setGameState('result')
-      setTimeout(() => {
+      activityClock.setTimeout(() => {
         setCurrentRound(prev => prev + 1)
         setGameState('waiting')
         setReactionTime(null)
@@ -101,7 +102,7 @@ const ReactionTest: React.FC<ReactionTestProps> = ({ onComplete, rounds = 10 }) 
     const bonus = bestTime ? Math.round(1000 - bestTime) : 0
     const avgBonus = averageTime ? Math.round(500 - averageTime) * 2 : 0
     const finalScore = score + bonus + avgBonus
-    setTimeout(() => onComplete(finalScore), 1000)
+    activityClock.setTimeout(() => onComplete(finalScore), 1000)
   }
 
   const getFeedback = () => {

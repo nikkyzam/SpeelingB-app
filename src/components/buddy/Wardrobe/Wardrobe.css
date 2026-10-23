@@ -53,7 +53,7 @@
 .wd-section h4 {
   font-family: var(--font-primary);
   font-size: 0.95rem;
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
   margin-bottom: var(--spacing-sm);
 }
 
@@ -84,7 +84,7 @@
 .wd-emoji { font-size: 1.9rem; line-height: 1.1; }
 .wd-name { font-family: var(--font-primary); font-weight: 800; font-size: 0.78rem; text-align: center; line-height: 1.1; }
 .wd-tag { font-size: 0.72rem; font-weight: 800; color: var(--text-soft); }
-.wd-item.wearing .wd-tag { color: var(--success); }
+.wd-item.wearing .wd-tag { color: var(--success-ink, var(--success)); }
 
 .wd-denied {
   position: absolute;

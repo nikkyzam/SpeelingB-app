@@ -14,7 +14,7 @@
 
 /* ---- Intro: one line and a big Start ---- */
 .ta-intro-mascot { font-size: 3.5rem; animation: bounce 1.6s ease-in-out infinite; }
-.test-all-intro h1 { font-size: clamp(1.4rem, 5vw, 2rem); color: var(--primary-2); margin: var(--spacing-md) 0 var(--spacing-lg); }
+.test-all-intro h1 { font-size: clamp(1.4rem, 5vw, 2rem); color: var(--primary-ink, var(--primary-2)); margin: var(--spacing-md) 0 var(--spacing-lg); }
 .ta-timer-choice {
   display: block;
   margin: var(--spacing-md) auto 0;
@@ -105,7 +105,7 @@
 
 /* ---- Results: stars first, then words to practise ---- */
 .ta-done-mascot { font-size: 3.5rem; animation: bounce 1.2s ease-in-out infinite; }
-.test-completed h1 { color: var(--primary-2); margin: var(--spacing-sm) 0 var(--spacing-md); }
+.test-completed h1 { color: var(--primary-ink, var(--primary-2)); margin: var(--spacing-sm) 0 var(--spacing-md); }
 .ta-done-stars {
   display: inline-block;
   padding: 0.4rem 1.2rem;

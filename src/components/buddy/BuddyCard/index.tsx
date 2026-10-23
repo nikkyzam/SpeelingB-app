@@ -7,6 +7,7 @@ import BuddyService, { BUDDY_EVENT, stageForLevel } from '../../../services/budd
 import { itemById } from '../../../services/buddy/wardrobe'
 import { buddyVoiceOptions, personalityFor } from '../../../services/buddy/personality'
 import Wardrobe from '../Wardrobe'
+import Dialog from '../../common/Dialog'
 import sfx from '../../games/shared/sfx'
 import './BuddyCard.css'
 
@@ -128,7 +129,7 @@ const BuddyCard: React.FC = () => {
   }
 
   const toNextStage = level.next
-    ? `${level.next.at - level.xp} XP until ${buddy.name ? `${buddy.name} grows` : 'the next stage'}`
+    ? `${level.next.at - level.xp} learning points until ${buddy.name ? `${buddy.name} grows` : 'the next stage'}`
     : `${name} is fully grown — legendary!`
 
   return (
@@ -209,12 +210,13 @@ const BuddyCard: React.FC = () => {
       </div>
 
       {naming && (
-        <div className="buddy-namer" role="dialog" aria-label="Name your buddy">
+        <Dialog title="Name your buddy" onClose={() => setNaming(false)}>
           <div className="buddy-namer-card">
             <div className="buddy-namer-egg" aria-hidden>🥚</div>
             <h4>What shall we call them?</h4>
             <input
               className="buddy-input"
+              aria-label="Buddy nickname"
               value={draftName}
               onChange={(e) => setDraftName(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && saveName()}
@@ -227,15 +229,15 @@ const BuddyCard: React.FC = () => {
               <button className="buddy-btn ghost" onClick={() => setNaming(false)}>Later</button>
             </div>
           </div>
-        </div>
+        </Dialog>
       )}
 
       {dressing && buddy.name && (
-        <Wardrobe
+        <Dialog title={`${buddy.name}'s wardrobe`} onClose={() => setDressing(false)}><Wardrobe
           buddyName={buddy.name}
           onClose={() => setDressing(false)}
           onSay={say}
-        />
+        /></Dialog>
       )}
 
       {evolved && (

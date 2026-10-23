@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
@@ -72,10 +73,10 @@ const ParrotParty: React.FC<ParrotPartyProps> = ({ onComplete, words: providedWo
     setStep(n)
   }
   const later = (fn: () => void, ms: number) => {
-    timers.current.push(window.setTimeout(fn, ms))
+    timers.current.push(activityClock.setTimeout(fn, ms))
   }
   const clearTimers = () => {
-    timers.current.forEach((t) => window.clearTimeout(t))
+    timers.current.forEach((t) => activityClock.clearTimeout(t))
     timers.current = []
   }
   useEffect(() => clearTimers, [])

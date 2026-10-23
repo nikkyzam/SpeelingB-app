@@ -152,7 +152,7 @@
 }
 
 .results-summary strong {
-  color: var(--primary);
+  color: var(--primary-ink, var(--primary));
 }
 
 .books-grid {

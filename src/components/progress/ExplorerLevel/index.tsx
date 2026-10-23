@@ -60,7 +60,7 @@ const ExplorerLevel: React.FC<ExplorerLevelProps> = ({ compact, onClick }) => {
 
         <div className="xl-foot">
           {level.next
-            ? <span>{toNext} XP to <strong>{level.next.title}</strong> {level.next.icon}</span>
+            ? <span>{toNext} learning points to <strong>{level.next.title}</strong> {level.next.icon}</span>
             : <span>Top rank reached — you legend! 🏆</span>}
           {!compact && (
             <span className="xl-totals">

@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.dt-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.dt-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary)); }
 .dt-stats { display: flex; gap: var(--spacing-lg); }
 .dt-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .dt-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -90,8 +90,8 @@
   font-family: var(--font-primary);
   font-weight: 800;
 }
-.dt-flash.ok { color: var(--success); }
-.dt-flash.bad { color: var(--error); }
+.dt-flash.ok { color: var(--success-ink, var(--success)); }
+.dt-flash.bad { color: var(--error-ink, var(--error)); }
 
 @media (prefers-reduced-motion: reduce) {
   .dt-letter { transition: none; }

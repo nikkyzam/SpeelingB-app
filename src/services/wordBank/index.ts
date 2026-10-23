@@ -1,3 +1,7 @@
+import { getPreferences } from '../preferences'
+import { EARLY_READER_WORDS } from '../words/earlyReader'
+/** The starter words added for early readers; a list of their own, never a Bee level. */
+export const EARLY_READER_LIST = 'early-reader'
 // WordBank service with proper imports
 import {
   ALL_WORDS,
@@ -20,11 +24,12 @@ export interface Word {
   source?: string
   sentences?: string[]
   /**
-   * Set on words from a private list (e.g. the 2026 School Bee study list,
-   * loaded from Firestore for signed-in children). They belong to that list,
-   * not to the One/Two/Three Bee levels.
+   * Set on words that belong to a list rather than the One/Two/Three Bee
+   * levels: a private list (the 2026 School Bee study list, loaded from
+   * Firestore for signed-in children) or the early-reader starter words.
    */
   list?: string
+  picture?: string
 }
 
 export interface WordCategory {
@@ -41,6 +46,15 @@ export class WordBank {
 
   constructor() {
     this.words = this.processWordData()
+    // Competition lists omit many first-reader words. Give them stable IDs so
+    // learning, saved progress and games can all resolve the starter vocabulary.
+    for (const [text, details] of Object.entries(EARLY_READER_WORDS)) {
+      if (!this.words.some(word => word.word.toLowerCase() === text)) {
+        // `list` keeps them out of the Bee levels: appended to One Bee they
+        // re-spaced every blended level and moved children's saved groups.
+        this.words.push({ id: `early-reader-${text}`, word: text, ...details, difficulty: 1, category: 'starter', source: EARLY_READER_LIST, list: EARLY_READER_LIST })
+      }
+    }
     // Seasonal words are part of the bank even out of season: a child who
     // learned "pumpkin" last October must still find it in their collection,
     // and every consumer resolves studied ids through getWordById.
@@ -193,7 +207,14 @@ export class WordBank {
    */
   getLearningList(levels: readonly number[], list?: string | null): Word[] {
     if (list && this.hasList(list)) return this.getWordsForList(list)
-    return this.getWordsForLevels(levels)
+    const words = this.getWordsForLevels(levels)
+    if (getPreferences().stage !== 'early') return words
+    const short = Object.keys(EARLY_READER_WORDS).flatMap(text => {
+      // The bundled copy comes first in the bank; the starter copy fills any gap.
+      const word = this.words.find(w => w.word.toLowerCase() === text && (!w.list || w.list === EARLY_READER_LIST))
+      return word ? [{ ...word, ...EARLY_READER_WORDS[text] }] : []
+    })
+    return short.length ? short : words
   }
 
   /**
@@ -276,7 +297,9 @@ export class WordBank {
   }
 
   getWordById(id: string): Word | undefined {
-    return this.words.find(word => word.id === id)
+    const word = this.words.find(word => word.id === id)
+    const simpler = word && !word.list && getPreferences().stage === 'early' ? EARLY_READER_WORDS[word.word.toLowerCase()] : undefined
+    return word && simpler ? { ...word, ...simpler } : word
   }
 
   getWordByWord(wordStr: string): Word | undefined {

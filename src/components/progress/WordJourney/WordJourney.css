@@ -10,7 +10,7 @@
 }
 
 .wj-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--spacing-sm); flex-wrap: wrap; margin-bottom: var(--spacing-md); }
-.wj-title { font-family: var(--font-primary); font-weight: 900; color: var(--primary-2); }
+.wj-title { font-family: var(--font-primary); font-weight: 900; color: var(--primary-ink, var(--primary-2)); }
 .wj-sub { font-size: 0.8rem; color: var(--text-soft); font-weight: 700; }
 
 .wj-path {
@@ -86,7 +86,7 @@
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
   background: var(--card);
   border: 2px solid var(--primary);
   border-radius: var(--radius-round);

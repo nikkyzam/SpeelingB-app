@@ -142,7 +142,7 @@
   font-family: var(--font-primary);
 }
 .bub-line { margin: 0 0 var(--spacing-xs); font-weight: 800; font-size: 1.15rem; }
-.bub-flash.ok .bub-line { color: var(--success); }
+.bub-flash.ok .bub-line { color: var(--success-ink, var(--success)); }
 .bub-flash.soft .bub-line { color: var(--text-soft); }
 .bub-why,
 .bub-nudge {

@@ -18,7 +18,7 @@
   margin: 0;
   font-family: var(--font-primary);
   font-size: 1.8rem;
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
   text-shadow: 0 2px 0 rgba(255, 255, 255, 0.6);
 }
 .tr-count {
@@ -79,7 +79,7 @@
   margin: 0;
   font-family: var(--font-primary);
   font-size: 1.1rem;
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
 }
 .tr-shelf-label span { font-size: 0.78rem; color: var(--text-soft); }
 
@@ -189,7 +189,7 @@
 }
 .tr-detail-icon { font-size: 4rem; line-height: 1; }
 .tr-detail-icon:not(.won) { opacity: 0.4; filter: grayscale(1); }
-.tr-detail-card h3 { margin: 0; font-family: var(--font-primary); color: var(--primary-2); }
+.tr-detail-card h3 { margin: 0; font-family: var(--font-primary); color: var(--primary-ink, var(--primary-2)); }
 .tr-detail-card p { margin: 0; color: var(--text); }
 .tr-detail-date { color: var(--text-soft) !important; font-size: 0.85rem; font-weight: 700; }
 

@@ -19,6 +19,7 @@ interface UseSpeechRecognition {
   listening: boolean
   /** latest final transcript, cleaned up */
   transcript: string | null
+  error: string | null
   start: () => void
   stop: () => void
   reset: () => void
@@ -42,6 +43,7 @@ export const useSpeechRecognition = (): UseSpeechRecognition => {
   })
   const [listening, setListening] = useState(false)
   const [transcript, setTranscript] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
   const recogRef = useRef<any>(null)
 
   useEffect(() => () => {
@@ -52,6 +54,7 @@ export const useSpeechRecognition = (): UseSpeechRecognition => {
     if (!supported) return
     const Ctor = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
     const recog = new Ctor()
+    setError(null)
     recog.lang = 'en-US'
     recog.interimResults = false
     recog.maxAlternatives = 1
@@ -68,7 +71,10 @@ export const useSpeechRecognition = (): UseSpeechRecognition => {
       if (final) setTranscript(final.transcript)
     }
     recog.onend = () => setListening(false)
-    recog.onerror = () => setListening(false)
+    recog.onerror = (event: { error?: string }) => {
+      setListening(false)
+      setError(event.error === 'not-allowed' ? 'The microphone is off. You can type or tap the letters instead.' : 'I could not hear that clearly. Try again, or type the letters.')
+    }
 
     recogRef.current = recog
     setTranscript(null)
@@ -77,6 +83,7 @@ export const useSpeechRecognition = (): UseSpeechRecognition => {
       recog.start()
     } catch {
       setListening(false)
+      setError('The microphone could not start. You can type or tap the letters instead.')
     }
   }, [supported])
 
@@ -87,7 +94,7 @@ export const useSpeechRecognition = (): UseSpeechRecognition => {
 
   const reset = useCallback(() => setTranscript(null), [])
 
-  return { supported, listening, transcript, start, stop, reset }
+  return { supported, listening, transcript, error, start, stop, reset }
 }
 
 export default useSpeechRecognition

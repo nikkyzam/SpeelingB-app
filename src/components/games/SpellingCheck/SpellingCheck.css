@@ -22,7 +22,7 @@
   margin-bottom: var(--spacing-lg);
   text-align: left;
 }
-.sck-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.sck-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary-2)); }
 .sck-stats { display: flex; gap: var(--spacing-lg); }
 .sck-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.8rem; color: var(--text-soft); }
 .sck-stat strong { font-size: 1.2rem; color: var(--text); }
@@ -64,7 +64,7 @@
 }
 .sck-option:hover:not(:disabled) { transform: translateY(-2px); border-color: var(--primary); }
 .sck-option:active:not(:disabled) { transform: translateY(1px); }
-.sck-option.correct { border-color: var(--success); background: rgba(47,191,113,0.15); color: var(--success); animation: pop-in 220ms both; }
+.sck-option.correct { border-color: var(--success); background: rgba(47,191,113,0.15); color: var(--success-ink, var(--success)); animation: pop-in 220ms both; }
 /* A missed pick fades back rather than turning red. */
 .sck-option.missed { opacity: 0.55; text-decoration: line-through; animation: sck-shake 0.4s ease; }
 .sck-option:disabled { cursor: default; }

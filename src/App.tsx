@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { UserProvider } from './contexts/UserContext'
 import { ProgressProvider } from './contexts/ProgressContext'
@@ -50,6 +50,23 @@ import { useTheme } from './contexts/ThemeContext'
 import { WorldPickerModal } from './components/theme/WorldPicker'
 import { setWordsLeftCounter } from './services/progress/LearningFlow'
 import { wordBank } from './services/wordBank'
+import { getPreferences } from './services/preferences'
+import { usePreferences } from './hooks/usePreferences'
+import { useAudio } from './contexts/AudioContext'
+
+function ExperiencePreferences() {
+  const [prefs] = usePreferences()
+  const { pathname } = useLocation()
+  const { stopSpeaking } = useAudio()
+  const stop = React.useRef(stopSpeaking)
+  stop.current = stopSpeaking
+  useEffect(() => {
+    document.documentElement.dataset.calm = String(prefs.calm)
+    document.documentElement.dataset.stage = prefs.stage
+  }, [prefs.calm, prefs.stage])
+  useEffect(() => { window.scrollTo?.({ top: 0, behavior: 'instant' }); return () => stop.current() }, [pathname])
+  return null
+}
 
 // LearningFlow can't see the word bank, so it is told how to count the words
 // a child still has to meet in their levels. At the end of a word list that
@@ -62,7 +79,7 @@ import { wordBank } from './services/wordBank'
     // A private list counts only once it is loaded on this device; until then
     // the child is on their levels, so the count must follow that too.
     const onList = !!list && wordBank.hasList(list)
-    const key = `${onList ? list : levels.join(',')}|${learned.length}|${learned[learned.length - 1] ?? ''}`
+    const key = `${onList ? list : levels.join(',')}|${getPreferences().stage}|${learned.length}|${learned[learned.length - 1] ?? ''}`
     if (key !== lastKey) {
       const known = new Set(learned)
       lastLeft = wordBank.getLearningList(levels, list).filter((w) => !known.has(w.id)).length
@@ -93,10 +110,6 @@ function App() {
     // Note: AuthService.init() already pulls saved progress from Firebase on
     // sign-in (and blocks uploads until that completes), so no sync here.
 
-    // Request notification permission
-    if ('Notification' in window && Notification.permission === 'default') {
-      Notification.requestPermission()
-    }
   }, [])
 
   useEffect(() => {
@@ -123,6 +136,7 @@ function App() {
         <UserProvider>
           <ProgressProvider>
             <AudioProvider>
+              <ExperiencePreferences />
               <div className="app-container" data-testid="app-container">
                 <Header />
                 <main className="main-content">

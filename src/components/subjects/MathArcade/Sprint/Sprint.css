@@ -13,13 +13,13 @@
   padding: 0 0.2em;
   border-radius: var(--radius-sm);
   background: var(--card-soft);
-  color: var(--primary);
+  color: var(--primary-ink, var(--primary));
 }
 
 .ma-sprint-double {
   display: inline-block;
   margin-left: 0.3rem;
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
   animation: ma-sprint-pulse 0.8s ease-in-out infinite alternate;
 }
 

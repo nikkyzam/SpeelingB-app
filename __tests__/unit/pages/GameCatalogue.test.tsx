@@ -1,3 +1,4 @@
+vi.mock('@/contexts/AudioContext', () => ({ useAudio: () => ({ speak: vi.fn(), stopSpeaking: vi.fn() }) }))
 import React from 'react'
 import { beforeEach, afterEach, describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent, within } from '@testing-library/react'
@@ -99,6 +100,12 @@ describe('the game catalogue', () => {
     try {
       for (let day = 1; day <= 60; day++) {
         vi.setSystemTime(new Date(2026, 8, day, 12))
+        localStorage.setItem('learningProgress', JSON.stringify({
+          wordsLearnedTotal: Array.from({ length: 6 }, (_, i) => `concise-all-bee-${i}`),
+          wordsLearnedToday: Array.from({ length: 6 }, (_, i) => `concise-all-bee-${i}`),
+          dailyQuizPassedDate: new Date().toDateString(), lastReviewDate: new Date().toISOString(),
+        }))
+        h.flow = new LearningFlowController()
         const { unmount } = openHub()
         const featured = within(screen.getByRole('region', { name: 'Game of the day' })).getByRole('heading', { level: 2 })
         const name = featured.parentElement!.querySelector('strong')!.textContent!
@@ -125,7 +132,7 @@ describe('the game catalogue', () => {
     const title = openFirstGame(container)
     fireEvent.click(screen.getByRole('button', { name: /^Finish / }))
     expect(screen.getByRole('dialog')).toHaveTextContent(/New bronze medal/)
-    fireEvent.click(screen.getByRole('button', { name: /Yay/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Choose another game/ }))
     const card = [...container.querySelectorAll<HTMLElement>('.game-card')].find((c) => c.querySelector('h3')!.textContent === title)!
     expect(within(card).getByLabelText('bronze medal')).toBeInTheDocument()
     expect(screen.getByLabelText('Your game medals')).toHaveTextContent(/1 of \d+ games/)
@@ -185,7 +192,7 @@ describe('the game catalogue', () => {
       const card = container.querySelectorAll<HTMLElement>('.game-card')[i]
       fireEvent.click(within(card).getByRole('button', { name: /Play Now|Beat your best/ }))
       fireEvent.click(screen.getByRole('button', { name: /^Finish / }))
-      fireEvent.click(screen.getByRole('button', { name: 'Yay!' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Choose another game' }))
       const next = container.querySelector('.nextup-game-text strong')?.textContent ?? ''
       expect(next).not.toMatch(HIDDEN)
     }

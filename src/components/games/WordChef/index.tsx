@@ -1,3 +1,5 @@
+import { usePreferences } from '../../../hooks/usePreferences'
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useMemo, useState, useEffect, useRef } from 'react'
 import { wordBank, Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
@@ -102,6 +104,7 @@ const isRealWord = (w: string): boolean => COMMON_WORD_SET.has(w) || !!wordBank.
 /** Cook up as many real words as you can from the letters before time runs out. */
 const WordChef: React.FC<WordChefProps> = ({ onComplete, words: providedWords, duration = 120 }) => {
   const { speak } = useAudio()
+  const [preferences] = usePreferences()
   const cheer = useCheer()
   const later = useLater()
 
@@ -143,15 +146,15 @@ const WordChef: React.FC<WordChefProps> = ({ onComplete, words: providedWords, d
   }
 
   useEffect(() => {
-    if (!base || ended.current) return
+    if (!base || ended.current || preferences.relaxed) return
     if (timeLeft <= 0) {
       finish(score)
       return
     }
-    const t = window.setTimeout(() => setTimeLeft((s) => s - 1), 1000)
-    return () => window.clearTimeout(t)
+    const t = activityClock.setTimeout(() => setTimeLeft((s) => s - 1), 1000)
+    return () => activityClock.clearTimeout(t)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeLeft, base])
+  }, [timeLeft, base, preferences.relaxed])
 
   const say = (kind: 'ok' | 'bad', msg: string) => {
     const id = ++flashId.current
@@ -220,10 +223,11 @@ const WordChef: React.FC<WordChefProps> = ({ onComplete, words: providedWords, d
 
   return (
     <div className="word-chef">
+      {preferences.relaxed && !over && <button className="comfort-button" onClick={() => finish(score)}>Finish my round</button>}
       <div className="wch-header">
         <div className="wch-title">🍲 Word Chef</div>
         <div className="wch-stats">
-          <div className="wch-stat"><span>Time</span><strong>{timeLeft}s</strong></div>
+          <div className="wch-stat"><span>Pace</span><strong>{preferences.relaxed ? "Your pace" : `${timeLeft}s`}</strong></div>
           <div className="wch-stat"><span>Score</span><strong>{score}</strong></div>
           <div className="wch-stat"><span>Cooked</span><strong>{Math.min(found.length, goal)}/{goal}</strong></div>
         </div>

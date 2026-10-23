@@ -76,11 +76,6 @@ export class PointsService {
       lastEarned: new Date()
     };
 
-    // Streak bonus
-    if (points.dailyStreak >= 7) {
-      updatedPoints.availablePoints += 50;
-    }
-
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedPoints));
 
     // Trigger points earned event for UI
@@ -109,6 +104,7 @@ export class PointsService {
   }
 
   static spendPoints(amount: number, reward: RewardItem): boolean {
+    if (!Number.isFinite(amount) || amount <= 0) return false;
     const points = this.getPoints();
 
     if (points.availablePoints < amount) {
@@ -122,7 +118,7 @@ export class PointsService {
     };
 
     const purchase: PurchaseHistory = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       rewardId: reward.id,
       rewardName: reward.name,
       purchaseDate: new Date(),
@@ -150,6 +146,40 @@ export class PointsService {
   static getPurchaseHistory(): PurchaseHistory[] {
     const history = localStorage.getItem(this.HISTORY_KEY);
     return history ? JSON.parse(history) : [];
+  }
+
+  /** Refund spending without counting it as newly earned learning stars. */
+  static refundPurchase(id: string): boolean {
+    const history = this.getPurchaseHistory();
+    const purchase = history.find(p => p.id === id);
+    if (!purchase || purchase.refundedAt || !Number.isFinite(purchase.cost) || purchase.cost <= 0) return false;
+    const points = this.getPoints();
+    purchase.refundedAt = new Date().toISOString();
+    localStorage.setItem(this.HISTORY_KEY, JSON.stringify(history));
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify({ ...points,
+      availablePoints: points.availablePoints + purchase.cost,
+      spentPoints: Math.max(0, points.spentPoints - purchase.cost),
+    }));
+    window.dispatchEvent(new Event('pointsEarned'));
+    return true;
+  }
+
+  /**
+   * Categories the old shop sold that never did anything. Only these are
+   * refunded, by name: refunding "anything that isn't a buddy item" would
+   * silently undo any new kind of purchase added later. Buddy items work and
+   * real-world promises stay in history for the family.
+   */
+  static readonly RETIRED_CATEGORIES = ['avatar', 'faith', 'games', 'learning', 'powerup', 'sticker', 'streak', 'theme'];
+
+  static refundUnsupportedItems(): number {
+    let amount = 0;
+    for (const p of this.getPurchaseHistory()) {
+      if (!p.rewardId.startsWith('buddy-') && this.RETIRED_CATEGORIES.includes(p.category) && !p.refundedAt) {
+        if (this.refundPurchase(p.id)) amount += p.cost;
+      }
+    }
+    return amount;
   }
 
   static resetDailyPoints(): void {

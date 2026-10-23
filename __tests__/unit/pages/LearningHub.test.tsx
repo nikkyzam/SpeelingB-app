@@ -78,6 +78,11 @@ const createMockLearningFlow = (overrides: Partial<LearningFlowController>) => (
   getSelectedGroup: () => 0,
   getMissedDays: () => [],
   gamesLockedReason: () => 'quiz',
+  gameAccessMessage(this: { areStarterGamesOpen: () => boolean }) {
+    return this.areStarterGamesOpen()
+      ? 'Starter games are ready. Today’s quiz and any due review open more games.'
+      : 'Meet today’s words to open starter games. The quiz and any due review open more games.'
+  },
   areStarterGamesOpen: () => false,
   // Mid-list, today's goal is just the daily goal.
   getLearnGoalToday(this: { getDailyGoal: () => number }) { return this.getDailyGoal() },
@@ -115,9 +120,9 @@ describe('LearningHub Page - Group Succession', () => {
     const spellStep = stepByHeading('Spell the Words')
     expect(within(spellStep).getByRole('button', { name: /Learn first/i })).toBeDisabled()
 
-    // Game step is locked until the words are spelled.
+    // Games follow today’s learning goal; spelling is optional practice.
     const gameStep = stepByHeading('Play a Game!')
-    expect(within(gameStep).getByRole('button', { name: /Locked/i })).toBeDisabled()
+    expect(within(gameStep).getByRole('button', { name: /Meet today’s words first/i })).toBeDisabled()
   })
 
   it('unlocks Spell once every word in the group is learned', () => {
@@ -132,13 +137,13 @@ describe('LearningHub Page - Group Succession', () => {
 
     // Game still locked — nothing spelled yet.
     const gameStep = stepByHeading('Play a Game!')
-    expect(within(gameStep).getByRole('button', { name: /Locked/i })).toBeDisabled()
+    expect(within(gameStep).getByRole('button', { name: /Meet today’s words first/i })).toBeDisabled()
   })
 
-  it('unlocks a Game once every word in the group is spelled', () => {
+  it('opens starter games when today’s words are learned, even before spelling', () => {
     vi.mocked(LearningFlowController).mockImplementation(() => createMockLearningFlow({
       getWordsLearnedTotal: () => ['1'],
-      getWordsSpelledTotal: () => ['1'],
+      getWordsSpelledTotal: () => [],
       // Today's words are met, so the starter games are open.
       areStarterGamesOpen: () => true,
     }))
@@ -148,7 +153,7 @@ describe('LearningHub Page - Group Succession', () => {
     const gameStep = stepByHeading('Play a Game!')
     expect(within(gameStep).getByRole('button', { name: /Play a Game!/i })).not.toBeDisabled()
     // ...and it says what opens the rest, with a way there.
-    expect(within(gameStep).getByText(/Pass today’s quiz for all the rest/)).toBeInTheDocument()
+    expect(within(gameStep).getByText(/Today’s quiz and any due review/)).toBeInTheDocument()
     expect(within(gameStep).getByRole('button', { name: /Take the Quiz/i })).toBeInTheDocument()
   })
 
@@ -163,8 +168,8 @@ describe('LearningHub Page - Group Succession', () => {
 
     const gameStep = stepByHeading('Play a Game!')
     expect(within(gameStep).queryByText(/You unlocked a game/)).not.toBeInTheDocument()
-    expect(within(gameStep).getByText(/Meet today’s new words/)).toBeInTheDocument()
-    expect(within(gameStep).getByRole('button', { name: /Locked/i })).toBeDisabled()
+    expect(within(gameStep).getByText(/Meet today’s words to open/)).toBeInTheDocument()
+    expect(within(gameStep).getByRole('button', { name: /Meet today’s words first/i })).toBeDisabled()
   })
 
   it('shows the daily goal from the user profile', () => {

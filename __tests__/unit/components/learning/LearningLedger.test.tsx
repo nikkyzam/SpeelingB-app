@@ -1,3 +1,4 @@
+import { setPreferences } from '@/services/preferences'
 import React from 'react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, act, cleanup } from '@testing-library/react'
@@ -117,7 +118,7 @@ const skipQuiz = (n: number) => {
 
 beforeEach(() => {
   vi.clearAllMocks()
-  localStorage.clear()
+  localStorage.clear(); setPreferences({ relaxed: false, waitForMe: false })
   vi.useFakeTimers()
   // A stable no-op shuffle, so words and options keep their order.
   vi.spyOn(Math, 'random').mockReturnValue(0.5)
@@ -166,7 +167,7 @@ describe('one finished quiz moves the word group once', () => {
     skipQuiz(2)
     expect(saved().selectedGroup).toBe(1)
 
-    click(/Back to Hub/)
+    click(/My words/)
     throughTheQuizzes()
     expect(saved().selectedGroup).toBe(1)
   })

@@ -8,11 +8,18 @@ import WhoIsPlaying from '../../components/profile/WhoIsPlaying'
 import AdminUsers from '../../components/admin/AdminUsers'
 import PrizeSetter from '../../components/challenge/PrizeSetter'
 import './Settings.css'
+import GrownUpGate from '../../components/common/GrownUpGate'
+import ComfortControls from '../../components/common/ComfortControls'
+import FamilyRewardsEditor from '../../components/rewards/FamilyRewardsEditor'
+import { usePreferences } from '../../hooks/usePreferences'
+import { useProgress } from '../../contexts/ProgressContext'
 
 const Settings: React.FC = () => {
   const { user, logout } = useUser()
   const { world } = useTheme()
   const navigate = useNavigate()
+  const [preferences, setPreferences] = usePreferences()
+  const { learningFlow } = useProgress()
 
   return (
     <div className="settings">
@@ -31,41 +38,30 @@ const Settings: React.FC = () => {
         </div>
       </section>
 
-      {/* The progress report is for every grown-up, not just admins. */}
+      <section className="settings-section"><h2>Sound and pace</h2><ComfortControls /></section>
       <section className="settings-section">
-        <h2>Progress 📈</h2>
-        <p className="settings-sub">
-          See which words are sticking, which need practice, and how the week has gone.
-        </p>
-        <Button variant="primary" icon="📈" onClick={() => navigate('/progress')}>
-          Open progress report
-        </Button>
+        <h2>For grown-ups</h2><p>Learning stage, family rewards, and accounts live here.</p>
+        <GrownUpGate>
+          <label>Learning stage<select value={preferences.stage} onChange={e => {
+            const stage = e.target.value as typeof preferences.stage
+            // Each stage learns from its own list; keep each one's place.
+            learningFlow.switchStage(preferences.stage, stage)
+            setPreferences({ stage })
+          }}>
+            <option value="early">Early reader — fewer choices and short words</option>
+            <option value="growing">Growing reader — the regular adventure</option>
+            <option value="confident">Confident reader — all subjects and details</option>
+          </select></label>
+          <p>You can change this as your child grows. Age alone does not decide their level.</p>
+          <Button onClick={() => navigate('/progress')}>See learning progress</Button>
+          <FamilyRewardsEditor />
+          <section><h3>Sibling prizes</h3><p>Choose only a prize you have agreed to give. Team Relay lets children work together without a prize.</p><PrizeSetter /></section>
+          {user?.isAdmin && <section><h3>Manage learners</h3><AdminUsers /></section>}
+          <section><h3>Account</h3><p>{user?.isGuest ? 'Guest progress stays in this browser. Use Save progress on Home to set up a grown-up account.' : `Signed in as ${user?.email || 'your family'}. Progress is saved to your account.`}</p>
+            {!user?.isGuest && <Button variant="secondary" onClick={logout}>Log out</Button>}
+          </section>
+        </GrownUpGate>
       </section>
-
-      {/* Any grown-up can put a prize up — it needs no admin rights, because
-          it is about this device's children, not about anyone's account. */}
-      <section className="settings-section">
-        <h2>Sibling Challenge 🏅</h2>
-        <p className="settings-sub">
-          Put something real on the line for the next head-to-head. The winner is
-          recorded here so you know who to give it to.
-        </p>
-        <div className="settings-info-card">
-          <PrizeSetter />
-        </div>
-      </section>
-
-      {/* Grown-up tools — only visible to admins (Firebase "admin" custom claim). */}
-      {user?.isAdmin && (
-        <section className="settings-section">
-          <h2>Grown-up Tools <span className="admin-badge">Admin</span></h2>
-          <p className="settings-sub">
-            See how each child is doing, size their daily words, adjust stars, and
-            open or restart a day.
-          </p>
-          <AdminUsers />
-        </section>
-      )}
 
       <section className="settings-section">
         <h2>Your World {world.mascot}</h2>
@@ -73,24 +69,6 @@ const Settings: React.FC = () => {
           You&apos;re exploring <strong>{world.name}</strong>. Tap another world to switch!
         </p>
         <WorldPicker showTitle={false} />
-      </section>
-
-      <section className="settings-section">
-        <h2>Account</h2>
-        <div className="settings-info-card">
-          {user?.isGuest ? (
-            <p>You are currently playing as a <strong>Guest</strong>.</p>
-          ) : (
-            <>
-              <p>Logged in as: <strong>{user?.email}</strong></p>
-              <div style={{ marginTop: 'var(--spacing-md)' }}>
-                <Button variant="secondary" onClick={logout}>
-                  Log out
-                </Button>
-              </div>
-            </>
-          )}
-        </div>
       </section>
 
       <section className="settings-section">

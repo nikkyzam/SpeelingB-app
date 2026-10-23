@@ -6,6 +6,7 @@ import { useRewardStore } from '../../../stores/rewards/useRewardStore'
 import { useNavigate } from 'react-router-dom'
 import sfx from '../../games/shared/sfx'
 import './Header.css'
+import ComfortControls from '../../common/ComfortControls'
 
 /** What the mascot says when a child keeps poking it. */
 const POKES = [
@@ -80,6 +81,7 @@ const Header: React.FC = () => {
       </div>
 
       <div className="header-right">
+        <details className="header-sound"><summary>🔊 Sound</summary><ComfortControls compact /></details>
         {user && (
           <div className="user-chip">
             {/* Whatever they picked. 'ava' is the legacy stored value from

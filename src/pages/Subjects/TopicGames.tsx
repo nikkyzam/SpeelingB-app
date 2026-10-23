@@ -8,17 +8,18 @@ import { useRewardStore } from '../../stores/rewards/useRewardStore'
 import Celebration from '../../components/common/Celebration'
 import BackLink from './BackLink'
 import './Subjects.css'
+import ActivityFrame from '../../components/common/ActivityFrame'
 
 /** Where a topic's questions and back link come from. */
 const useSource = (source: string, id: string) => {
   if (source === 'quest') {
     const found = findTopic(id)
-    return found && { title: found.topic.name, back: `/subjects/math/quest/topic/${id}`, load: () => loadQuestTopic(id) }
+    return found && { title: found.topic.name, back: `/subjects/math/quest/topic/${id}`, math: true, load: () => loadQuestTopic(id) }
   }
   if (source === 'test') {
     const test = testById(id)
     // A test's games draw on every form, so there is plenty to play with.
-    return test && { title: test.name, back: `/subjects/${test.subject}/tests/${id}`, load: async () => Object.values(await test.load()).flat() }
+    return test && { title: test.name, back: `/subjects/${test.subject}/tests/${id}`, math: test.subject === 'math', load: async () => Object.values(await test.load()).flat() }
   }
   return undefined
 }
@@ -60,7 +61,7 @@ const TopicGames: React.FC = () => {
         <button type="button" className="sj-back" onClick={() => setActive(null)}>
           ← Back to {src.title} games
         </button>
-        <Game
+        <ActivityFrame onExit={() => setActive(null)} instructions={game.blurb} example={src.math ? 'math' : 'choice'}><Game
           questions={questions}
           onComplete={(pct) => {
             if (paid) return
@@ -70,7 +71,7 @@ const TopicGames: React.FC = () => {
             setDone({ name: game.name, pct, stars: result.stars, newBest: result.newBest })
             setActive(null)
           }}
-        />
+        /></ActivityFrame>
       </div>
     )
   }

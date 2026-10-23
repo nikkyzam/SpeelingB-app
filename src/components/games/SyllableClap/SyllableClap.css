@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-sm);
   text-align: left;
 }
-.scl-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.scl-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary-2)); }
 .scl-stats { display: flex; gap: var(--spacing-lg); }
 .scl-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .scl-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -49,7 +49,7 @@
   font-family: var(--font-primary);
   font-weight: 900;
   font-size: clamp(1.4rem, 6vw, 2.1rem);
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
   background: var(--card-soft);
   border: 3px solid var(--primary);
   border-radius: var(--radius-md);

@@ -2,6 +2,8 @@
 // palette, mascot and playful voice. Picking a world re-skins the whole app
 // by setting CSS custom properties on <html> (see ThemeContext).
 
+import { readableColor } from './contrast'
+
 export type WorldId =
   | 'bee'
   | 'space'
@@ -290,6 +292,18 @@ export const WORLDS: Record<WorldId, World> = {
   },
 }
 
+// Every action fill supports white labels, including gradient endpoints.
+for (const world of Object.values(WORLDS)) {
+  const t = world.tokens
+  for (const key of ['primary', 'primary2', 'secondary', 'secondary2', 'accent', 'success', 'error'] as const) {
+    t[key] = readableColor(t[key], '#FFFFFF')
+  }
+  t.onPrimary = '#FFFFFF'
+  t.text = readableColor(t.text, t.card)
+  t.textSoft = readableColor(readableColor(t.textSoft, t.card), t.cardSoft)
+  t.primaryRgb = t.primary.slice(1).match(/../g)!.map(c => parseInt(c, 16)).join(', ')
+}
+
 export const WORLD_LIST: World[] = [
   WORLDS.bee,
   WORLDS.space,
@@ -333,6 +347,9 @@ export function applyWorld(id: WorldId) {
   set('--on-primary', t.onPrimary)
   set('--success', t.success)
   set('--error', t.error)
+  for (const [name, value] of Object.entries({ primary: t.primary, secondary: t.secondary, accent: t.accent, success: t.success, error: t.error })) {
+    set(`--${name}-ink`, readableColor(value, t.card))
+  }
 
   root.setAttribute('data-world', id)
   root.setAttribute('data-mode', world.dark ? 'dark' : 'light')

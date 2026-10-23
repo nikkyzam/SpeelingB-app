@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useEffect, useRef, useState } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
@@ -84,8 +85,8 @@ const SpellTurn: React.FC<SpellTurnProps> = ({
     settled.current = false
     // Queued, so the cheer for the last turn (or "Good luck!") is not cut off.
     speak(`${intro ? `${intro} ` : ''}${who}, your word is: ${sayPrompt(word.word, word.sentence)}`, { queue: true })
-    const t = window.setTimeout(() => box.current?.focus(), 80)
-    return () => window.clearTimeout(t)
+    const t = activityClock.setTimeout(() => box.current?.focus(), 80)
+    return () => activityClock.clearTimeout(t)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [word.id, who])
 

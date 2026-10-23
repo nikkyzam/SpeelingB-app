@@ -1,3 +1,4 @@
+import Dialog from '../../components/common/Dialog'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../../contexts/ThemeContext'
@@ -150,7 +151,7 @@ const TrophyRoom: React.FC = () => {
       </div>
 
       {open && (
-        <div className="tr-detail" role="dialog" aria-modal="true" onClick={() => setOpen(null)}>
+        <Dialog title={open.earnedAt ? open.name : "Still to discover"} onClose={() => setOpen(null)}>
           <div className="tr-detail-card pop-in" onClick={(e) => e.stopPropagation()}>
             <div className={`tr-detail-icon ${open.earnedAt ? 'won' : ''}`} aria-hidden>
               {open.earnedAt ? open.icon : '◇'}
@@ -160,7 +161,7 @@ const TrophyRoom: React.FC = () => {
             {open.earnedAt && <p className="tr-detail-date">Won on {earnedOn(open.earnedAt)}</p>}
             <Button variant="primary" onClick={() => setOpen(null)}>Close</Button>
           </div>
-        </div>
+        </Dialog>
       )}
     </div>
   )

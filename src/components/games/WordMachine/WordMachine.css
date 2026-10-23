@@ -18,7 +18,7 @@
   gap: var(--spacing-sm);
   flex-wrap: wrap;
 }
-.wm-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.wm-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary-2)); }
 .wm-stats { display: flex; gap: var(--spacing-sm); }
 .wm-stat {
   display: flex; flex-direction: column; align-items: center;
@@ -93,7 +93,7 @@
 .wm-output { border-style: dashed; }
 .wm-output .wm-output-word { color: var(--text-soft); }
 .wm-output.filled { border-style: solid; border-color: var(--primary); }
-.wm-output.filled .wm-output-word { color: var(--primary-2); animation: wm-pop 0.35s ease-out; }
+.wm-output.filled .wm-output-word { color: var(--primary-ink, var(--primary-2)); animation: wm-pop 0.35s ease-out; }
 
 /* Gears idle gently; they whirr when a word goes through. */
 .wm-gears { display: flex; flex-direction: column; gap: 0; font-size: 1.6rem; line-height: 1; }
@@ -144,7 +144,7 @@
   animation: wm-pop 0.3s ease-out;
 }
 .wm-lesson.bad { border-left-color: var(--warning); }
-.wm-lesson-cheer { color: var(--primary-2); }
+.wm-lesson-cheer { color: var(--primary-ink, var(--primary-2)); }
 .wm-lesson-icon { font-size: 1.2rem; }
 
 

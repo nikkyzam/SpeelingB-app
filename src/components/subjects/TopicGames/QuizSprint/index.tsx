@@ -1,3 +1,5 @@
+import { usePreferences } from '../../../../hooks/usePreferences'
+import { activityClock } from '../../../../services/games/activityClock'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import type { Response } from '../../../../services/subjects/types'
 import { correctAnswerText, isAnswered, isCorrect } from '../../../../services/subjects/grading'
@@ -24,6 +26,7 @@ type Flash = { ok: boolean; line: string; answer?: string } | null
  */
 const QuizSprint: React.FC<TopicGameProps> = ({ questions, onComplete }) => {
   const cheer = useCheer()
+  const [preferences] = usePreferences()
   const later = useLater()
   const deck = useMemo(() => shuffle(questions), [questions])
   const [phase, setPhase] = useState<'ready' | 'playing' | 'done'>('ready')
@@ -40,9 +43,9 @@ const QuizSprint: React.FC<TopicGameProps> = ({ questions, onComplete }) => {
   const q = deck[index % Math.max(deck.length, 1)]
 
   useEffect(() => {
-    if (phase !== 'playing') return
-    const id = window.setInterval(() => setLeft((s) => s - 1), 1000)
-    return () => window.clearInterval(id)
+    if (phase !== 'playing' || preferences.relaxed) return
+    const id = activityClock.setInterval(() => setLeft((s) => s - 1), 1000)
+    return () => activityClock.clearInterval(id)
   }, [phase])
 
   useEffect(() => {
@@ -53,7 +56,8 @@ const QuizSprint: React.FC<TopicGameProps> = ({ questions, onComplete }) => {
     settled.current = false
     setFlash(null)
     setResponse(null)
-    setIndex((i) => i + 1)
+    if (preferences.relaxed && index + 1 >= Math.min(FULL_MARKS, deck.length)) setPhase('done')
+    else setIndex((i) => i + 1)
   }
 
   const check = () => {
@@ -64,10 +68,10 @@ const QuizSprint: React.FC<TopicGameProps> = ({ questions, onComplete }) => {
       setRight((n) => n + 1)
       setBurst((n) => n + 1)
       setFlash({ ok: true, line: cheer.hit({ quiet: true }) })
-      later(next, 700)
+      if (!preferences.waitForMe) later(next, 700)
     } else {
       setFlash({ ok: false, line: cheer.miss({ quiet: true }), answer: correctAnswerText(q) })
-      later(next, 2200)
+      if (!preferences.waitForMe) later(next, 2200)
     }
   }
 
@@ -75,7 +79,7 @@ const QuizSprint: React.FC<TopicGameProps> = ({ questions, onComplete }) => {
     if (settled.current || !q) return
     settled.current = true
     setFlash({ ok: false, line: 'Skipped — here it is:', answer: correctAnswerText(q) })
-    later(next, 1600)
+    if (!preferences.waitForMe) later(next, 1600)
   }
 
   if (deck.length === 0) {
@@ -89,7 +93,7 @@ const QuizSprint: React.FC<TopicGameProps> = ({ questions, onComplete }) => {
           ⏱️
         </div>
         <h2>Quiz Sprint</h2>
-        <p>Answer as many as you can in {SPRINT_SECONDS} seconds. {FULL_MARKS} right is a perfect run!</p>
+        <p>{preferences.relaxed ? `Try ${Math.min(FULL_MARKS, deck.length)} questions at your pace.` : `Answer as many as you can in ${SPRINT_SECONDS} seconds. ${FULL_MARKS} right is a perfect run!`}</p>
         <button type="button" className="qs-go" onClick={() => setPhase('playing')}>
           Go!
         </button>
@@ -98,11 +102,13 @@ const QuizSprint: React.FC<TopicGameProps> = ({ questions, onComplete }) => {
   }
 
   if (phase === 'done') {
-    const pct = Math.min(100, Math.round((right / FULL_MARKS) * 100))
+    // A relaxed round asks min(FULL_MARKS, deck) questions; all right is 100%.
+    const outOf = preferences.relaxed ? Math.max(1, Math.min(FULL_MARKS, deck.length)) : FULL_MARKS
+    const pct = Math.min(100, Math.round((right / outOf) * 100))
     return (
       <div className="quiz-sprint qs-card pop-in">
         <div className="qs-big" aria-hidden>
-          {right >= FULL_MARKS ? '🏆' : right >= FULL_MARKS / 2 ? '🌟' : '💪'}
+          {right >= outOf ? '🏆' : right >= outOf / 2 ? '🌟' : '💪'}
         </div>
         <h2>Time&apos;s up!</h2>
         <p>
@@ -126,8 +132,8 @@ const QuizSprint: React.FC<TopicGameProps> = ({ questions, onComplete }) => {
   return (
     <div className="quiz-sprint">
       <div className="qs-bar">
-        <span className={`qs-clock${left <= 10 ? ' qs-clock-low' : ''}`} aria-label={`${left} seconds left`}>
-          ⏱️ {left}s
+        <span className={`qs-clock${left <= 10 ? ' qs-clock-low' : ''}`} aria-label={preferences.relaxed ? "No countdown" : `${left} seconds left`}>
+          {preferences.relaxed ? `${index + 1} / ${Math.min(FULL_MARKS, deck.length)}` : `⏱️ ${left}s`}
         </span>
         <span className="qs-score" aria-label={`${right} right`}>
           ⭐ {right}
@@ -153,6 +159,7 @@ const QuizSprint: React.FC<TopicGameProps> = ({ questions, onComplete }) => {
         )}
       </section>
 
+      {flash && preferences.waitForMe && <button className="btn" onClick={next}>Continue →</button>}
       {!flash && (
         <div className="qs-actions">
           <button type="button" className="qs-skip" onClick={skip} aria-label="Skip this question">

@@ -1,3 +1,4 @@
+import { setPreferences } from '@/services/preferences'
 import React from 'react'
 import fs from 'fs'
 import path from 'path'
@@ -72,9 +73,32 @@ const spelled = (): string[] => {
   return saved ? JSON.parse(saved).wordsSpelledToday ?? [] : []
 }
 
+it('waits for the child after a correct spelling in manual lesson mode', () => {
+  setPreferences({ waitForMe: true })
+  mount(<SpellMode words={WORDS} />)
+  type('apple'); check()
+  act(() => vi.advanceTimersByTime(30_000))
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '1')
+  fireEvent.click(screen.getByRole('button', { name: /Next Word/ }))
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '2')
+})
+
+it('lets a child rebuild a missed word with help without claiming independent mastery or stars', () => {
+  setPreferences({ waitForMe: true })
+  mount(<SpellMode words={WORDS} />)
+  type('aple'); check()
+  fireEvent.click(screen.getByRole('button', { name: 'Try with help' }))
+  type('apple'); check()
+  expect(screen.getByText(/You built it with help/)).toBeInTheDocument()
+  expect(spelled()).not.toContain('1')
+  expect(h.addStars).not.toHaveBeenCalled()
+  fireEvent.click(screen.getByRole('button', { name: /Next Word/ }))
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '2')
+})
+
 beforeEach(() => {
   vi.clearAllMocks()
-  localStorage.clear()
+  localStorage.clear(); setPreferences({ relaxed: false, waitForMe: false })
   vi.useFakeTimers()
   // A stable no-op shuffle, so words and options keep their order.
   vi.spyOn(Math, 'random').mockReturnValue(0.5)

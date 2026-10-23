@@ -1,3 +1,5 @@
+import { usePreferences } from '../../../hooks/usePreferences'
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useMemo, useState, useEffect, useRef } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
@@ -37,6 +39,7 @@ export const lookTime = (word: string): number => 1500 + 200 * word.length
  */
 const GhostWord: React.FC<GhostWordProps> = ({ onComplete, words: providedWords, rounds = 5, peekMs }) => {
   const { speak } = useAudio()
+  const [preferences] = usePreferences()
   const cheer = useCheer()
   const later = useLater()
 
@@ -70,11 +73,12 @@ const GhostWord: React.FC<GhostWordProps> = ({ onComplete, words: providedWords,
     locked.current = false
     // Queued, so the last word's spoken correction (its letters) isn't cut off.
     speak(current.word, { queue: true })
-    const t = window.setTimeout(() => {
+    if (preferences.relaxed) return
+    const t = activityClock.setTimeout(() => {
       sfx.whoosh()
       setPhase('typing')
     }, look)
-    return () => window.clearTimeout(t)
+    return () => activityClock.clearTimeout(t)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, words])
 
@@ -138,6 +142,7 @@ const GhostWord: React.FC<GhostWordProps> = ({ onComplete, words: providedWords,
 
   return (
     <div className="ghost-word">
+      {preferences.relaxed && phase === 'showing' && <button className="btn" onClick={() => setPhase('typing')}>I’m ready — hide the word</button>}
       <div className="gw-header">
         <div className="gw-title">👻 Ghost Word</div>
         <div className="gw-stats">

@@ -14,7 +14,7 @@ const h = vi.hoisted(() => {
 })
 vi.mock('@/components/games/shared/sfx', () => ({ default: h.sfx, sfx: h.sfx, setWorldSoundProfile: () => {} }))
 vi.mock('@/contexts/AudioContext', () => ({
-  useAudio: () => ({ speak: h.speak }),
+  useAudio: () => ({ speak: h.speak, stopSpeaking: vi.fn() }),
   AudioProvider: ({ children }: { children: React.ReactNode }) => children,
 }))
 vi.mock('@/contexts/ThemeContext', () => ({ useTheme: () => ({ world: { id: 'bee', mascot: '🐝' } }) }))
@@ -250,7 +250,7 @@ describe('Sibling Challenge: the match and its stars', () => {
     expect(screen.getByText(/Great try, Sam — rematch\?/)).toBeInTheDocument()
     expect(h.sfx.fanfare).toHaveBeenCalledTimes(1)
 
-    fireEvent.click(screen.getByRole('button', { name: 'Yay!' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Done for now' }))
     expect(screen.getByText('🏆 Ava won!')).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: /Rematch/ }))
     expect(screen.getByText("Sam's turn!")).toBeInTheDocument()
@@ -431,7 +431,7 @@ describe('Sentence Maker', () => {
 describe('Prize Wheel', () => {
   it('spins once for a double tap — one prize, not two', () => {
     render(<PrizeWheel />)
-    const spin = screen.getByRole('button', { name: /Spin the wheel/ })
+    const spin = screen.getByRole('button', { name: /Open my gift/ })
     act(() => {
       fireEvent.click(spin)
       fireEvent.click(spin)
@@ -444,14 +444,14 @@ describe('Prize Wheel', () => {
 
   it('clicks past the pegs while it turns', () => {
     render(<PrizeWheel />)
-    fireEvent.click(screen.getByRole('button', { name: /Spin the wheel/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Open my gift/ }))
     act(() => { vi.advanceTimersByTime(SPIN_MS) })
     expect(h.sfx.tap.mock.calls.length).toBeGreaterThanOrEqual(10)
   })
 
   it('pays a spin left mid-turn exactly once, and uses up the day’s spin', () => {
     const { unmount } = render(<PrizeWheel />)
-    fireEvent.click(screen.getByRole('button', { name: /Spin the wheel/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Open my gift/ }))
     act(() => { vi.advanceTimersByTime(1000) })
     unmount()
     act(() => { vi.advanceTimersByTime(SPIN_MS * 2) })

@@ -18,7 +18,7 @@
 
 .hunt-count {
   font-weight: 900;
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
   background: var(--card);
   border: 2px solid var(--border);
   border-radius: 999px;
@@ -69,7 +69,7 @@
   text-align: center;
   font-weight: 900;
   font-size: 1.15rem;
-  color: var(--success);
+  color: var(--success-ink, var(--success));
   animation: pop-in 0.35s ease-out;
 }
 
@@ -101,7 +101,7 @@
 .hunt-letter {
   font-size: 2rem;
   font-weight: 900;
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
   background: var(--card-soft);
   border: 2px dashed var(--border);
   border-radius: 14px;
@@ -134,7 +134,7 @@
 
 .hunt-again {
   text-align: center;
-  color: var(--accent);
+  color: var(--accent-ink, var(--accent));
   font-weight: 800;
   margin: 0;
 }

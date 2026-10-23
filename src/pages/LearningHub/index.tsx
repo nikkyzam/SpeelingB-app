@@ -12,7 +12,7 @@ import WordMastery, {
   LEARN_CHALLENGE_REWARD,
 } from '../../services/progress/WordMastery'
 import ExplorerLevel from '../../components/progress/ExplorerLevel'
-import { PRIVATE_LISTS, WORD_LISTS_EVENT } from '../../services/wordLists'
+import { PRIVATE_LISTS, WORD_LISTS_EVENT, getListStatus, refreshPrivateLists } from '../../services/wordLists'
 import QuestMap from '../../components/progress/QuestMap'
 import Button from '../../components/common/Button'
 import Celebration, { CelebrationData } from '../../components/common/Celebration'
@@ -21,6 +21,8 @@ import SpellMode, { SpellResult } from '../../components/learning/SpellMode'
 import QuizMode from '../../components/learning/QuizMode'
 import TestAll from '../../components/learning/TestAll'
 import './LearningHub.css'
+import { usePreferences } from '../../hooks/usePreferences'
+import ReadAloud from '../../components/common/ReadAloud'
 
 type LearningMode = 'learn' | 'spell' | 'quiz' | 'test' | null
 type QuizType = 'spell' | 'vocab' | null
@@ -29,6 +31,7 @@ type Difficulty = 1 | 2 | 3 | undefined
 
 const LearningHub: React.FC = () => {
   const { user } = useUser()
+  const [preferences] = usePreferences()
   const { learningFlow } = useProgress()
   const [activeMode, setActiveMode] = useState<LearningMode>(null)
   const [quizType, setQuizType] = useState<QuizType>(null)
@@ -88,7 +91,7 @@ const LearningHub: React.FC = () => {
     // the chosen levels turn out to be empty.
     const base = wordBank.getLearningList(levels, wordList)
     return base.length > 0 ? base : wordBank.getAllWords()
-  }, [levels, wordList, listReady, seasonalEvent])
+  }, [levels, wordList, listReady, seasonalEvent, preferences.stage])
 
   const groupsCount = Math.max(1, Math.ceil(filteredWords.length / groupSize))
 
@@ -216,18 +219,47 @@ const LearningHub: React.FC = () => {
           >
             🌟 All Words
           </Button>
-          {/* Private lists show only once downloaded — i.e. for signed-in children. */}
-          {PRIVATE_LISTS.filter((l) => wordBank.hasList(l.id)).map((l) => (
-            <Button
-              key={l.id}
-              onClick={() => handleListSelect(l.id)}
-              variant={listReady && wordList === l.id ? 'primary' : 'secondary'}
-            >
-              {l.icon} {l.title}
-            </Button>
-          ))}
+          {/* Private lists are downloaded after sign-in. Until then the button says
+              why it can't be picked yet, instead of silently not being there. */}
+          {PRIVATE_LISTS.map((l) => {
+            if (wordBank.hasList(l.id)) {
+              return (
+                <Button
+                  key={l.id}
+                  onClick={() => handleListSelect(l.id)}
+                  variant={listReady && wordList === l.id ? 'primary' : 'secondary'}
+                >
+                  {l.icon} {l.title}
+                </Button>
+              )
+            }
+            const st = getListStatus()
+            if (!user || user.isGuest) {
+              return (
+                <Button key={l.id} variant="secondary" disabled title="Sign in to download this list">
+                  {l.icon} {l.title} · sign in to get it
+                </Button>
+              )
+            }
+            return (
+              <Button
+                key={l.id}
+                variant="secondary"
+                disabled={st.state === 'loading'}
+                onClick={() => refreshPrivateLists()}
+              >
+                {l.icon} {l.title} · {st.state === 'loading' ? 'getting it…' : 'tap to get it'}
+              </Button>
+            )
+          })}
         </div>
       </div>
+      {(() => {
+        const st = getListStatus()
+        if (st.state === 'error') return <p className="list-status-note">Couldn&apos;t get the list: {st.message}</p>
+        if (st.state === 'missing') return <p className="list-status-note">The list isn&apos;t set up yet — ask a grown-up.</p>
+        return null
+      })()}
 
       {groupsCount > 1 && (
         <div className={`group-selector ${isGroupsExpanded ? 'expanded' : 'collapsed'}`}>
@@ -373,9 +405,9 @@ const LearningHub: React.FC = () => {
       <div className="learning-mode-container">
         <div className="mode-header">
           <Button onClick={handleBack} variant="secondary" size="small">
-            ← Back to Hub
+            ← My words
           </Button>
-          <h1>📚 Learn</h1>
+          <h1>📚 Learn</h1><ReadAloud text="Hear the word. Read or listen to what it means. Then tap Got it to try a little puzzle. Show me can help you." />
         </div>
         {/* No onComplete handler on purpose: finishing a set should land on
             LearnMode's own celebration (stars, best streak, a word joke), not
@@ -397,7 +429,7 @@ const LearningHub: React.FC = () => {
       <div className="learning-mode-container">
         <div className="mode-header">
           <Button onClick={handleBack} variant="secondary" size="small">
-            ← Back to Hub
+            ← My words
           </Button>
           <h1>✏️ Spell</h1>
         </div>
@@ -423,7 +455,7 @@ const LearningHub: React.FC = () => {
       <div className="learning-mode-container">
         <div className="mode-header">
           <Button onClick={handleBack} variant="secondary" size="small">
-            ← Back to Hub
+            ← My words
           </Button>
           <h1>
             {quizType === 'spell' ? '✏️ Spelling Quiz' : '📚 Word Meanings'}
@@ -454,7 +486,7 @@ const LearningHub: React.FC = () => {
       <div className="learning-mode-container">
         <div className="mode-header">
           <Button onClick={handleBack} variant="secondary" size="small">
-            ← Back to Hub
+            ← My words
           </Button>
           <h1>📝 Practice Test</h1>
         </div>
@@ -470,7 +502,7 @@ const LearningHub: React.FC = () => {
   return (
     <div className="learning-hub">
       <div className="hub-header">
-        <h1>Learning Hub 🎓</h1>
+        <h1>My words 📚</h1>
         {/* A name only, never an email: on a shared iPad that was a parent's address. */}
         <p className="welcome-message">
           {user?.name ? `Hi ${user.name}!` : 'Hi there!'} Ready for some words?
@@ -523,7 +555,7 @@ const LearningHub: React.FC = () => {
       <div className="learning-path">
         <h2>{seasonalEvent ? `${seasonalEvent.icon} ${seasonalEvent.name}` : '🚀 Your Word Adventure'}</h2>
         <p className="path-intro">
-          Group {safeGroup + 1} • {groupCount} words. Learn them all, spell them all, then a game pops open! 🎮
+          Group {safeGroup + 1} • {groupCount} words. Meet today’s words to open starter games. Practise spelling when you’re ready. 🎮
         </p>
 
         {/* The whole adventure as a winding trail, with the mascot on today's stop */}
@@ -570,7 +602,7 @@ const LearningHub: React.FC = () => {
             <div className="step-icon">{isGroupSpelled ? '✅' : isGroupLearned ? '2️⃣' : '🔒'}</div>
             <div className="step-content">
               <h3>Spell the Words</h3>
-              <p>Spell all {groupCount} to earn a game</p>
+              <p>Practise these {groupCount} words at your pace</p>
               <div className="step-progress">
                 <div
                   className="progress-bar"
@@ -590,30 +622,22 @@ const LearningHub: React.FC = () => {
           </div>
 
           {/* Step 3 — A game is unlocked once the whole group is spelled */}
-          <div className={`path-step ${isGroupSpelled ? 'active' : 'locked'}`}>
-            <div className="step-icon">{isGroupSpelled ? '🎮' : '🔒'}</div>
+          <div className={`path-step ${canPlay ? 'active' : 'locked'}`}>
+            <div className="step-icon">{canPlay ? '🎮' : '🔒'}</div>
             <div className="step-content">
               <h3>Play a Game!</h3>
               <p>
-                {!isGroupSpelled
-                  ? 'Spell all the words to unlock'
-                  : gate === null
-                  ? 'Every game is open — go play! 🎉'
-                  : !starterOpen
-                  ? 'Meet today’s new words to open the starter games.'
-                  : gate === 'review'
-                  ? 'Starter games are open! A quick review opens all the rest. 🎉'
-                  : 'Starter games are open! Pass today’s quiz for all the rest. 🎉'}
+                {learningFlow.gameAccessMessage()}
               </p>
               <Button
                 onClick={() => navigate('/games')}
-                variant={isGroupSpelled && canPlay ? 'success' : 'secondary'}
-                disabled={!isGroupSpelled || !canPlay}
-                icon={isGroupSpelled && canPlay ? '🎮' : '🔒'}
+                variant={canPlay ? 'success' : 'secondary'}
+                disabled={!canPlay}
+                icon={canPlay ? '🎮' : '🔒'}
               >
-                {isGroupSpelled && canPlay ? 'Play a Game!' : 'Locked'}
+                {canPlay ? 'Play a Game!' : 'Meet today’s words first'}
               </Button>
-              {isGroupSpelled && starterOpen && gate !== null && (
+              {starterOpen && gate !== null && (
                 <Button
                   onClick={() => navigate(gate === 'review' ? '/review' : '/daily-quiz')}
                   variant="primary"

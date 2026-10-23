@@ -16,6 +16,8 @@ import { praise, nearly, spellOut, sayPrompt, isStreakMilestone } from '../../se
 import sfx from '../../components/games/shared/sfx'
 import Burst from '../../components/games/shared/Burst'
 import { trailCheer } from '../../components/learning/WordTrail'
+import { usePreferences } from '../../hooks/usePreferences'
+import { weekOf } from '../../services/progress/LearningFlow'
 import { spellOutPause } from '../../components/learning/spellOutPause'
 
 /**
@@ -29,6 +31,8 @@ interface QuizProps {
 }
 
 const DailyQuiz: React.FC<QuizProps> = ({ mode = 'daily' }) => {
+  const [preferences] = usePreferences()
+  const pendingAdvance = useRef<(() => void) | null>(null)
   const weekly = mode === 'weekly'
   const navigate = useNavigate()
   const { learningFlow } = useProgress()
@@ -75,9 +79,15 @@ const DailyQuiz: React.FC<QuizProps> = ({ mode = 'daily' }) => {
   const checking = useRef(false)
 
   useEffect(() => {
-    setQueue(!weekly && learningFlow.isDailyQuizPassed() ? [] : allWords)
-    setDone([])
-    setMissed([])
+    let saved: any = null
+    try {
+      const entry = JSON.parse(localStorage.getItem('quiz_resume') || '{}')[mode]
+      const period = weekly ? weekOf(new Date()) : new Date().toDateString()
+      if (entry?.period === period && entry.wordIds?.slice().sort().join('|') === allWords.map(w => w.id).sort().join('|')) saved = entry
+    } catch { /* begin a new quiz */ }
+    setQueue(!weekly && learningFlow.isDailyQuizPassed() ? [] : saved ? saved.queue.map((id: string) => allWords.find(w => w.id === id)).filter(Boolean) : allWords)
+    setDone(saved?.done || [])
+    setMissed(saved?.missed || [])
     setInput('')
     setResult(null)
     setCelebration(null)
@@ -86,8 +96,24 @@ const DailyQuiz: React.FC<QuizProps> = ({ mode = 'daily' }) => {
     pendingCheer.current = ''
     queueNextPrompt.current = false
     checking.current = false
+    pendingAdvance.current = null
     return () => clearTimeout(timerRef.current)
   }, [allWords, learningFlow, weekly])
+
+  useEffect(() => {
+    if (!queue.length) return
+    try {
+      const saved = JSON.parse(localStorage.getItem('quiz_resume') || '{}')
+      saved[mode] = { period: weekly ? weekOf(new Date()) : new Date().toDateString(), wordIds: allWords.map(w => w.id), queue: queue.map(w => w.id), done, missed }
+      localStorage.setItem('quiz_resume', JSON.stringify(saved))
+    } catch { /* this quiz still works without saved progress */ }
+  }, [queue, done, missed, mode, weekly, allWords])
+
+  const advance = () => { const next = pendingAdvance.current; pendingAdvance.current = null; next?.() }
+  const schedule = (next: () => void, ms: number) => {
+    pendingAdvance.current = next
+    if (!preferences.waitForMe) timerRef.current = setTimeout(advance, ms)
+  }
 
   const current = queue[0]
   const total = allWords.length
@@ -176,7 +202,7 @@ const DailyQuiz: React.FC<QuizProps> = ({ mode = 'daily' }) => {
       if (isStreakMilestone(run)) sfx.star()
       speak(cheerLine)
       const nextDone = [...done, current.word]
-      timerRef.current = setTimeout(() => {
+      schedule(() => {
         checking.current = false
         setResult(null)
         setInput('')
@@ -190,6 +216,7 @@ const DailyQuiz: React.FC<QuizProps> = ({ mode = 'daily' }) => {
         setQueue(rest)
         setTurn((t) => t + 1)
         if (rest.length === 0) {
+          try { const saved = JSON.parse(localStorage.getItem('quiz_resume') || '{}'); delete saved[mode]; localStorage.setItem('quiz_resume', JSON.stringify(saved)); } catch { /* no saved quiz */ }
           if (weekly) {
             // Stars once a week; a replay is practice, not a star farm.
             const first = !learningFlow.isWeeklyQuizPassed()
@@ -234,7 +261,7 @@ const DailyQuiz: React.FC<QuizProps> = ({ mode = 'daily' }) => {
       sfx.wrong()
       speak(`${soft} ${current.word} is spelled ${spellOut(current.word)}.`)
       // Up long enough to hear every letter (a flat 3s cut most words off).
-      timerRef.current = setTimeout(() => {
+      schedule(() => {
         checking.current = false
         setResult(null)
         setInput('')
@@ -303,6 +330,8 @@ const DailyQuiz: React.FC<QuizProps> = ({ mode = 'daily' }) => {
             autoFocus
           />
 
+          {result && preferences.waitForMe && <button className="btn" onClick={advance}>{result === 'right' ? 'Continue →' : 'Try another word →'}</button>}
+          {result === 'wrong' && <button className="comfort-button" onClick={() => navigate('/review', { state: { missed: [current.id] } })}>Practise this word with help</button>}
           <Button variant="primary" size="large" onClick={check} disabled={!input.trim() || !!result}>
             Check it! →
           </Button>
@@ -325,8 +354,10 @@ const DailyQuiz: React.FC<QuizProps> = ({ mode = 'daily' }) => {
         </div>
       )}
 
+      <button className="comfort-button" onClick={() => navigate('/spelling')}>Save my place and stop for now</button>
       <Celebration
         data={celebration}
+        onDone={() => navigate('/')}
         autoClose={false}
         onClose={() => { setCelebration(null); navigate(reviewNext ? '/review' : '/games') }}
         closeLabel={reviewNext ? 'Start Review 🧠' : 'Play Games! 🎮'}

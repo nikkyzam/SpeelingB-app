@@ -1,3 +1,4 @@
+import { usePreferences } from '../../../hooks/usePreferences'
 import React, { useMemo, useState } from 'react'
 import { useAudio } from '../../../contexts/AudioContext'
 import { useProgress } from '../../../contexts/ProgressContext'
@@ -9,10 +10,11 @@ import ReviewSchedule from '../../../services/progress/ReviewSchedule'
 import BuddyService from '../../../services/buddy/BuddyService'
 import sfx from '../../games/shared/sfx'
 import './WordOfTheDay.css'
+import { localDay } from '../../../services/progress/ReviewSchedule'
 
 const COLLECTED_KEY = 'word_of_day_collected'
 
-const todayKey = (): string => new Date().toISOString().slice(0, 10)
+const todayKey = (): string => localDay(new Date())
 
 /** Same word for everyone all day, a new one tomorrow — no randomness on reload. */
 const pickForToday = (words: Word[]): Word | undefined => {
@@ -32,14 +34,15 @@ const pickForToday = (words: Word[]): Word | undefined => {
  */
 const WordOfTheDay: React.FC = () => {
   const { speak } = useAudio()
+  const [preferences] = usePreferences()
   const { learningFlow } = useProgress()
   const { addStars } = useRewardStore()
 
   const word = useMemo(() => {
     // Draw from the easiest tier so the daily word is always approachable.
-    const pool = wordBank.getWordsByDifficulty(1).filter((w) => /^[a-z]+$/i.test(w.word) && (w.meaning || '').length > 5)
+    const pool = (preferences.stage === 'early' ? wordBank.getLearningList([1]) : wordBank.getWordsByDifficulty(1)).filter((w) => /^[a-z]+$/i.test(w.word) && (w.meaning || '').length > 5)
     return pickForToday(pool.length > 0 ? pool : wordBank.getAllWords())
-  }, [])
+  }, [preferences.stage])
 
   const [collected, setCollected] = useState(() => {
     try {

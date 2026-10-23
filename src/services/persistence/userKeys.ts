@@ -31,6 +31,10 @@ export const USER_KEYS = [
   'word_of_day_collected',
   'explorer_level_seen',
   'streak_milestone_seen',
+  'learning_preferences',
+  'reading_resume',
+  'quiz_resume',
+  'family_rewards',
 
   // stars and rewards
   'kids_spelling_points',
@@ -103,7 +107,7 @@ export const SIGNED_IN_CACHE_KEYS = ['private_word_lists'] as const
 
 /** Keys that belong to the device and survive a sign-out: a parent who muted
  *  the tablet did not mute one child. */
-export const DEVICE_KEYS = ['audioEnabled', LAST_USER_KEY] as const
+export const DEVICE_KEYS = ['audioEnabled', 'family_pin_hash', LAST_USER_KEY] as const
 
 /**
  * Keys the sync already carries as typed, top-level Firestore fields

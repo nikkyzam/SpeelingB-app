@@ -48,7 +48,7 @@
   font-size: clamp(1rem, 4.2vw, 1.5rem);
   padding: 0 0.2rem;
 }
-.ma-match-card.ans .ma-match-face.front { color: var(--accent); font-size: clamp(1.4rem, 6vw, 2rem); }
+.ma-match-card.ans .ma-match-face.front { color: var(--accent-ink, var(--accent)); font-size: clamp(1.4rem, 6vw, 2rem); }
 .ma-match-card.solved .ma-match-face.front {
   background: var(--success);
   border-color: var(--success);

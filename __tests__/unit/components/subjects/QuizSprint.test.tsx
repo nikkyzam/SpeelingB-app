@@ -1,3 +1,4 @@
+import { setPreferences } from '@/services/preferences'
 import React from 'react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, act } from '@testing-library/react'
@@ -72,3 +73,6 @@ describe('Quiz Sprint', () => {
     expect(screen.getByRole('status').textContent).toContain('The answer is Right')
   })
 })
+
+// These timing regressions cover challenge mode; relaxed mode has its own tests.
+beforeEach(() => setPreferences({ relaxed: false, waitForMe: false }))

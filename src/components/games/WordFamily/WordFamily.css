@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-sm);
   text-align: left;
 }
-.wf2-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.wf2-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary-2)); }
 .wf2-stats { display: flex; gap: var(--spacing-lg); }
 .wf2-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .wf2-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -82,7 +82,7 @@
   font-size: 0.95rem;
   color: var(--text-soft);
 }
-.wf2-shield.on { color: var(--success); }
+.wf2-shield.on { color: var(--success-ink, var(--success)); }
 .wf2-shield.trick { color: var(--text); animation: pop-in var(--transition-normal) both; }
 
 .wf2-wall {
@@ -110,7 +110,7 @@
   cursor: pointer;
   animation: pop-in var(--transition-normal) both;
 }
-.wf2-word-onset { color: var(--primary-2); }
+.wf2-word-onset { color: var(--primary-ink, var(--primary-2)); }
 
 .wf2-flash {
   position: relative;

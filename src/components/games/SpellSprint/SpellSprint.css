@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.ssp-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.ssp-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary)); }
 .ssp-stats { display: flex; gap: var(--spacing-lg); }
 .ssp-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .ssp-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -103,9 +103,9 @@
   font-family: var(--font-primary);
   font-weight: 800;
   font-size: clamp(1.3rem, 6vw, 2rem);
-  color: var(--primary);
+  color: var(--primary-ink, var(--primary));
 }
-.ssp-blank.ok { color: var(--success); border-bottom-color: var(--success); }
+.ssp-blank.ok { color: var(--success-ink, var(--success)); border-bottom-color: var(--success); }
 .ssp-blank.shown { color: var(--text); border-bottom-color: var(--warning); }
 
 .ssp-answer {
@@ -137,7 +137,7 @@
   font-family: var(--font-primary);
   font-weight: 800;
 }
-.ssp-flash.ok { color: var(--success); }
+.ssp-flash.ok { color: var(--success-ink, var(--success)); }
 .ssp-flash.soft { color: var(--text); }
 
 @media (prefers-reduced-motion: reduce) {

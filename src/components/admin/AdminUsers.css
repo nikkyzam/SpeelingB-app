@@ -3,7 +3,7 @@
   color: var(--text-soft);
   text-align: center;
 }
-.admin-users__error { color: var(--error); }
+.admin-users__error { color: var(--error-ink, var(--error)); }
 .admin-users__retry,
 .admin-users__refresh {
   margin-left: 10px;
@@ -109,7 +109,7 @@
 }
 .admin-users__status {
   font-size: 0.75rem;
-  color: var(--success);
+  color: var(--success-ink, var(--success));
   min-width: 4.5rem;
 }
 .admin-users__note {
@@ -129,7 +129,7 @@
   border-color: var(--primary);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 25%, transparent);
 }
-.admin-users__dot { color: var(--primary); font-size: 0.8rem; }
+.admin-users__dot { color: var(--primary-ink, var(--primary)); font-size: 0.8rem; }
 
 .admin-users__savebar {
   display: flex;
@@ -171,7 +171,7 @@
 
 .admin-users__savebar-error {
   margin-top: var(--spacing-sm);
-  color: var(--error);
+  color: var(--error-ink, var(--error));
   font-size: 0.85rem;
   text-align: right;
 }
@@ -203,7 +203,7 @@
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
-.admin-users__stat.is-met .admin-users__statnum { color: var(--success); }
+.admin-users__stat.is-met .admin-users__statnum { color: var(--success-ink, var(--success)); }
 
 /* --- Star balance --------------------------------------------------------- */
 .admin-users__stars {
@@ -241,7 +241,7 @@
 .admin-users__action:disabled { opacity: 0.45; cursor: not-allowed; }
 .admin-users__action.is-on {
   border-color: var(--success);
-  color: var(--success);
+  color: var(--success-ink, var(--success));
 }
 .admin-users__action.is-danger {
   border-color: var(--error);
@@ -285,7 +285,7 @@
   justify-content: flex-end;
 }
 .admin-users__link--danger {
-  color: var(--error);
+  color: var(--error-ink, var(--error));
   margin-left: 0;
 }
 .admin-users__link--danger:disabled {
@@ -338,7 +338,7 @@
   margin: 0;
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--error);
+  color: var(--error-ink, var(--error));
 }
 
 /* --- Which Bee levels a child's words come from --------------------------
@@ -417,7 +417,7 @@
   font-variant-numeric: tabular-nums;
 }
 .admin-users__duetag { color: var(--warning); font-weight: 700; }
-.admin-users__trickytag { color: var(--error); font-weight: 700; }
+.admin-users__trickytag { color: var(--error-ink, var(--error)); font-weight: 700; }
 
 @media (prefers-reduced-motion: reduce) {
   .admin-users__journeyfill { transition: none; }

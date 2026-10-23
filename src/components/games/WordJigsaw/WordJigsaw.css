@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.jig-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.jig-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary)); }
 .jig-stats { display: flex; gap: var(--spacing-lg); }
 .jig-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .jig-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -188,8 +188,8 @@
   font-family: var(--font-primary);
   font-weight: 800;
 }
-.jig-flash.ok { color: var(--success); }
-.jig-flash.bad { color: var(--error); }
+.jig-flash.ok { color: var(--success-ink, var(--success)); }
+.jig-flash.bad { color: var(--error-ink, var(--error)); }
 
 @media (prefers-reduced-motion: reduce) {
   .jig-piece.bounce,

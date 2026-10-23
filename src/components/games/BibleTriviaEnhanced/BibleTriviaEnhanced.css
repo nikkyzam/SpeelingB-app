@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.btq-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.btq-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary)); }
 .btq-stats { display: flex; gap: var(--spacing-lg); }
 .btq-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .btq-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -109,7 +109,7 @@
   background: var(--card-soft);
 }
 .btq-line { margin: 0 0 var(--spacing-xs); font-family: var(--font-primary); font-weight: 800; }
-.btq-flash.ok .btq-line { color: var(--success); }
+.btq-flash.ok .btq-line { color: var(--success-ink, var(--success)); }
 .btq-fact { margin: 0; color: var(--text); }
 .btq-ref { display: inline-block; margin-left: 0.3rem; font-size: 0.85rem; color: var(--text-soft); }
 .btq-streak { margin-top: var(--spacing-md); font-weight: 700; color: var(--warning); }

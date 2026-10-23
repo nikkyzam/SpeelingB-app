@@ -1,3 +1,4 @@
+import { setPreferences } from '@/services/preferences'
 import { render, screen, fireEvent, act } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import SpellMode from '@/components/learning/SpellMode'
@@ -5,6 +6,7 @@ import { ProgressProvider } from '@/contexts/ProgressContext'
 import { AudioProvider } from '@/contexts/AudioContext'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import React from 'react'
+import ReviewSchedule from '@/services/progress/ReviewSchedule'
 
 // Mock wordBank
 vi.mock('@/services/wordBank', () => ({
@@ -46,7 +48,7 @@ const WORDS = [
 describe('SpellMode Component', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    localStorage.clear()
+    localStorage.clear(); setPreferences({ relaxed: false, waitForMe: false })
     vi.useFakeTimers()
   })
 
@@ -82,6 +84,22 @@ describe('SpellMode Component', () => {
     
     // After moving to next word, input should be cleared
     expect(input).toHaveValue('')
+  })
+
+  it('a try with help is not counted as a second miss in the review schedule', () => {
+    const record = vi.spyOn(ReviewSchedule, 'record')
+    renderWithProviders(<SpellMode words={WORDS} />)
+    const input = screen.getByPlaceholderText('Type the word...')
+    fireEvent.change(input, { target: { value: 'aple' } })
+    fireEvent.click(screen.getByRole('button', { name: /Check it/i }))
+    expect(record).toHaveBeenCalledTimes(1)
+    expect(record).toHaveBeenLastCalledWith('1', false)
+    fireEvent.click(screen.getByRole('button', { name: 'Try with help' }))
+    fireEvent.change(input, { target: { value: 'apple' } })
+    fireEvent.click(screen.getByRole('button', { name: /Check it/i }))
+    // The copy-it try is practice: the one real miss stands, nothing more is recorded.
+    expect(record).toHaveBeenCalledTimes(1)
+    record.mockRestore()
   })
 
   it('handles incorrect spelling correctly', () => {

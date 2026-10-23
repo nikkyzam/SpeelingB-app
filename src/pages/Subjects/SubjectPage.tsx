@@ -4,6 +4,7 @@ import { gradeLabel, subjectById, testsFor, QUEST_GRADES } from '../../services/
 import SubjectProgress from '../../services/subjects/SubjectProgress'
 import BackLink from './BackLink'
 import './Subjects.css'
+import { usePreferences } from '../../hooks/usePreferences'
 
 const MATH_EXTRAS = [
   { path: '/subjects/math/arcade', icon: '🕹️', name: 'Math Arcade', blurb: 'Quick number games' },
@@ -15,10 +16,11 @@ const MATH_EXTRAS = [
 const SubjectPage: React.FC = () => {
   const { subjectId = '' } = useParams()
   const navigate = useNavigate()
+  const [preferences] = usePreferences()
   const subject = subjectById(subjectId)
   if (!subject) return <Navigate to="/" replace />
 
-  const tests = testsFor(subject.id)
+  const tests = testsFor(subject.id).filter(t => preferences.stage !== 'early' || t.grade === 'k' || Number(t.grade) <= 2)
   const grades = [...new Set(tests.map((t) => t.grade))].sort((a, b) => b.localeCompare(a))
 
   return (
@@ -36,7 +38,7 @@ const SubjectPage: React.FC = () => {
           <h2>🗺️ Math Quest</h2>
           <p className="sj-lede">Pick your grade, then a topic. Every topic has Practice, Challenge and Boss rounds.</p>
           <div className="sj-chips">
-            {QUEST_GRADES.map((g) => (
+            {QUEST_GRADES.filter(g => preferences.stage !== 'early' || g.grade === 'k' || g.grade === '1').map((g) => (
               <button key={g.grade} type="button" className="sj-chip" onClick={() => navigate(`/subjects/math/quest/${g.grade}`)}>
                 {g.grade === 'k' ? 'K' : g.grade}
                 <span className="sj-chip-sub">{g.label}</span>
@@ -44,7 +46,7 @@ const SubjectPage: React.FC = () => {
             ))}
           </div>
           <div className="sj-grid sj-grid-small">
-            {MATH_EXTRAS.map((x) => (
+            {MATH_EXTRAS.filter(x => preferences.stage !== 'early' || x.path.endsWith('/arcade')).map((x) => (
               <button key={x.path} type="button" className="sj-card sj-tone-accent" onClick={() => navigate(x.path)}>
                 <span className="sj-icon" aria-hidden>{x.icon}</span>
                 <span className="sj-name">{x.name}</span>

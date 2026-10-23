@@ -1,3 +1,4 @@
+import { usePreferences } from '../../../hooks/usePreferences'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useProgress } from '../../../contexts/ProgressContext'
@@ -29,6 +30,7 @@ interface Suggestion {
  */
 const NextUp: React.FC = () => {
   const navigate = useNavigate()
+  const [preferences] = usePreferences()
   const { learningFlow } = useProgress()
   const [tick, setTick] = useState(0)
 
@@ -106,7 +108,7 @@ const NextUp: React.FC = () => {
     return {
       icon: '🎮',
       title: 'All done for today!',
-      detail: 'Everything is finished — go and play something',
+      detail: 'Great work. You can stop here, or choose a game.',
       action: 'Play games',
       path: '/games',
     }
@@ -145,7 +147,7 @@ const NextUp: React.FC = () => {
         <span className="nu-go">{suggestion.action} →</span>
       </button>
 
-      {nextBadge && (
+      {nextBadge && !preferences.calm && (
         <div className="nu-badge" title={nextBadge.description}>
           <span className="nu-badge-icon" aria-hidden>{nextBadge.icon}</span>
           <span className="nu-badge-body">

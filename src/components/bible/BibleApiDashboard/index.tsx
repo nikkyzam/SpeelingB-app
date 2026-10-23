@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { bibleApi, BibleVersion, BibleVerse, DailyVerse } from '../../../services/bibleApi'
 import './BibleApiDashboard.css'
+import ReadAloud from '../../common/ReadAloud'
 
 interface BibleApiDashboardProps {
   onGameSelect: (game: string) => void
@@ -9,7 +10,7 @@ interface BibleApiDashboardProps {
 const BibleApiDashboard: React.FC<BibleApiDashboardProps> = ({ onGameSelect }) => {
   const [dailyVerse, setDailyVerse] = useState<DailyVerse | null>(null)
   const [randomVerse, setRandomVerse] = useState<BibleVerse | null>(null)
-  const [selectedVersion, setSelectedVersion] = useState<BibleVersion>('KJV')
+  const [selectedVersion, setSelectedVersion] = useState<BibleVersion>('NLT')
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<BibleVerse[]>([])
   const [isSearching, setIsSearching] = useState(false)
@@ -94,11 +95,6 @@ const BibleApiDashboard: React.FC<BibleApiDashboardProps> = ({ onGameSelect }) =
     loadDashboardData()
   }
 
-  const handleClearCache = () => {
-    bibleApi.clearCache()
-    alert('Cache cleared successfully!')
-  }
-
   const games = [
     { id: 'reading', name: 'Bible Reading', icon: '📖', description: 'Read faith-based stories' },
     { id: 'trivia', name: 'Bible Trivia', icon: '❓', description: 'Test your Bible knowledge' },
@@ -111,14 +107,14 @@ const BibleApiDashboard: React.FC<BibleApiDashboardProps> = ({ onGameSelect }) =
     <div className="bible-api-dashboard">
       <div className="dashboard-header">
         <div className="header-title">
-          <h1><span className="title-icon">📖</span> Bible Games Dashboard</h1>
-          <p className="header-subtitle">Explore, Learn, and Grow in God's Word</p>
+          <h1><span className="title-icon">📖</span> Bible stories and verses</h1>
+          <p className="header-subtitle">Read, listen, and explore together</p>
         </div>
 
         <div className="header-actions">
           <div className="version-selector">
-            <label>Bible Version:</label>
-            <select
+            <label htmlFor="bible-version">Bible wording:</label>
+            <select id="bible-version"
               value={selectedVersion}
               onChange={(e) => handleVersionChange(e.target.value as BibleVersion)}
               className="version-select"
@@ -132,9 +128,7 @@ const BibleApiDashboard: React.FC<BibleApiDashboardProps> = ({ onGameSelect }) =
             </select>
           </div>
 
-          <button className="clear-cache-btn" onClick={handleClearCache}>
-            Clear Cache
-          </button>
+
         </div>
       </div>
 
@@ -148,6 +142,7 @@ const BibleApiDashboard: React.FC<BibleApiDashboardProps> = ({ onGameSelect }) =
             </div>
             <div className="verse-content">
               <div className="verse-text">{dailyVerse?.text || 'Loading...'}</div>
+              {dailyVerse && <ReadAloud text={`${dailyVerse.text}. ${dailyVerse.reference}`} label="Hear this verse" />}
               <div className="verse-reference">
                 {dailyVerse?.reference || ''}
                 <span className="verse-theme">{dailyVerse?.theme || 'inspiration'}</span>
@@ -275,33 +270,6 @@ const BibleApiDashboard: React.FC<BibleApiDashboardProps> = ({ onGameSelect }) =
                 <div className="stat-icon">📈</div>
                 <div className="stat-value">--</div>
                 <div className="stat-label">Daily Streak</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="api-info-section">
-            <div className="api-info-header">
-              <span className="api-info-icon">⚙️</span>
-              <h3>API Information</h3>
-            </div>
-            <div className="api-info-content">
-              <div className="api-status">
-                <div className="status-indicator active"></div>
-                <span className="status-text">Bible API Connected</span>
-              </div>
-              <div className="api-details">
-                <div className="detail-item">
-                  <span className="detail-label">Current Version:</span>
-                  <span className="detail-value">{selectedVersion}</span>
-                </div>
-                <div className="detail-item">
-                  <span className="detail-label">Cache Size:</span>
-                  <span className="detail-value">--</span>
-                </div>
-                <div className="detail-item">
-                  <span className="detail-label">Last Updated:</span>
-                  <span className="detail-value">Just now</span>
-                </div>
               </div>
             </div>
           </div>

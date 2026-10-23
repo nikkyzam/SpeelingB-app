@@ -70,17 +70,18 @@ const WhoIsPlaying: React.FC = () => {
       </div>
 
       <label className="wp-field">
-        <span className="wp-label">My name</span>
+        <span className="wp-label">My nickname</span>
         <input
           className="wp-input"
           value={name}
           onChange={(e) => { setName(e.target.value.slice(0, MAX_NAME)); setSaved(false) }}
           onKeyPress={(e) => e.key === 'Enter' && save()}
-          placeholder="Type your name"
+          placeholder="Type a nickname"
           maxLength={MAX_NAME}
           aria-label="Your name"
         />
       </label>
+      <p>A nickname is enough. You do not need to use your full name.</p>
 
       <span className="wp-label">Pick your face</span>
       <div className="wp-avatars" role="radiogroup" aria-label="Choose an avatar">

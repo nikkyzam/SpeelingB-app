@@ -67,41 +67,9 @@ export const useRewardStore = create<RewardStore>((set, get) => ({
     set({ selectedCategory: category });
   },
 
-  purchaseReward: async (reward: RewardItem): Promise<boolean> => {
-    set({ isLoading: true });
-
-    try {
-      const success = PointsService.spendPoints(reward.cost, reward);
-
-      if (success) {
-        // Update local state
-        const points = PointsService.getPoints();
-        const history = PointsService.getPurchaseHistory();
-
-        set(state => ({
-          points,
-          heavenlyStars: points.availablePoints,
-          purchaseHistory: history,
-          purchasedItems: history.map(h => h.rewardId),
-          rewards: state.rewards.map(r =>
-            r.id === reward.id ? { ...r, purchased: true } : r
-          )
-        }));
-
-        // Record achievement if applicable
-        if (reward.category === 'badge') {
-          AchievementsService.updateBadgeProgress(reward.id);
-        }
-      }
-
-      set({ isLoading: false });
-      return success;
-    } catch (error) {
-      console.error('Purchase error:', error);
-      set({ isLoading: false });
-      return false;
-    }
-  },
+  // Spending is handled by the wardrobe or the grown-up approval flow.
+  // Keep the retired API inert so stale callers cannot sell unsupported items.
+  purchaseReward: async () => false,
 
   addPoints: (amount: number, reason: string) => {
     const points = PointsService.addPoints(amount, reason);

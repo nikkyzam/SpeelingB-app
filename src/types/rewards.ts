@@ -64,6 +64,7 @@ export interface PurchaseHistory {
   purchaseDate: Date;
   cost: number;
   category: string;
+  refundedAt?: string;
 }
 
 export interface StickerCollection {

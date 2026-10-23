@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { BookService } from '../../services/books/bookService';
 import { ChristianBook } from '../../data/books/christianBooks';
 import './BookReader.css';
+import { useAudio } from '../../contexts/AudioContext';
 
 interface BookReaderProps {
   bookId?: string;
@@ -12,6 +13,9 @@ const BookReader: React.FC<BookReaderProps> = ({ bookId: propBookId }) => {
   const { bookId: paramBookId } = useParams<{ bookId: string }>();
   const navigate = useNavigate();
   const bookId = propBookId || paramBookId || '';
+  const { speak, stopSpeaking, isSpeaking, speechError } = useAudio();
+  const stop = React.useRef(stopSpeaking);
+  stop.current = stopSpeaking;
 
   const [book, setBook] = useState<ChristianBook | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -23,7 +27,9 @@ const BookReader: React.FC<BookReaderProps> = ({ bookId: propBookId }) => {
   useEffect(() => {
     let cancelled = false;
     setBook(null);
-    setCurrentPage(0);
+    let savedPage = 0;
+    try { const saved = JSON.parse(localStorage.getItem('reading_resume') || '{}'); if (saved.bookId === bookId) savedPage = Math.max(0, Number(saved.page) || 0); } catch { /* start at the beginning */ }
+    setCurrentPage(savedPage);
     // No id, nothing to fetch — but still clear a book or spinner from before.
     if (!bookId) {
       setIsLoading(false);
@@ -33,7 +39,7 @@ const BookReader: React.FC<BookReaderProps> = ({ bookId: propBookId }) => {
     const load = async () => {
       try {
         const loaded = await BookService.fetchFullBookContent(bookId);
-        if (!cancelled) setBook(loaded || null);
+        if (!cancelled) { setBook(loaded || null); setCurrentPage(Math.min(savedPage, Math.max(0, (loaded?.pages.length || 1) - 1))); }
       } catch (error) {
         console.error('Error loading book:', error);
       } finally {
@@ -41,8 +47,14 @@ const BookReader: React.FC<BookReaderProps> = ({ bookId: propBookId }) => {
       }
     };
     void load();
-    return () => { cancelled = true; };
+    return () => { cancelled = true; stop.current(); };
   }, [bookId]);
+
+  useEffect(() => {
+    stop.current();
+    setIsPlayingAudio(false);
+    if (book) localStorage.setItem('reading_resume', JSON.stringify({ bookId, page: currentPage }));
+  }, [currentPage, book, bookId]);
 
   if (isLoading && !book) {
     return (
@@ -84,22 +96,12 @@ const BookReader: React.FC<BookReaderProps> = ({ bookId: propBookId }) => {
   };
 
   const handlePlayAudio = () => {
-    if (currentPageData.audioUrl || book.audioAvailable) {
-      setIsPlayingAudio(true);
-      // Use speech synthesis if no audioUrl but audio is available
-      if (!currentPageData.audioUrl && 'speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(currentPageData.content);
-        utterance.onend = () => setIsPlayingAudio(false);
-        window.speechSynthesis.speak(utterance);
-      } else {
-        setTimeout(() => setIsPlayingAudio(false), 3000);
-      }
-    }
+    if (isPlayingAudio || isSpeaking) { stopSpeaking(); setIsPlayingAudio(false); }
+    else { setIsPlayingAudio(true); void speak(currentPageData.content).finally(() => setIsPlayingAudio(false)); }
   };
 
   const handleVocabularyClick = (word: string) => {
-    // Could link to spelling bee practice with this word
-    navigate(`/learn?word=${encodeURIComponent(word)}`);
+    void speak(word);
   };
 
   return (
@@ -117,11 +119,9 @@ const BookReader: React.FC<BookReaderProps> = ({ bookId: propBookId }) => {
 
       <div className="book-content">
         <div className="book-page">
-          {currentPageData.image && (
-            <div className="page-image">
-              <img src={currentPageData.image} alt={`Page ${currentPage + 1}`} />
-            </div>
-          )}
+          <div className="story-illustration" aria-hidden>
+            {{ 'cbook-001': '🌳', 'cbook-002': '🌈', 'cbook-003': '🛡️', 'cbook-004': '🤝', 'cbook-005': '💛', 'cbook-006': '🍎', 'cbook-007': '🌟', 'cbook-008': '🕊️' }[book.id] || '📖'}
+          </div>
 
           <div className="page-content">
             <div className="page-text">
@@ -131,12 +131,12 @@ const BookReader: React.FC<BookReaderProps> = ({ bookId: propBookId }) => {
             { (currentPageData.audioUrl || book.audioAvailable) && (
               <button
                 onClick={handlePlayAudio}
-                className={`audio-button ${isPlayingAudio ? 'playing' : ''}`}
-                disabled={isPlayingAudio}
+                className={`audio-button ${isPlayingAudio || isSpeaking ? 'playing' : ''}`}
               >
-                {isPlayingAudio ? '🔊 Playing...' : '🔊 Listen'}
+                {isPlayingAudio || isSpeaking ? '■ Stop reading' : '🔊 Listen'}
               </button>
             )}
+            {speechError && <p role="status">Read aloud is not available right now. You can still read this page or ask someone to read with you.</p>}
           </div>
         </div>
 
@@ -175,14 +175,14 @@ const BookReader: React.FC<BookReaderProps> = ({ bookId: propBookId }) => {
             {showVocabulary && currentPageData.vocabulary && (
               <div className="vocabulary-list">
                 {currentPageData.vocabulary.map((word, index) => (
-                  <span
+                  <button
                     key={index}
                     className="vocabulary-word"
                     onClick={() => handleVocabularyClick(word)}
-                    title="Click to practice spelling this word"
+                    title="Hear this word"
                   >
                     {word}
-                  </span>
+                  </button>
                 ))}
               </div>
             )}
@@ -233,6 +233,7 @@ const BookReader: React.FC<BookReaderProps> = ({ bookId: propBookId }) => {
           </div>
         </div>
       </div>
+      {currentPage === totalPages - 1 && <section className="card"><h2>You finished this story!</h2><p>Great reading. You can stop here or choose another story.</p><button className="btn" onClick={() => navigate('/reading')}>Done for now</button></section>}
     </div>
   );
 };

@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.st-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.st-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary-2)); }
 .st-stats { display: flex; gap: var(--spacing-lg); }
 .st-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .st-stat strong { font-size: 1.1rem; color: var(--text); }
@@ -114,7 +114,7 @@
 }
 .st-input:focus { outline: none; border-color: var(--primary); }
 .st-input.ok { border-color: var(--success); background: rgba(47, 191, 113, 0.15); }
-.st-input.bad { border-color: var(--warning); color: var(--primary-2); animation: shake 0.4s; }
+.st-input.bad { border-color: var(--warning); color: var(--primary-ink, var(--primary-2)); animation: shake 0.4s; }
 
 .st-btn {
   border: none;

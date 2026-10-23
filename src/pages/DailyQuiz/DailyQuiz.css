@@ -40,7 +40,7 @@
   color: var(--text-soft);
   font-weight: 700;
 }
-.dq-retries { color: var(--primary-2); }
+.dq-retries { color: var(--primary-ink, var(--primary-2)); }
 .dq-streak { font-family: var(--font-primary); font-weight: 900; color: var(--text); }
 .dq-streak.is-milestone {
   color: #fff;

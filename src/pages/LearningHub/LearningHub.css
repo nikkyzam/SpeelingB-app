@@ -70,7 +70,7 @@
 }
 
 .learning-path h2 {
-  color: var(--primary);
+  color: var(--primary-ink, var(--primary));
   margin-bottom: var(--spacing-lg);
   text-align: center;
 }
@@ -142,11 +142,11 @@
 }
 
 .path-step.completed .step-status {
-  color: var(--success);
+  color: var(--success-ink, var(--success));
 }
 
 .path-step.active .step-status {
-  color: var(--primary);
+  color: var(--primary-ink, var(--primary));
 }
 
 .modes-grid {
@@ -339,7 +339,7 @@
 
 .mode-header h1 {
   text-align: center;
-  color: var(--primary);
+  color: var(--primary-ink, var(--primary));
 }
 
 .difficulty-selector {
@@ -456,7 +456,7 @@
 
 .carry-over-note {
   font-size: 0.8rem;
-  color: var(--error);
+  color: var(--error-ink, var(--error));
   font-weight: bold;
   margin-top: 4px;
 }
@@ -509,4 +509,11 @@
 
 @media (prefers-reduced-motion: reduce) {
   .next-up { animation: none; }
+}
+
+.list-status-note {
+  margin: 6px 0 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-soft);
 }

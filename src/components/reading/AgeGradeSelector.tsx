@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { christianReadingLevels } from '../../data/books/christianBooks';
 import './AgeGradeSelector.css';
 
@@ -15,6 +15,8 @@ const AgeGradeSelector: React.FC<AgeGradeSelectorProps> = ({
 }) => {
   const [age, setAge] = useState(selectedAge);
   const [grade, setGrade] = useState(selectedGrade);
+
+  useEffect(() => { setAge(selectedAge); setGrade(selectedGrade) }, [selectedAge, selectedGrade])
 
   const ages = [3, 4, 5, 6, 7, 8, 9, 10];
   const grades = ['Pre-K', 'K', '1', '2', '3', '4', '5'];
@@ -51,6 +53,7 @@ const AgeGradeSelector: React.FC<AgeGradeSelectorProps> = ({
             <button
               key={a}
               onClick={() => handleAgeSelect(a)}
+              aria-pressed={age === a}
               className={`age-button ${age === a ? 'selected' : ''}`}
             >
               {a} years
@@ -66,6 +69,7 @@ const AgeGradeSelector: React.FC<AgeGradeSelectorProps> = ({
             <button
               key={g}
               onClick={() => handleGradeSelect(g)}
+              aria-pressed={grade === g}
               className={`grade-button ${grade === g ? 'selected' : ''}`}
             >
               {g}

@@ -1,3 +1,5 @@
+import { usePreferences } from '../../../hooks/usePreferences'
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useMemo, useState, useEffect, useRef } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
@@ -66,6 +68,7 @@ export const makeBees = (word: string, at: number, random: () => number = Math.r
 /** Spell the word by tapping the buzzing letters in order before time runs out. */
 const BeeCatch: React.FC<BeeCatchProps> = ({ onComplete, words: providedWords, duration = 60 }) => {
   const { speak } = useAudio()
+  const [preferences] = usePreferences()
   const cheer = useCheer()
   const later = useLater()
 
@@ -120,16 +123,16 @@ const BeeCatch: React.FC<BeeCatchProps> = ({ onComplete, words: providedWords, d
   // Countdown — only with words to play: a clock running out on an empty
   // screen paid for a game nobody played.
   useEffect(() => {
-    if (!pool.length || finished.current) return
+    if (!pool.length || finished.current || preferences.relaxed) return
     if (timeLeft <= 0) {
       finished.current = true
       onComplete(score)
       return
     }
-    const t = window.setTimeout(() => setTimeLeft((s) => s - 1), 1000)
-    return () => window.clearTimeout(t)
+    const t = activityClock.setTimeout(() => setTimeLeft((s) => s - 1), 1000)
+    return () => activityClock.clearTimeout(t)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeLeft, pool])
+  }, [timeLeft, pool, preferences.relaxed])
 
   if (!word) {
     return (
@@ -175,10 +178,11 @@ const BeeCatch: React.FC<BeeCatchProps> = ({ onComplete, words: providedWords, d
 
   return (
     <div className="bee-catch">
+      {preferences.relaxed && <button className="comfort-button" onClick={() => { if (!finished.current) { finished.current = true; onComplete(score); } }}>Finish my round</button>}
       <div className="bc-header">
         <div className="bc-title">🐝 Bee Catch</div>
         <div className="bc-stats">
-          <div className="bc-stat"><span>Time</span><strong>{timeLeft}s</strong></div>
+          <div className="bc-stat"><span>Pace</span><strong>{preferences.relaxed ? "Your pace" : `${timeLeft}s`}</strong></div>
           <div className="bc-stat"><span>Score</span><strong>{score}</strong></div>
           <div className="bc-stat"><span>Words</span><strong>⭐ {wordsDone}</strong></div>
           <div className="bc-stat"><span>Streak</span><strong>🔥 {streak}</strong></div>

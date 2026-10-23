@@ -39,7 +39,7 @@
 .ma-cmp-plate.wrong { opacity: 0.45; }
 
 .ma-cmp-num { font-weight: 800; font-size: clamp(2.4rem, 10vw, 3.4rem); }
-.ma-cmp-count { font-weight: 800; font-size: 1.3rem; color: var(--success); }
+.ma-cmp-count { font-weight: 800; font-size: 1.3rem; color: var(--success-ink, var(--success)); }
 
 /* Rows of five, like a ten-frame, so a pile can be counted at a glance. */
 .ma-cmp-berries {
@@ -80,10 +80,10 @@
   height: 3.4rem;
   border-radius: 50%;
   border: 3px dashed var(--border);
-  color: var(--primary);
+  color: var(--primary-ink, var(--primary));
   font-size: 2rem;
 }
-.ma-cmp-hole.filled { border-style: solid; border-color: var(--success); color: var(--success); }
+.ma-cmp-hole.filled { border-style: solid; border-color: var(--success); color: var(--success-ink, var(--success)); }
 
 .ma-cmp-signs {
   display: grid;

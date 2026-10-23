@@ -1,3 +1,4 @@
+import { setPreferences } from '@/services/preferences'
 import React from 'react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, act } from '@testing-library/react'
@@ -49,6 +50,17 @@ const word = (w: string, meaning = `the meaning of ${w}`) => ({
   category: 'test',
 })
 const words = (...list: string[]) => list.map((w) => word(w))
+
+it('relaxed Word Whack has no countdown and finishes only when the child chooses', () => {
+  setPreferences({ relaxed: true })
+  const complete = vi.fn()
+  render(<WordWhack words={words('cat', 'dog')} seconds={1} onComplete={complete} />)
+  act(() => vi.advanceTimersByTime(60_000))
+  expect(complete).not.toHaveBeenCalled()
+  expect(screen.getByText('Your pace')).toBeInTheDocument()
+  fireEvent.click(screen.getByRole('button', { name: 'Finish my round' }))
+  expect(complete).toHaveBeenCalledOnce()
+})
 
 const button = (name: string | RegExp) => screen.getByRole('button', { name })
 const wait = (ms: number) => act(() => { vi.advanceTimersByTime(ms) })
@@ -326,9 +338,9 @@ describe('Word Whack', () => {
     expect(calls).toHaveLength(1)
   })
 
-  it('sizes long words down instead of breaking them', () => {
-    expect(wordSize('cat')).toBe('min(1.00rem, 4.20vw)')
-    expect(wordSize('extraordinary')).toBe('min(0.65rem, 2.75vw)')
+  it('keeps long words at a readable size', () => {
+    expect(wordSize('cat')).toBe('clamp(1rem, 4.2vw, 1.25rem)')
+    expect(wordSize('extraordinary')).toBe('clamp(1rem, 4.2vw, 1.25rem)')
   })
 })
 
@@ -521,3 +533,6 @@ describe('rhymes a child can trust, and corrections a child can hear', () => {
     expect(first?.[1]).toEqual({ queue: true })
   })
 })
+
+// These timing regressions cover challenge mode; relaxed mode has its own tests.
+beforeEach(() => setPreferences({ relaxed: false, waitForMe: false }))

@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useState, useEffect } from 'react'
 import './MathPuzzle.css'
 
@@ -31,8 +32,8 @@ const MathPuzzle: React.FC<MathPuzzleProps> = ({ onComplete, difficulty = 'mediu
 
   useEffect(() => {
     if (timeLeft > 0 && gameActive) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
-      return () => clearTimeout(timer)
+      const timer = activityClock.setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
+      return () => activityClock.clearTimeout(timer)
     } else if (timeLeft === 0 && gameActive && currentPuzzle) {
       handleTimeOut()
     }
@@ -84,7 +85,7 @@ const MathPuzzle: React.FC<MathPuzzleProps> = ({ onComplete, difficulty = 'mediu
     const options = generateOptions(answer)
 
     setCurrentPuzzle({
-      id: Date.now(),
+      id: activityClock.now(),
       question,
       answer,
       options,
@@ -122,7 +123,7 @@ const MathPuzzle: React.FC<MathPuzzleProps> = ({ onComplete, difficulty = 'mediu
       setFeedback(`❌ Wrong! The answer was ${currentPuzzle.answer}`)
     }
 
-    setTimeout(() => {
+    activityClock.setTimeout(() => {
       setFeedback('')
       if (totalPuzzles < 10) {
         generatePuzzle()
@@ -135,7 +136,7 @@ const MathPuzzle: React.FC<MathPuzzleProps> = ({ onComplete, difficulty = 'mediu
   const handleTimeOut = () => {
     setStreak(0)
     setFeedback('⏰ Time\'s up!')
-    setTimeout(() => {
+    activityClock.setTimeout(() => {
       setFeedback('')
       if (totalPuzzles < 10) {
         generatePuzzle()
@@ -150,7 +151,7 @@ const MathPuzzle: React.FC<MathPuzzleProps> = ({ onComplete, difficulty = 'mediu
     const accuracy = Math.round((correctAnswers / totalPuzzles) * 100)
     const bonus = Math.round(score * (accuracy / 100))
     const finalScore = score + bonus
-    setTimeout(() => onComplete(finalScore), 2000)
+    activityClock.setTimeout(() => onComplete(finalScore), 2000)
   }
 
   return (

@@ -18,7 +18,7 @@
   padding-bottom: var(--spacing-md);
   margin-bottom: var(--spacing-md);
 }
-.ws-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.ws-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary-2)); }
 .ws-progress { font-weight: 800; color: var(--text); }
 
 .ws-instructions { color: var(--text-soft); margin-bottom: var(--spacing-md); }
@@ -121,7 +121,7 @@
 .ws-word.done {
   background: rgba(47,191,113,0.15);
   border-color: var(--success);
-  color: var(--success);
+  color: var(--success-ink, var(--success));
   text-decoration: line-through;
   animation: pop-in 220ms both;
 }
@@ -131,7 +131,7 @@
   font-family: var(--font-primary);
   font-weight: 800;
   font-size: 1.3rem;
-  color: var(--success);
+  color: var(--success-ink, var(--success));
   animation: pop-in var(--transition-normal) both;
 }
 

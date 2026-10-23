@@ -408,6 +408,7 @@ const LearnMode: React.FC<LearnModeProps> = ({
         ) : (
           <>
             <h1 className="word-text">{currentWord.word}</h1>
+            {currentWord.picture && <span className="word-picture" aria-hidden>{currentWord.picture}</span>}
             {/* The bank stores this with its slashes already, and for all but a
                 handful of words it is just the word again — which rendered as
                 "//tag//" on nearly every card. Show only a real pronunciation. */}

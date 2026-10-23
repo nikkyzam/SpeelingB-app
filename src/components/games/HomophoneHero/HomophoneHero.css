@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-sm);
   text-align: left;
 }
-.hh-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.hh-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary-2)); }
 .hh-stats { display: flex; gap: var(--spacing-lg); }
 .hh-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .hh-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -59,10 +59,10 @@
   min-width: 90px;
   padding: 0 10px;
   border-bottom: 5px dotted var(--primary);
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
 }
-.hh-gap.ok { color: var(--success); border-bottom-color: var(--success); }
-.hh-gap.bad { color: var(--error); border-bottom-color: var(--error); }
+.hh-gap.ok { color: var(--success-ink, var(--success)); border-bottom-color: var(--success); }
+.hh-gap.bad { color: var(--error-ink, var(--error)); border-bottom-color: var(--error); }
 .hh-speak {
   /* A finger-sized target for a small child (44px). */
   min-width: 44px;
@@ -106,7 +106,7 @@
 }
 .hh-why.ok { background: color-mix(in srgb, var(--success) 16%, var(--card)); border: 2px solid var(--success); }
 .hh-why.bad { background: color-mix(in srgb, var(--warning) 16%, var(--card)); border: 2px solid var(--warning); }
-.hh-why-label { font-family: var(--font-primary); font-weight: 900; font-size: 0.85rem; color: var(--primary-2); }
+.hh-why-label { font-family: var(--font-primary); font-weight: 900; font-size: 0.85rem; color: var(--primary-ink, var(--primary-2)); }
 .hh-why-text { font-weight: 700; color: var(--text); }
 
 @media (prefers-reduced-motion: reduce) {

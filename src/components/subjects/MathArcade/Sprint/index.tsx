@@ -1,3 +1,5 @@
+import { usePreferences } from '../../../../hooks/usePreferences'
+import { activityClock } from '../../../../services/games/activityClock'
 import React, { useEffect, useRef, useState } from 'react'
 import { shuffle } from '../../../games/shared/wordTricks'
 import useCheer from '../../../games/shared/useCheer'
@@ -91,6 +93,7 @@ type Phase = 'start' | 'play' | 'done'
  */
 const Sprint: React.FC<MathGameProps> = ({ onComplete, grade }) => {
   const cheer = useCheer()
+  const [preferences] = usePreferences()
   const later = useLater()
   const finish = useFinish(onComplete)
 
@@ -123,14 +126,14 @@ const Sprint: React.FC<MathGameProps> = ({ onComplete, grade }) => {
 
   // The clock, measured from the wall so a busy tab can't stretch it.
   useEffect(() => {
-    if (phase !== 'play') return
-    const started = Date.now()
-    const id = window.setInterval(() => {
-      const left = Math.max(0, SPRINT_SECONDS - Math.floor((Date.now() - started) / 1000))
+    if (phase !== 'play' || preferences.relaxed) return
+    const started = activityClock.now()
+    const id = activityClock.setInterval(() => {
+      const left = Math.max(0, SPRINT_SECONDS - Math.floor((activityClock.now() - started) / 1000))
       setTime(left)
-      if (left === 0) window.clearInterval(id)
+      if (left === 0) activityClock.clearInterval(id)
     }, 250)
-    return () => window.clearInterval(id)
+    return () => activityClock.clearInterval(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [run])
 
@@ -172,7 +175,7 @@ const Sprint: React.FC<MathGameProps> = ({ onComplete, grade }) => {
         <StartCard
           icon="⚡"
           title="Number Sprint"
-          blurb="How many can you solve in 60 seconds? Five in a row and every answer counts double!"
+          blurb={preferences.relaxed ? "Try some sums with no countdown. Finish your round whenever you are ready." : "How many can you solve in 60 seconds? Five in a row and every answer counts double!"}
           suggested={levelForGrade(grade)}
           onPick={begin}
         />
@@ -184,7 +187,7 @@ const Sprint: React.FC<MathGameProps> = ({ onComplete, grade }) => {
     return (
       <div className="ma-sprint">
         <FinishCard
-          title="Time's up!"
+          title={preferences.relaxed ? "Great practice!" : "Time’s up!"}
           score={score}
           label="points"
           stars={starsFor(score, STAR_BARS[level])}
@@ -201,13 +204,14 @@ const Sprint: React.FC<MathGameProps> = ({ onComplete, grade }) => {
 
   return (
     <div className="ma-sprint ma-card">
+      {preferences.relaxed && <button className="comfort-button" onClick={() => { finish.record(score); locked.current = true; setPhase('done') }}>Finish my round</button>}
       <GameHeader icon="⚡" title="Number Sprint">
         <span className="ma-chip" aria-label={`Score ${score}`}>
           ⚡ {score}
           {streak >= DOUBLE_AFTER && <span className="ma-sprint-double">×2 🔥</span>}
         </span>
-        <span className={`ma-chip ${time <= 10 ? 'low' : ''}`} aria-label={`${time} seconds left`}>
-          ⏱ {time}s
+        <span className={`ma-chip ${time <= 10 ? 'low' : ''}`} aria-label={preferences.relaxed ? "No countdown" : `${time} seconds left`}>
+          {preferences.relaxed ? "Your pace" : `⏱ ${time}s`}
         </span>
       </GameHeader>
       <ProgressBar value={time / SPRINT_SECONDS} low={time <= 10} />

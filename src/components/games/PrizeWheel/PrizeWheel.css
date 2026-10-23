@@ -18,7 +18,7 @@
 .pw-text h3 {
   font-family: var(--font-primary);
   font-size: 1.35rem;
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
   margin-bottom: 4px;
 }
 .pw-text p { color: var(--text-soft); margin-bottom: var(--spacing-md); font-weight: 600; }
@@ -47,7 +47,7 @@
   left: 50%;
   transform: translateX(-50%);
   font-size: 1.6rem;
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
   z-index: 3;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
 }

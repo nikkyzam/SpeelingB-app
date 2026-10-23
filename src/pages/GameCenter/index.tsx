@@ -79,11 +79,13 @@ import { FREE_GAMES } from '../../services/progress/LearningFlow'
 import sfx from '../../components/games/shared/sfx'
 import { pickGameOfTheDay, recommendNext } from '../../services/games/gameOfTheDay'
 import './GameCenter.css'
+import ActivityFrame from '../../components/common/ActivityFrame'
+import { usePreferences } from '../../hooks/usePreferences'
+import { MAX_GAME_STARS } from '../../services/rewards/rules'
 
 // Off-topic mini-games (reflex/memory/art/math/music/physics) are hidden so the
 // Games hub stays focused on spelling & words. Their code remains for later.
 /** The most stars one finished game can pay, before Game of the Day doubles it. */
-const MAX_GAME_STARS = 5
 
 const HIDDEN_GAMES = new Set([
   'bonus', 'shape-catcher', 'pattern-memory', 'rhythm-tap', 'memory-grid',
@@ -139,6 +141,8 @@ const FILTERS: { id: Category | 'all' | 'favorites'; label: string; icon: string
 
 const GameCenter: React.FC = () => {
   const location = useLocation()
+  const [preferences, setPreferences] = usePreferences()
+  const [showLocked, setShowLocked] = useState(false)
   const navigate = useNavigate()
   const [activeGame, setActiveGame] = useState<GameMode>(null)
 
@@ -674,10 +678,10 @@ const GameCenter: React.FC = () => {
     {
       id: 'spell-sprint',
       title: '🏃‍♂️ Spell Sprint',
-      description: 'Spell as many words as possible',
+      description: 'Spell at your pace and race a friendly bee',
       icon: '🏃‍♂️',
       color: '#8338EC',
-      duration: '60s',
+      duration: '8 words',
       category: 'spelling' as Category,
       unlocked: learningFlow.isGameUnlocked('spell-sprint')
     },
@@ -973,7 +977,7 @@ const GameCenter: React.FC = () => {
   /** Why one card is still shut, pointing at the step that opens it. */
   const lockedBecause = (g: GameCard): string => {
     if (!wordlessGames.has(g.id) && !enoughWords) {
-      return `Learn ${wordsShort} more word${wordsShort === 1 ? '' : 's'} to play`
+      return `Meet ${wordsShort} more word${wordsShort === 1 ? '' : 's'}${FREE_GAMES.includes(g.id) ? ' and finish today’s learning goal' : ', then pass today’s quiz and any due review'}`
     }
     if (FREE_GAMES.includes(g.id)) return 'Learn today’s words to unlock'
     if (lockedReason === 'review') {
@@ -989,12 +993,14 @@ const GameCenter: React.FC = () => {
   // Favourites float to the top, then anything brand new, then the usual order.
   const shownGames = visibleGames
     .filter((g) => {
+      if (!g.unlocked && !showLocked) return false
       if (filter === 'all') return true
       if (filter === 'favorites') return favorites.includes(g.id)
       return g.category === filter
     })
     .map((g, i) => ({ ...g, order: i }))
     .sort((a, b) => {
+      if (a.unlocked !== b.unlocked) return Number(b.unlocked) - Number(a.unlocked)
       const fav = Number(favorites.includes(b.id)) - Number(favorites.includes(a.id))
       if (fav !== 0) return fav
       const fresh = Number(!!b.isNew) - Number(!!a.isNew)
@@ -1080,8 +1086,8 @@ const GameCenter: React.FC = () => {
           <h1>{gameInfo?.title || 'Game'}</h1>
           {best > 0 && <span className="game-best-chip">🏆 Best: {best}</span>}
         </div>
-        {renderActiveGame()}
-        <Celebration data={celebration} onClose={() => setCelebration(null)} />
+        <ActivityFrame onExit={handleBackToGames} instructions={gameInfo?.description} example={gameInfo?.category === 'spelling' ? 'letters' : 'choice'}>{renderActiveGame()}</ActivityFrame>
+        <Celebration data={celebration} onClose={() => setCelebration(null)} onDone={() => navigate('/')} closeLabel="Choose another game" />
       </div>
     )
   }
@@ -1090,7 +1096,7 @@ const GameCenter: React.FC = () => {
     <div className="game-center">
       <div className="games-header">
         <h1>🎮 Game Zone</h1>
-        <p className="subtitle">Play, practise, and earn Heavenly Stars! ⭐</p>
+        <p className="subtitle">Choose a game and practise your words! ⭐</p>
 
         <div className="stars-display">
           <div className="stars-count">
@@ -1129,8 +1135,9 @@ const GameCenter: React.FC = () => {
         </div>
       </div>
 
-      {/* A free spin every day — the reason to open the app tomorrow. */}
-      <PrizeWheel />
+      <p className="game-access-message">{learningFlow.gameAccessMessage()}</p>
+      {/* Optional gift, after the main choices. */}
+      <details className="daily-gift"><summary>A little gift 🎁</summary><PrizeWheel /></details>
 
       {/* A game a shortcut asked for, and why it isn't open yet. */}
       {refused && (() => {
@@ -1200,6 +1207,8 @@ const GameCenter: React.FC = () => {
       )}
 
       {/* Pick the kind of play you're in the mood for. */}
+      <label className="card"><input type="checkbox" checked={preferences.relaxed} onChange={e => setPreferences({ relaxed: e.target.checked })} /> Relaxed play — no countdown. Turn off for a timed challenge.</label>
+      {lockedCount > 0 && <button className="comfort-button" onClick={() => setShowLocked(!showLocked)} aria-expanded={showLocked}>{showLocked ? 'Show playable games' : `More games to discover (${lockedCount})`}</button>}
       <div className="games-filters" role="tablist" aria-label="Game categories">
         {FILTERS.map((f) => (
           <button
@@ -1219,7 +1228,7 @@ const GameCenter: React.FC = () => {
 
       {(() => {
         const featured = games.find((g) => g.id === gameOfTheDayId)
-        if (!featured) return null
+        if (!featured || !featured.unlocked) return null
         const claimed = GameStats.hasClaimedDailyBonus()
         return (
           <section className="gotd" aria-label="Game of the day">
@@ -1274,7 +1283,7 @@ const GameCenter: React.FC = () => {
                       </span>
                     ) : null
                   })()}
-                  <span className="game-duration">{game.duration}</span>
+                  <span className="game-duration">{preferences.relaxed && /\d+s/.test(game.duration) ? 'Your pace' : game.duration}</span>
                   {!game.unlocked && <span className="lock-icon">🔒</span>}
                   <button
                     className={`fav-btn ${isFavorite ? 'on' : ''}`}
@@ -1314,7 +1323,7 @@ const GameCenter: React.FC = () => {
           <p className="games-empty">
             {filter === 'favorites'
               ? 'No favorites yet — tap the ☆ on a game to pin it here!'
-              : 'No games in this group yet.'}
+              : 'Your games will appear here as you learn. Tap Learn Words above to meet a short set first.'}
           </p>
         )}
       </div>
@@ -1400,7 +1409,7 @@ const GameCenter: React.FC = () => {
         </section>
       )}
 
-      <Celebration data={celebration} onClose={() => setCelebration(null)} />
+      <Celebration data={celebration} onClose={() => setCelebration(null)} onDone={() => navigate('/')} closeLabel="Choose another game" />
     </div>
   )
 }

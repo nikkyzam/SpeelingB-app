@@ -23,7 +23,7 @@
   color: var(--text);
 }
 .celebration__mascot { font-size: 4.5rem; line-height: 1; display: inline-block; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); }
-.celebration__title { margin: var(--spacing-sm) 0; font-size: 2rem; color: var(--primary-2); }
+.celebration__title { margin: var(--spacing-sm) 0; font-size: 2rem; color: var(--primary-ink, var(--primary-2)); }
 .celebration__msg { color: var(--text-soft); margin-bottom: var(--spacing-md); }
 
 .celebration__stars {

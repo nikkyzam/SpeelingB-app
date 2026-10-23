@@ -5,9 +5,12 @@ import { useRewardStore } from '../../stores/rewards/useRewardStore'
 import Celebration from '../../components/common/Celebration'
 import BackLink from './BackLink'
 import './Subjects.css'
+import ActivityFrame from '../../components/common/ActivityFrame'
+import { usePreferences } from '../../hooks/usePreferences'
 
 /** Quick number games. Each reports one score; this page keeps the best and pays the stars. */
 const MathArcadePage: React.FC = () => {
+  const [preferences, setPreferences] = usePreferences()
   const { addStars } = useRewardStore()
   const [active, setActive] = useState<string | null>(null)
   const [done, setDone] = useState<{ name: string; score: number; stars: number; best: boolean } | null>(null)
@@ -34,7 +37,7 @@ const MathArcadePage: React.FC = () => {
         <button type="button" className="sj-back" onClick={() => setActive(null)}>
           ← Back to the arcade
         </button>
-        <Game onComplete={finish} />
+        <ActivityFrame onExit={() => setActive(null)} instructions={preferences.relaxed && game.id === 'sprint' ? 'Try sums at your pace. Finish your round when you are ready.' : game.blurb} example="math"><Game onComplete={finish} /></ActivityFrame>
       </div>
     )
   }
@@ -44,10 +47,11 @@ const MathArcadePage: React.FC = () => {
       <BackLink to="/subjects/math" label="Math" />
       <header className="sj-hero sj-tone-accent">
         <h1>🕹️ Math Arcade</h1>
-        <p>Fast, fun number games. Beat your best!</p>
+        <p>Number games at your pace.</p>
+        <label><input type="checkbox" checked={preferences.relaxed} onChange={e => setPreferences({ relaxed: e.target.checked })} /> Relaxed play</label>
       </header>
       <div className="sj-grid">
-        {MATH_ARCADE_GAMES.map((g) => {
+        {MATH_ARCADE_GAMES.filter(g => preferences.stage !== 'early' || ['bonds', 'compare', 'match'].includes(g.id)).map((g) => {
           const best = SubjectProgress.getBest(`arcade:${g.id}`)
           return (
             <button
@@ -61,7 +65,7 @@ const MathArcadePage: React.FC = () => {
             >
               <span className="sj-icon" aria-hidden>{g.icon}</span>
               <span className="sj-name">{g.name}</span>
-              <span className="sj-blurb">{g.blurb}</span>
+              <span className="sj-blurb">{preferences.relaxed && g.id === 'sprint' ? 'Try some sums at your pace.' : g.blurb}</span>
               {best && <span className="sj-blurb">🏅 Best {best.pct}</span>}
             </button>
           )

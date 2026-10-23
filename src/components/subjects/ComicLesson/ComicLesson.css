@@ -106,7 +106,7 @@
 
 .comic-lesson-label {
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-ink, var(--accent));
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-size: 0.85rem;

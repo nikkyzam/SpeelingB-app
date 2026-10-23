@@ -22,7 +22,7 @@
   margin-bottom: var(--spacing-sm);
   text-align: left;
 }
-.ww-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.ww-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary-2)); }
 .ww-stats { display: flex; gap: var(--spacing-md); flex-wrap: wrap; }
 .ww-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.72rem; color: var(--text-soft); }
 .ww-stat strong { font-size: 1.05rem; color: var(--text); }

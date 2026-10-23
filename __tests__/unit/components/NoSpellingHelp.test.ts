@@ -53,6 +53,7 @@ const NOT_SPELLING: Record<string, string> = {
   'components/profile/WhoIsPlaying/index.tsx': "the child's own name",
   'components/buddy/BuddyCard/index.tsx': 'naming the buddy',
   'components/admin/AdminUsers.tsx': "a grown-up's controls",
+  'components/common/GrownUpGate/index.tsx': "a grown-up's family PIN and check question",
   'components/challenge/PrizeSetter/index.tsx': 'a grown-up types the prize',
   'components/reading/BookShelf.tsx': 'searching books',
   'components/bible/BibleApiDashboard/index.tsx': 'searching verses',

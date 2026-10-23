@@ -9,6 +9,9 @@ import Button from '../../components/common/Button'
 import AuthModal from '../../components/auth/AuthModal'
 import MysteryBox from '../../components/rewards/MysteryBox'
 import './Subjects.css'
+import GrownUpGate from '../../components/common/GrownUpGate'
+import { usePreferences } from '../../hooks/usePreferences'
+import ReadAloud from '../../components/common/ReadAloud'
 
 /** Spelling, reading and Bible have their own homes; they sit beside the other subjects here. */
 const CARDS = [
@@ -29,6 +32,7 @@ const EXTRAS = [
  */
 const Subjects: React.FC = () => {
   const navigate = useNavigate()
+  const [preferences] = usePreferences()
   const { user, logout } = useUser()
   const { world } = useTheme()
   const { heavenlyStars } = useRewardStore()
@@ -50,7 +54,7 @@ const Subjects: React.FC = () => {
         </div>
         <div className="sj-welcome-text">
           <h1>Hi {name}!</h1>
-          <p>What would you like to learn today?</p>
+          <p>What would you like to learn today?</p><ReadAloud text="Choose a subject. Tap a picture to start." />
           <div className="sj-welcome-chips">
             <span className="sj-welcome-chip">
               🔥 <strong>{streakData.currentStreak}</strong> day streak
@@ -62,13 +66,9 @@ const Subjects: React.FC = () => {
         </div>
         <div className="sj-welcome-auth">
           {user?.isGuest ? (
-            <Button variant="secondary" size="small" onClick={() => setAuthOpen(true)}>
-              Sign In
-            </Button>
+            <GrownUpGate label="Save progress"><Button onClick={() => setAuthOpen(true)}>Save family progress</Button></GrownUpGate>
           ) : (
-            <Button variant="secondary" size="small" onClick={logout}>
-              Log out
-            </Button>
+            <Button variant="secondary" size="small" onClick={() => navigate('/settings')}>My settings</Button>
           )}
         </div>
       </header>
@@ -85,7 +85,7 @@ const Subjects: React.FC = () => {
           Choose a subject
         </h2>
         <div className="sj-grid">
-          {CARDS.map((c) => (
+          {CARDS.filter(c => preferences.stage !== 'early' || ['/spelling', '/subjects/math', '/reading', '/bible'].includes(c.path)).map((c) => (
             <button key={c.path} type="button" className={`sj-card sj-tone-${c.tone}`} onClick={() => navigate(c.path)}>
               <span className="sj-icon" aria-hidden>
                 {c.icon}
@@ -98,7 +98,7 @@ const Subjects: React.FC = () => {
       </section>
 
       {/* One free surprise a day, whatever they study. */}
-      <MysteryBox />
+      <details className="daily-gift"><summary>A little gift 🎁</summary><MysteryBox /></details>
 
       <nav className="sj-extras" aria-label="More">
         {EXTRAS.map((x) => (

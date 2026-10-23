@@ -194,6 +194,15 @@ export const BuddyService = {
     return read().owned.includes(itemId)
   },
 
+  returnItem(itemId: string): BuddyState {
+    const state = read()
+    const equipped = { ...state.equipped }
+    for (const slot of Object.keys(equipped) as Slot[]) {
+      if (equipped[slot] === itemId) delete equipped[slot]
+    }
+    return write({ ...state, owned: state.owned.filter(id => id !== itemId), equipped })
+  },
+
   /** Wear an item, or pass null to take that slot off. */
   equip(slot: Slot, itemId: string | null): BuddyState {
     const state = read()

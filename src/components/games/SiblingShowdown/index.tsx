@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAudio } from '../../../contexts/AudioContext'
@@ -102,7 +103,7 @@ const SiblingShowdown: React.FC = () => {
       speak(`The correct spelling is. ${word.word.split('').join('. ')}. ${word.word}.`)
     }
 
-    window.setTimeout(() => {
+    activityClock.setTimeout(() => {
       if (turn + 1 >= words.length) {
         finish(scored)
       } else {

@@ -23,8 +23,8 @@
   font-size: clamp(1.8rem, 7vw, 2.4rem);
 }
 .ma-bonds-num.target { background: var(--secondary); border-color: var(--secondary); color: var(--on-primary); }
-.ma-bonds-num.hole { border-style: dashed; color: var(--primary); }
-.ma-bonds-num.hole.filled { border-style: solid; border-color: var(--success); color: var(--success); }
+.ma-bonds-num.hole { border-style: dashed; color: var(--primary-ink, var(--primary)); }
+.ma-bonds-num.hole.filled { border-style: solid; border-color: var(--success); color: var(--success-ink, var(--success)); }
 .ma-bonds-op { font-size: 2rem; color: var(--text-soft); }
 
 .ma-bonds-row {

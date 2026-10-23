@@ -60,7 +60,7 @@
 }
 .fx-toast-icon { font-size: 2rem; animation: wiggle 1.2s ease-in-out infinite; }
 .fx-toast-text { display: flex; flex-direction: column; font-family: var(--font-primary); color: var(--text); }
-.fx-toast-text strong { color: var(--primary-2); font-size: 1rem; }
+.fx-toast-text strong { color: var(--primary-ink, var(--primary-2)); font-size: 1rem; }
 .fx-toast-text span { font-size: 0.86rem; color: var(--text-soft); font-weight: 700; }
 
 /* ---- rank up ---- */
@@ -109,11 +109,11 @@
   position: relative;
   font-family: var(--font-primary);
   font-size: 2rem;
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
   margin: var(--spacing-sm) 0 4px;
 }
 .fx-rankup-card p { position: relative; color: var(--text); font-weight: 700; }
-.fx-rankup-card strong { color: var(--primary-2); }
+.fx-rankup-card strong { color: var(--primary-ink, var(--primary-2)); }
 
 @media (max-width: 520px) {
   .fx-toasts { top: 74px; right: var(--spacing-sm); left: var(--spacing-sm); max-width: none; }

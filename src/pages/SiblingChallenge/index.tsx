@@ -14,6 +14,7 @@ import Celebration, { CelebrationData } from '../../components/common/Celebratio
 import Button from '../../components/common/Button'
 import sfx from '../../components/games/shared/sfx'
 import './SiblingChallenge.css'
+import ActivityFrame from '../../components/common/ActivityFrame'
 
 export interface MatchProps {
   names: [string, string]
@@ -25,10 +26,10 @@ export interface MatchProps {
 }
 
 const MODES = [
+  { id: 'relay', name: 'Team Relay', icon: '🤝', blurb: 'Work together to build a word streak.' },
   { id: 'tug', name: 'Word Tug-of-War', icon: '🪢', blurb: 'Spell to pull the rope your way!' },
   { id: 'buzzer', name: 'Buzzer Race', icon: '🔔', blurb: 'Buzz first — miss, and the other can steal it.' },
   { id: 'steal', name: 'Steal-the-Point', icon: '🥷', blurb: 'Take turns. Miss, and the other can steal the point!' },
-  { id: 'relay', name: 'Team Relay', icon: '🤝', blurb: 'Not a fight — build one streak together.' },
 ] as const
 
 type ModeId = (typeof MODES)[number]['id']
@@ -189,10 +190,12 @@ const SiblingChallenge: React.FC = () => {
     const shared = { names: clean(), words, onFinish: finish, first }
     return (
       <div className="chal playing">
+        <ActivityFrame onExit={() => setPlaying(false)} instructions={MODES.find(m => m.id === mode)?.blurb}>
         {mode === 'tug' && <TugOfWar {...shared} />}
         {mode === 'buzzer' && <BuzzerRace {...shared} />}
         {mode === 'steal' && <StealDuel {...shared} />}
         {mode === 'relay' && <CoopRelay {...shared} />}
+        </ActivityFrame>
         <Button variant="secondary" size="small" onClick={() => setPlaying(false)}>Stop the match</Button>
       </div>
     )
@@ -304,7 +307,7 @@ const SiblingChallenge: React.FC = () => {
         {!mode ? 'Pick a game first' : last ? 'Rematch! 🔁' : 'Start the match! ⚔️'}
       </Button>
 
-      <Celebration data={celebration} onClose={() => setCelebration(null)} closeLabel="Yay!" />
+      <Celebration data={celebration} onClose={() => setCelebration(null)} closeLabel="Done for now" />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { PointsService } from '../rewards/PointsService'
 import { RewardItem } from '../../types/rewards'
+import BuddyService from './BuddyService'
 
 /**
  * Things a child can buy for their buddy with the stars they earn.
@@ -60,6 +61,8 @@ export const itemById = (id: string): WardrobeItem | undefined => WARDROBE.find(
  * Returns false when there aren't enough stars.
  */
 export const buyItem = (item: WardrobeItem): boolean => {
+  const offered = itemById(item.id)
+  if (!offered || offered.cost !== item.cost || BuddyService.isOwned(item.id)) return false
   const asReward: RewardItem = {
     id: `buddy-${item.id}`,
     name: `${item.name} (buddy)`,
@@ -70,5 +73,16 @@ export const buyItem = (item: WardrobeItem): boolean => {
     icon: item.emoji,
     unlocked: true,
   }
-  return PointsService.spendPoints(item.cost, asReward)
+  if (!PointsService.spendPoints(item.cost, asReward)) return false
+  BuddyService.own(item.id)
+  BuddyService.equip(item.slot, item.id)
+  return true
+}
+
+export const returnItem = (id: string): boolean => {
+  if (!BuddyService.isOwned(id)) return false
+  const purchase = PointsService.getPurchaseHistory().slice().reverse().find(p => p.rewardId === `buddy-${id}` && !p.refundedAt)
+  if (!purchase || !PointsService.refundPurchase(purchase.id)) return false
+  BuddyService.returnItem(id)
+  return true
 }

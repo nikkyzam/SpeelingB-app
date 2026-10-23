@@ -91,6 +91,20 @@ export const registerCachedLists = (): void => {
   }
 }
 
+/** How the last download went, so the picker can say why a list isn't here. */
+export type ListStatus =
+  | { state: 'idle' }
+  | { state: 'loading' }
+  | { state: 'ready' }
+  | { state: 'missing' }
+  | { state: 'error'; message: string }
+let status: ListStatus = { state: 'idle' }
+export const getListStatus = (): ListStatus => status
+const setStatus = (next: ListStatus) => {
+  status = next
+  window.dispatchEvent(new Event(WORD_LISTS_EVENT))
+}
+
 /**
  * Download the lists for a signed-in user. A new list is added at once; a
  * changed one (new version) reloads the page, because the bank keeps the
@@ -100,27 +114,41 @@ export const refreshPrivateLists = async (): Promise<void> => {
   const cache = readCache()
   let added = false
   let changed = false
+  let missing = false
+  let failure: string | null = null
+  setStatus({ state: 'loading' })
   for (const { id } of PRIVATE_LISTS) {
     try {
       const snap = await getDoc(doc(db, 'wordLists', id))
-      if (!snap.exists()) continue
+      if (!snap.exists()) {
+        missing = true
+        continue
+      }
       const list = snap.data() as PrivateList
       if (!Array.isArray(list.words)) continue
       const had = cache[id]
-      if (had && had.version === list.version) continue
+      // Already cached — but make sure it is in the bank (it may have been
+      // cached by a newer upload after this page loaded).
+      if (had && had.version === list.version) {
+        if (!wordBank.hasList(id)) wordBank.registerWords(listToWords(had))
+        continue
+      }
       cache[id] = { ...list, id }
-      if (had) changed = true
+      if (had && wordBank.hasList(id)) changed = true
       else {
         wordBank.registerWords(listToWords(cache[id]))
         added = true
       }
     } catch (e) {
-      // Offline or not allowed: keep whatever is cached.
+      // Offline or not allowed: keep whatever is cached, and say so.
       console.error(`Could not load the ${id} word list:`, e)
+      failure = e instanceof Error ? e.message : String(e)
     }
   }
-  if (!added && !changed) return
-  writeCache(cache)
-  if (changed) window.location.reload()
-  else window.dispatchEvent(new Event(WORD_LISTS_EVENT))
+  if (added || changed) writeCache(cache)
+  if (changed) {
+    window.location.reload()
+    return
+  }
+  setStatus(failure ? { state: 'error', message: failure } : missing && !added ? { state: 'missing' } : { state: 'ready' })
 }

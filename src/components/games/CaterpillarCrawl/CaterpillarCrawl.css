@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.cc-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.cc-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary)); }
 .cc-stats { display: flex; gap: var(--spacing-lg); }
 .cc-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .cc-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -52,7 +52,7 @@
   border-radius: 3px;
   color: var(--text);
 }
-.cc-slot.got { color: var(--success); border-bottom-color: var(--success); }
+.cc-slot.got { color: var(--success-ink, var(--success)); border-bottom-color: var(--success); }
 .cc-slot.told { color: var(--warning); border-bottom-color: var(--warning); }
 
 /* --- the garden ------------------------------------------------------------ */
@@ -259,8 +259,8 @@
   font-family: var(--font-primary);
   font-weight: 800;
 }
-.cc-flash.ok { color: var(--success); }
-.cc-flash.bad { color: var(--error); }
+.cc-flash.ok { color: var(--success-ink, var(--success)); }
+.cc-flash.bad { color: var(--error-ink, var(--error)); }
 
 @media (prefers-reduced-motion: reduce) {
   .cc-leaf,

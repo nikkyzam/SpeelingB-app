@@ -19,6 +19,8 @@ import Button from '../../common/Button'
 import WordTrail from '../WordTrail'
 import './SpellMode.css'
 import SpellingInput from '../../common/SpellingInput'
+import { usePreferences } from '../../../hooks/usePreferences'
+import { SPELLING_STARS } from '../../../services/rewards/rules'
 
 /** How a finished set went, for the page that celebrates it. */
 export interface SpellResult {
@@ -63,6 +65,9 @@ const SpellMode: React.FC<SpellModeProps> = ({
   summary = true,
 }) => {
   const { speak } = useAudio()
+  const [preferences] = usePreferences()
+  const [assisted, setAssisted] = useState(false)
+  const [micReady, setMicReady] = useState(false)
   const { learningFlow } = useProgress()
   const { world } = useTheme()
   const { addStars } = useRewardStore()
@@ -117,6 +122,7 @@ const SpellMode: React.FC<SpellModeProps> = ({
     setSolvedIds([])
     setStars(0)
     setStreak(0)
+    setAssisted(false)
     setUserInput('')
     setIsCorrect(null)
     setRevealed(false)
@@ -174,9 +180,17 @@ const SpellMode: React.FC<SpellModeProps> = ({
     setLastAttempt(answer)
     setIsCorrect(correct)
     // Right or wrong, this word's next review date depends on what just happened.
-    ReviewSchedule.record(currentWord.id, correct)
+    // A try with help copies the shown word, so it is not a recall either way:
+    // the miss before it was already recorded, and recording again doubled it.
+    if (!assisted) ReviewSchedule.record(currentWord.id, correct)
 
     if (correct) {
+      if (assisted) {
+        setLine('You built it with help! We will practise it again another time.')
+        sfx.correct()
+        speak('You built it with help. Well done for trying again!')
+        return
+      }
       const run = streak + 1
       const cheer = praise(run)
       setStreak(run)
@@ -187,9 +201,9 @@ const SpellMode: React.FC<SpellModeProps> = ({
       speak(cheer)
 
       // A real star for every word spelled — the one currency in the app.
-      starsRef.current += 1
+      starsRef.current += SPELLING_STARS
       setStars(starsRef.current)
-      addStars(1)
+      addStars(SPELLING_STARS)
       solvedRef.current = [...solvedRef.current, currentWord.id]
       setSolvedIds(solvedRef.current)
 
@@ -210,7 +224,7 @@ const SpellMode: React.FC<SpellModeProps> = ({
       }
 
       clearAdvance()
-      advanceTimer.current = window.setTimeout(() => {
+      if (!preferences.waitForMe) advanceTimer.current = window.setTimeout(() => {
         advanceTimer.current = null
         moveToNextWord()
       }, 1500)
@@ -231,6 +245,7 @@ const SpellMode: React.FC<SpellModeProps> = ({
     setIsCorrect(null)
     setRevealed(false)
     setLine('')
+    setAssisted(false)
     if (currentIndex < words.length - 1) {
       const nextIndex = currentIndex + 1
       setCurrentIndex(nextIndex)
@@ -259,7 +274,7 @@ const SpellMode: React.FC<SpellModeProps> = ({
     speak(`${currentWord.word} is spelled ${spellOut(currentWord.word)}.`)
     clearAdvance()
     // Long enough to hear every letter before the next word is asked.
-    advanceTimer.current = window.setTimeout(() => {
+    if (!preferences.waitForMe) advanceTimer.current = window.setTimeout(() => {
       advanceTimer.current = null
       moveToNextWord()
     }, 2500 + currentWord.word.length * 400)
@@ -365,6 +380,7 @@ const SpellMode: React.FC<SpellModeProps> = ({
           </div>
           <div className="sentence-text">{getMaskedSentence()}</div>
           <div className="sm-hear-row">
+            <Button onClick={() => speak(currentWord.word, { rate: 0.55 })} variant="secondary" size="small">🐢 Slowly</Button>
             <Button
               onClick={() => speakPrompt(currentWord)}
               variant="secondary"
@@ -398,7 +414,7 @@ const SpellMode: React.FC<SpellModeProps> = ({
             <div className="input-actions">
               {mic.supported && (
                 <Button
-                  onClick={mic.listening ? mic.stop : mic.start}
+                  onClick={() => { if (!micReady) setMicReady(true); else if (mic.listening) mic.stop(); else mic.start() }}
                   variant={mic.listening ? 'warning' : 'secondary'}
                   size="small"
                 >
@@ -406,6 +422,8 @@ const SpellMode: React.FC<SpellModeProps> = ({
                 </Button>
               )}
             </div>
+            {micReady && !mic.listening && <p>Say each letter aloud. Your browser may ask to use the microphone and may process speech online. You can always type instead. <button className="comfort-button" onClick={mic.start}>Start microphone</button></p>}
+            {mic.error && <p role="status">{mic.error}</p>}
           </div>
 
           {mic.listening && (
@@ -426,6 +444,7 @@ const SpellMode: React.FC<SpellModeProps> = ({
               <div className="feedback-why">
                 <span aria-hidden>💡</span> {explain(currentWord.word, lastAttempt).tip}
               </div>
+              {!isQuiz && <button className="comfort-button" onClick={() => { clearAdvance(); setAssisted(true); setIsCorrect(null); setUserInput(''); setLine(''); }}>Try with help</button>}
             </div>
           )}
 
@@ -448,6 +467,7 @@ const SpellMode: React.FC<SpellModeProps> = ({
         </div>
 
         <div className="action-buttons">
+          {assisted && <p role="status">Copy it, then check: <strong>{currentWord.word}</strong>. This is a practice try.</p>}
           <Button
             // Once an answer is in, this button moves on rather than re-scoring
             // it. It used to call handleSubmit either way, which the one-answer

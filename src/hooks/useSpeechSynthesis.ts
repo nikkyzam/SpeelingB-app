@@ -15,6 +15,7 @@ export const useSpeechSynthesis = () => {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    if (!window.speechSynthesis) { setError('Read aloud is not available on this device. You can still read and tap your answers.'); return }
     const loadVoices = () => {
       const availableVoices = window.speechSynthesis.getVoices()
       setVoices(availableVoices)
@@ -93,7 +94,7 @@ export const useSpeechSynthesis = () => {
   }, [voices])
 
   const stop = useCallback(() => {
-    window.speechSynthesis.cancel()
+    window.speechSynthesis?.cancel()
     setIsSpeaking(false)
   }, [])
 

@@ -19,7 +19,7 @@
   padding-bottom: var(--spacing-md);
   margin-bottom: var(--spacing-lg);
 }
-.wb-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.wb-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary-2)); }
 .wb-stats { display: flex; gap: var(--spacing-lg); }
 .wb-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.8rem; color: var(--text-soft); }
 .wb-stat strong { font-size: 1.2rem; color: var(--text); }
@@ -63,7 +63,7 @@
 .wb-slot.filled { border-style: solid; border-color: var(--primary); animation: pop-in 200ms both; }
 .wb-slot.filled.ok { border-color: var(--success); background: rgba(47,191,113,0.15); }
 /* The right letters, shown after a miss: calm, not alarm-red. */
-.wb-slot.filled.show { border-color: var(--secondary); background: color-mix(in srgb, var(--secondary) 15%, transparent); color: var(--secondary); }
+.wb-slot.filled.show { border-color: var(--secondary); background: color-mix(in srgb, var(--secondary) 15%, transparent); color: var(--secondary-ink, var(--secondary)); }
 .wb-slots.wb-shake { animation: wb-shake 0.4s ease; }
 @keyframes wb-shake {
   0%, 100% { transform: translateX(0); }

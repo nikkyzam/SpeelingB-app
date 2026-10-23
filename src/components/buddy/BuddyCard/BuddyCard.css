@@ -109,12 +109,12 @@
 .buddy-name {
   font-family: var(--font-primary);
   font-size: 1.3rem;
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
   margin-bottom: 2px;
 }
 .buddy-stage-label { font-size: 0.85rem; color: var(--text-soft); font-weight: 700; }
 .buddy-blurb { color: var(--text-soft); font-size: 0.9rem; margin-bottom: 2px; }
-.buddy-personality { color: var(--accent); font-size: 0.8rem; font-style: italic; margin-bottom: var(--spacing-sm); }
+.buddy-personality { color: var(--accent-ink, var(--accent)); font-size: 0.8rem; font-style: italic; margin-bottom: var(--spacing-sm); }
 
 .buddy-meter {
   height: 10px;
@@ -208,7 +208,7 @@
   animation: pop-in var(--transition-normal) both;
 }
 .buddy-evolved-icon { font-size: 4.5rem; animation: bounce 0.9s infinite; }
-.buddy-evolved-card h4 { font-family: var(--font-primary); font-size: 1.7rem; color: var(--primary-2); margin: var(--spacing-sm) 0; }
+.buddy-evolved-card h4 { font-family: var(--font-primary); font-size: 1.7rem; color: var(--primary-ink, var(--primary-2)); margin: var(--spacing-sm) 0; }
 .buddy-evolved-card p { color: var(--text-soft); }
 
 @media (max-width: 520px) {

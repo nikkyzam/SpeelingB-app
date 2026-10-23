@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.mp-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.mp-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary-2)); }
 .mp-stats { display: flex; gap: var(--spacing-lg); }
 .mp-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .mp-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -91,7 +91,7 @@
 .mp-input.right { border-color: var(--success); background: rgba(47,191,113,0.15); }
 /* A miss is a soft wobble, never an alarm. */
 .mp-input.nearly { border-color: var(--warning); animation: shake 0.4s; }
-.mp-input.shown { border-color: var(--secondary); color: var(--primary-2); }
+.mp-input.shown { border-color: var(--secondary); color: var(--primary-ink, var(--primary-2)); }
 
 .mp-tries { display: flex; justify-content: center; gap: 4px; margin-top: var(--spacing-sm); font-size: 1rem; }
 .mp-tries .off { opacity: 0.25; }
@@ -127,7 +127,7 @@
   font-family: var(--font-primary);
   font-weight: 800;
   font-size: 1.3rem;
-  color: var(--success);
+  color: var(--success-ink, var(--success));
   animation: pop-in var(--transition-normal) both;
 }
 

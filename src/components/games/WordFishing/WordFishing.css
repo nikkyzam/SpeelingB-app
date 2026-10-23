@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.wf-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.wf-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary-2)); }
 .wf-stats { display: flex; gap: var(--spacing-lg); }
 .wf-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .wf-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -39,12 +39,12 @@
 }
 .wf-head { color: var(--text); }
 .wf-gap {
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
   border-bottom: 5px dotted var(--primary);
   padding: 0 6px;
   min-width: 60px;
 }
-.wf-gap.filled { color: var(--success); border-bottom-color: var(--success); animation: pop-in var(--transition-normal) both; }
+.wf-gap.filled { color: var(--success-ink, var(--success)); border-bottom-color: var(--success); animation: pop-in var(--transition-normal) both; }
 
 .wf-hint { color: var(--text-soft); font-weight: 600; margin: var(--spacing-sm) 0 var(--spacing-md); }
 .wf-speak {

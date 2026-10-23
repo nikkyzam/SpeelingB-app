@@ -2,6 +2,8 @@ import React, { useEffect, useMemo } from 'react'
 import { useTheme } from '../../../contexts/ThemeContext'
 import sfx from '../../games/shared/sfx'
 import './Celebration.css'
+import Dialog from '../Dialog'
+import { usePreferences } from '../../../hooks/usePreferences'
 
 export interface CelebrationData {
   title: string
@@ -28,14 +30,16 @@ interface CelebrationProps {
    * looking at their stars was whisked off to another screen.
    */
   autoClose?: boolean
+  onDone?: () => void
 }
 
 /** A joyful, theme-aware "you did it!" overlay used when a game or stage finishes.
  *  Replaces jarring window.alert() popups. The backdrop effect varies —
  *  confetti, fireworks, balloons, star rain or a mascot cannonball — so the
  *  hundredth win doesn't feel like the ninety-ninth. */
-const Celebration: React.FC<CelebrationProps> = ({ data, onClose, closeLabel = 'Yay!', variant, autoClose = true }) => {
+const Celebration: React.FC<CelebrationProps> = ({ data, onClose, closeLabel = 'Done for now', variant, autoClose = false, onDone }) => {
   const { world } = useTheme()
+  const [preferences] = usePreferences()
 
   // A party needs a crowd: it opened in total silence before.
   useEffect(() => {
@@ -60,8 +64,8 @@ const Celebration: React.FC<CelebrationProps> = ({ data, onClose, closeLabel = '
   const confettiColors = ['var(--primary)', 'var(--secondary)', 'var(--accent)', 'var(--success)']
 
   return (
-    <div className="celebration" role="dialog" aria-modal="true" onClick={onClose}>
-      {effect === 'confetti' && (
+    <Dialog title={data.title} onClose={onClose} className="celebration-dialog">
+      {!preferences.calm && effect === 'confetti' && (
         <div className="celebration__confetti" aria-hidden>
           {Array.from({ length: 40 }).map((_, i) => (
             <span
@@ -77,7 +81,7 @@ const Celebration: React.FC<CelebrationProps> = ({ data, onClose, closeLabel = '
         </div>
       )}
 
-      {effect === 'fireworks' && (
+      {!preferences.calm && effect === 'fireworks' && (
         <div className="celebration__fx" aria-hidden>
           {Array.from({ length: 6 }).map((_, i) => (
             <span
@@ -95,7 +99,7 @@ const Celebration: React.FC<CelebrationProps> = ({ data, onClose, closeLabel = '
         </div>
       )}
 
-      {effect === 'balloons' && (
+      {!preferences.calm && effect === 'balloons' && (
         <div className="celebration__fx" aria-hidden>
           {Array.from({ length: 12 }).map((_, i) => (
             <span
@@ -113,7 +117,7 @@ const Celebration: React.FC<CelebrationProps> = ({ data, onClose, closeLabel = '
         </div>
       )}
 
-      {effect === 'starrain' && (
+      {!preferences.calm && effect === 'starrain' && (
         <div className="celebration__fx" aria-hidden>
           {Array.from({ length: 26 }).map((_, i) => (
             <span
@@ -131,7 +135,7 @@ const Celebration: React.FC<CelebrationProps> = ({ data, onClose, closeLabel = '
         </div>
       )}
 
-      {effect === 'cannon' && (
+      {!preferences.calm && effect === 'cannon' && (
         <div className="celebration__fx" aria-hidden>
           <span className="celebration__cannonball">{world.mascot}</span>
           {Array.from({ length: 16 }).map((_, i) => (
@@ -170,8 +174,10 @@ const Celebration: React.FC<CelebrationProps> = ({ data, onClose, closeLabel = '
         <button className="btn btn-primary btn-large celebration__btn" onClick={onClose}>
           {closeLabel}
         </button>
+        {onDone && <button className="comfort-button" onClick={onDone}>Done for now</button>}
+        <p>Great work. You can stop whenever you need a break.</p>
       </div>
-    </div>
+    </Dialog>
   )
 }
 

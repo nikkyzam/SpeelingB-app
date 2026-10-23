@@ -148,7 +148,7 @@
 .page-counter {
   font-size: 1.3em;
   font-weight: bold;
-  color: var(--primary);
+  color: var(--primary-ink, var(--primary));
 }
 
 .book-features {

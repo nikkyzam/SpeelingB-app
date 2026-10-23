@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
@@ -92,7 +93,7 @@ const SyllableClap: React.FC<SyllableClapProps> = ({ onComplete, words: provided
   // The beat-by-beat replay can be restarted, so its timers are its own.
   const beatTimers = useRef<number[]>([])
   const stopBeats = () => {
-    beatTimers.current.forEach((t) => window.clearTimeout(t))
+    beatTimers.current.forEach((t) => activityClock.clearTimeout(t))
     beatTimers.current = []
   }
   useEffect(() => stopBeats, [])
@@ -125,9 +126,9 @@ const SyllableClap: React.FC<SyllableClapProps> = ({ onComplete, words: provided
     stopBeats()
     chunks.forEach((chunk) => speak(chunk, { queue: true }))
     chunks.forEach((_, i) => {
-      beatTimers.current.push(window.setTimeout(() => { setBeat(i); sfx.tap() }, startAfter + i * 650))
+      beatTimers.current.push(activityClock.setTimeout(() => { setBeat(i); sfx.tap() }, startAfter + i * 650))
     })
-    beatTimers.current.push(window.setTimeout(() => setBeat(-1), startAfter + chunks.length * 650))
+    beatTimers.current.push(activityClock.setTimeout(() => setBeat(-1), startAfter + chunks.length * 650))
   }
 
   /** Slow speech stretches the beats out without handing over the chunks. */

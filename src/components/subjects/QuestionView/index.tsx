@@ -6,6 +6,7 @@ import CoordinateGrid from '../CoordinateGrid'
 import NumberInput from '../NumberInput'
 import SpellingInput from '../../common/SpellingInput'
 import './QuestionView.css'
+import ReadAloud from '../../common/ReadAloud'
 
 interface QuestionViewProps {
   question: Question
@@ -235,6 +236,7 @@ const QuestionView: React.FC<QuestionViewProps> = ({ question: q, response, onCh
       <p className={`qv-prompt${q.mono ? ' qv-mono' : ''}`}>
         <RichText text={q.prompt} />
       </p>
+      <ReadAloud text={[q.prompt, ...('choices' in q ? q.choices : []), showHint && q.hint ? `Hint: ${q.hint}` : ''].join('. ').replace(/<[^>]+>/g, '')} label="Hear this question" />
       {q.figure && q.kind !== 'plot' && <CoordinateGrid figure={q.figure} />}
       {q.hint && showHint && !locked && <p className="qv-hint">💡 {q.hint}</p>}
       {body()}

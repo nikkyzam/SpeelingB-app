@@ -48,6 +48,11 @@ export interface LearningProgress {
   wordLevels?: (1 | 2 | 3)[]
   /** A private word list (e.g. 'school-2026') chosen instead of the Bee levels. */
   wordList?: string
+  /**
+   * The saved group for each learning stage. Early-reader mode learns from the
+   * starter words, a different list, so each stage keeps its own place.
+   */
+  groupByStage?: Record<string, number>
   missedDays: string[] // Array of date strings "YYYY-MM-DD"
   lastGoalCheck: string | null // Last date goals were checked/reset
   lastReviewDate: string | null // Last date the "Review Time!" quiz was completed
@@ -167,6 +172,20 @@ export class LearningFlowController {
 
   getSelectedGroup(): number {
     return this.progress.selectedGroup || 0
+  }
+
+  /**
+   * Moving between learning stages swaps the word list (early readers learn
+   * the starter words), so the group number would point into the wrong list.
+   * Keep the old stage's place and pick up the new stage's where it was left.
+   */
+  switchStage(from: string, to: string): void {
+    if (from === to) return
+    const groups = { ...(this.progress.groupByStage ?? {}) }
+    groups[from] = this.getSelectedGroup()
+    this.progress.groupByStage = groups
+    this.progress.selectedGroup = groups[to] ?? 0
+    this.saveProgress()
   }
 
   setDifficulty(difficulty: 1 | 2 | 3 | undefined): void {
@@ -352,6 +371,15 @@ export class LearningFlowController {
     if (!this.isDailyQuizPassed()) return 'quiz'
     if (!this.isReviewSatisfiedToday()) return 'review'
     return null
+  }
+
+  gameAccessMessage(): string {
+    const reason = this.gamesLockedReason()
+    if (reason === null) return 'Today’s quiz and review are done. Your games are ready!'
+    if (!this.areStarterGamesOpen()) return 'Meet today’s words to open starter games. The quiz and any due review open more games.'
+    return reason === 'review'
+      ? 'Starter games are ready. A short review opens more games.'
+      : 'Starter games are ready. Today’s quiz and any due review open more games.'
   }
 
   /** True once today's all-words quiz has been passed (resets each day). */

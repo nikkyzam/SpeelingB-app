@@ -1,10 +1,18 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
 vi.mock('@/config/firebase', () => ({ db: {}, auth: {} }))
-vi.mock('firebase/firestore', () => ({ doc: vi.fn(), getDoc: vi.fn() }))
+const fs = vi.hoisted(() => ({ getDoc: vi.fn() }))
+vi.mock('firebase/firestore', () => ({ doc: vi.fn(), getDoc: fs.getDoc }))
 
 import { wordBank } from '@/services/wordBank'
-import { listToWords, registerCachedLists, PRIVATE_LISTS_KEY, type PrivateList } from '@/services/wordLists'
+import {
+  listToWords,
+  registerCachedLists,
+  refreshPrivateLists,
+  getListStatus,
+  PRIVATE_LISTS_KEY,
+  type PrivateList,
+} from '@/services/wordLists'
 import { clearUserData } from '@/services/persistence/userKeys'
 
 // Made-up words: the real list never appears in this public repo.
@@ -49,5 +57,30 @@ describe('private word lists', () => {
     localStorage.setItem(PRIVATE_LISTS_KEY, '{}')
     clearUserData()
     expect(localStorage.getItem(PRIVATE_LISTS_KEY)).toBeNull()
+  })
+})
+
+describe('downloading a private list says how it went', () => {
+  beforeEach(() => localStorage.clear())
+
+  it('reports an error instead of failing silently', async () => {
+    fs.getDoc.mockRejectedValueOnce(new Error('Missing or insufficient permissions.'))
+    await refreshPrivateLists()
+    expect(getListStatus()).toEqual({ state: 'error', message: 'Missing or insufficient permissions.' })
+  })
+
+  it('reports when the list has not been uploaded', async () => {
+    fs.getDoc.mockResolvedValueOnce({ exists: () => false })
+    await refreshPrivateLists()
+    expect(getListStatus()).toEqual({ state: 'missing' })
+  })
+
+  it('a first download adds the list to the bank and caches it', async () => {
+    const fresh = { ...list, id: 'school-2026', words: [{ ...list.words[0], n: 7 }] }
+    fs.getDoc.mockResolvedValueOnce({ exists: () => true, data: () => fresh })
+    await refreshPrivateLists()
+    expect(getListStatus()).toEqual({ state: 'ready' })
+    expect(wordBank.getWordById('school-2026-7')?.word).toBe('zebrafy')
+    expect(JSON.parse(localStorage.getItem(PRIVATE_LISTS_KEY)!)['school-2026'].version).toBe(1)
   })
 })

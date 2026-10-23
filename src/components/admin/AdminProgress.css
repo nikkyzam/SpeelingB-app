@@ -122,7 +122,7 @@
   background: var(--card-soft);
 }
 .admin-prog__word { font-weight: 800; color: var(--text); flex: 1; min-width: 0; overflow-wrap: anywhere; }
-.admin-prog__wrong { color: var(--error); font-weight: 800; font-variant-numeric: tabular-nums; }
+.admin-prog__wrong { color: var(--error-ink, var(--error)); font-weight: 800; font-variant-numeric: tabular-nums; }
 
 .admin-prog__boxes { display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap; margin-top: 0.2rem; }
 .admin-prog__box {

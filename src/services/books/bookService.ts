@@ -1,137 +1,28 @@
 import { christianBooks, christianReadingLevels, ChristianBook, ReadingLevel } from '../../data/books/christianBooks';
-import { BookApiService } from './apiService';
 
 export class BookService {
-  private static onlineBooks: ChristianBook[] = [];
-
-  // Get books by age range
+  // Only the bundled, curated story collection is available to children.
+  // External catalogue searches are previews, not verified children's stories.
   static async getBooksByAge(age: number): Promise<ChristianBook[]> {
-    const localBooks = christianBooks.filter(book =>
-      age >= book.ageRange.min && age <= book.ageRange.max
-    );
-    
-    return [...localBooks, ...this.onlineBooks.filter(book => 
-      age >= book.ageRange.min && age <= book.ageRange.max
-    )];
+    return christianBooks.filter(book => age >= book.ageRange.min && age <= book.ageRange.max);
   }
 
-  // Fetch and cache online books
-  static async fetchOnlineBooks(): Promise<ChristianBook[]> {
-    try {
-      const [bibleStories, moralStories, publicDomain] = await Promise.all([
-        BookApiService.fetchBibleStories(10),
-        BookApiService.fetchMoralStories(10),
-        BookApiService.fetchPublicDomainChristianBooks()
-      ]);
+  static async fetchOnlineBooks(): Promise<ChristianBook[]> { return []; }
 
-      const convertedBible = bibleStories.map(b => 
-        BookApiService.convertToChristianBook(b, 'bible-stories')
-      );
-      const convertedMoral = moralStories.map(b => 
-        BookApiService.convertToChristianBook(b, 'character')
-      );
-      const convertedPublic = publicDomain.map(b => 
-        BookApiService.convertGutenbergToChristianBook(b)
-      );
-
-      this.onlineBooks = [...convertedBible, ...convertedMoral, ...convertedPublic];
-      return this.onlineBooks;
-    } catch (error) {
-      console.error('Error in BookService.fetchOnlineBooks:', error);
-      return [];
-    }
-  }
-
-  // Fetch full content for a book if needed
   static async fetchFullBookContent(bookId: string): Promise<ChristianBook | undefined> {
-    let book = this.getBookById(bookId);
-    if (!book) {
-      book = await BookApiService.fetchBookById(bookId);
-      if (book) this.onlineBooks.push(book);
-    }
-    if (!book) return undefined;
-
-    // If it's an Open Library book, try to get full description
-    if (bookId.startsWith('api-')) {
-      const workId = bookId.replace('api-', '');
-      const workData = await BookApiService.fetchOpenLibraryWork(workId);
-      if (workData && workData.description) {
-        const description = typeof workData.description === 'string' 
-          ? workData.description 
-          : workData.description.value;
-        
-        if (description) {
-          // Update the first page with real description
-          book.pages[0].content = description;
-          // Maybe split long description into more pages?
-          if (description.length > 1000) {
-            this.splitContentIntoPages(book, description);
-          }
-        }
-      }
-    }
-
-    // If it's a Gutenberg book, fetch full text
-    if (bookId.startsWith('guten-') && book.externalUrl) {
-      const text = await BookApiService.fetchGutenbergText(book.externalUrl);
-      if (text) {
-        this.splitContentIntoPages(book, text);
-      }
-    }
-
-    return book;
-  }
-
-  private static splitContentIntoPages(book: ChristianBook, text: string) {
-    // Basic splitting logic: every ~1000 characters or by paragraphs
-    const paragraphs = text.split(/\n\s*\n/);
-    const pages = [];
-    let currentPageContent = "";
-    let pageNum = 1;
-
-    for (const para of paragraphs) {
-      if (para.trim().length === 0) continue;
-      
-      if ((currentPageContent.length + para.length) > 1200 && currentPageContent.length > 0) {
-        pages.push({
-          pageNumber: pageNum++,
-          content: currentPageContent.trim(),
-          vocabulary: this.extractVocabulary(currentPageContent)
-        });
-        currentPageContent = "";
-      }
-      currentPageContent += para + "\n\n";
-    }
-
-    if (currentPageContent.trim().length > 0) {
-      pages.push({
-        pageNumber: pageNum++,
-        content: currentPageContent.trim(),
-        vocabulary: this.extractVocabulary(currentPageContent)
-      });
-    }
-
-    if (pages.length > 0) {
-      book.pages = pages;
-    }
-  }
-
-  private static extractVocabulary(text: string): string[] {
-    // Simple mock vocab extractor - pick some long words
-    const words = text.match(/\b\w{7,}\b/g) || [];
-    return Array.from(new Set(words)).slice(0, 5);
+    return this.getBookById(bookId);
   }
 
   // Get all available books (local + cached online)
   static getAllAvailableBooks(): ChristianBook[] {
-    return [...christianBooks, ...this.onlineBooks];
+    return [...christianBooks];
   }
 
   // Get book by ID (checks local then online)
   static getBookById(id: string): ChristianBook | undefined {
     const local = christianBooks.find(book => book.id === id);
     if (local) return local;
-    return this.onlineBooks.find(book => book.id === id);
+    return undefined;
   }
 
   // Get books by grade

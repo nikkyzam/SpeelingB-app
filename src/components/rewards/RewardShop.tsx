@@ -1,170 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import BuddyService from '../../services/buddy/BuddyService';
-import { RewardItem } from '../../types/rewards';
-import { RewardsDataService } from '../../services/rewards/RewardsDataService';
-import PointsDisplay from './PointsDisplay';
-import RewardCard from './RewardCard';
-import BadgeCollection from './BadgeCollection';
-import { useRewardStore as useV2RewardStore } from '../../stores/rewards/useRewardStore';
-import './RewardShop.css';
+import React, { useEffect, useState } from 'react'
+import { useRewardStore } from '../../stores/rewards/useRewardStore'
+import { PointsService } from '../../services/rewards/PointsService'
+import { FAMILY_REWARDS_EVENT, getFamilyRewards, requestFamilyReward, settleFamilyRequest } from '../../services/rewards/FamilyRewards'
+import Wardrobe from '../buddy/Wardrobe'
+import BuddyService from '../../services/buddy/BuddyService'
+import Dialog from '../common/Dialog'
+import { useAudio } from '../../contexts/AudioContext'
+import { SPELLING_STARS, MAX_GAME_STARS } from '../../services/rewards/rules'
+import './RewardShop.css'
 
-const RewardShop: React.FC = () => {
-  const {
-    points,
-    rewards,
-    selectedCategory,
-    setSelectedCategory,
-    purchaseReward,
-    getFilteredRewards,
-    loadPoints,
-    loadRewards
-  } = useV2RewardStore();
-
-  const navigate = useNavigate();
-  const buddyName = BuddyService.get().name;
-
-  const [purchaseMessage, setPurchaseMessage] = useState<string>('');
-  const [showRealRewards, setShowRealRewards] = useState<boolean>(true);
-
+export default function RewardShop() {
+  const { heavenlyStars, loadPoints } = useRewardStore()
+  const { speak } = useAudio()
+  const [family, setFamily] = useState(getFamilyRewards)
+  const [wardrobe, setWardrobe] = useState(false)
+  const [message, setMessage] = useState('')
   useEffect(() => {
-    loadPoints();
-    loadRewards();
-
-    // Listen for points earned events
-    const handlePointsEarned = () => loadPoints();
-    window.addEventListener('pointsEarned', handlePointsEarned);
-
-    return () => {
-      window.removeEventListener('pointsEarned', handlePointsEarned);
-    };
-  }, [loadPoints, loadRewards]);
-
-  const handlePurchase = async (reward: RewardItem) => {
-    if (points.availablePoints >= reward.cost) {
-      const success = await purchaseReward(reward);
-
-      if (success) {
-        let message = `🎉 You purchased "${reward.name}"!`;
-
-        if (reward.category === 'real' && reward.realLifeValue) {
-          message = `🎉 You redeemed "${reward.name}"! Show this to a parent to claim your ${reward.realLifeValue}!`;
-        }
-
-        setPurchaseMessage(message);
-        setTimeout(() => setPurchaseMessage(''), 4000);
-      } else {
-        setPurchaseMessage('❌ Purchase failed. Please try again.');
-        setTimeout(() => setPurchaseMessage(''), 3000);
-      }
-    } else {
-      const needed = reward.cost - points.availablePoints;
-      setPurchaseMessage(`❌ Need ${needed} more Heavenly Stars!`);
-      setTimeout(() => setPurchaseMessage(''), 3000);
-    }
-  };
-
-  const filteredRewards = getFilteredRewards();
-  const categories = [
-    { id: 'all', name: 'All Items', icon: '🌟', color: '#ffd700' },
-    ...RewardsDataService.getRewardCategories()
-  ];
-
-  return (
-    <div className="reward-shop">
-      <div className="shop-header">
-        <h1>🏆 Heavenly Rewards Shop</h1>
-        <p>Spend your Heavenly Stars on awesome rewards!</p>
-
-        <PointsDisplay />
-
-        {/* Stars used to have nowhere visible to go. This is where they land. */}
-        <button className="buddy-shop-banner" onClick={() => navigate('/spelling')}>
-          <span className="bsb-icon" aria-hidden>🎽</span>
-          <span className="bsb-text">
-            <strong>{buddyName ? `Dress up ${buddyName}` : 'Meet your buddy'}</strong>
-            <span>
-              {buddyName
-                ? 'Spend your stars on hats, specs and sparkles for your buddy'
-                : 'Hatch a buddy on the Spelling page, then spend your stars on it'}
-            </span>
-          </span>
-          <span className="bsb-go" aria-hidden>→</span>
-        </button>
-      </div>
-
-      {purchaseMessage && (
-        <div className={`purchase-message ${purchaseMessage.includes('❌') ? 'error' : 'success'}`}>
-          {purchaseMessage}
-        </div>
-      )}
-
-      <div className="category-filter">
-        {categories.map(category => (
-          <button
-            key={category.id}
-            className={`category-btn ${selectedCategory === category.id ? 'active' : ''}`}
-            onClick={() => setSelectedCategory(category.id)}
-            style={{ borderLeftColor: category.color || '#ffd700' }}
-          >
-            <span className="category-icon">{category.icon}</span>
-            <span className="category-name">{category.name}</span>
-          </button>
-        ))}
-      </div>
-
-      {showRealRewards && (
-        <div className="real-rewards-banner">
-          <div className="banner-content">
-            <span className="banner-icon">🎁</span>
-            <div className="banner-text">
-              <h3>Real-Life Rewards Available!</h3>
-              <p>Save up your Heavenly Stars for special treats and activities!</p>
-            </div>
-            <button
-              className="close-banner"
-              onClick={() => setShowRealRewards(false)}
-              aria-label="Close banner"
-            >
-              ×
-            </button>
-          </div>
-        </div>
-      )}
-
-      <div className="rewards-grid">
-        {filteredRewards.length > 0 ? (
-          filteredRewards.map(reward => (
-            <RewardCard
-              key={reward.id}
-              reward={reward}
-              points={points.availablePoints}
-              onPurchase={() => handlePurchase(reward)}
-            />
-          ))
-        ) : (
-          <div className="no-rewards">
-            <p>No rewards found in this category.</p>
-          </div>
-        )}
-      </div>
-
-      <BadgeCollection />
-
-      <div className="earning-tips">
-        <h3>💡 Ways to Earn Heavenly Stars</h3>
-        <ul>
-          <li>✅ Spell words correctly: <strong>+10 stars</strong></li>
-          <li>🔥 Combo bonus: <strong>+5 stars every 5 combo</strong></li>
-          <li>🏆 Complete quizzes: <strong>+25 stars</strong></li>
-          <li>📅 Daily login streak: <strong>Bonus stars</strong></li>
-          <li>🎮 Play mini-games: <strong>+15-30 stars</strong></li>
-          <li>📖 Read daily Bible verse: <strong>+20 stars</strong></li>
-          <li>✨ Unlock badges: <strong>+25-200 stars</strong></li>
-        </ul>
-      </div>
-    </div>
-  );
-};
-
-export default RewardShop;
+    const returned = PointsService.refundUnsupportedItems()
+    if (returned) setMessage(`We returned ${returned} stars from older items that were not ready to use.`)
+    loadPoints()
+    const refresh = () => { setFamily(getFamilyRewards()); loadPoints() }
+    window.addEventListener(FAMILY_REWARDS_EVENT, refresh)
+    window.addEventListener('pointsEarned', refresh)
+    return () => { window.removeEventListener(FAMILY_REWARDS_EVENT, refresh); window.removeEventListener('pointsEarned', refresh) }
+  }, [loadPoints])
+  return <div className="reward-shop">
+    <h1>My prizes ⭐</h1><p>Choose something for your buddy, or ask for a family reward.</p>
+    <p className="chip">⭐ {heavenlyStars} stars ready to use</p>
+    <p role="status">{message}</p>
+    <button className="btn" onClick={() => setWardrobe(true)}>🎽 Dress up my buddy</button>
+    {wardrobe && <Dialog title="Buddy wardrobe" onClose={() => setWardrobe(false)}>
+      <Wardrobe buddyName={BuddyService.get().name || 'My buddy'} onClose={() => setWardrobe(false)} onSay={text => { void speak(text) }} />
+    </Dialog>}
+    <section className="settings-section"><h2>Family rewards</h2>
+      {family.offers.length === 0 && <p>Your grown-up can offer a reward in Settings. You can always dress up your buddy.</p>}
+      {family.offers.map(offer => {
+        const pending = family.requests.some(r => r.id === offer.id && ['waiting', 'approved'].includes(r.status))
+        return <div className="card" key={offer.id}><h3>🎁 {offer.name}</h3><p>{offer.cost} stars · Your grown-up approves before stars are used.</p>
+          <button className="btn" disabled={pending || heavenlyStars < offer.cost} onClick={() => {
+            setMessage(requestFamilyReward(offer.id) ? 'Request saved! No stars used yet. Ask your grown-up to look.' : 'This reward is not ready to request.')
+          }}>{pending ? 'Requested' : heavenlyStars < offer.cost ? `${offer.cost - heavenlyStars} more stars to go` : `Ask for ${offer.name}`}</button></div>
+      })}
+      {family.requests.map(r => <div className="card" key={r.requestId}><p>{r.name} · {r.status === 'waiting' ? 'Waiting for your grown-up. No stars used.' : r.status === 'approved' ? 'Approved! Ask your grown-up when it is ready.' : r.status === 'received' ? 'Received. Enjoy!' : 'Cancelled. Your stars are safe.'}</p>
+        {r.status === 'waiting' && <button className="comfort-button" onClick={() => settleFamilyRequest(r.requestId, 'cancel')}>Cancel my request</button>}
+      </div>)}
+    </section>
+    <details><summary>How stars work</summary><p>Spell a word on your own: {SPELLING_STARS} star. Finish a word game: up to {MAX_GAME_STARS} stars. The featured game can double those stars once a day. Lessons and quizzes show their own bonus when you finish.</p></details>
+  </div>
+}

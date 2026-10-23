@@ -1,3 +1,5 @@
+import { usePreferences } from '../../../hooks/usePreferences'
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
@@ -154,6 +156,7 @@ const CaterpillarCrawl: React.FC<CaterpillarCrawlProps> = ({
   speed = 420,
 }) => {
   const { speak } = useAudio()
+  const [preferences] = usePreferences()
   const cheer = useCheer()
 
   const words = useMemo<Word[]>(() => {
@@ -216,9 +219,9 @@ const CaterpillarCrawl: React.FC<CaterpillarCrawlProps> = ({
   // game nobody is playing, so every delay is tracked and cleared on unmount.
   const timers = useRef<number[]>([])
   const later = (fn: () => void, ms: number) => {
-    timers.current.push(window.setTimeout(fn, ms))
+    timers.current.push(activityClock.setTimeout(fn, ms))
   }
-  useEffect(() => () => timers.current.forEach((t) => window.clearTimeout(t)), [])
+  useEffect(() => () => timers.current.forEach((t) => activityClock.clearTimeout(t)), [])
 
   const boardRef = useRef<HTMLDivElement>(null)
   // The finger that started a swipe owns it. Two children share one iPad: a
@@ -258,7 +261,7 @@ const CaterpillarCrawl: React.FC<CaterpillarCrawlProps> = ({
 
   useEffect(() => {
     if (!current) return
-    const ticker = window.setInterval(() => {
+    const ticker = activityClock.setInterval(() => {
       const r = run.current
       if (r.phase !== 'crawling' || r.paused) return
 
@@ -285,8 +288,8 @@ const CaterpillarCrawl: React.FC<CaterpillarCrawlProps> = ({
         if (r.misses >= MISSES_ALLOWED) finish(false)
       }
       repaint()
-    }, speed)
-    return () => window.clearInterval(ticker)
+    }, preferences.relaxed ? speed * 3 : speed)
+    return () => activityClock.clearInterval(ticker)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, words, speed])
 

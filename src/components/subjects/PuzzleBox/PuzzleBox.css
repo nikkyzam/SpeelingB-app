@@ -51,13 +51,13 @@
 
 .puzzle-box-pips {
   letter-spacing: 2px;
-  color: var(--accent);
+  color: var(--accent-ink, var(--accent));
 }
 
 .puzzle-box-won {
   font-size: 0.9rem;
   font-weight: 700;
-  color: var(--secondary);
+  color: var(--secondary-ink, var(--secondary));
 }
 
 .puzzle-box-back {

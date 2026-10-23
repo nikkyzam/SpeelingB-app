@@ -186,8 +186,8 @@ const WordSearch: React.FC<WordSearchProps> = ({ onComplete, words: providedWord
 
       <p className="ws-instructions">Tap the <strong>first</strong> and <strong>last</strong> letter of a hidden word.</p>
 
-      <div className="ws-board">
-        <div className="ws-grid" style={{ gridTemplateColumns: `repeat(${puzzle.size}, 1fr)` }}>
+      <div className="ws-board" tabIndex={0} aria-label="Word grid. Scroll sideways to see more letters.">
+        <div className="ws-grid" style={{ gridTemplateColumns: `repeat(${puzzle.size}, minmax(44px, 1fr))` }}>
           {puzzle.grid.map((row, r) =>
             row.map((letter, c) => {
               const at = key(r, c)

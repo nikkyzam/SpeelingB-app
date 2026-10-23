@@ -1,3 +1,5 @@
+import { usePreferences } from '../../../hooks/usePreferences'
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import type { Word } from '../../../services/wordBank'
 import { useAudio } from '../../../contexts/AudioContext'
@@ -37,8 +39,7 @@ const REVEAL_MS = 750
 
 /** Smaller type for longer words, so a word is never broken across lines. */
 export const wordSize = (text: string): string => {
-  const rem = Math.max(0.55, Math.min(1, 8.5 / Math.max(text.length, 1)))
-  return `min(${rem.toFixed(2)}rem, ${(rem * 4.2).toFixed(2)}vw)`
+  return 'clamp(1rem, 4.2vw, 1.25rem)'
 }
 
 /**
@@ -52,6 +53,7 @@ export const wordSize = (text: string): string => {
  */
 const WordWhack: React.FC<WordWhackProps> = ({ onComplete, words: providedWords, seconds = 45 }) => {
   const { speak } = useAudio()
+  const [preferences] = usePreferences()
   const cheer = useCheer()
   const later = useLater()
 
@@ -82,7 +84,7 @@ const WordWhack: React.FC<WordWhackProps> = ({ onComplete, words: providedWords,
 
   // Countdown
   useEffect(() => {
-    if (done) return
+    if (done || preferences.relaxed) return
     if (timeLeft <= 0) {
       setDone(true)
       sfx.win()
@@ -90,10 +92,10 @@ const WordWhack: React.FC<WordWhackProps> = ({ onComplete, words: providedWords,
       later(() => finish.current(total), 1200)
       return
     }
-    const t = window.setTimeout(() => setTimeLeft((s) => s - 1), 1000)
-    return () => window.clearTimeout(t)
+    const t = activityClock.setTimeout(() => setTimeLeft((s) => s - 1), 1000)
+    return () => activityClock.clearTimeout(t)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeLeft, done])
+  }, [timeLeft, done, preferences.relaxed])
 
   // Moles are read through a ref so the spawn timer decides everything outside
   // setState — updaters stay pure and nothing scores twice.
@@ -101,7 +103,7 @@ const WordWhack: React.FC<WordWhackProps> = ({ onComplete, words: providedWords,
   molesRef.current = moles
 
   const spawn = () => {
-    const now = Date.now()
+    const now = activityClock.now()
     const active = molesRef.current
 
     // Bugs that crawled away un-bonked break the combo — watch them all!
@@ -133,7 +135,7 @@ const WordWhack: React.FC<WordWhackProps> = ({ onComplete, words: providedWords,
         hole: free[Math.floor(Math.random() * free.length)],
         text,
         bad,
-        dieAt: now + LIFETIME_MS,
+        dieAt: now + (preferences.relaxed ? Infinity : LIFETIME_MS),
       },
     ])
   }
@@ -143,8 +145,8 @@ const WordWhack: React.FC<WordWhackProps> = ({ onComplete, words: providedWords,
 
   useEffect(() => {
     if (done) return
-    const id = window.setInterval(() => spawnRef.current(), TICK_MS)
-    return () => window.clearInterval(id)
+    const id = activityClock.setInterval(() => spawnRef.current(), TICK_MS)
+    return () => activityClock.clearInterval(id)
   }, [done])
 
   const flash = (text: string) => {
@@ -176,7 +178,7 @@ const WordWhack: React.FC<WordWhackProps> = ({ onComplete, words: providedWords,
       flash(`🐝 A bee! “${mole.text}” was spelled right.`)
     }
     setMoles((ms) =>
-      ms.map((m) => (m.id === mole.id ? { ...m, hit, dieAt: Date.now() + REVEAL_MS } : m))
+      ms.map((m) => (m.id === mole.id ? { ...m, hit, dieAt: activityClock.now() + REVEAL_MS } : m))
     )
   }
 
@@ -188,13 +190,14 @@ const WordWhack: React.FC<WordWhackProps> = ({ onComplete, words: providedWords,
 
   return (
     <div className="word-whack">
+      {preferences.relaxed && <div><button className="comfort-button" onClick={() => { setMoles([]); molesRef.current = []; }}>New words</button><button className="comfort-button" onClick={() => { if (!done) { setDone(true); finish.current(scoreRef.current); } }}>Finish my round</button></div>}
       <div className="ww-header">
         <div className="ww-title">🔨 Word Whack</div>
         <div className="ww-stats">
           <div className="ww-stat"><span>Score</span><strong>{score}</strong></div>
           <div className="ww-stat"><span>Combo</span><strong>🔥 {combo}</strong></div>
           <div className="ww-stat"><span>Bonked</span><strong>🐛 {bonked}</strong></div>
-          <div className="ww-stat"><span>Time</span><strong>⏱ {timeLeft}s</strong></div>
+          <div className="ww-stat"><span>Pace</span><strong>{preferences.relaxed ? "Your pace" : `⏱ ${timeLeft}s`}</strong></div>
         </div>
       </div>
 
@@ -202,7 +205,7 @@ const WordWhack: React.FC<WordWhackProps> = ({ onComplete, words: providedWords,
         Sneaky <strong>bugs</strong> hide in the words spelled wrong — bonk them! 🔨 Leave the right spellings alone: those are <strong>bees</strong>.
       </p>
 
-      <div className="ww-field">
+      <div className="ww-field" style={{ gridTemplateColumns: `repeat(${Math.max(...pool.map(w => w.word.length), 0) > 16 ? 1 : Math.max(...pool.map(w => w.word.length), 0) > 9 ? 2 : 3}, 1fr)` }}>
         {Array.from({ length: HOLES }).map((_, hole) => {
           const mole = moles.find((m) => m.hole === hole)
           return (

@@ -128,37 +128,8 @@ export class BookApiService {
 
   // Convert API book to our format
   static convertToChristianBook(apiBook: OpenLibraryBook, category: string): ChristianBook {
-    const defaultContent = `This is "${apiBook.title}" by ${apiBook.author_name?.[0] || 'Unknown Author'}. `;
-    const description = apiBook.subject ? `It covers topics like ${apiBook.subject.slice(0, 5).join(', ')}. ` : '';
-    
-    // Generate some more pages to make it more than a "one liner"
-    const pages = [
-      {
-        pageNumber: 1,
-        content: defaultContent + description + "Let's explore the themes of faith and character in this story.",
-        image: apiBook.cover_i ? this.getBookCoverUrl(apiBook.cover_i, 'L') : undefined,
-        vocabulary: ['faith', 'story', 'wisdom', 'learn'],
-        discussionQuestions: ['What do you think this book is about?', 'Do you recognize the author?']
-      },
-      {
-        pageNumber: 2,
-        content: `In the world of "${apiBook.title}", we can find many lessons that help us grow in our journey. Every chapter brings a new perspective on how we can be better and more kind to others.`,
-        vocabulary: ['journey', 'perspective', 'kindness', 'grow'],
-        discussionQuestions: ['How can we be more kind today?', 'What does it mean to grow in faith?']
-      },
-      {
-        pageNumber: 3,
-        content: "As we read further, we see how important it is to trust in God's plan for us. Just like the characters in these stories, we are never alone when we have faith in our hearts.",
-        vocabulary: ['trust', 'plan', 'alone', 'heart'],
-        discussionQuestions: ['Why is trust important?', 'How do you feel when you know God is with you?']
-      },
-      {
-        pageNumber: 4,
-        content: "The story concludes by reminding us that our actions and choices matter. By choosing to follow Christian values, we can make a positive difference in the world around us.",
-        vocabulary: ['actions', 'choices', 'values', 'positive'],
-        discussionQuestions: ['What choice can you make today to help someone?', 'What is your favorite part of the story?']
-      }
-    ];
+    // Catalogue metadata is a preview, never a substitute for the actual book.
+    const pages: ChristianBook['pages'] = [];
 
     return {
       id: `api-${apiBook.key.replace('/works/', '')}`,
@@ -167,12 +138,12 @@ export class BookApiService {
       coverImage: apiBook.cover_i
         ? this.getBookCoverUrl(apiBook.cover_i, 'M')
         : '/images/books/default-cover.jpg',
-      ageRange: { min: 5, max: 12 },
-      grades: ['1', '2', '3', '4', '5'],
+      ageRange: { min: 0, max: 0 },
+      grades: [],
       difficulty: 'intermediate',
       categories: [category, 'api-book', 'online'],
       moralThemes: apiBook.subject?.slice(0, 3) || ['faith', 'love', 'hope'],
-      audioAvailable: true, // Enable TTS
+      audioAvailable: false,
       hasActivities: false,
       pages: pages
     };
@@ -189,20 +160,14 @@ export class BookApiService {
       title: gutenBook.title,
       author: gutenBook.authors[0]?.name || 'Unknown Author',
       coverImage: gutenBook.formats['image/jpeg'] || '/images/books/default-cover.jpg',
-      ageRange: { min: 8, max: 15 },
-      grades: ['3', '4', '5', '6', '7', '8'],
+      ageRange: { min: 0, max: 0 },
+      grades: [],
       difficulty: 'advanced',
       categories: ['christianity', 'classic', 'online'],
       moralThemes: gutenBook.subjects?.slice(0, 3) || ['faith', 'history'],
-      audioAvailable: true,
+      audioAvailable: false,
       hasActivities: false,
-      pages: [
-        {
-          pageNumber: 1,
-          content: `Loading full text for "${gutenBook.title}"...`,
-          vocabulary: ['classic', 'literature']
-        }
-      ],
+      pages: [],
       externalUrl: textUrl
     };
   }

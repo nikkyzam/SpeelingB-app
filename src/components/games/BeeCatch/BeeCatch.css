@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.bc-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.bc-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary-2)); }
 .bc-stats { display: flex; gap: var(--spacing-md); }
 .bc-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .bc-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -41,16 +41,16 @@
   font-size: 1.7rem;
   color: var(--text-soft);
 }
-.bc-slot.done { color: var(--success); }
+.bc-slot.done { color: var(--success-ink, var(--success)); }
 /* The next letter is a glowing blank — the child finds it, the slot doesn't say. */
 .bc-slot.next {
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
   border-radius: 6px;
   background: color-mix(in srgb, var(--warning) 18%, transparent);
   animation: bc-glow 1.2s ease-in-out infinite;
 }
 /* After two wrong bees the slot shows the letter, so nobody is stuck. */
-.bc-slot.next.help { color: var(--secondary); }
+.bc-slot.next.help { color: var(--secondary-ink, var(--secondary)); }
 @keyframes bc-glow {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.55; }
@@ -68,7 +68,7 @@
   margin-left: 0.4rem;
 }
 .bc-hint { color: var(--text-soft); margin-bottom: var(--spacing-md); }
-.bc-hint strong { color: var(--primary-2); font-size: 1.15rem; }
+.bc-hint strong { color: var(--primary-ink, var(--primary-2)); font-size: 1.15rem; }
 
 .bc-field {
   position: relative;

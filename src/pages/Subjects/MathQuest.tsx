@@ -4,11 +4,13 @@ import { QUEST_GRADES, QUEST_TIERS } from '../../services/subjects/catalogue'
 import SubjectProgress from '../../services/subjects/SubjectProgress'
 import BackLink from './BackLink'
 import './Subjects.css'
+import { usePreferences } from '../../hooks/usePreferences'
 
 /** One grade of Math Quest: its units and topics, with a medal for each round passed. */
 const MathQuest: React.FC = () => {
   const { grade = '' } = useParams()
   const navigate = useNavigate()
+  const [preferences] = usePreferences()
   const g = QUEST_GRADES.find((x) => x.grade === grade)
   if (!g) return <Navigate to="/subjects/math" replace />
 
@@ -20,7 +22,7 @@ const MathQuest: React.FC = () => {
         <p>Pass a round with 80% or more to earn its medal.</p>
       </header>
       <div className="sj-chips">
-        {QUEST_GRADES.map((x) => (
+        {QUEST_GRADES.filter(x => preferences.stage !== 'early' || x.grade === 'k' || x.grade === '1').map((x) => (
           <button
             key={x.grade}
             type="button"

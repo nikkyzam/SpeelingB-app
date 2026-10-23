@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.cx-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.cx-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary)); }
 .cx-stats { display: flex; gap: var(--spacing-lg); }
 .cx-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .cx-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -74,7 +74,7 @@
 .cx-square.ok {
   border-color: var(--success);
   background: color-mix(in srgb, var(--success) 20%, var(--card));
-  color: var(--success);
+  color: var(--success-ink, var(--success));
 }
 .cx-square.shown {
   border-color: var(--warning);
@@ -96,8 +96,8 @@
   font-family: var(--font-primary);
   font-weight: 800;
 }
-.cx-flash.ok { color: var(--success); }
-.cx-flash.bad { color: var(--error); }
+.cx-flash.ok { color: var(--success-ink, var(--success)); }
+.cx-flash.bad { color: var(--error-ink, var(--error)); }
 
 /* --- the clue in hand ------------------------------------------------------------- */
 
@@ -112,7 +112,7 @@
 .cx-clue-tag {
   font-family: var(--font-primary);
   font-weight: 800;
-  color: var(--primary);
+  color: var(--primary-ink, var(--primary));
 }
 .cx-clue-text { margin: var(--spacing-xs) 0 var(--spacing-sm); font-size: 1.05rem; }
 .cx-clue-actions { display: flex; justify-content: center; gap: var(--spacing-sm); flex-wrap: wrap; }
@@ -188,7 +188,7 @@
   text-align: left;
   cursor: pointer;
 }
-.cx-clue strong { color: var(--primary); font-family: var(--font-primary); }
+.cx-clue strong { color: var(--primary-ink, var(--primary)); font-family: var(--font-primary); }
 .cx-clue-words { flex: 1; }
 .cx-clue.on { border-color: var(--primary); }
 .cx-clue.done .cx-clue-words { color: var(--text-soft); text-decoration: line-through; }

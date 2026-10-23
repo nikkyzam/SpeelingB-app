@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useState, useEffect, useCallback } from 'react'
 import './RhythmTap.css'
 
@@ -33,7 +34,7 @@ const RhythmTap: React.FC<RhythmTapProps> = ({ onComplete }) => {
 
   useEffect(() => {
     if (isActive && timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
+      const timer = activityClock.setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
 
       // Generate new beat every 0.8-1.5 seconds
       if (Math.random() < 0.3) {
@@ -42,7 +43,7 @@ const RhythmTap: React.FC<RhythmTapProps> = ({ onComplete }) => {
 
       moveBeats()
 
-      return () => clearTimeout(timer)
+      return () => activityClock.clearTimeout(timer)
     } else if (timeLeft === 0 && isActive) {
       endGame()
     }
@@ -56,7 +57,7 @@ const RhythmTap: React.FC<RhythmTapProps> = ({ onComplete }) => {
       id: nextBeatId,
       type,
       position: 100,
-      timing: Date.now(),
+      timing: activityClock.now(),
       hit: null
     }
 
@@ -123,7 +124,7 @@ const RhythmTap: React.FC<RhythmTapProps> = ({ onComplete }) => {
   const endGame = () => {
     setIsActive(false)
     const finalScore = score + (combo * 50) + (accuracy * 10)
-    setTimeout(() => onComplete(finalScore), 1000)
+    activityClock.setTimeout(() => onComplete(finalScore), 1000)
   }
 
   const startMusic = () => {

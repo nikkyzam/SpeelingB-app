@@ -10,7 +10,7 @@ const describe = (prize: MysteryPrize): { icon: string; title: string; detail: s
       return {
         icon: '⭐',
         title: `+${prize.amount} stars!`,
-        detail: prize.amount >= 50 ? 'A JACKPOT! Spend them in the prize shop!' : 'Added to your star jar — nice!',
+        detail: 'Added to your star jar — nice!',
       }
     case 'snacks':
       return {
@@ -75,7 +75,7 @@ const MysteryBox: React.FC = () => {
           <div className="mystery-reveal-text">
             <h2>{describe(prize).title}</h2>
             <p>{describe(prize).detail}</p>
-            <p className="mystery-again">Come back tomorrow for another surprise! 🎁</p>
+            <p className="mystery-again">Enjoy your gift. Great work today! 🎁</p>
           </div>
           <button className="mystery-close" onClick={() => setPrize(null)} aria-label="Close">✕</button>
         </div>
@@ -87,7 +87,7 @@ const MysteryBox: React.FC = () => {
         >
           <span className="mystery-gift-icon" aria-hidden>{opening ? '✨' : '🎁'}</span>
           <span className="mystery-gift-text">
-            <strong>{opening ? 'Opening…' : 'Your daily Mystery Box is here!'}</strong>
+            <strong>{opening ? 'Opening…' : 'A little gift for you!'}</strong>
             <small>{opening ? 'Ooh, what could it be?' : 'Tap to open your free surprise!'}</small>
           </span>
         </button>

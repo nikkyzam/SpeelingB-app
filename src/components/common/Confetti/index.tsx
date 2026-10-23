@@ -1,7 +1,9 @@
+import { usePreferences } from '../../../hooks/usePreferences'
 import React, { useEffect, useState } from 'react'
 import './Confetti.css'
 
 const Confetti: React.FC = () => {
+  const [preferences] = usePreferences()
   const [showConfetti, setShowConfetti] = useState(false)
 
   useEffect(() => {
@@ -15,7 +17,7 @@ const Confetti: React.FC = () => {
     return () => window.removeEventListener('show-confetti', handleConfetti)
   }, [])
 
-  if (!showConfetti) return null
+  if (!showConfetti || preferences.calm) return null
 
   return (
     <div className="confetti-container">

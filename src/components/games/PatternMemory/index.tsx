@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useState, useEffect, useCallback } from 'react'
 import './PatternMemory.css'
 
@@ -46,7 +47,7 @@ const PatternMemory: React.FC<PatternMemoryProps> = ({ onComplete }) => {
     setMessage(`Level ${level} - Watch carefully!`)
 
     // Show pattern
-    setTimeout(() => {
+    activityClock.setTimeout(() => {
       setIsShowingPattern(false)
       setIsPlayerTurn(true)
       setMessage('Your turn! Repeat the pattern')
@@ -89,7 +90,7 @@ const PatternMemory: React.FC<PatternMemoryProps> = ({ onComplete }) => {
         setScore(prev => prev + levelScore)
         setStreak(prev => prev + 1)
 
-        setTimeout(() => {
+        activityClock.setTimeout(() => {
           setLevel(prev => prev + 1)
           startNewLevel()
         }, 1500)
@@ -104,14 +105,14 @@ const PatternMemory: React.FC<PatternMemoryProps> = ({ onComplete }) => {
       if (newLives <= 0) {
         endGame()
       } else {
-        setTimeout(() => {
+        activityClock.setTimeout(() => {
           startNewLevel()
         }, 2000)
       }
     }
 
     // Reset animation
-    setTimeout(() => {
+    activityClock.setTimeout(() => {
       const resetPattern = [...pattern]
       resetPattern[index] = { ...clickedItem, isActive: false }
       setPattern(resetPattern)
@@ -121,7 +122,7 @@ const PatternMemory: React.FC<PatternMemoryProps> = ({ onComplete }) => {
   const endGame = () => {
     setIsPlayerTurn(false)
     setMessage(`Game Over! Final Score: ${score}`)
-    setTimeout(() => onComplete(score), 2000)
+    activityClock.setTimeout(() => onComplete(score), 2000)
   }
 
   const renderPattern = () => {

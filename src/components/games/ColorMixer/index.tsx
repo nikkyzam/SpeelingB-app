@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useState, useEffect } from 'react'
 import './ColorMixer.css'
 
@@ -39,8 +40,8 @@ const ColorMixer: React.FC<ColorMixerProps> = ({ onComplete }) => {
 
   useEffect(() => {
     if (timeLeft > 0 && gameActive) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
-      return () => clearTimeout(timer)
+      const timer = activityClock.setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
+      return () => activityClock.clearTimeout(timer)
     } else if (timeLeft === 0 && gameActive) {
       endGame()
     }
@@ -104,7 +105,7 @@ const ColorMixer: React.FC<ColorMixerProps> = ({ onComplete }) => {
     setPerfectMatches(prev => prev + 1)
     setLevel(prev => prev + 1)
 
-    setTimeout(() => {
+    activityClock.setTimeout(() => {
       generateTargetColor()
     }, 1000)
   }
@@ -122,7 +123,7 @@ const ColorMixer: React.FC<ColorMixerProps> = ({ onComplete }) => {
     setGameActive(false)
     const accuracy = perfectMatches > 0 ? Math.round((perfectMatches / attempts) * 100) : 0
     const finalScore = score + (accuracy * 5)
-    setTimeout(() => onComplete(finalScore), 2000)
+    activityClock.setTimeout(() => onComplete(finalScore), 2000)
   }
 
   const rgbToHex = (color: Color) => {

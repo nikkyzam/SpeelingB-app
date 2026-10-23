@@ -1,7 +1,10 @@
+import { wordBank } from '@/services/wordBank'
 import React from 'react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
+const wordTotal = wordBank.availableLevels().reduce((sum, level) => sum + level.count, 0).toLocaleString()
 
 const listUsers = vi.fn()
 const setUserDailyGoal = vi.fn().mockResolvedValue(undefined)
@@ -245,7 +248,7 @@ describe('the grown-up console', () => {
     render(<AdminUsers />)
     await screen.findByText('Maya')
 
-    expect(screen.getByText(/3\/3,686 words/)).toBeInTheDocument()
+    expect(screen.getByText(new RegExp(`3/${wordTotal} words`))).toBeInTheDocument()
   })
 
   it('opens the full progress, and names the word to practise together', async () => {
@@ -255,8 +258,8 @@ describe('the grown-up console', () => {
 
     await user.click(screen.getByRole('button', { name: /Full progress/ }))
 
-    expect(screen.getByText(/of 3,686 words met/)).toHaveTextContent(
-      '3 of 3,686 words met (<1%) · 1 spelled right · 1 mastered'
+    expect(screen.getByText(new RegExp(`of ${wordTotal} words met`))).toHaveTextContent(
+      `3 of ${wordTotal} words met (<1%) · 1 spelled right · 1 mastered`
     )
     // 'concise-all-bee-1' is "send", got wrong five times. It is also one of
     // the recently-met words, so look for it in the section that matters.

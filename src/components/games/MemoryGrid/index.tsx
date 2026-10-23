@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useState, useEffect, useCallback } from 'react'
 import './MemoryGrid.css'
 
@@ -32,8 +33,8 @@ const MemoryGrid: React.FC<MemoryGridProps> = ({ onComplete, gridSize = 6 }) => 
     initializeGrid()
 
     if (isActive && timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
-      return () => clearTimeout(timer)
+      const timer = activityClock.setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
+      return () => activityClock.clearTimeout(timer)
     } else if (timeLeft === 0 && isActive) {
       endGame()
     }
@@ -42,11 +43,11 @@ const MemoryGrid: React.FC<MemoryGridProps> = ({ onComplete, gridSize = 6 }) => 
   useEffect(() => {
     // Show all cells for 3 seconds at start
     if (isShowing) {
-      const timer = setTimeout(() => {
+      const timer = activityClock.setTimeout(() => {
         setIsShowing(false)
         hideAllCells()
       }, 3000)
-      return () => clearTimeout(timer)
+      return () => activityClock.clearTimeout(timer)
     }
   }, [isShowing])
 
@@ -110,7 +111,7 @@ const MemoryGrid: React.FC<MemoryGridProps> = ({ onComplete, gridSize = 6 }) => 
         // Check for match
         if (newSelected[0].emoji === newSelected[1].emoji) {
           // Match found
-          setTimeout(() => {
+          activityClock.setTimeout(() => {
             const updatedGrid = [...grid]
             updatedGrid[newSelected[0].row][newSelected[0].col].isMatched = true
             updatedGrid[newSelected[1].row][newSelected[1].col].isMatched = true
@@ -125,7 +126,7 @@ const MemoryGrid: React.FC<MemoryGridProps> = ({ onComplete, gridSize = 6 }) => 
           }, 500)
         } else {
           // No match - hide after delay
-          setTimeout(() => {
+          activityClock.setTimeout(() => {
             const updatedGrid = [...grid]
             updatedGrid[newSelected[0].row][newSelected[0].col].isRevealed = false
             updatedGrid[newSelected[1].row][newSelected[1].col].isRevealed = false
@@ -149,7 +150,7 @@ const MemoryGrid: React.FC<MemoryGridProps> = ({ onComplete, gridSize = 6 }) => 
       setLevel(prev => prev + 1)
       setTimeLeft(180)
       setIsShowing(true)
-      setTimeout(() => {
+      activityClock.setTimeout(() => {
         initializeGrid()
       }, 2000)
     } else {
@@ -160,7 +161,7 @@ const MemoryGrid: React.FC<MemoryGridProps> = ({ onComplete, gridSize = 6 }) => 
   const endGame = () => {
     setIsActive(false)
     const finalScore = score + (matches * 100) + (level * 500)
-    setTimeout(() => onComplete(finalScore), 2000)
+    activityClock.setTimeout(() => onComplete(finalScore), 2000)
   }
 
   return (

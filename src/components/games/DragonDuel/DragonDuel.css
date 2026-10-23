@@ -21,7 +21,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.dd-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.dd-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary-2)); }
 .dd-stats { display: flex; gap: var(--spacing-lg); }
 .dd-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .dd-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -64,7 +64,7 @@
   font-family: var(--font-primary);
   font-weight: 900;
   font-size: 1.5rem;
-  color: var(--error);
+  color: var(--error-ink, var(--error));
   animation: dd-float-up 1.4s ease-out forwards;
 }
 @keyframes dd-float-up {
@@ -134,7 +134,7 @@
   font-family: var(--font-primary);
   font-weight: 900;
   font-size: 1.5rem;
-  color: var(--primary-2);
+  color: var(--primary-ink, var(--primary-2));
   min-width: 20px;
 }
 
@@ -156,7 +156,7 @@
 }
 .dd-input:focus { outline: none; border-color: var(--primary); }
 .dd-input.ok { border-color: var(--success); background: rgba(47, 191, 113, 0.15); }
-.dd-input.bad { border-color: var(--warning); color: var(--primary-2); animation: shake 0.4s; }
+.dd-input.bad { border-color: var(--warning); color: var(--primary-ink, var(--primary-2)); animation: shake 0.4s; }
 
 .dd-btn {
   border: none;

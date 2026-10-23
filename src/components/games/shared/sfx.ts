@@ -6,19 +6,17 @@
  * Audio API rather than shipped as files so there is nothing to download and
  * nothing to go missing offline.
  *
- * Everything honours the same `audioEnabled` flag as the spoken words, so one
- * mute switch silences the whole app.
+ * Effects have their own preference, so switching off fanfares never silences
+ * the pronunciation a child needs for spelling. Calm mode also silences effects.
  */
+
+import { getPreferences } from '../../../services/preferences'
 
 let ctx: AudioContext | null = null
 
 const audioAllowed = (): boolean => {
-  try {
-    const saved = localStorage.getItem('audioEnabled')
-    return saved ? JSON.parse(saved) : true
-  } catch {
-    return true
-  }
+  const preferences = getPreferences()
+  return preferences.effectsEnabled && !preferences.calm
 }
 
 const getCtx = (): AudioContext | null => {

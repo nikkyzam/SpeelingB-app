@@ -1,3 +1,4 @@
+import { usePreferences } from '../../../hooks/usePreferences'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useProgress } from '../../../contexts/ProgressContext'
 import WordMastery, { MASTERY_EVENT } from '../../../services/progress/WordMastery'
@@ -42,6 +43,7 @@ const MAX_STARS_PER_BURST = 8
  */
 const FunFx: React.FC = () => {
   const { learningFlow } = useProgress()
+  const [preferences] = usePreferences()
   const [flights, setFlights] = useState<Flight[]>([])
   const [toasts, setToasts] = useState<Toast[]>([])
   // Used for both explorer ranks and streak milestones — same party, different news.
@@ -187,6 +189,8 @@ const FunFx: React.FC = () => {
   // Note: this layer is deliberately NOT aria-hidden — the toast and level-up
   // inside it are real announcements. Only the flying stars are decorative,
   // and they hide themselves individually.
+  if (preferences.calm) return null
+
   return (
     <div className="fun-fx">
       {flights.map((f) => (

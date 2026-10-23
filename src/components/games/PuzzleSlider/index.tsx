@@ -1,3 +1,4 @@
+import { activityClock } from '../../../services/games/activityClock'
 import React, { useState, useEffect, useCallback } from 'react'
 import './PuzzleSlider.css'
 
@@ -30,8 +31,8 @@ const PuzzleSlider: React.FC<PuzzleSliderProps> = ({ onComplete, gridSize = 4 })
 
   useEffect(() => {
     if (isActive && timeLeft > 0 && !isSolved) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
-      return () => clearTimeout(timer)
+      const timer = activityClock.setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
+      return () => activityClock.clearTimeout(timer)
     } else if (timeLeft === 0 && isActive && !isSolved) {
       endGame()
     }
@@ -118,7 +119,7 @@ const PuzzleSlider: React.FC<PuzzleSliderProps> = ({ onComplete, gridSize = 4 })
 
     setScore(total)
 
-    setTimeout(() => {
+    activityClock.setTimeout(() => {
       onComplete(total)
     }, 2000)
   }
@@ -133,14 +134,14 @@ const PuzzleSlider: React.FC<PuzzleSliderProps> = ({ onComplete, gridSize = 4 })
       const tileElement = document.querySelector(`.tile-${movableTile.id}`)
       if (tileElement) {
         tileElement.classList.add('hinted')
-        setTimeout(() => {
+        activityClock.setTimeout(() => {
           tileElement.classList.remove('hinted')
         }, 1000)
       }
     }
 
     setHintAvailable(false)
-    setTimeout(() => setHintAvailable(true), 30000)
+    activityClock.setTimeout(() => setHintAvailable(true), 30000)
   }
 
   const endGame = () => {

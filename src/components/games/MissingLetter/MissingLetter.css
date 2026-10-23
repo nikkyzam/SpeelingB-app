@@ -19,7 +19,7 @@
   padding-bottom: var(--spacing-md);
   margin-bottom: var(--spacing-lg);
 }
-.ml-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-2); }
+.ml-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary-2)); }
 .ml-stats { display: flex; gap: var(--spacing-lg); }
 .ml-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.8rem; color: var(--text-soft); }
 .ml-stat strong { font-size: 1.2rem; color: var(--text); }
@@ -60,8 +60,8 @@
   border-radius: var(--radius-sm);
   border: 2px solid transparent;
 }
-.ml-cell.blank { border: 3px dashed var(--primary); color: var(--primary-2); }
-.ml-cell.blank.ok { border-style: solid; border-color: var(--success); background: rgba(47,191,113,0.15); color: var(--success); animation: pop-in 200ms both; }
+.ml-cell.blank { border: 3px dashed var(--primary); color: var(--primary-ink, var(--primary-2)); }
+.ml-cell.blank.ok { border-style: solid; border-color: var(--success); background: rgba(47,191,113,0.15); color: var(--success-ink, var(--success)); animation: pop-in 200ms both; }
 .ml-word.shake { animation: ml-shake 0.4s ease; }
 @keyframes ml-shake {
   0%, 100% { transform: translateX(0); }

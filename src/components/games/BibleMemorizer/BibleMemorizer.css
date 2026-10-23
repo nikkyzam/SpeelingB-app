@@ -23,7 +23,7 @@
   margin-bottom: var(--spacing-md);
   text-align: left;
 }
-.bmz-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.bmz-title { font-family: var(--font-primary); font-weight: 800; font-size: 1.4rem; color: var(--primary-ink, var(--primary)); }
 .bmz-stats { display: flex; gap: var(--spacing-lg); }
 .bmz-stat { display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; color: var(--text-soft); }
 .bmz-stat strong { font-size: 1.15rem; color: var(--text); }
@@ -105,7 +105,7 @@
   text-align: center;
 }
 .bmz-input:focus { outline: none; background: color-mix(in srgb, var(--primary) 12%, var(--card)); }
-.bmz-input.right { border-bottom-color: var(--success); color: var(--success); }
+.bmz-input.right { border-bottom-color: var(--success); color: var(--success-ink, var(--success)); }
 .bmz-input.wrong { border-bottom-color: var(--warning); }
 .bmz-input.shown { border-bottom-color: var(--warning); color: var(--text); }
 .bmz-ref { margin: var(--spacing-sm) 0 0; font-size: 0.9rem; font-weight: 700; color: var(--text-soft); }
@@ -115,7 +115,7 @@
   font-family: var(--font-primary);
   font-weight: 800;
 }
-.bmz-flash.ok { color: var(--success); }
+.bmz-flash.ok { color: var(--success-ink, var(--success)); }
 .bmz-flash.soft { color: var(--text); }
 
 @media (prefers-reduced-motion: reduce) {
